@@ -780,6 +780,185 @@
 
   /* SVG project visuals */
   .project-svg { width: 100%; height: 100%; }
+
+  /* ============================
+     SCRATCH REVEAL SECTION
+  ============================== */
+  .scratch-section {
+    padding: 8rem 3rem;
+    background: var(--bg);
+    border-top: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .scratch-section .section-label { align-self: flex-start; width: 100%; }
+  .scratch-sub {
+    align-self: flex-start;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.15em;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-bottom: 3rem;
+    margin-top: -2rem;
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  .scratch-sub.visible { opacity: 1; transform: translateY(0); transition: all 0.6s ease 0.2s; }
+
+  /* Card wrapper: scales from 0 on scroll-in */
+  .scratch-wrapper {
+    width: 100%;
+    max-width: 760px;
+    opacity: 0;
+    transform: scale(0.04);
+    transition: transform 1.2s cubic-bezier(0.16,1,0.3,1), opacity 0.5s ease;
+  }
+  .scratch-wrapper.popped { opacity: 1; transform: scale(1); }
+
+  /* THE CARD — matches PDF exactly */
+  .sc-card {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 820 / 520;
+    border-radius: 20px;
+    overflow: hidden;
+    background: #0d1f18;
+    border: 1.5px solid rgba(255,255,255,0.12);
+    box-shadow:
+      0 0 0 1px rgba(0,0,0,0.5),
+      0 30px 80px rgba(0,0,0,0.6),
+      0 0 60px rgba(30,180,120,0.08);
+  }
+
+  /* TOP BAR */
+  .sc-topbar {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    z-index: 20;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.85rem 1.2rem;
+    background: rgba(8,15,12,0.75);
+    backdrop-filter: blur(4px);
+  }
+  .sc-icon-box {
+    width: 28px; height: 28px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    border: 1px solid rgba(255,255,255,0.12);
+  }
+  .sc-top-right {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.78rem;
+    font-weight: 400;
+    color: rgba(255,255,255,0.7);
+    letter-spacing: 0.04em;
+  }
+
+  /* HOLOGRAPHIC BACKGROUND (teal/cyan/green gradient + dots) */
+  .sc-holo {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+  }
+  .sc-holo-canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%; height: 100%;
+  }
+
+  /* SCRATCH CANVAS — sits on top, z=10 */
+  .sc-scratch-canvas {
+    position: absolute;
+    inset: 0;
+    z-index: 10;
+    width: 100%; height: 100%;
+    cursor: none;
+  }
+
+  /* BOTTOM BAR */
+  .sc-bottombar {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    z-index: 20;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    padding: 0.75rem 1.2rem;
+    background: rgba(8,15,12,0.6);
+    backdrop-filter: blur(4px);
+  }
+  .sc-bottom-left, .sc-bottom-right {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+  }
+  .sc-bottom-right { align-items: flex-end; }
+  .sc-meta {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+    color: rgba(255,255,255,0.35);
+    text-transform: uppercase;
+  }
+
+  /* ============================
+     FLOATING SKILL CARDS
+  ============================== */
+  .floating-skills {
+    width: 100%;
+    max-width: 900px;
+    margin-top: 4rem;
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.16,1,0.3,1);
+    pointer-events: none;
+  }
+  .floating-skills.visible { opacity: 1; transform: translateY(0); pointer-events: auto; }
+  .floating-skills.hidden { opacity: 0; transform: translateY(40px); pointer-events: none; }
+
+  .fs-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(155px, 1fr));
+    gap: 1rem;
+  }
+  .fs-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.4rem 1.2rem 1.1rem;
+    position: relative;
+    overflow: hidden;
+    opacity: 0;
+    transform: translateY(24px) scale(0.96);
+    transition: transform 0.35s cubic-bezier(0.16,1,0.3,1), border-color 0.3s, box-shadow 0.35s;
+  }
+  .fs-card.in {
+    animation: fsIn 0.55s cubic-bezier(0.16,1,0.3,1) var(--delay) forwards;
+  }
+  .fs-card.out {
+    animation: fsOut 0.3s ease var(--delay) forwards;
+  }
+  @keyframes fsIn  { to { opacity:1; transform: translateY(0) scale(1); } }
+  @keyframes fsOut { to { opacity:0; transform: translateY(20px) scale(0.95); } }
+
+  .fs-card::before {
+    content:''; position:absolute; inset:0;
+    background: linear-gradient(135deg, rgba(200,245,66,0.05), transparent 60%);
+    opacity:0; transition: opacity 0.3s;
+  }
+  .fs-card:hover { transform: translateY(-7px) scale(1.03); border-color: rgba(200,245,66,0.35); box-shadow: 0 16px 36px rgba(0,0,0,0.4); }
+  .fs-card:hover::before { opacity:1; }
+  .fs-icon { font-size:1.5rem; margin-bottom:0.65rem; display:block; line-height:1; }
+  .fs-name { font-size:0.8rem; font-weight:500; color:var(--text); margin-bottom:0.85rem; letter-spacing:0.02em; }
+  .fs-level { height:2px; background:rgba(240,237,230,0.07); border-radius:2px; overflow:hidden; margin-bottom:0.4rem; }
+  .fs-bar { height:100%; width:0; background: linear-gradient(90deg, var(--accent), rgba(200,245,66,0.5)); border-radius:2px; transition: width 1.1s cubic-bezier(0.16,1,0.3,1) 0.2s; }
+  .fs-card.in .fs-bar { width: var(--pct); }
+  .fs-pct { font-family:'DM Mono',monospace; font-size:0.63rem; color:var(--accent); letter-spacing:0.06em; }
 </style>
 </head>
 <body>
@@ -907,6 +1086,69 @@
     <div class="skill-pill">Figma</div>
     <div class="skill-pill">Git</div>
     <div class="skill-pill">VS Code</div>
+  </div>
+</section>
+
+<!-- SCRATCH REVEAL SECTION -->
+<section class="scratch-section" id="skills">
+  <div class="section-label reveal">What I Know</div>
+  <p class="scratch-sub reveal">Scroll down to scratch · Scroll up to restore</p>
+
+  <div class="scratch-wrapper" id="scratchWrapper">
+    <div class="sc-card" id="scCard">
+
+      <!-- TOP BAR (exact PDF match) -->
+      <div class="sc-topbar">
+        <div class="sc-icon-box">
+          <svg width="16" height="16" viewBox="0 0 20 20" fill="none">
+            <rect x="1" y="1" width="7" height="7" rx="1" fill="white" opacity="0.9"/>
+            <rect x="12" y="1" width="7" height="7" rx="1" fill="white" opacity="0.9"/>
+            <rect x="1" y="12" width="7" height="7" rx="1" fill="white" opacity="0.9"/>
+            <rect x="12" y="12" width="7" height="7" rx="1" fill="white" opacity="0.9"/>
+          </svg>
+        </div>
+        <div class="sc-top-right">For Achintha</div>
+      </div>
+
+      <!-- REVEALED LAYER: holographic teal-green gradient + dots (the card face) -->
+      <div class="sc-holo">
+        <canvas id="holoCanvas" class="sc-holo-canvas"></canvas>
+      </div>
+
+      <!-- SCRATCH OVERLAY CANVAS — dark layer scratched away by scroll -->
+      <canvas id="scratchCanvas" class="sc-scratch-canvas"></canvas>
+
+      <!-- BOTTOM BAR (exact PDF match) -->
+      <div class="sc-bottombar">
+        <div class="sc-bottom-left">
+          <span class="sc-meta">PLAN / PRO</span>
+          <span class="sc-meta">PERIOD / 4+ YRS</span>
+        </div>
+        <div class="sc-bottom-right">
+          <span class="sc-meta">GENERATED</span>
+          <span class="sc-meta">2026 · LK</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Floating skill cards — appear when scratch completes -->
+  <div class="floating-skills" id="floatingSkills">
+    <div class="fs-grid">
+      <div class="fs-card" style="--delay:0s"><div class="fs-icon">🌐</div><div class="fs-name">HTML / CSS</div><div class="fs-level"><div class="fs-bar" style="--pct:92%"></div></div><div class="fs-pct">92%</div></div>
+      <div class="fs-card" style="--delay:0.06s"><div class="fs-icon">⚡</div><div class="fs-name">JavaScript</div><div class="fs-level"><div class="fs-bar" style="--pct:80%"></div></div><div class="fs-pct">80%</div></div>
+      <div class="fs-card" style="--delay:0.12s"><div class="fs-icon">☕</div><div class="fs-name">Java</div><div class="fs-level"><div class="fs-bar" style="--pct:78%"></div></div><div class="fs-pct">78%</div></div>
+      <div class="fs-card" style="--delay:0.18s"><div class="fs-icon">🐍</div><div class="fs-name">Python</div><div class="fs-level"><div class="fs-bar" style="--pct:75%"></div></div><div class="fs-pct">75%</div></div>
+      <div class="fs-card" style="--delay:0.24s"><div class="fs-icon">⚙️</div><div class="fs-name">C++</div><div class="fs-level"><div class="fs-bar" style="--pct:65%"></div></div><div class="fs-pct">65%</div></div>
+      <div class="fs-card" style="--delay:0.30s"><div class="fs-icon">🗄️</div><div class="fs-name">SQL</div><div class="fs-level"><div class="fs-bar" style="--pct:72%"></div></div><div class="fs-pct">72%</div></div>
+      <div class="fs-card" style="--delay:0.36s"><div class="fs-icon">📱</div><div class="fs-name">Flutter</div><div class="fs-level"><div class="fs-bar" style="--pct:68%"></div></div><div class="fs-pct">68%</div></div>
+      <div class="fs-card" style="--delay:0.42s"><div class="fs-icon">⚛️</div><div class="fs-name">React</div><div class="fs-level"><div class="fs-bar" style="--pct:70%"></div></div><div class="fs-pct">70%</div></div>
+      <div class="fs-card" style="--delay:0.48s"><div class="fs-icon">🎬</div><div class="fs-name">After Effects</div><div class="fs-level"><div class="fs-bar" style="--pct:95%"></div></div><div class="fs-pct">95%</div></div>
+      <div class="fs-card" style="--delay:0.54s"><div class="fs-icon">🎨</div><div class="fs-name">Illustrator</div><div class="fs-level"><div class="fs-bar" style="--pct:90%"></div></div><div class="fs-pct">90%</div></div>
+      <div class="fs-card" style="--delay:0.60s"><div class="fs-icon">🧑‍💻</div><div class="fs-name">Char. Animator</div><div class="fs-level"><div class="fs-bar" style="--pct:88%"></div></div><div class="fs-pct">88%</div></div>
+      <div class="fs-card" style="--delay:0.66s"><div class="fs-icon">🖼️</div><div class="fs-name">Figma</div><div class="fs-level"><div class="fs-bar" style="--pct:82%"></div></div><div class="fs-pct">82%</div></div>
+    </div>
   </div>
 </section>
 
@@ -1305,6 +1547,313 @@
     const y = (e.clientY / window.innerHeight - 0.5) * 40;
     orb.style.transform = `translate(${x}px, ${y}px)`;
   });
+
+  // =============================================
+  // SCRATCH CARD — exact PDF match, reversible
+  // =============================================
+  (function() {
+    const wrapper   = document.getElementById('scratchWrapper');
+    const scCard    = document.getElementById('scCard');
+    const scratchC  = document.getElementById('scratchCanvas');
+    const holoC     = document.getElementById('holoCanvas');
+    const fsEl      = document.getElementById('floatingSkills');
+    const fsCards   = document.querySelectorAll('.fs-card');
+    const subLabel  = document.querySelector('.scratch-sub');
+
+    let W = 0, H = 0;
+    let sCtx, hCtx;
+    let cardPopped  = false;
+    let lastProgress = -1;
+
+    // ── Seeded random for stable noise shapes ──
+    function seededRand(seed) {
+      let s = seed;
+      return function() {
+        s = (s * 16807 + 0) % 2147483647;
+        return (s - 1) / 2147483646;
+      };
+    }
+
+    // ── Build the holographic background once ──
+    function drawHolo() {
+      const rand = seededRand(42);
+      hCtx.clearRect(0, 0, W, H);
+
+      // Base gradient: radial green-teal-blue (exact PDF)
+      const grad = hCtx.createRadialGradient(W * 0.18, H * 0.38, 0, W * 0.5, H * 0.5, W * 0.85);
+      grad.addColorStop(0,    '#00e87a');
+      grad.addColorStop(0.18, '#00c96a');
+      grad.addColorStop(0.38, '#00a878');
+      grad.addColorStop(0.58, '#008fa0');
+      grad.addColorStop(0.75, '#0068b8');
+      grad.addColorStop(1,    '#003d6e');
+      hCtx.fillStyle = grad;
+      hCtx.fillRect(0, 0, W, H);
+
+      // Dot grid (exact PDF — small cyan dots on dark right side)
+      hCtx.fillStyle = 'rgba(180,255,230,0.22)';
+      const spacing = Math.max(14, W / 46);
+      for (let x = spacing * 0.6; x < W; x += spacing) {
+        for (let y = spacing * 0.6; y < H; y += spacing) {
+          const fade = Math.min(1, (x / W) * 1.6); // dots fade in from left
+          hCtx.globalAlpha = 0.08 + fade * 0.22;
+          hCtx.beginPath();
+          hCtx.arc(x, y, 1.1, 0, Math.PI * 2);
+          hCtx.fill();
+        }
+      }
+      hCtx.globalAlpha = 1;
+    }
+
+    // ── Build the scratch surface (dark layer on top) ──
+    // At p=0: fully dark (card hidden). At p>0: dark replaced by blob residue.
+    function resetScratch() {
+      sCtx.clearRect(0, 0, W, H);
+      // Solid dark cover — same dark green-black as the scratch blob
+      sCtx.fillStyle = '#060e0a';
+      sCtx.fillRect(0, 0, W, H);
+      // Very subtle dots hint (barely visible, like unscratched foil)
+      sCtx.fillStyle = 'rgba(80,160,100,0.055)';
+      const sp = Math.max(14, W / 46);
+      for (let x = sp; x < W; x += sp) {
+        for (let y = sp; y < H; y += sp) {
+          sCtx.beginPath();
+          sCtx.arc(x, y, 1, 0, Math.PI * 2);
+          sCtx.fill();
+        }
+      }
+    }
+
+    // ── Core: draw scratch at progress 0→1 (fully reversible) ──
+    // The PDF shows: dark scratch residue blob in center-left of card
+    // The dark foil is mostly gone, replaced by one big dark shadow/silhouette
+    // with jagged torn edges — like a dark landmass sitting on the holographic bg.
+    // The blob grows from a small smear to a large swooping shape as p increases.
+    function drawScratchAtProgress(p) {
+      if (!sCtx) return;
+      resetScratch();
+      if (p <= 0) return;
+
+      const r = seededRand(77);
+
+      // ── Step 1: Clear most of the dark layer (reveal the teal card) ──
+      // We remove the dark foil everywhere EXCEPT where the scratch blob sits
+      sCtx.globalCompositeOperation = 'destination-out';
+      sCtx.fillStyle = 'rgba(0,0,0,1)';
+      sCtx.fillRect(0, 0, W, H);
+      sCtx.globalCompositeOperation = 'source-over';
+
+      // ── Step 2: Paint the dark scratch residue blob back on top ──
+      // This is the dark silhouette shape that remains — like a shadow/landmass
+      // Shape: swoops from upper-left, bulges in center, tapers toward lower-right
+      // Grows with p: at p=0.1 it's a small smear, at p=1 it's the full shape
+
+      const blobScale = Math.min(1, p * 1.05);
+
+      // Center of the blob (matches PDF: roughly center-left, slightly below mid)
+      const cx = W * 0.38 * blobScale + W * 0.04;
+      const cy = H * 0.52;
+
+      // The blob is drawn as a filled path with rough jagged edges
+      sCtx.save();
+      sCtx.globalCompositeOperation = 'source-over';
+
+      // Main blob path — the dark scratched area silhouette
+      // Traced from the PDF: starts thin top-left, swells in middle, tapers bottom-right
+      const pts = [];
+      const steps = 60;
+      for (let i = 0; i < steps; i++) {
+        const angle = (i / steps) * Math.PI * 2;
+        const rr = seededRand(i * 13 + 3);
+
+        // Base ellipse: wider horizontally, taller than tall
+        // The shape in PDF is roughly: 55% of card width, 65% of card height
+        const baseRx = W * 0.27 * blobScale;
+        const baseRy = H * 0.38 * blobScale;
+
+        // Make it non-uniform — upper-left protrudes more, lower-right tapers
+        const angleMod = angle + 0.4;
+        let rx = baseRx * (1.0 + 0.35 * Math.cos(angleMod));
+        let ry = baseRy * (1.0 + 0.2  * Math.sin(angleMod * 0.7));
+
+        // Add jagged noise to the edge (the rough torn fingernail texture)
+        const noise = (rr() - 0.5) * W * 0.06 * blobScale;
+        const jag   = (seededRand(i * 7 + 91)() - 0.5) * H * 0.04 * blobScale;
+
+        const px = cx + (rx + noise) * Math.cos(angle);
+        const py = cy + (ry + jag)  * Math.sin(angle);
+        pts.push([px, py]);
+      }
+
+      // Draw the main blob with a slight inner shadow feel
+      sCtx.beginPath();
+      sCtx.moveTo(pts[0][0], pts[0][1]);
+      for (let i = 1; i < pts.length; i++) {
+        // Smooth with midpoints for organic feel
+        const prev = pts[i - 1];
+        const curr = pts[i];
+        sCtx.quadraticCurveTo(prev[0], prev[1], (prev[0] + curr[0]) / 2, (prev[1] + curr[1]) / 2);
+      }
+      sCtx.closePath();
+
+      // Dark green-black fill matching PDF scratch color
+      const blobGrad = sCtx.createRadialGradient(cx - W*0.05, cy - H*0.08, 0, cx, cy, W * 0.32 * blobScale);
+      blobGrad.addColorStop(0,    'rgba(4,14,8,0.97)');
+      blobGrad.addColorStop(0.45, 'rgba(6,18,10,0.95)');
+      blobGrad.addColorStop(0.78, 'rgba(8,22,13,0.92)');
+      blobGrad.addColorStop(1,    'rgba(10,26,15,0.75)');
+      sCtx.fillStyle = blobGrad;
+      sCtx.fill();
+
+      // ── Step 3: Secondary smaller blob — the upper-left "head" of the scratch ──
+      // In the PDF there's a dark mass upper-left that connects to the main body
+      if (blobScale > 0.2) {
+        const s2 = Math.min(1, (blobScale - 0.2) / 0.8);
+        const c2x = W * 0.12 + W * 0.08 * s2;
+        const c2y = H * 0.28 + H * 0.04 * s2;
+        const r2x = W * 0.12 * s2;
+        const r2y = H * 0.18 * s2;
+
+        sCtx.beginPath();
+        const pts2 = [];
+        for (let i = 0; i < 36; i++) {
+          const angle = (i / 36) * Math.PI * 2;
+          const rr2   = seededRand(i * 17 + 55);
+          const noise2 = (rr2() - 0.5) * W * 0.04 * s2;
+          pts2.push([
+            c2x + (r2x + noise2) * Math.cos(angle),
+            c2y + (r2y + noise2 * 0.5) * Math.sin(angle)
+          ]);
+        }
+        sCtx.moveTo(pts2[0][0], pts2[0][1]);
+        for (let i = 1; i < pts2.length; i++) {
+          const prev = pts2[i-1], curr = pts2[i];
+          sCtx.quadraticCurveTo(prev[0], prev[1], (prev[0]+curr[0])/2, (prev[1]+curr[1])/2);
+        }
+        sCtx.closePath();
+        const g2 = sCtx.createRadialGradient(c2x, c2y, 0, c2x, c2y, r2x * 1.5);
+        g2.addColorStop(0,   'rgba(4,14,8,0.95)');
+        g2.addColorStop(0.7, 'rgba(6,18,10,0.88)');
+        g2.addColorStop(1,   'rgba(8,20,12,0.5)');
+        sCtx.fillStyle = g2;
+        sCtx.fill();
+      }
+
+      // ── Step 4: Jagged torn edge spikes radiating outward ──
+      // The PDF shows rough spike-like protrusions along the blob edge
+      const spikeCount = Math.floor(blobScale * 22);
+      for (let i = 0; i < spikeCount; i++) {
+        const rs = seededRand(i * 31 + 7);
+        const angle = rs() * Math.PI * 2;
+        const dist  = W * (0.22 + rs() * 0.1) * blobScale;
+        const sx = cx + dist * Math.cos(angle);
+        const sy = cy + dist * 0.85 * Math.sin(angle);
+        const sr = (W * 0.02 + rs() * W * 0.03) * blobScale;
+
+        const sg2 = sCtx.createRadialGradient(sx, sy, 0, sx, sy, sr);
+        sg2.addColorStop(0,   'rgba(5,16,9,0.9)');
+        sg2.addColorStop(0.6, 'rgba(6,18,10,0.7)');
+        sg2.addColorStop(1,   'rgba(0,0,0,0)');
+        sCtx.fillStyle = sg2;
+        sCtx.beginPath();
+        sCtx.arc(sx, sy, sr, 0, Math.PI * 2);
+        sCtx.fill();
+      }
+
+      // ── Step 5: Bottom-right tail — tapers toward lower-right (matches PDF) ──
+      if (blobScale > 0.4) {
+        const s3  = Math.min(1, (blobScale - 0.4) / 0.6);
+        const t3x = W * (0.55 + 0.15 * s3);
+        const t3y = H * (0.62 + 0.08 * s3);
+        const tr  = W * 0.1 * s3;
+
+        const tg = sCtx.createRadialGradient(t3x, t3y, 0, t3x, t3y, tr);
+        tg.addColorStop(0,   'rgba(5,16,9,0.85)');
+        tg.addColorStop(0.6, 'rgba(6,18,10,0.5)');
+        tg.addColorStop(1,   'rgba(0,0,0,0)');
+        sCtx.fillStyle = tg;
+        sCtx.beginPath();
+        sCtx.arc(t3x, t3y, tr, 0, Math.PI * 2);
+        sCtx.fill();
+      }
+
+      sCtx.restore();
+    }
+
+    // ── Initialise canvases ──
+    function initCanvases() {
+      W = scCard.offsetWidth;
+      H = scCard.offsetHeight;
+
+      holoC.width    = W; holoC.height    = H;
+      scratchC.width = W; scratchC.height = H;
+
+      hCtx = holoC.getContext('2d');
+      sCtx = scratchC.getContext('2d');
+
+      drawHolo();
+      resetScratch();
+    }
+
+    // ── Scale the card in when it enters the viewport ──
+    const popObs = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting && !cardPopped) {
+          cardPopped = true;
+          wrapper.classList.add('popped');
+          subLabel && subLabel.classList.add('visible');
+          setTimeout(initCanvases, 500);
+          popObs.disconnect();
+        }
+      });
+    }, { threshold: 0.3 });
+    popObs.observe(wrapper);
+
+    // ── Scroll-driven scratch (fully reversible) ──
+    let cardsShown = false;
+
+    function onScroll() {
+      if (!sCtx) return;
+
+      const section = document.getElementById('skills');
+      const rect    = section.getBoundingClientRect();
+      const viewH   = window.innerHeight;
+
+      // progress: 0 when section top hits viewport bottom, 1 when section is half-scrolled through
+      const raw = (viewH - rect.top) / (viewH * 0.9);
+      const p   = Math.max(0, Math.min(1, raw));
+
+      if (Math.abs(p - lastProgress) < 0.004) return;
+      lastProgress = p;
+
+      drawScratchAtProgress(p);
+
+      // Show / hide skill cards
+      if (p >= 0.96 && !cardsShown) {
+        cardsShown = true;
+        fsEl.classList.remove('hidden');
+        fsEl.classList.add('visible');
+        fsCards.forEach(c => {
+          c.classList.remove('out');
+          c.classList.add('in');
+        });
+      } else if (p < 0.85 && cardsShown) {
+        cardsShown = false;
+        fsCards.forEach(c => {
+          c.classList.remove('in');
+          c.classList.add('out');
+        });
+        setTimeout(() => {
+          if (!cardsShown) fsEl.classList.remove('visible');
+        }, 400);
+      }
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', () => {
+      if (cardPopped) initCanvases();
+    });
+  })();
 </script>
 </body>
 </html>
