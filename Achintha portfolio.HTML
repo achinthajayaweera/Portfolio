@@ -411,7 +411,7 @@
      SCRATCH REVEAL SECTION
   ============================== */
   .scratch-section {
-    padding: 8rem 3rem;
+    padding: 8rem 3rem 4rem;
     background: var(--bg);
     border-top: 1px solid var(--border);
     display: flex;
@@ -482,150 +482,137 @@
   .sc-meta { font-family: 'DM Mono', monospace; font-size: 0.6rem; letter-spacing: 0.1em; color: rgba(255,255,255,0.35); text-transform: uppercase; }
 
   /* ============================
-     INNER GLOBE SECTION
+     INNER GLOBE SECTION — full viewport immersive
   ============================== */
   .globe-section {
     width: 100%;
-    max-width: 900px;
-    margin: 0 auto;
-    padding: 5rem 0 2rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    opacity: 0;
-    transform: translateY(60px);
-    transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.16,1,0.3,1);
-  }
-  .globe-section.visible { opacity: 1; transform: translateY(0); }
-
-  .globe-label {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.72rem;
-    letter-spacing: 0.2em;
-    color: var(--muted);
-    text-transform: uppercase;
-    margin-bottom: 2rem;
-    align-self: flex-start;
-  }
-
-  /* The 3D globe container */
-  .globe-container {
+    height: 100vh;
+    min-height: 600px;
     position: relative;
-    width: 100%;
-    height: 520px;
-    perspective: 900px;
-    overflow: visible;
+    overflow: hidden;
+    /* Always visible — no fade-in opacity trick that can break */
+    opacity: 1;
+    background: radial-gradient(ellipse at center,
+      #0a0f0d 0%,
+      #060a08 45%,
+      #030505 100%
+    );
+  }
+
+  /* Ambient star dots */
+  .globe-section::before {
+    content: '';
+    position: absolute; inset: 0;
+    background-image:
+      radial-gradient(1px 1px at 15% 20%, rgba(200,245,66,0.18) 0%, transparent 100%),
+      radial-gradient(1px 1px at 80% 15%, rgba(200,245,66,0.12) 0%, transparent 100%),
+      radial-gradient(1px 1px at 60% 75%, rgba(200,245,66,0.1)  0%, transparent 100%),
+      radial-gradient(1px 1px at 25% 85%, rgba(200,245,66,0.08) 0%, transparent 100%),
+      radial-gradient(1px 1px at 90% 60%, rgba(200,245,66,0.14) 0%, transparent 100%),
+      radial-gradient(1.5px 1.5px at 45% 40%, rgba(255,255,255,0.06) 0%, transparent 100%),
+      radial-gradient(1px 1px at 70% 90%, rgba(255,255,255,0.05) 0%, transparent 100%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Edge vignette */
+  .globe-section::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 70% 70% at center,
+      transparent 30%,
+      rgba(3,5,5,0.5) 70%,
+      rgba(3,5,5,0.88) 100%
+    );
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .globe-hint {
+    position: absolute;
+    bottom: 2.5rem; left: 50%;
+    transform: translateX(-50%);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem; letter-spacing: 0.22em;
+    color: rgba(107,104,96,0.5); text-transform: uppercase;
+    z-index: 10; white-space: nowrap; pointer-events: none;
+    animation: hintPulse 3s ease-in-out infinite;
+  }
+  @keyframes hintPulse { 0%,100%{opacity:.5} 50%{opacity:1} }
+
+  .globe-section-title {
+    position: absolute; top: 2.5rem; left: 3rem;
+    font-size: 0.65rem; letter-spacing: 0.22em; text-transform: uppercase;
+    color: var(--accent); font-family: 'DM Mono', monospace;
+    z-index: 10; display: flex; align-items: center; gap: 0.8rem;
+  }
+  .globe-section-title::after {
+    content: ''; width: 40px; height: 1px;
+    background: var(--accent); opacity: 0.4;
+  }
+
+  /* Globe container — MUST be position:relative with explicit size so JS can read offsetWidth/Height */
+  .globe-container {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    /* overflow visible so bubbles can bleed to edges */
   }
 
   /* Center button */
   .globe-center-btn {
     position: absolute;
     top: 50%; left: 50%;
-    transform: translate(-50%, -50%) translateZ(0);
+    transform: translate(-50%, -50%);
     z-index: 50;
-    width: 90px; height: 90px;
+    width: 100px; height: 100px;
     border-radius: 50%;
-    background: #fff;
+    background: #ffffff;
     color: #111;
     font-family: 'DM Sans', sans-serif;
-    font-size: 0.78rem;
-    font-weight: 500;
-    letter-spacing: 0.06em;
-    border: none;
-    cursor: none;
+    font-size: 0.82rem; font-weight: 500; letter-spacing: 0.06em;
+    border: none; cursor: none;
     display: flex; align-items: center; justify-content: center;
-    box-shadow: 0 8px 32px rgba(0,0,0,0.5), 0 0 0 4px rgba(255,255,255,0.08);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow:
+      0 0 0 8px rgba(255,255,255,0.04),
+      0 0 0 20px rgba(255,255,255,0.02),
+      0 8px 40px rgba(0,0,0,0.6);
+    transition: box-shadow 0.4s ease;
     pointer-events: all;
   }
   .globe-center-btn:hover {
-    transform: translate(-50%, -50%) scale(1.08);
-    box-shadow: 0 12px 40px rgba(0,0,0,0.6), 0 0 0 6px rgba(255,255,255,0.12);
+    box-shadow:
+      0 0 0 12px rgba(255,255,255,0.06),
+      0 0 0 28px rgba(255,255,255,0.03),
+      0 12px 50px rgba(0,0,0,0.7);
   }
-  .globe-center-btn.spinning {
-    animation: btnSpin 0.5s ease;
-  }
-  @keyframes btnSpin {
-    0% { transform: translate(-50%, -50%) scale(1); }
-    50% { transform: translate(-50%, -50%) scale(0.88) rotate(180deg); }
-    100% { transform: translate(-50%, -50%) scale(1) rotate(360deg); }
+  .globe-center-btn.spinning { animation: btnPulse 0.6s ease; }
+  @keyframes btnPulse {
+    0%  { transform: translate(-50%,-50%) scale(1); }
+    40% { transform: translate(-50%,-50%) scale(0.9); }
+    100%{ transform: translate(-50%,-50%) scale(1); }
   }
 
   /* Each skill bubble */
   .globe-bubble {
     position: absolute;
-    top: 50%; left: 50%;
     border-radius: 50%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    will-change: transform;
-    cursor: none;
-    transition: box-shadow 0.3s ease;
-    overflow: hidden;
-    user-select: none;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center; text-align: center;
+    will-change: transform, opacity, width, height;
+    cursor: none; overflow: hidden; user-select: none;
   }
+  .globe-bubble:hover { z-index: 200 !important; }
 
   .bubble-inner {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    height: 100%;
-    padding: 8px;
-    border-radius: 50%;
-    position: relative;
-    z-index: 2;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    width: 100%; height: 100%; padding: 10px;
+    border-radius: 50%; position: relative; z-index: 2;
   }
-
-  .bubble-icon {
-    font-size: 1.4em;
-    line-height: 1;
-    margin-bottom: 0.2em;
-    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
-  }
-
-  .bubble-name {
-    font-family: 'DM Sans', sans-serif;
-    font-weight: 500;
-    letter-spacing: 0.02em;
-    color: #fff;
-    text-shadow: 0 1px 4px rgba(0,0,0,0.7);
-    line-height: 1.1;
-    text-align: center;
-  }
-
-  .bubble-pct {
-    font-family: 'DM Mono', monospace;
-    letter-spacing: 0.04em;
-    color: rgba(255,255,255,0.65);
-    text-shadow: 0 1px 3px rgba(0,0,0,0.6);
-    margin-top: 0.15em;
-  }
-
-  /* Tooltip on hover */
-  .globe-tooltip {
-    position: absolute;
-    bottom: calc(100% + 12px);
-    left: 50%;
-    transform: translateX(-50%);
-    background: rgba(14,14,14,0.95);
-    border: 1px solid var(--border-light);
-    padding: 0.5rem 0.9rem;
-    font-family: 'DM Mono', monospace;
-    font-size: 0.68rem;
-    color: var(--accent);
-    letter-spacing: 0.08em;
-    white-space: nowrap;
-    pointer-events: none;
-    opacity: 0;
-    transition: opacity 0.2s;
-    z-index: 100;
-  }
-  .globe-bubble:hover .globe-tooltip { opacity: 1; }
+  .bubble-icon { line-height: 1; margin-bottom: 0.18em; filter: drop-shadow(0 2px 6px rgba(0,0,0,0.6)); pointer-events: none; }
+  .bubble-name { font-family: 'DM Sans', sans-serif; font-weight: 500; letter-spacing: 0.02em; color: #fff; text-shadow: 0 1px 6px rgba(0,0,0,0.8); line-height: 1.1; text-align: center; pointer-events: none; }
+  .bubble-pct  { font-family: 'DM Mono', monospace; letter-spacing: 0.04em; color: rgba(255,255,255,0.6); text-shadow: 0 1px 4px rgba(0,0,0,0.7); margin-top: 0.12em; pointer-events: none; }
 
 </style>
 </head>
@@ -777,14 +764,17 @@
     </div>
   </div>
 
-  <!-- INNER GLOBE — appears after scratch completes -->
-  <div class="globe-section" id="globeSection">
-    <div class="globe-label">— skills · hover to explore · drag to rotate —</div>
-    <div class="globe-container" id="globeContainer">
-      <button class="globe-center-btn" id="globeCenterBtn">Start</button>
-    </div>
-  </div>
+  <!-- scratch wrapper ends above, globe is now outside scratch section -->
 </section>
+
+<!-- INNER GLOBE — full viewport, after scratch section -->
+<div class="globe-section" id="globeSection">
+  <div class="globe-section-title">What I Know</div>
+  <div class="globe-container" id="globeContainer">
+    <button class="globe-center-btn" id="globeCenterBtn">Start</button>
+  </div>
+  <div class="globe-hint">Move cursor to tilt · Drag to spin · Click to pause</div>
+</div>
 
 <!-- EXPERIENCE -->
 <section id="experience" style="background: var(--bg2); border-top: 1px solid var(--border);">
@@ -1194,250 +1184,219 @@ document.addEventListener('mousemove', e => {
     if (Math.abs(p - lastP) < 0.003) return;
     lastP = p;
     drawScratch(p);
-
-    // Show/hide globe based on scratch progress
-    const globeEl = document.getElementById('globeSection');
-    if (p >= 0.92) {
-      globeEl.classList.add('visible');
-    } else {
-      globeEl.classList.remove('visible');
-    }
   }
 
   window.addEventListener('scroll', onScroll, { passive: true });
   window.addEventListener('resize', () => { if (cardPopped) init(); });
 })();
 
-// ─── INNER GLOBE ─────────────────────────────────────────────────────────────
+// ─── INNER GLOBE — full viewport, mouse-parallax immersive ───────────────────
 (function() {
-  const container = document.getElementById('globeContainer');
-  const centerBtn = document.getElementById('globeCenterBtn');
+  const container   = document.getElementById('globeContainer');
+  const centerBtn   = document.getElementById('globeCenterBtn');
+  const globeSection = document.getElementById('globeSection');
 
   const SKILLS = [
-    { icon: '🌐', name: 'HTML/CSS',       pct: 92, color: '#e34c26' },
-    { icon: '⚡', name: 'JavaScript',     pct: 80, color: '#f7df1e' },
-    { icon: '☕', name: 'Java',           pct: 78, color: '#5382a1' },
-    { icon: '🐍', name: 'Python',         pct: 75, color: '#3572a5' },
-    { icon: '⚙️', name: 'C++',           pct: 65, color: '#659bd3' },
-    { icon: '🗄️', name: 'SQL',           pct: 72, color: '#00758f' },
-    { icon: '📱', name: 'Flutter',        pct: 68, color: '#54c5f8' },
-    { icon: '⚛️', name: 'React',         pct: 70, color: '#61dafb' },
-    { icon: '🎬', name: 'After Effects',  pct: 95, color: '#9999ff' },
-    { icon: '🎨', name: 'Illustrator',   pct: 90, color: '#ff7c00' },
-    { icon: '🧑‍💻', name: 'Char. Animator', pct: 88, color: '#00e9fd' },
-    { icon: '🖼️', name: 'Figma',         pct: 82, color: '#f24e1e' },
-    { icon: '🎞️', name: 'Premiere Pro',  pct: 78, color: '#9999ff' },
-    { icon: '📐', name: 'Dimension',      pct: 70, color: '#34495e' },
-    { icon: '🔧', name: 'Git',           pct: 75, color: '#f05032' },
+    { icon: '🌐', name: 'HTML/CSS',        pct: 92, color: '#e34c26' },
+    { icon: '⚡', name: 'JavaScript',      pct: 80, color: '#e8c900' },
+    { icon: '☕', name: 'Java',            pct: 78, color: '#5382a1' },
+    { icon: '🐍', name: 'Python',          pct: 75, color: '#4b8bbe' },
+    { icon: '⚙️', name: 'C++',            pct: 65, color: '#6295cb' },
+    { icon: '🗄️', name: 'SQL',            pct: 72, color: '#00758f' },
+    { icon: '📱', name: 'Flutter',         pct: 68, color: '#02569b' },
+    { icon: '⚛️', name: 'React',          pct: 70, color: '#21d4fd' },
+    { icon: '🎬', name: 'After Effects',   pct: 95, color: '#8080ff' },
+    { icon: '🎨', name: 'Illustrator',    pct: 90, color: '#ff7c00' },
+    { icon: '🎭', name: 'Char. Animator', pct: 88, color: '#00b4d8' },
+    { icon: '🖼️', name: 'Figma',          pct: 82, color: '#f24e1e' },
+    { icon: '🎞️', name: 'Premiere Pro',   pct: 78, color: '#ea77ff' },
+    { icon: '📐', name: 'Dimension',       pct: 70, color: '#2d9e6b' },
+    { icon: '🔧', name: 'Git',            pct: 75, color: '#f05032' },
   ];
 
-  // Distribute skills on a sphere using Fibonacci lattice for even spread
   function fibonacciSphere(n) {
-    const pts = [];
-    const golden = Math.PI * (3 - Math.sqrt(5));
+    const pts = [], golden = Math.PI * (3 - Math.sqrt(5));
     for (let i = 0; i < n; i++) {
       const y = 1 - (i / (n - 1)) * 2;
-      const r = Math.sqrt(1 - y * y);
+      const r = Math.sqrt(Math.max(0, 1 - y * y));
       const theta = golden * i;
       pts.push({ x: Math.cos(theta) * r, y, z: Math.sin(theta) * r });
     }
     return pts;
   }
 
-  const RADIUS = 200; // sphere radius in px
   const positions = fibonacciSphere(SKILLS.length);
 
-  // State
-  let rotY = 0;          // current Y rotation (radians)
-  let rotX = -0.2;       // slight tilt
-  let targetRotY = 0;
-  let autoSpin = true;
-  let isDragging = false;
-  let dragStartX = 0, dragStartY = 0;
-  let dragRotY = 0, dragRotX = 0;
-  let globeActive = false;
-  let rafId = null;
+  function lighten(hex, a) {
+    const r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16);
+    return `rgb(${Math.min(255,r+a*255|0)},${Math.min(255,g+a*255|0)},${Math.min(255,b+a*255|0)})`;
+  }
+  function darken(hex, a) {
+    const r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16);
+    return `rgb(${Math.max(0,r-a*255|0)},${Math.max(0,g-a*255|0)},${Math.max(0,b-a*255|0)})`;
+  }
+  function rotY3d(pt, a) { const c=Math.cos(a),s=Math.sin(a); return {x:pt.x*c+pt.z*s, y:pt.y, z:-pt.x*s+pt.z*c}; }
+  function rotX3d(pt, a) { const c=Math.cos(a),s=Math.sin(a); return {x:pt.x, y:pt.y*c-pt.z*s, z:pt.y*s+pt.z*c}; }
 
-  // Build bubble elements
+  // Build bubbles once — base size stored, actual px set per frame
   const bubbles = SKILLS.map((skill, i) => {
     const div = document.createElement('div');
     div.className = 'globe-bubble';
-
-    // Size based on proficiency + slight variety
-    const baseSize = 52 + skill.pct * 0.45;
-
-    div.innerHTML = `
-      <div class="bubble-inner">
-        <span class="bubble-icon" style="font-size:${baseSize * 0.3}px">${skill.icon}</span>
-        <span class="bubble-name" style="font-size:${Math.max(9, baseSize * 0.155)}px">${skill.name}</span>
-        <span class="bubble-pct" style="font-size:${Math.max(7, baseSize * 0.12)}px">${skill.pct}%</span>
-      </div>
-      <div class="globe-tooltip">${skill.name} · ${skill.pct}%</div>
-    `;
-
-    // Colorful bubble background matching the reference (vibrant circle fills)
-    const hue = (i * 27) % 360;
-    // Use skill color as base, make it vivid
-    const alpha = 0.85 + (skill.pct / 100) * 0.15;
+    const baseSize = 68 + skill.pct * 0.52; // logical base
+    div.innerHTML = `<div class="bubble-inner">
+      <span class="bubble-icon" style="font-size:${(baseSize*0.28).toFixed(0)}px">${skill.icon}</span>
+      <span class="bubble-name" style="font-size:${Math.max(10,baseSize*0.14).toFixed(0)}px">${skill.name}</span>
+      <span class="bubble-pct"  style="font-size:${Math.max(8, baseSize*0.11).toFixed(0)}px">${skill.pct}%</span>
+    </div>`;
     div.style.cssText = `
-      width: ${baseSize}px;
-      height: ${baseSize}px;
-      background: radial-gradient(circle at 35% 35%,
-        ${lighten(skill.color, 0.4)} 0%,
-        ${skill.color} 55%,
-        ${darken(skill.color, 0.35)} 100%
-      );
+      width:${baseSize}px; height:${baseSize}px;
+      background: radial-gradient(circle at 30% 28%,
+        ${lighten(skill.color,0.45)} 0%, ${skill.color} 52%, ${darken(skill.color,0.38)} 100%);
       box-shadow:
-        inset 0 -4px 12px rgba(0,0,0,0.4),
-        inset 0 4px 8px rgba(255,255,255,0.15),
-        0 4px 20px ${skill.color}55;
-      border: 1px solid rgba(255,255,255,0.15);
+        inset 0 -6px 18px rgba(0,0,0,0.45),
+        inset 0 5px 12px rgba(255,255,255,0.18),
+        0 6px 30px ${skill.color}44,
+        0 0 0 1.5px rgba(255,255,255,0.10);
     `;
-
     container.appendChild(div);
-    return { el: div, size: baseSize, skill };
+    return { el: div, baseSize };
   });
 
-  function lighten(hex, amount) {
-    const r = parseInt(hex.slice(1,3),16), g = parseInt(hex.slice(3,5),16), b = parseInt(hex.slice(5,7),16);
-    return `rgb(${Math.min(255,r+amount*255|0)},${Math.min(255,g+amount*255|0)},${Math.min(255,b+amount*255|0)})`;
-  }
-  function darken(hex, amount) {
-    const r = parseInt(hex.slice(1,3),16), g = parseInt(hex.slice(3,5),16), b = parseInt(hex.slice(5,7),16);
-    return `rgb(${Math.max(0,r-amount*255|0)},${Math.max(0,g-amount*255|0)},${Math.max(0,b-amount*255|0)})`;
-  }
+  // ── STATE ──
+  let rotY = 0.3, rotX = -0.15;
+  let autoSpin = true, globeActive = false;
+  let isDragging = false;
+  let dragStartX=0, dragStartY=0, dragRotY=0, dragRotX=0;
+  let mouseNX=0, mouseNY=0, smoothMX=0, smoothMY=0, isHovering=false;
 
-  // 3D rotation matrices
-  function rotateY(pt, angle) {
-    const cos = Math.cos(angle), sin = Math.sin(angle);
-    return { x: pt.x*cos + pt.z*sin, y: pt.y, z: -pt.x*sin + pt.z*cos };
-  }
-  function rotateX(pt, angle) {
-    const cos = Math.cos(angle), sin = Math.sin(angle);
-    return { x: pt.x, y: pt.y*cos - pt.z*sin, z: pt.y*sin + pt.z*cos };
-  }
-
+  // ── RENDER ──
   function render() {
-    if (!globeActive) { rafId = requestAnimationFrame(render); return; }
+    requestAnimationFrame(render);
 
-    if (autoSpin) rotY += 0.004;
+    // Always read live dimensions — globeSection is always in DOM
+    const cW = globeSection.offsetWidth  || window.innerWidth;
+    const cH = globeSection.offsetHeight || window.innerHeight;
+    if (cW === 0 || cH === 0) return;
 
-    const cW = container.offsetWidth;
-    const cH = container.offsetHeight;
-    const cx = cW / 2;
-    const cy = cH / 2;
-    const fov = 900; // perspective focal length
-
-    bubbles.forEach(({ el, size }, i) => {
-      let pt = { ...positions[i] };
-      pt = rotateX(pt, rotX);
-      pt = rotateY(pt, rotY);
-
-      const scale3d = fov / (fov + pt.z * RADIUS);
-      const x3d = pt.x * RADIUS * scale3d;
-      const y3d = pt.y * RADIUS * scale3d;
-
-      // Position: centered in container
-      const left = cx + x3d - size / 2;
-      const top  = cy + y3d - size / 2;
-
-      // Depth cues
-      const depth = (pt.z + 1) / 2; // 0=back, 1=front
-      const opacity = 0.25 + depth * 0.75;
-      const brightness = 0.5 + depth * 0.5;
-      const zIdx = Math.round(depth * 40);
-
-      el.style.left = left + 'px';
-      el.style.top  = top + 'px';
-      el.style.transform = `scale(${scale3d.toFixed(3)})`;
-      el.style.transformOrigin = 'center center';
-      el.style.opacity = opacity.toFixed(3);
-      el.style.filter = `brightness(${brightness.toFixed(2)})`;
-      el.style.zIndex = zIdx;
-    });
-
-    rafId = requestAnimationFrame(render);
-  }
-
-  // Start/stop globe
-  function activateGlobe() {
-    globeActive = true;
-    centerBtn.textContent = '✦';
-    centerBtn.classList.add('spinning');
-    setTimeout(() => centerBtn.classList.remove('spinning'), 500);
-    if (!rafId) render();
-  }
-
-  centerBtn.addEventListener('click', () => {
-    if (!globeActive) { activateGlobe(); }
-    else {
-      autoSpin = !autoSpin;
-      centerBtn.classList.add('spinning');
-      setTimeout(() => centerBtn.classList.remove('spinning'), 500);
+    if (globeActive) {
+      smoothMX += (mouseNX - smoothMX) * 0.04;
+      smoothMY += (mouseNY - smoothMY) * 0.04;
+      if (autoSpin && !isDragging) rotY += 0.003;
     }
+
+    const mouseOffY = isHovering ? smoothMX * 0.35 : 0;
+    const mouseOffX = isHovering ? smoothMY * -0.25 : 0;
+    const finalRotY = rotY + mouseOffY;
+    const finalRotX = rotX + mouseOffX;
+
+    const RADIUS = Math.min(cW, cH) * 0.38;
+    const cx = cW / 2, cy = cH / 2;
+    const fov = Math.max(cW, cH) * 0.9;
+
+    // Pre-compute 3D positions & depth-sort
+    const projected = bubbles.map(({ el, baseSize }, i) => {
+      let pt = { ...positions[i] };
+      pt = rotX3d(pt, finalRotX);
+      pt = rotY3d(pt, finalRotY);
+      return { el, baseSize, pt };
+    });
+    projected.sort((a, b) => a.pt.z - b.pt.z);
+
+    projected.forEach(({ el, baseSize, pt }, sortIdx) => {
+      const scale3d = fov / (fov + pt.z * RADIUS);
+      const px = cx + pt.x * RADIUS * scale3d;
+      const py = cy + pt.y * RADIUS * scale3d;
+      const sz = baseSize * scale3d;
+
+      const depth = (pt.z + 1) / 2;
+      const opacity    = globeActive ? 0.15 + depth * 0.85 : 0;
+      const brightness = 0.4 + depth * 0.7;
+      const saturate   = 0.35 + depth * 0.75;
+      const blur       = depth > 0.45 ? 0 : (1 - depth / 0.45) * 2.2;
+
+      el.style.left   = (px - sz / 2) + 'px';
+      el.style.top    = (py - sz / 2) + 'px';
+      el.style.width  = sz + 'px';
+      el.style.height = sz + 'px';
+      el.style.opacity = opacity.toFixed(3);
+      el.style.filter  = `brightness(${brightness.toFixed(2)}) saturate(${saturate.toFixed(2)})${blur > 0.1 ? ` blur(${blur.toFixed(1)}px)` : ''}`;
+      el.style.zIndex  = sortIdx;
+    });
+  }
+
+  // ── ACTIVATE ──
+  function activateGlobe() {
+    if (globeActive) return;
+    globeActive = true;
+    centerBtn.innerHTML = '<span style="font-size:1.3rem">✦</span>';
+    centerBtn.classList.add('spinning');
+    setTimeout(() => centerBtn.classList.remove('spinning'), 600);
+  }
+
+  // Auto-activate as soon as globe section enters viewport
+  new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) activateGlobe(); });
+  }, { threshold: 0.1 }).observe(globeSection);
+
+  // Also activate after a short delay as a fallback
+  setTimeout(activateGlobe, 800);
+
+  // Center button — toggle pause/spin
+  centerBtn.addEventListener('click', () => {
+    if (!globeActive) { activateGlobe(); return; }
+    autoSpin = !autoSpin;
+    centerBtn.innerHTML = autoSpin
+      ? '<span style="font-size:1.3rem">✦</span>'
+      : '<span style="font-size:0.68rem;letter-spacing:0.06em">PAUSE</span>';
+    centerBtn.classList.add('spinning');
+    setTimeout(() => centerBtn.classList.remove('spinning'), 600);
   });
 
-  // Auto-activate when globe section becomes visible
-  const globeObserver = new IntersectionObserver(entries => {
-    entries.forEach(e => {
-      if (e.isIntersecting && !globeActive) {
-        setTimeout(activateGlobe, 400);
-      }
-    });
-  }, { threshold: 0.3 });
-  globeObserver.observe(document.getElementById('globeSection'));
+  // ── MOUSE PARALLAX ──
+  globeSection.addEventListener('mousemove', e => {
+    const r = globeSection.getBoundingClientRect();
+    mouseNX = ((e.clientX - r.left)  / r.width  - 0.5) * 2;
+    mouseNY = ((e.clientY - r.top)   / r.height - 0.5) * 2;
+    isHovering = true;
+  });
+  globeSection.addEventListener('mouseleave', () => {
+    isHovering = false; mouseNX = 0; mouseNY = 0;
+  });
 
-  // Drag to rotate
+  // ── DRAG ──
   container.addEventListener('mousedown', e => {
-    if (e.target === centerBtn || centerBtn.contains(e.target)) return;
-    isDragging = true;
-    autoSpin = false;
-    dragStartX = e.clientX;
-    dragStartY = e.clientY;
-    dragRotY = rotY;
-    dragRotX = rotX;
+    if (centerBtn.contains(e.target)) return;
+    isDragging = true; autoSpin = false;
+    dragStartX = e.clientX; dragStartY = e.clientY;
+    dragRotY = rotY; dragRotX = rotX;
     container.style.cursor = 'grabbing';
   });
   document.addEventListener('mousemove', e => {
     if (!isDragging) return;
-    const dx = e.clientX - dragStartX;
-    const dy = e.clientY - dragStartY;
-    rotY = dragRotY + dx * 0.008;
-    rotX = dragRotX + dy * 0.008;
-    rotX = Math.max(-0.7, Math.min(0.7, rotX));
+    rotY = dragRotY + (e.clientX - dragStartX) * 0.007;
+    rotX = Math.max(-0.8, Math.min(0.8, dragRotX + (e.clientY - dragStartY) * 0.007));
   });
   document.addEventListener('mouseup', () => {
-    if (isDragging) {
-      isDragging = false;
-      container.style.cursor = '';
-      // Resume auto spin after 2s of inactivity
-      setTimeout(() => { autoSpin = true; }, 2000);
-    }
+    if (!isDragging) return;
+    isDragging = false; container.style.cursor = '';
+    setTimeout(() => { autoSpin = true; }, 1500);
   });
 
-  // Touch support
+  // ── TOUCH ──
   container.addEventListener('touchstart', e => {
     if (e.touches.length !== 1) return;
     isDragging = true; autoSpin = false;
-    dragStartX = e.touches[0].clientX;
-    dragStartY = e.touches[0].clientY;
+    dragStartX = e.touches[0].clientX; dragStartY = e.touches[0].clientY;
     dragRotY = rotY; dragRotX = rotX;
   }, { passive: true });
   container.addEventListener('touchmove', e => {
     if (!isDragging || e.touches.length !== 1) return;
-    const dx = e.touches[0].clientX - dragStartX;
-    const dy = e.touches[0].clientY - dragStartY;
-    rotY = dragRotY + dx * 0.008;
-    rotX = dragRotX + dy * 0.008;
-    rotX = Math.max(-0.7, Math.min(0.7, rotX));
+    rotY = dragRotY + (e.touches[0].clientX - dragStartX) * 0.007;
+    rotX = Math.max(-0.8, Math.min(0.8, dragRotX + (e.touches[0].clientY - dragStartY) * 0.007));
   }, { passive: true });
-  container.addEventListener('touchend', () => {
-    isDragging = false;
-    setTimeout(() => { autoSpin = true; }, 2000);
-  });
+  container.addEventListener('touchend', () => { isDragging = false; setTimeout(()=>{autoSpin=true;},1500); });
 
-  // Start render loop (will idle until active)
-  render();
+  render(); // kick off immediately
 })();
 </script>
 </body>
