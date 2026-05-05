@@ -7,619 +7,180 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
-
 <style>
-  :root {
-    --bg: #080808;
-    --bg2: #0e0e0e;
-    --bg3: #141414;
-    --text: #f0ede6;
-    --muted: #6b6860;
-    --accent: #c8f542;
-    --accent2: #e8d5a0;
-    --border: rgba(240,237,230,0.08);
-    --border-light: rgba(240,237,230,0.15);
-  }
+  :root{--bg:#080808;--bg2:#0e0e0e;--bg3:#141414;--text:#f0ede6;--muted:#6b6860;--accent:#c8f542;--accent2:#e8d5a0;--border:rgba(240,237,230,0.08);--border-light:rgba(240,237,230,0.15)}
+  *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-weight:300;overflow-x:hidden;cursor:none}
+  .cursor{position:fixed;width:10px;height:10px;background:var(--accent);border-radius:50%;pointer-events:none;z-index:9999;transition:transform 0.1s ease;transform:translate(-50%,-50%)}
+  .cursor-trail{position:fixed;width:32px;height:32px;border:1px solid rgba(200,245,66,0.4);border-radius:50%;pointer-events:none;z-index:9998;transition:all 0.18s ease;transform:translate(-50%,-50%)}
+  nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:1.5rem 3rem;display:flex;align-items:center;justify-content:space-between}
+  nav::before{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,rgba(8,8,8,0.9) 0%,transparent 100%);pointer-events:none}
+  .nav-logo{font-family:'Bebas Neue',sans-serif;font-size:1.4rem;letter-spacing:0.12em;color:var(--text);text-decoration:none;position:relative}
+  .nav-links{display:flex;gap:2.5rem;list-style:none;position:relative}
+  .nav-links a{color:var(--muted);text-decoration:none;font-size:0.8rem;letter-spacing:0.1em;text-transform:uppercase;transition:color 0.3s}
+  .nav-links a:hover{color:var(--text)}
+  .nav-cta{position:relative;background:transparent;border:1px solid var(--border-light);color:var(--text);padding:0.55rem 1.4rem;font-size:0.78rem;letter-spacing:0.1em;text-transform:uppercase;font-family:'DM Sans',sans-serif;cursor:none;transition:all 0.3s;text-decoration:none;display:inline-block}
+  .nav-cta:hover{background:var(--accent);color:#000;border-color:var(--accent)}
+  .hero{min-height:100vh;display:flex;flex-direction:column;justify-content:flex-end;padding:0 3rem 4rem;position:relative;overflow:hidden}
+  .hero-bg-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(240,237,230,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(240,237,230,0.025) 1px,transparent 1px);background-size:80px 80px;pointer-events:none}
+  .hero-noise{position:absolute;inset:0;opacity:0.03;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");pointer-events:none}
+  .hero-orb{position:absolute;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(200,245,66,0.06) 0%,transparent 70%);top:-100px;right:-100px;pointer-events:none;animation:orbFloat 8s ease-in-out infinite}
+  @keyframes orbFloat{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-30px,30px) scale(1.05)}}
+  .hero-status{display:flex;align-items:center;gap:0.6rem;margin-bottom:2rem;opacity:0;transform:translateY(20px);animation:fadeUp 0.8s ease forwards 0.3s}
+  .status-dot{width:7px;height:7px;background:var(--accent);border-radius:50%;animation:pulse 2s infinite}
+  @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.5;transform:scale(0.8)}}
+  .hero-status span{font-size:0.75rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted)}
+  .hero-name{font-family:'Bebas Neue',sans-serif;font-size:clamp(5rem,13vw,14rem);line-height:0.88;letter-spacing:-0.02em;overflow:hidden}
+  .hero-name .line{display:block;opacity:0;transform:translateY(100%)}
+  .hero-name .line:nth-child(1){animation:slideUp 0.9s cubic-bezier(0.16,1,0.3,1) forwards 0.5s}
+  .hero-name .line:nth-child(2){animation:slideUp 0.9s cubic-bezier(0.16,1,0.3,1) forwards 0.65s}
+  @keyframes slideUp{to{opacity:1;transform:translateY(0)}}
+  .hero-bottom{display:flex;align-items:flex-end;justify-content:space-between;margin-top:2.5rem;opacity:0;animation:fadeUp 0.8s ease forwards 1s}
+  .hero-tagline{max-width:380px;font-size:0.95rem;line-height:1.7;color:var(--muted);font-weight:300}
+  .hero-tagline strong{color:var(--text);font-weight:400}
+  .hero-scroll{display:flex;flex-direction:column;align-items:center;gap:0.5rem;color:var(--muted);font-size:0.7rem;letter-spacing:0.15em;text-transform:uppercase}
+  .scroll-line{width:1px;height:60px;background:linear-gradient(to bottom,var(--muted),transparent);animation:scrollDrop 2s ease infinite}
+  @keyframes scrollDrop{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform:scaleY(1);transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+  @keyframes fadeUp{to{opacity:1;transform:translateY(0)}}
+  .marquee-section{border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:1.2rem 0;overflow:hidden;background:var(--bg2)}
+  .marquee-track{display:flex;gap:3rem;animation:marquee 18s linear infinite;width:max-content}
+  .marquee-item{display:flex;align-items:center;gap:1rem;white-space:nowrap;font-size:0.78rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted)}
+  .marquee-dot{color:var(--accent);font-size:1.2rem}
+  @keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+  section{padding:8rem 3rem}
+  .section-label{font-size:0.72rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--accent);margin-bottom:3rem;display:flex;align-items:center;gap:1rem}
+  .section-label::after{content:'';flex:1;max-width:60px;height:1px;background:var(--accent);opacity:0.4}
+  .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:6rem;align-items:start}
+  .about-heading{font-family:'Bebas Neue',sans-serif;font-size:clamp(3.5rem,7vw,7rem);line-height:0.9;letter-spacing:0.01em;color:var(--text)}
+  .about-heading .accent-word{color:var(--accent)}
+  .about-right{padding-top:1rem}
+  .about-bio{font-size:1.05rem;line-height:1.8;color:var(--muted);margin-bottom:2.5rem;font-weight:300}
+  .about-bio strong{color:var(--text);font-weight:400}
+  .about-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;border-top:1px solid var(--border);padding-top:2rem}
+  .stat-num{font-family:'Bebas Neue',sans-serif;font-size:3rem;color:var(--text);line-height:1}
+  .stat-label{font-size:0.75rem;color:var(--muted);letter-spacing:0.08em;text-transform:uppercase;margin-top:0.3rem}
+  .skills-section{background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+  .skills-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1px;background:var(--border);border:1px solid var(--border);margin-top:3rem}
+  .skill-card{background:var(--bg2);padding:2rem 1.8rem;transition:background 0.3s;position:relative;overflow:hidden}
+  .skill-card::before{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:var(--accent);transform:scaleX(0);transform-origin:left;transition:transform 0.4s cubic-bezier(0.16,1,0.3,1)}
+  .skill-card:hover::before{transform:scaleX(1)}
+  .skill-card:hover{background:var(--bg3)}
+  .skill-icon{font-size:1.5rem;margin-bottom:1rem;display:block}
+  .skill-name{font-size:0.9rem;font-weight:500;color:var(--text);margin-bottom:0.4rem}
+  .skill-desc{font-size:0.78rem;color:var(--muted);line-height:1.6}
+  .experience-list{margin-top:3rem}
+  .exp-item{display:grid;grid-template-columns:180px 1fr;gap:3rem;padding:2.5rem 0;border-bottom:1px solid var(--border);position:relative;transition:all 0.3s}
+  .exp-item:first-child{border-top:1px solid var(--border)}
+  .exp-item::before{content:'';position:absolute;left:-3rem;top:0;bottom:0;width:2px;background:var(--accent);transform:scaleY(0);transform-origin:top;transition:transform 0.5s cubic-bezier(0.16,1,0.3,1)}
+  .exp-item:hover::before{transform:scaleY(1)}
+  .exp-left{padding-top:0.2rem}
+  .exp-year{font-family:'DM Mono',monospace;font-size:0.78rem;color:var(--accent);letter-spacing:0.08em;margin-bottom:0.5rem}
+  .exp-company{font-size:0.85rem;color:var(--muted);letter-spacing:0.05em}
+  .exp-title{font-family:'Bebas Neue',sans-serif;font-size:2.2rem;color:var(--text);letter-spacing:0.02em;line-height:1.1;margin-bottom:1rem}
+  .exp-desc{font-size:0.88rem;line-height:1.8;color:var(--muted);font-weight:300}
+  .exp-tags{display:flex;flex-wrap:wrap;gap:0.5rem;margin-top:1.2rem}
+  .tag{font-size:0.7rem;letter-spacing:0.08em;text-transform:uppercase;border:1px solid var(--border-light);padding:0.3rem 0.8rem;color:var(--muted);transition:all 0.3s}
+  .tag:hover{border-color:var(--accent);color:var(--accent)}
+  .projects-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.5rem;margin-top:3rem}
+  .project-card{background:var(--bg2);border:1px solid var(--border);padding:2.5rem;position:relative;overflow:hidden;transition:all 0.4s cubic-bezier(0.16,1,0.3,1);cursor:none}
+  .project-card::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(200,245,66,0.04),transparent);opacity:0;transition:opacity 0.4s}
+  .project-card:hover{border-color:var(--border-light);transform:translateY(-4px)}
+  .project-card:hover::after{opacity:1}
+  .project-card.featured{grid-column:span 2;display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:center}
+  .project-number{font-family:'DM Mono',monospace;font-size:0.7rem;color:var(--accent);letter-spacing:0.1em;margin-bottom:1.5rem}
+  .project-title{font-family:'Bebas Neue',sans-serif;font-size:2.5rem;color:var(--text);line-height:1;margin-bottom:1rem;letter-spacing:0.02em}
+  .project-desc{font-size:0.88rem;color:var(--muted);line-height:1.7;font-weight:300;margin-bottom:1.5rem}
+  .project-link{display:inline-flex;align-items:center;gap:0.5rem;font-size:0.78rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent);text-decoration:none;border-bottom:1px solid rgba(200,245,66,0.3);padding-bottom:0.2rem;transition:border-color 0.3s}
+  .project-link:hover{border-color:var(--accent)}
+  .project-visual{background:var(--bg3);border:1px solid var(--border);height:220px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+  .project-visual-featured{height:280px}
+  .project-svg{width:100%;height:100%}
+  .edu-list{margin-top:3rem}
+  .edu-item{display:flex;justify-content:space-between;align-items:flex-start;padding:2rem 0;border-bottom:1px solid var(--border);gap:2rem}
+  .edu-item:first-child{border-top:1px solid var(--border)}
+  .edu-degree{font-family:'Bebas Neue',sans-serif;font-size:1.8rem;color:var(--text);letter-spacing:0.02em;line-height:1.1;margin-bottom:0.3rem}
+  .edu-school{font-size:0.85rem;color:var(--muted)}
+  .edu-year{font-family:'DM Mono',monospace;font-size:0.8rem;color:var(--accent);white-space:nowrap}
+  .contact-section{background:var(--bg2);border-top:1px solid var(--border);text-align:center;padding:10rem 3rem;position:relative;overflow:hidden}
+  .contact-bg-text{position:absolute;font-family:'Bebas Neue',sans-serif;font-size:clamp(8rem,20vw,22rem);color:rgba(240,237,230,0.02);top:50%;left:50%;transform:translate(-50%,-50%);white-space:nowrap;pointer-events:none;letter-spacing:0.05em}
+  .contact-label{font-size:0.75rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--accent);margin-bottom:2rem;position:relative}
+  .contact-heading{font-family:'Bebas Neue',sans-serif;font-size:clamp(4rem,10vw,10rem);line-height:0.9;letter-spacing:0.01em;margin-bottom:2rem;position:relative}
+  .contact-sub{font-size:1rem;color:var(--muted);max-width:420px;margin:0 auto 3rem;line-height:1.7;position:relative}
+  .contact-links{display:flex;justify-content:center;gap:1.5rem;flex-wrap:wrap;position:relative}
+  .contact-btn{display:inline-flex;align-items:center;gap:0.6rem;padding:1rem 2rem;font-size:0.82rem;letter-spacing:0.1em;text-transform:uppercase;font-family:'DM Sans',sans-serif;text-decoration:none;transition:all 0.3s;cursor:none}
+  .contact-btn.primary{background:var(--accent);color:#000;font-weight:500}
+  .contact-btn.primary:hover{background:#d4ff4a}
+  .contact-btn.secondary{border:1px solid var(--border-light);color:var(--text)}
+  .contact-btn.secondary:hover{border-color:var(--text);background:rgba(240,237,230,0.05)}
+  footer{padding:2rem 3rem;display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--border)}
+  footer p{font-size:0.75rem;color:var(--muted);letter-spacing:0.06em}
+  .footer-logo{font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:0.12em;color:var(--muted)}
+  .reveal{opacity:0;transform:translateY(40px);transition:opacity 0.9s cubic-bezier(0.16,1,0.3,1),transform 0.9s cubic-bezier(0.16,1,0.3,1)}
+  .reveal.visible{opacity:1;transform:translateY(0)}
+  .reveal-delay-1{transition-delay:0.1s}
+  .reveal-delay-2{transition-delay:0.2s}
+  .reveal-delay-3{transition-delay:0.3s}
+  .reveal-delay-4{transition-delay:0.4s}
+  .skills-scroller{display:flex;gap:2rem;overflow-x:auto;scrollbar-width:none;padding-bottom:1rem;margin-top:2rem}
+  .skills-scroller::-webkit-scrollbar{display:none}
+  .skill-pill{flex-shrink:0;border:1px solid var(--border-light);padding:0.6rem 1.2rem;font-size:0.8rem;color:var(--muted);letter-spacing:0.06em;transition:all 0.3s;white-space:nowrap}
+  .skill-pill:hover{border-color:var(--accent);color:var(--accent)}
+  .counter{font-variant-numeric:tabular-nums}
+  .loader{position:fixed;inset:0;background:var(--bg);z-index:1000;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:1.5rem;transition:opacity 0.6s ease,visibility 0.6s ease}
+  .loader.done{opacity:0;visibility:hidden}
+  .loader-name{font-family:'Bebas Neue',sans-serif;font-size:1.8rem;letter-spacing:0.25em;color:var(--text)}
+  .loader-bar-wrap{width:200px;height:1px;background:var(--border-light);position:relative;overflow:hidden}
+  .loader-bar{position:absolute;top:0;left:0;height:100%;width:0;background:var(--accent);animation:loadBar 1.6s cubic-bezier(0.4,0,0.2,1) forwards}
+  @keyframes loadBar{to{width:100%}}
+  .loader-pct{font-family:'DM Mono',monospace;font-size:0.75rem;color:var(--muted);letter-spacing:0.1em}
 
-  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-  html { scroll-behavior: smooth; }
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'DM Sans', sans-serif;
-    font-weight: 300;
-    overflow-x: hidden;
-    cursor: none;
-  }
+  /* SCRATCH */
+  .scratch-section{padding:8rem 3rem 4rem;background:var(--bg);border-top:1px solid var(--border);display:flex;flex-direction:column;align-items:center}
+  .scratch-section .section-label{align-self:flex-start;width:100%}
+  .scratch-sub{align-self:flex-start;font-family:'DM Mono',monospace;font-size:0.72rem;letter-spacing:0.15em;color:var(--muted);text-transform:uppercase;margin-bottom:3rem;margin-top:-2rem;opacity:0;transform:translateY(10px)}
+  .scratch-sub.visible{opacity:1;transform:translateY(0);transition:all 0.6s ease 0.2s}
+  .scratch-wrapper{width:100%;max-width:760px;opacity:0;transform:scale(0.04);transition:transform 1.2s cubic-bezier(0.16,1,0.3,1),opacity 0.5s ease}
+  .scratch-wrapper.popped{opacity:1;transform:scale(1)}
+  .sc-card{position:relative;width:100%;aspect-ratio:820/520;border-radius:20px;overflow:hidden;background:#0d1f18;border:1.5px solid rgba(255,255,255,0.12);box-shadow:0 0 0 1px rgba(0,0,0,0.5),0 30px 80px rgba(0,0,0,0.6),0 0 60px rgba(30,180,120,0.08)}
+  .sc-topbar{position:absolute;top:0;left:0;right:0;z-index:20;display:flex;align-items:center;justify-content:space-between;padding:0.85rem 1.2rem;background:rgba(8,15,12,0.75);backdrop-filter:blur(4px)}
+  .sc-icon-box{width:28px;height:28px;background:rgba(255,255,255,0.08);border-radius:6px;display:flex;align-items:center;justify-content:center;border:1px solid rgba(255,255,255,0.12)}
+  .sc-top-right{font-family:'DM Sans',sans-serif;font-size:0.78rem;font-weight:400;color:rgba(255,255,255,0.7);letter-spacing:0.04em}
+  .sc-holo{position:absolute;inset:0;z-index:1}
+  .sc-holo-canvas{position:absolute;inset:0;width:100%;height:100%}
+  .sc-scratch-canvas{position:absolute;inset:0;z-index:10;width:100%;height:100%;cursor:none}
+  .sc-bottombar{position:absolute;bottom:0;left:0;right:0;z-index:20;display:flex;align-items:flex-end;justify-content:space-between;padding:0.75rem 1.2rem;background:rgba(8,15,12,0.6);backdrop-filter:blur(4px)}
+  .sc-bottom-left,.sc-bottom-right{display:flex;flex-direction:column;gap:0.15rem}
+  .sc-bottom-right{align-items:flex-end}
+  .sc-meta{font-family:'DM Mono',monospace;font-size:0.6rem;letter-spacing:0.1em;color:rgba(255,255,255,0.35);text-transform:uppercase}
 
-  .cursor {
-    position: fixed;
-    width: 10px; height: 10px;
-    background: var(--accent);
-    border-radius: 50%;
-    pointer-events: none;
-    z-index: 9999;
-    transition: transform 0.1s ease;
-    transform: translate(-50%, -50%);
-  }
-  .cursor-trail {
-    position: fixed;
-    width: 32px; height: 32px;
-    border: 1px solid rgba(200,245,66,0.4);
-    border-radius: 50%;
-    pointer-events: none;
-    z-index: 9998;
-    transition: all 0.18s ease;
-    transform: translate(-50%, -50%);
-  }
-
-  nav {
-    position: fixed;
-    top: 0; left: 0; right: 0;
-    z-index: 100;
-    padding: 1.5rem 3rem;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  nav::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(to bottom, rgba(8,8,8,0.9) 0%, transparent 100%);
-    pointer-events: none;
-  }
-  .nav-logo {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 1.4rem;
-    letter-spacing: 0.12em;
-    color: var(--text);
-    text-decoration: none;
-    position: relative;
-  }
-  .nav-links {
-    display: flex;
-    gap: 2.5rem;
-    list-style: none;
-    position: relative;
-  }
-  .nav-links a {
-    color: var(--muted);
-    text-decoration: none;
-    font-size: 0.8rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    transition: color 0.3s;
-  }
-  .nav-links a:hover { color: var(--text); }
-  .nav-cta {
-    position: relative;
-    background: transparent;
-    border: 1px solid var(--border-light);
-    color: var(--text);
-    padding: 0.55rem 1.4rem;
-    font-size: 0.78rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    font-family: 'DM Sans', sans-serif;
-    cursor: none;
-    transition: all 0.3s;
-    text-decoration: none;
-    display: inline-block;
-  }
-  .nav-cta:hover { background: var(--accent); color: #000; border-color: var(--accent); }
-
-  .hero {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    padding: 0 3rem 4rem;
-    position: relative;
-    overflow: hidden;
-  }
-  .hero-bg-grid {
-    position: absolute; inset: 0;
-    background-image:
-      linear-gradient(rgba(240,237,230,0.025) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(240,237,230,0.025) 1px, transparent 1px);
-    background-size: 80px 80px;
-    pointer-events: none;
-  }
-  .hero-noise {
-    position: absolute; inset: 0;
-    opacity: 0.03;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-    pointer-events: none;
-  }
-  .hero-orb {
-    position: absolute;
-    width: 600px; height: 600px;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(200,245,66,0.06) 0%, transparent 70%);
-    top: -100px; right: -100px;
-    pointer-events: none;
-    animation: orbFloat 8s ease-in-out infinite;
-  }
-  @keyframes orbFloat {
-    0%, 100% { transform: translate(0,0) scale(1); }
-    50% { transform: translate(-30px,30px) scale(1.05); }
-  }
-  .hero-status {
-    display: flex; align-items: center; gap: 0.6rem;
-    margin-bottom: 2rem;
-    opacity: 0; transform: translateY(20px);
-    animation: fadeUp 0.8s ease forwards 0.3s;
-  }
-  .status-dot {
-    width: 7px; height: 7px;
-    background: var(--accent);
-    border-radius: 50%;
-    animation: pulse 2s infinite;
-  }
-  @keyframes pulse {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.5; transform: scale(0.8); }
-  }
-  .hero-status span { font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
-  .hero-name {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: clamp(5rem, 13vw, 14rem);
-    line-height: 0.88;
-    letter-spacing: -0.02em;
-    overflow: hidden;
-  }
-  .hero-name .line { display: block; opacity: 0; transform: translateY(100%); }
-  .hero-name .line:nth-child(1) { animation: slideUp 0.9s cubic-bezier(0.16,1,0.3,1) forwards 0.5s; }
-  .hero-name .line:nth-child(2) { animation: slideUp 0.9s cubic-bezier(0.16,1,0.3,1) forwards 0.65s; }
-  @keyframes slideUp { to { opacity: 1; transform: translateY(0); } }
-  .hero-bottom {
-    display: flex; align-items: flex-end; justify-content: space-between;
-    margin-top: 2.5rem;
-    opacity: 0; animation: fadeUp 0.8s ease forwards 1s;
-  }
-  .hero-tagline { max-width: 380px; font-size: 0.95rem; line-height: 1.7; color: var(--muted); font-weight: 300; }
-  .hero-tagline strong { color: var(--text); font-weight: 400; }
-  .hero-scroll {
-    display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
-    color: var(--muted); font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase;
-  }
-  .scroll-line {
-    width: 1px; height: 60px;
-    background: linear-gradient(to bottom, var(--muted), transparent);
-    animation: scrollDrop 2s ease infinite;
-  }
-  @keyframes scrollDrop {
-    0% { transform: scaleY(0); transform-origin: top; }
-    50% { transform: scaleY(1); transform-origin: top; }
-    51% { transform: scaleY(1); transform-origin: bottom; }
-    100% { transform: scaleY(0); transform-origin: bottom; }
-  }
-  @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
-
-  .marquee-section {
-    border-top: 1px solid var(--border);
-    border-bottom: 1px solid var(--border);
-    padding: 1.2rem 0;
-    overflow: hidden;
-    background: var(--bg2);
-  }
-  .marquee-track {
-    display: flex; gap: 3rem;
-    animation: marquee 18s linear infinite;
-    width: max-content;
-  }
-  .marquee-item {
-    display: flex; align-items: center; gap: 1rem;
-    white-space: nowrap; font-size: 0.78rem;
-    letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted);
-  }
-  .marquee-dot { color: var(--accent); font-size: 1.2rem; }
-  @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-
-  section { padding: 8rem 3rem; }
-  .section-label {
-    font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase;
-    color: var(--accent); margin-bottom: 3rem;
-    display: flex; align-items: center; gap: 1rem;
-  }
-  .section-label::after {
-    content: ''; flex: 1; max-width: 60px; height: 1px;
-    background: var(--accent); opacity: 0.4;
-  }
-
-  .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: start; }
-  .about-heading {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: clamp(3.5rem, 7vw, 7rem);
-    line-height: 0.9; letter-spacing: 0.01em; color: var(--text);
-  }
-  .about-heading .accent-word { color: var(--accent); }
-  .about-right { padding-top: 1rem; }
-  .about-bio { font-size: 1.05rem; line-height: 1.8; color: var(--muted); margin-bottom: 2.5rem; font-weight: 300; }
-  .about-bio strong { color: var(--text); font-weight: 400; }
-  .about-stats {
-    display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem;
-    border-top: 1px solid var(--border); padding-top: 2rem;
-  }
-  .stat-num { font-family: 'Bebas Neue', sans-serif; font-size: 3rem; color: var(--text); line-height: 1; }
-  .stat-label { font-size: 0.75rem; color: var(--muted); letter-spacing: 0.08em; text-transform: uppercase; margin-top: 0.3rem; }
-
-  .skills-section { background: var(--bg2); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
-  .skills-grid {
-    display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 1px; background: var(--border);
-    border: 1px solid var(--border); margin-top: 3rem;
-  }
-  .skill-card {
-    background: var(--bg2); padding: 2rem 1.8rem;
-    transition: background 0.3s; position: relative; overflow: hidden;
-  }
-  .skill-card::before {
-    content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 2px;
-    background: var(--accent); transform: scaleX(0); transform-origin: left;
-    transition: transform 0.4s cubic-bezier(0.16,1,0.3,1);
-  }
-  .skill-card:hover::before { transform: scaleX(1); }
-  .skill-card:hover { background: var(--bg3); }
-  .skill-icon { font-size: 1.5rem; margin-bottom: 1rem; display: block; }
-  .skill-name { font-size: 0.9rem; font-weight: 500; color: var(--text); margin-bottom: 0.4rem; }
-  .skill-desc { font-size: 0.78rem; color: var(--muted); line-height: 1.6; }
-
-  .experience-list { margin-top: 3rem; }
-  .exp-item {
-    display: grid; grid-template-columns: 180px 1fr; gap: 3rem;
-    padding: 2.5rem 0; border-bottom: 1px solid var(--border);
-    position: relative; transition: all 0.3s;
-  }
-  .exp-item:first-child { border-top: 1px solid var(--border); }
-  .exp-item::before {
-    content: ''; position: absolute; left: -3rem; top: 0; bottom: 0;
-    width: 2px; background: var(--accent);
-    transform: scaleY(0); transform-origin: top;
-    transition: transform 0.5s cubic-bezier(0.16,1,0.3,1);
-  }
-  .exp-item:hover::before { transform: scaleY(1); }
-  .exp-left { padding-top: 0.2rem; }
-  .exp-year { font-family: 'DM Mono', monospace; font-size: 0.78rem; color: var(--accent); letter-spacing: 0.08em; margin-bottom: 0.5rem; }
-  .exp-company { font-size: 0.85rem; color: var(--muted); letter-spacing: 0.05em; }
-  .exp-title { font-family: 'Bebas Neue', sans-serif; font-size: 2.2rem; color: var(--text); letter-spacing: 0.02em; line-height: 1.1; margin-bottom: 1rem; }
-  .exp-desc { font-size: 0.88rem; line-height: 1.8; color: var(--muted); font-weight: 300; }
-  .exp-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.2rem; }
-  .tag {
-    font-size: 0.7rem; letter-spacing: 0.08em; text-transform: uppercase;
-    border: 1px solid var(--border-light); padding: 0.3rem 0.8rem;
-    color: var(--muted); transition: all 0.3s;
-  }
-  .tag:hover { border-color: var(--accent); color: var(--accent); }
-
-  .projects-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; margin-top: 3rem; }
-  .project-card {
-    background: var(--bg2); border: 1px solid var(--border);
-    padding: 2.5rem; position: relative; overflow: hidden;
-    transition: all 0.4s cubic-bezier(0.16,1,0.3,1); cursor: none;
-  }
-  .project-card::after {
-    content: ''; position: absolute; inset: 0;
-    background: linear-gradient(135deg, rgba(200,245,66,0.04), transparent);
-    opacity: 0; transition: opacity 0.4s;
-  }
-  .project-card:hover { border-color: var(--border-light); transform: translateY(-4px); }
-  .project-card:hover::after { opacity: 1; }
-  .project-card.featured {
-    grid-column: span 2; display: grid;
-    grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center;
-  }
-  .project-number { font-family: 'DM Mono', monospace; font-size: 0.7rem; color: var(--accent); letter-spacing: 0.1em; margin-bottom: 1.5rem; }
-  .project-title { font-family: 'Bebas Neue', sans-serif; font-size: 2.5rem; color: var(--text); line-height: 1; margin-bottom: 1rem; letter-spacing: 0.02em; }
-  .project-desc { font-size: 0.88rem; color: var(--muted); line-height: 1.7; font-weight: 300; margin-bottom: 1.5rem; }
-  .project-link {
-    display: inline-flex; align-items: center; gap: 0.5rem;
-    font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase;
-    color: var(--accent); text-decoration: none;
-    border-bottom: 1px solid rgba(200,245,66,0.3); padding-bottom: 0.2rem; transition: border-color 0.3s;
-  }
-  .project-link:hover { border-color: var(--accent); }
-  .project-visual {
-    background: var(--bg3); border: 1px solid var(--border);
-    height: 220px; display: flex; align-items: center; justify-content: center;
-    position: relative; overflow: hidden;
-  }
-  .project-visual-featured { height: 280px; }
-  .project-svg { width: 100%; height: 100%; }
-
-  .edu-list { margin-top: 3rem; }
-  .edu-item {
-    display: flex; justify-content: space-between; align-items: flex-start;
-    padding: 2rem 0; border-bottom: 1px solid var(--border); gap: 2rem;
-  }
-  .edu-item:first-child { border-top: 1px solid var(--border); }
-  .edu-degree { font-family: 'Bebas Neue', sans-serif; font-size: 1.8rem; color: var(--text); letter-spacing: 0.02em; line-height: 1.1; margin-bottom: 0.3rem; }
-  .edu-school { font-size: 0.85rem; color: var(--muted); }
-  .edu-year { font-family: 'DM Mono', monospace; font-size: 0.8rem; color: var(--accent); white-space: nowrap; }
-
-  .contact-section {
-    background: var(--bg2); border-top: 1px solid var(--border);
-    text-align: center; padding: 10rem 3rem; position: relative; overflow: hidden;
-  }
-  .contact-bg-text {
-    position: absolute; font-family: 'Bebas Neue', sans-serif;
-    font-size: clamp(8rem, 20vw, 22rem); color: rgba(240,237,230,0.02);
-    top: 50%; left: 50%; transform: translate(-50%, -50%);
-    white-space: nowrap; pointer-events: none; letter-spacing: 0.05em;
-  }
-  .contact-label { font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); margin-bottom: 2rem; position: relative; }
-  .contact-heading { font-family: 'Bebas Neue', sans-serif; font-size: clamp(4rem, 10vw, 10rem); line-height: 0.9; letter-spacing: 0.01em; margin-bottom: 2rem; position: relative; }
-  .contact-sub { font-size: 1rem; color: var(--muted); max-width: 420px; margin: 0 auto 3rem; line-height: 1.7; position: relative; }
-  .contact-links { display: flex; justify-content: center; gap: 1.5rem; flex-wrap: wrap; position: relative; }
-  .contact-btn {
-    display: inline-flex; align-items: center; gap: 0.6rem;
-    padding: 1rem 2rem; font-size: 0.82rem; letter-spacing: 0.1em;
-    text-transform: uppercase; font-family: 'DM Sans', sans-serif;
-    text-decoration: none; transition: all 0.3s; cursor: none;
-  }
-  .contact-btn.primary { background: var(--accent); color: #000; font-weight: 500; }
-  .contact-btn.primary:hover { background: #d4ff4a; }
-  .contact-btn.secondary { border: 1px solid var(--border-light); color: var(--text); }
-  .contact-btn.secondary:hover { border-color: var(--text); background: rgba(240,237,230,0.05); }
-
-  footer {
-    padding: 2rem 3rem; display: flex; justify-content: space-between; align-items: center;
-    border-top: 1px solid var(--border);
-  }
-  footer p { font-size: 0.75rem; color: var(--muted); letter-spacing: 0.06em; }
-  .footer-logo { font-family: 'Bebas Neue', sans-serif; font-size: 1.1rem; letter-spacing: 0.12em; color: var(--muted); }
-
-  .reveal {
-    opacity: 0; transform: translateY(40px);
-    transition: opacity 0.9s cubic-bezier(0.16,1,0.3,1), transform 0.9s cubic-bezier(0.16,1,0.3,1);
-  }
-  .reveal.visible { opacity: 1; transform: translateY(0); }
-  .reveal-delay-1 { transition-delay: 0.1s; }
-  .reveal-delay-2 { transition-delay: 0.2s; }
-  .reveal-delay-3 { transition-delay: 0.3s; }
-  .reveal-delay-4 { transition-delay: 0.4s; }
-
-  .skills-scroller {
-    display: flex; gap: 2rem; overflow-x: auto;
-    scrollbar-width: none; padding-bottom: 1rem; margin-top: 2rem;
-  }
-  .skills-scroller::-webkit-scrollbar { display: none; }
-  .skill-pill {
-    flex-shrink: 0; border: 1px solid var(--border-light);
-    padding: 0.6rem 1.2rem; font-size: 0.8rem; color: var(--muted);
-    letter-spacing: 0.06em; transition: all 0.3s; white-space: nowrap;
-  }
-  .skill-pill:hover { border-color: var(--accent); color: var(--accent); }
-
-  .counter { font-variant-numeric: tabular-nums; }
-
-  .loader {
-    position: fixed; inset: 0; background: var(--bg); z-index: 1000;
-    display: flex; align-items: center; justify-content: center;
-    flex-direction: column; gap: 1.5rem;
-    transition: opacity 0.6s ease, visibility 0.6s ease;
-  }
-  .loader.done { opacity: 0; visibility: hidden; }
-  .loader-name { font-family: 'Bebas Neue', sans-serif; font-size: 1.8rem; letter-spacing: 0.25em; color: var(--text); }
-  .loader-bar-wrap { width: 200px; height: 1px; background: var(--border-light); position: relative; overflow: hidden; }
-  .loader-bar { position: absolute; top: 0; left: 0; height: 100%; width: 0; background: var(--accent); animation: loadBar 1.6s cubic-bezier(0.4,0,0.2,1) forwards; }
-  @keyframes loadBar { to { width: 100%; } }
-  .loader-pct { font-family: 'DM Mono', monospace; font-size: 0.75rem; color: var(--muted); letter-spacing: 0.1em; }
-
-  /* ============================
-     SCRATCH REVEAL SECTION
-  ============================== */
-  .scratch-section {
-    padding: 8rem 3rem 4rem;
-    background: var(--bg);
-    border-top: 1px solid var(--border);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  .scratch-section .section-label { align-self: flex-start; width: 100%; }
-  .scratch-sub {
-    align-self: flex-start;
-    font-family: 'DM Mono', monospace;
-    font-size: 0.72rem;
-    letter-spacing: 0.15em;
-    color: var(--muted);
-    text-transform: uppercase;
-    margin-bottom: 3rem;
-    margin-top: -2rem;
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  .scratch-sub.visible { opacity: 1; transform: translateY(0); transition: all 0.6s ease 0.2s; }
-
-  .scratch-wrapper {
-    width: 100%;
-    max-width: 760px;
-    opacity: 0;
-    transform: scale(0.04);
-    transition: transform 1.2s cubic-bezier(0.16,1,0.3,1), opacity 0.5s ease;
-  }
-  .scratch-wrapper.popped { opacity: 1; transform: scale(1); }
-
-  .sc-card {
-    position: relative;
-    width: 100%;
-    aspect-ratio: 820 / 520;
-    border-radius: 20px;
-    overflow: hidden;
-    background: #0d1f18;
-    border: 1.5px solid rgba(255,255,255,0.12);
-    box-shadow:
-      0 0 0 1px rgba(0,0,0,0.5),
-      0 30px 80px rgba(0,0,0,0.6),
-      0 0 60px rgba(30,180,120,0.08);
-  }
-  .sc-topbar {
-    position: absolute; top: 0; left: 0; right: 0; z-index: 20;
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 0.85rem 1.2rem;
-    background: rgba(8,15,12,0.75); backdrop-filter: blur(4px);
-  }
-  .sc-icon-box {
-    width: 28px; height: 28px;
-    background: rgba(255,255,255,0.08); border-radius: 6px;
-    display: flex; align-items: center; justify-content: center;
-    border: 1px solid rgba(255,255,255,0.12);
-  }
-  .sc-top-right { font-family: 'DM Sans', sans-serif; font-size: 0.78rem; font-weight: 400; color: rgba(255,255,255,0.7); letter-spacing: 0.04em; }
-  .sc-holo { position: absolute; inset: 0; z-index: 1; }
-  .sc-holo-canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
-  .sc-scratch-canvas { position: absolute; inset: 0; z-index: 10; width: 100%; height: 100%; cursor: none; }
-  .sc-bottombar {
-    position: absolute; bottom: 0; left: 0; right: 0; z-index: 20;
-    display: flex; align-items: flex-end; justify-content: space-between;
-    padding: 0.75rem 1.2rem;
-    background: rgba(8,15,12,0.6); backdrop-filter: blur(4px);
-  }
-  .sc-bottom-left, .sc-bottom-right { display: flex; flex-direction: column; gap: 0.15rem; }
-  .sc-bottom-right { align-items: flex-end; }
-  .sc-meta { font-family: 'DM Mono', monospace; font-size: 0.6rem; letter-spacing: 0.1em; color: rgba(255,255,255,0.35); text-transform: uppercase; }
-
-  /* ============================
-     ORBITAL GLOBE SECTION
-  ============================== */
-  .orbital-section {
-    width: 100%;
-    height: 100vh;
-    min-height: 640px;
-    position: relative;
-    overflow: hidden;
-    background: #050808;
-  }
-  /* subtle radial glow behind center */
-  .orbital-section::before {
-    content: '';
-    position: absolute; inset: 0;
-    background: radial-gradient(ellipse 55% 55% at 50% 50%,
-      rgba(255,255,255,0.03) 0%,
-      transparent 70%);
-    pointer-events: none; z-index: 0;
-  }
-  /* edge vignette */
-  .orbital-section::after {
-    content: '';
-    position: absolute; inset: 0;
-    background: radial-gradient(ellipse 80% 80% at 50% 50%,
-      transparent 40%,
-      rgba(5,8,8,0.6) 75%,
-      rgba(5,8,8,0.92) 100%);
-    pointer-events: none; z-index: 3;
-  }
-  .orbital-label {
-    position: absolute; top: 2.5rem; left: 3rem;
-    font-family: 'DM Mono', monospace;
-    font-size: 0.65rem; letter-spacing: 0.22em; text-transform: uppercase;
-    color: var(--accent); z-index: 10;
-    display: flex; align-items: center; gap: 0.8rem;
-  }
-  .orbital-label::after { content:''; width:40px; height:1px; background:var(--accent); opacity:0.4; }
-  .orbital-hint {
-    position: absolute; bottom: 2.2rem; left: 50%;
-    transform: translateX(-50%);
-    font-family: 'DM Mono', monospace;
-    font-size: 0.63rem; letter-spacing: 0.2em; text-transform: uppercase;
-    color: rgba(107,104,96,0.45); z-index: 10;
-    white-space: nowrap; pointer-events: none;
-    animation: hintPulse 3s ease-in-out infinite;
-  }
-  @keyframes hintPulse { 0%,100%{opacity:.4} 50%{opacity:.9} }
-
-  .orbital-scene {
-    position: absolute; inset: 0; z-index: 2;
-    /* canvas renders into this via JS */
-  }
-
-  /* Center globe — 3D sphere with "I Know" text */
-  .center-globe {
-    position: absolute;
-    border-radius: 50%;
-    cursor: none;
-    /* 3D sphere illusion via radial gradient + specular highlights */
-    background:
-      radial-gradient(circle at 38% 32%,
-        rgba(255,255,255,0.95) 0%,
-        rgba(235,235,235,0.88) 18%,
-        rgba(200,200,200,0.6) 35%,
-        rgba(160,160,160,0.5) 55%,
-        rgba(110,110,110,0.6) 75%,
-        rgba(60,60,60,0.7) 100%
-      );
-    box-shadow:
-      0 0 0 2px rgba(255,255,255,0.12),
-      0 0 60px rgba(255,255,255,0.08),
-      inset 0 -20px 40px rgba(0,0,0,0.3),
-      inset 0 10px 25px rgba(255,255,255,0.4);
-    display: flex; align-items: center; justify-content: center;
-    z-index: 20;
-    transition: box-shadow 0.3s ease;
-    transform: translate(-50%, -50%);
-    will-change: transform;
-  }
-  .center-globe:hover {
-    box-shadow:
-      0 0 0 3px rgba(255,255,255,0.2),
-      0 0 80px rgba(255,255,255,0.15),
-      inset 0 -20px 40px rgba(0,0,0,0.3),
-      inset 0 10px 25px rgba(255,255,255,0.5);
-  }
-  .center-globe-text {
-    font-family: 'DM Sans', sans-serif;
-    font-size: clamp(0.6rem, 1.8vw, 1.1rem);
-    font-weight: 400;
-    color: rgba(30,30,30,0.85);
-    letter-spacing: 0.04em;
-    text-align: center;
-    line-height: 1.3;
-    pointer-events: none;
-    user-select: none;
-    text-shadow: 0 1px 2px rgba(255,255,255,0.5);
-  }
-
-  /* Orbital bubbles */
-  .orb-bubble {
-    position: absolute;
-    border-radius: 50%;
-    overflow: hidden;
-    will-change: transform, opacity;
-    cursor: none;
-    display: flex; align-items: center; justify-content: center;
-    text-align: center;
-    flex-direction: column;
-  }
-  .orb-bubble-inner {
-    display: flex; flex-direction: column;
-    align-items: center; justify-content: center;
-    width: 100%; height: 100%;
-    border-radius: 50%;
-    pointer-events: none;
-    padding: 8px;
-  }
-  .orb-icon { line-height: 1; pointer-events: none; filter: drop-shadow(0 1px 4px rgba(0,0,0,0.5)); }
-  .orb-name { font-family: 'DM Sans',sans-serif; font-weight: 500; color: #fff; text-shadow: 0 1px 4px rgba(0,0,0,0.8); pointer-events: none; line-height: 1.15; }
-  .orb-pct  { font-family: 'DM Mono',monospace; color: rgba(255,255,255,0.6); pointer-events: none; margin-top: 2px; }
-
+  /* ORBITAL */
+  .orbital-section{width:100%;height:100vh;min-height:640px;position:relative;overflow:hidden;background:#050808}
+  .orbital-section::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 55% 55% at 50% 50%,rgba(255,255,255,0.03) 0%,transparent 70%);pointer-events:none;z-index:0}
+  .orbital-section::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 80% at 50% 50%,transparent 40%,rgba(5,8,8,0.6) 75%,rgba(5,8,8,0.92) 100%);pointer-events:none;z-index:3}
+  .orbital-label{position:absolute;top:2.5rem;left:3rem;font-family:'DM Mono',monospace;font-size:0.65rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--accent);z-index:10;display:flex;align-items:center;gap:0.8rem}
+  .orbital-label::after{content:'';width:40px;height:1px;background:var(--accent);opacity:0.4}
+  .orbital-hint{position:absolute;bottom:2.2rem;left:50%;transform:translateX(-50%);font-family:'DM Mono',monospace;font-size:0.63rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(107,104,96,0.45);z-index:10;white-space:nowrap;pointer-events:none;animation:hintPulse 3s ease-in-out infinite}
+  @keyframes hintPulse{0%,100%{opacity:.4}50%{opacity:.9}}
+  .orbital-scene{position:absolute;inset:0;z-index:2}
+  .center-globe{position:absolute;border-radius:50%;cursor:none;background:radial-gradient(circle at 38% 32%,rgba(255,255,255,0.95) 0%,rgba(235,235,235,0.88) 18%,rgba(200,200,200,0.6) 35%,rgba(160,160,160,0.5) 55%,rgba(110,110,110,0.6) 75%,rgba(60,60,60,0.7) 100%);box-shadow:0 0 0 2px rgba(255,255,255,0.12),0 0 60px rgba(255,255,255,0.08),inset 0 -20px 40px rgba(0,0,0,0.3),inset 0 10px 25px rgba(255,255,255,0.4);display:flex;align-items:center;justify-content:center;z-index:20;transition:box-shadow 0.3s ease;transform:translate(-50%,-50%);will-change:transform}
+  .center-globe:hover{box-shadow:0 0 0 3px rgba(255,255,255,0.2),0 0 80px rgba(255,255,255,0.15),inset 0 -20px 40px rgba(0,0,0,0.3),inset 0 10px 25px rgba(255,255,255,0.5)}
+  .center-globe-text{font-family:'DM Sans',sans-serif;font-size:clamp(0.6rem,1.8vw,1.1rem);font-weight:400;color:rgba(30,30,30,0.85);letter-spacing:0.04em;text-align:center;line-height:1.3;pointer-events:none;user-select:none;text-shadow:0 1px 2px rgba(255,255,255,0.5)}
+  .orb-bubble{position:absolute;border-radius:50%;overflow:hidden;will-change:transform,opacity;cursor:none;display:flex;align-items:center;justify-content:center;text-align:center;flex-direction:column}
+  .orb-bubble-inner{display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;height:100%;border-radius:50%;pointer-events:none;padding:8px}
+  .orb-icon{line-height:1;pointer-events:none;filter:drop-shadow(0 1px 4px rgba(0,0,0,0.5))}
+  .orb-name{font-family:'DM Sans',sans-serif;font-weight:500;color:#fff;text-shadow:0 1px 4px rgba(0,0,0,0.8);pointer-events:none;line-height:1.15}
+  .orb-pct{font-family:'DM Mono',monospace;color:rgba(255,255,255,0.6);pointer-events:none;margin-top:2px}
 </style>
 </head>
 <body>
-
-<!-- Loader -->
 <div class="loader" id="loader">
   <div class="loader-name">AJ</div>
   <div class="loader-bar-wrap"><div class="loader-bar"></div></div>
   <div class="loader-pct" id="loader-pct">0%</div>
 </div>
-
-<!-- Custom cursor -->
 <div class="cursor" id="cursor"></div>
 <div class="cursor-trail" id="cursorTrail"></div>
-
-<!-- NAV -->
 <nav>
   <a href="#" class="nav-logo">AJ</a>
   <ul class="nav-links">
@@ -630,34 +191,19 @@
   </ul>
   <a href="mailto:achinthajayaweera26@gmail.com" class="nav-cta">Hire Me</a>
 </nav>
-
-<!-- HERO -->
 <section class="hero" id="home">
   <div class="hero-bg-grid"></div>
   <div class="hero-noise"></div>
   <div class="hero-orb"></div>
-  <div class="hero-status">
-    <div class="status-dot"></div>
-    <span>Available for opportunities · Sri Lanka</span>
-  </div>
-  <h1 class="hero-name">
-    <span class="line">ACHINTHA</span>
-    <span class="line">JAYAWEERA</span>
-  </h1>
+  <div class="hero-status"><div class="status-dot"></div><span>Available for opportunities · Sri Lanka</span></div>
+  <h1 class="hero-name"><span class="line">ACHINTHA</span><span class="line">JAYAWEERA</span></h1>
   <div class="hero-bottom">
-    <p class="hero-tagline">
-      <strong>Software Engineering Undergraduate</strong> — building full-stack systems, animated experiences, and things that actually work. Based in Colombo, Sri Lanka.
-    </p>
-    <div class="hero-scroll">
-      <div class="scroll-line"></div>
-      <span>Scroll</span>
-    </div>
+    <p class="hero-tagline"><strong>Software Engineering Undergraduate</strong> — building full-stack systems, animated experiences, and things that actually work. Based in Colombo, Sri Lanka.</p>
+    <div class="hero-scroll"><div class="scroll-line"></div><span>Scroll</span></div>
   </div>
 </section>
-
-<!-- MARQUEE -->
 <div class="marquee-section">
-  <div class="marquee-track" id="marqueeTrack">
+  <div class="marquee-track">
     <div class="marquee-item"><span class="marquee-dot">✦</span> Software Engineer</div>
     <div class="marquee-item"><span class="marquee-dot">✦</span> 2D Animator</div>
     <div class="marquee-item"><span class="marquee-dot">✦</span> Top Rated Fiverr</div>
@@ -676,23 +222,13 @@
     <div class="marquee-item"><span class="marquee-dot">✦</span> Problem Solver</div>
   </div>
 </div>
-
-<!-- ABOUT -->
 <section id="about">
   <div class="section-label reveal">About Me</div>
   <div class="about-grid">
-    <div>
-      <h2 class="about-heading reveal reveal-delay-1">
-        DRIVEN<br><span class="accent-word">TO</span><br>BUILD.
-      </h2>
-    </div>
+    <div><h2 class="about-heading reveal reveal-delay-1">DRIVEN<br><span class="accent-word">TO</span><br>BUILD.</h2></div>
     <div class="about-right">
-      <p class="about-bio reveal reveal-delay-2">
-        I'm a <strong>Software Engineering undergraduate</strong> at the University of Westminster (IIT Colombo) with a rare combination of engineering depth and creative execution. Alongside my academic work, I've spent <strong>4+ years delivering animation, motion design, and digital media</strong> to international clients across Fiverr and Upwork.
-      </p>
-      <p class="about-bio reveal reveal-delay-3">
-        I've achieved <strong>Top Rated Seller</strong> status managing 3 Fiverr accounts and delivered <strong>100+ completed projects</strong> for clients worldwide — from Sri Lanka to the UK. I don't just write code; I build experiences.
-      </p>
+      <p class="about-bio reveal reveal-delay-2">I'm a <strong>Software Engineering undergraduate</strong> at the University of Westminster (IIT Colombo) with a rare combination of engineering depth and creative execution. Alongside my academic work, I've spent <strong>4+ years delivering animation, motion design, and digital media</strong> to international clients across Fiverr and Upwork.</p>
+      <p class="about-bio reveal reveal-delay-3">I've achieved <strong>Top Rated Seller</strong> status managing 3 Fiverr accounts and delivered <strong>100+ completed projects</strong> for clients worldwide — from Sri Lanka to the UK. I don't just write code; I build experiences.</p>
       <div class="about-stats reveal reveal-delay-4">
         <div><div class="stat-num counter" data-target="100">0</div><div class="stat-label">Projects+</div></div>
         <div><div class="stat-num counter" data-target="4">0</div><div class="stat-label">Years Exp.</div></div>
@@ -701,29 +237,17 @@
     </div>
   </div>
   <div class="skills-scroller reveal" style="margin-top:4rem;">
-    <div class="skill-pill">Python</div>
-    <div class="skill-pill">Java</div>
-    <div class="skill-pill">C++</div>
-    <div class="skill-pill">JavaScript</div>
-    <div class="skill-pill">HTML / CSS</div>
-    <div class="skill-pill">SQL</div>
-    <div class="skill-pill">Flutter / Dart</div>
-    <div class="skill-pill">React</div>
-    <div class="skill-pill">Adobe After Effects</div>
-    <div class="skill-pill">Adobe Illustrator</div>
-    <div class="skill-pill">Character Animator</div>
-    <div class="skill-pill">Adobe Dimension</div>
-    <div class="skill-pill">Figma</div>
-    <div class="skill-pill">Git</div>
-    <div class="skill-pill">VS Code</div>
+    <div class="skill-pill">Python</div><div class="skill-pill">Java</div><div class="skill-pill">C++</div>
+    <div class="skill-pill">JavaScript</div><div class="skill-pill">HTML / CSS</div><div class="skill-pill">SQL</div>
+    <div class="skill-pill">Flutter / Dart</div><div class="skill-pill">React</div>
+    <div class="skill-pill">Adobe After Effects</div><div class="skill-pill">Adobe Illustrator</div>
+    <div class="skill-pill">Character Animator</div><div class="skill-pill">Adobe Dimension</div>
+    <div class="skill-pill">Figma</div><div class="skill-pill">Git</div><div class="skill-pill">VS Code</div>
   </div>
 </section>
-
-<!-- SCRATCH + INNER GLOBE SECTION -->
 <section class="scratch-section" id="skills">
   <div class="section-label reveal">What I Know</div>
   <p class="scratch-sub reveal">Scroll down to scratch · Scroll up to restore</p>
-
   <div class="scratch-wrapper" id="scratchWrapper">
     <div class="sc-card" id="scCard">
       <div class="sc-topbar">
@@ -737,100 +261,45 @@
         </div>
         <div class="sc-top-right">For Achintha</div>
       </div>
-      <div class="sc-holo">
-        <canvas id="holoCanvas" class="sc-holo-canvas"></canvas>
-      </div>
+      <div class="sc-holo"><canvas id="holoCanvas" class="sc-holo-canvas"></canvas></div>
       <canvas id="scratchCanvas" class="sc-scratch-canvas"></canvas>
       <div class="sc-bottombar">
-        <div class="sc-bottom-left">
-          <span class="sc-meta">PLAN / PRO</span>
-          <span class="sc-meta">PERIOD / 4+ YRS</span>
-        </div>
-        <div class="sc-bottom-right">
-          <span class="sc-meta">GENERATED</span>
-          <span class="sc-meta">2026 · LK</span>
-        </div>
+        <div class="sc-bottom-left"><span class="sc-meta">PLAN / PRO</span><span class="sc-meta">PERIOD / 4+ YRS</span></div>
+        <div class="sc-bottom-right"><span class="sc-meta">GENERATED</span><span class="sc-meta">2026 · LK</span></div>
       </div>
     </div>
   </div>
-
-  <!-- scratch wrapper ends above, globe is now outside scratch section -->
 </section>
-
-<!-- ORBITAL GLOBE — full viewport -->
 <div class="orbital-section" id="orbitalSection">
   <div class="orbital-label">What I Know</div>
-  <div class="orbital-scene" id="orbitalScene">
-    <!-- Center globe rendered by JS -->
-  </div>
+  <div class="orbital-scene" id="orbitalScene"></div>
   <div class="orbital-hint">Hover to tilt · Click globe to pause</div>
 </div>
-
-<!-- EXPERIENCE -->
-<section id="experience" style="background: var(--bg2); border-top: 1px solid var(--border);">
+<section id="experience" style="background:var(--bg2);border-top:1px solid var(--border);">
   <div class="section-label reveal">Experience</div>
   <div class="experience-list">
     <div class="exp-item reveal">
-      <div class="exp-left">
-        <div class="exp-year">2020 – Present</div>
-        <div class="exp-company">Fiverr · Upwork</div>
-      </div>
-      <div class="exp-right">
-        <div class="exp-title">Top Rated Freelance Animator</div>
-        <div class="exp-desc">Managed 3 seller accounts across animation and video editing categories. Delivered 100+ international projects including motion graphics, branding visuals, and promotional content. Achieved Top Rated Seller status through high-quality output and strong client satisfaction.</div>
-        <div class="exp-tags">
-          <span class="tag">After Effects</span><span class="tag">Character Animator</span><span class="tag">Illustrator</span><span class="tag">Motion Graphics</span><span class="tag">2D Animation</span>
-        </div>
-      </div>
+      <div class="exp-left"><div class="exp-year">2020 – Present</div><div class="exp-company">Fiverr · Upwork</div></div>
+      <div class="exp-right"><div class="exp-title">Top Rated Freelance Animator</div><div class="exp-desc">Managed 3 seller accounts across animation and video editing categories. Delivered 100+ international projects including motion graphics, branding visuals, and promotional content.</div><div class="exp-tags"><span class="tag">After Effects</span><span class="tag">Character Animator</span><span class="tag">Illustrator</span><span class="tag">Motion Graphics</span><span class="tag">2D Animation</span></div></div>
     </div>
     <div class="exp-item reveal reveal-delay-1">
-      <div class="exp-left">
-        <div class="exp-year">2025</div>
-        <div class="exp-company">Sail Internet</div>
-      </div>
-      <div class="exp-right">
-        <div class="exp-title">Freelance 2D Animator</div>
-        <div class="exp-desc">Created a 2D animated advertisement featuring custom character development. Responsible for full animation workflow, from illustration to final render, using Adobe Illustrator, After Effects, Character Animator, and Dimension.</div>
-        <div class="exp-tags"><span class="tag">2D Animation</span><span class="tag">Character Dev</span><span class="tag">Dimension</span></div>
-      </div>
+      <div class="exp-left"><div class="exp-year">2025</div><div class="exp-company">Sail Internet</div></div>
+      <div class="exp-right"><div class="exp-title">Freelance 2D Animator</div><div class="exp-desc">Created a 2D animated advertisement featuring custom character development. Full animation workflow from illustration to final render using Adobe tools.</div><div class="exp-tags"><span class="tag">2D Animation</span><span class="tag">Character Dev</span><span class="tag">Dimension</span></div></div>
     </div>
     <div class="exp-item reveal reveal-delay-2">
-      <div class="exp-left">
-        <div class="exp-year">2024</div>
-        <div class="exp-company">Kahua Constructions</div>
-      </div>
-      <div class="exp-right">
-        <div class="exp-title">Freelance 2D Animator</div>
-        <div class="exp-desc">Developed a 2D animated promotional video focusing on character animation and visual storytelling. Executed the complete animation process using the full Adobe suite to deliver a polished and engaging advertisement.</div>
-        <div class="exp-tags"><span class="tag">Promotional Video</span><span class="tag">Visual Storytelling</span><span class="tag">Media Encoder</span></div>
-      </div>
+      <div class="exp-left"><div class="exp-year">2024</div><div class="exp-company">Kahua Constructions</div></div>
+      <div class="exp-right"><div class="exp-title">Freelance 2D Animator</div><div class="exp-desc">Developed a 2D animated promotional video focusing on character animation and visual storytelling using the full Adobe suite.</div><div class="exp-tags"><span class="tag">Promotional Video</span><span class="tag">Visual Storytelling</span><span class="tag">Media Encoder</span></div></div>
     </div>
     <div class="exp-item reveal reveal-delay-2">
-      <div class="exp-left">
-        <div class="exp-year">2023–2024</div>
-        <div class="exp-company">Board Studios · Groundswell</div>
-      </div>
-      <div class="exp-right">
-        <div class="exp-title">Freelance 2D Animator</div>
-        <div class="exp-desc">Produced animated advertisements incorporating detailed character animation and motion design. Managed end-to-end animation pipeline for both clients delivering brand-aligned visuals with dynamic character work.</div>
-        <div class="exp-tags"><span class="tag">Brand Animation</span><span class="tag">Motion Design</span><span class="tag">Pipeline Management</span></div>
-      </div>
+      <div class="exp-left"><div class="exp-year">2023–2024</div><div class="exp-company">Board Studios · Groundswell</div></div>
+      <div class="exp-right"><div class="exp-title">Freelance 2D Animator</div><div class="exp-desc">Produced animated advertisements incorporating detailed character animation and motion design for both clients.</div><div class="exp-tags"><span class="tag">Brand Animation</span><span class="tag">Motion Design</span><span class="tag">Pipeline Management</span></div></div>
     </div>
     <div class="exp-item reveal reveal-delay-3">
-      <div class="exp-left">
-        <div class="exp-year">Active</div>
-        <div class="exp-company">IEEE RAS</div>
-      </div>
-      <div class="exp-right">
-        <div class="exp-title">Social Designing Vice Chair — RobotNexus 2</div>
-        <div class="exp-desc">Led social media and branding strategy for a major IEEE robotics event. Designed promotional materials and coordinated digital engagement campaigns. Worked with cross-functional teams to ensure professional event visibility and outreach.</div>
-        <div class="exp-tags"><span class="tag">Branding</span><span class="tag">Social Media</span><span class="tag">Event Design</span></div>
-      </div>
+      <div class="exp-left"><div class="exp-year">Active</div><div class="exp-company">IEEE RAS</div></div>
+      <div class="exp-right"><div class="exp-title">Social Designing Vice Chair — RobotNexus 2</div><div class="exp-desc">Led social media and branding strategy for a major IEEE robotics event. Designed promotional materials and coordinated digital engagement campaigns.</div><div class="exp-tags"><span class="tag">Branding</span><span class="tag">Social Media</span><span class="tag">Event Design</span></div></div>
     </div>
   </div>
 </section>
-
-<!-- PROJECTS -->
 <section id="projects">
   <div class="section-label reveal">Selected Builds</div>
   <div class="projects-grid">
@@ -838,133 +307,56 @@
       <div>
         <div class="project-number">01 — Featured</div>
         <h3 class="project-title">CleanDrive Management System</h3>
-        <p class="project-desc">A business management system supporting branch management, staff handling, job tracking, and POS operations. Contributed as frontend developer — built structured UI components and navigation workflows.</p>
-        <div class="exp-tags" style="margin-bottom:1.5rem;">
-          <span class="tag">HTML/CSS</span><span class="tag">JavaScript</span><span class="tag">UI Design</span><span class="tag">POS System</span>
-        </div>
+        <p class="project-desc">A business management system supporting branch management, staff handling, job tracking, and POS operations.</p>
+        <div class="exp-tags" style="margin-bottom:1.5rem;"><span class="tag">HTML/CSS</span><span class="tag">JavaScript</span><span class="tag">UI Design</span><span class="tag">POS System</span></div>
         <a href="#" class="project-link">View Project →</a>
       </div>
       <div class="project-visual project-visual-featured">
-        <svg class="project-svg" viewBox="0 0 400 280" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect width="400" height="280" fill="#0e0e0e"/>
-          <rect x="20" y="20" width="360" height="40" rx="4" fill="#141414" stroke="rgba(240,237,230,0.08)" stroke-width="1"/>
-          <circle cx="40" cy="40" r="6" fill="#c8f542" opacity="0.8"/>
-          <circle cx="58" cy="40" r="6" fill="rgba(240,237,230,0.15)"/>
-          <circle cx="76" cy="40" r="6" fill="rgba(240,237,230,0.15)"/>
-          <rect x="100" y="32" width="80" height="16" rx="3" fill="rgba(240,237,230,0.04)"/>
-          <rect x="20" y="74" width="80" height="186" rx="4" fill="#141414" stroke="rgba(240,237,230,0.08)" stroke-width="1"/>
-          <rect x="30" y="90" width="60" height="8" rx="2" fill="rgba(200,245,66,0.3)"/>
-          <rect x="30" y="108" width="50" height="6" rx="2" fill="rgba(240,237,230,0.06)"/>
-          <rect x="30" y="122" width="55" height="6" rx="2" fill="rgba(240,237,230,0.06)"/>
-          <rect x="30" y="136" width="48" height="6" rx="2" fill="rgba(240,237,230,0.06)"/>
-          <rect x="30" y="150" width="52" height="6" rx="2" fill="rgba(240,237,230,0.06)"/>
-          <rect x="110" y="74" width="270" height="88" rx="4" fill="#141414" stroke="rgba(240,237,230,0.08)" stroke-width="1"/>
-          <rect x="122" y="86" width="60" height="10" rx="2" fill="rgba(240,237,230,0.08)"/>
-          <rect x="122" y="104" width="80" height="22" rx="2" fill="rgba(200,245,66,0.08)"/>
-          <text x="162" y="119" font-family="monospace" font-size="9" fill="#c8f542" text-anchor="middle">$12,480</text>
-          <rect x="218" y="104" width="70" height="22" rx="2" fill="rgba(240,237,230,0.04)"/>
-          <text x="253" y="119" font-family="monospace" font-size="9" fill="rgba(240,237,230,0.4)" text-anchor="middle">24 Jobs</text>
-          <rect x="300" y="104" width="68" height="22" rx="2" fill="rgba(240,237,230,0.04)"/>
-          <text x="334" y="119" font-family="monospace" font-size="9" fill="rgba(240,237,230,0.4)" text-anchor="middle">98% Sat.</text>
-          <rect x="110" y="172" width="130" height="88" rx="4" fill="#141414" stroke="rgba(240,237,230,0.08)" stroke-width="1"/>
-          <rect x="122" y="184" width="40" height="6" rx="2" fill="rgba(240,237,230,0.08)"/>
-          <polyline points="122,238 148,222 170,228 192,210 218,216" stroke="#c8f542" stroke-width="1.5" fill="none" opacity="0.7"/>
-          <rect x="250" y="172" width="130" height="88" rx="4" fill="#141414" stroke="rgba(240,237,230,0.08)" stroke-width="1"/>
-          <rect x="262" y="185" width="50" height="6" rx="2" fill="rgba(240,237,230,0.08)"/>
-          <rect x="262" y="202" width="106" height="6" rx="2" fill="rgba(240,237,230,0.04)"/>
-          <rect x="262" y="216" width="90" height="6" rx="2" fill="rgba(240,237,230,0.04)"/>
-          <rect x="262" y="230" width="100" height="6" rx="2" fill="rgba(240,237,230,0.04)"/>
-          <rect x="262" y="244" width="80" height="6" rx="2" fill="rgba(240,237,230,0.04)"/>
-        </svg>
+        <svg class="project-svg" viewBox="0 0 400 280" fill="none"><rect width="400" height="280" fill="#0e0e0e"/><rect x="20" y="20" width="360" height="40" rx="4" fill="#141414" stroke="rgba(240,237,230,0.08)" stroke-width="1"/><circle cx="40" cy="40" r="6" fill="#c8f542" opacity="0.8"/><circle cx="58" cy="40" r="6" fill="rgba(240,237,230,0.15)"/><rect x="20" y="74" width="80" height="186" rx="4" fill="#141414" stroke="rgba(240,237,230,0.08)" stroke-width="1"/><rect x="30" y="90" width="60" height="8" rx="2" fill="rgba(200,245,66,0.3)"/><rect x="110" y="74" width="270" height="88" rx="4" fill="#141414" stroke="rgba(240,237,230,0.08)" stroke-width="1"/><rect x="122" y="104" width="80" height="22" rx="2" fill="rgba(200,245,66,0.08)"/><text x="162" y="119" font-family="monospace" font-size="9" fill="#c8f542" text-anchor="middle">$12,480</text><rect x="110" y="172" width="130" height="88" rx="4" fill="#141414" stroke="rgba(240,237,230,0.08)" stroke-width="1"/><polyline points="122,238 148,222 170,228 192,210 218,216" stroke="#c8f542" stroke-width="1.5" fill="none" opacity="0.7"/></svg>
       </div>
     </div>
     <div class="project-card reveal reveal-delay-1">
       <div class="project-number">02</div>
       <h3 class="project-title">MediFind Pharmacy Locator</h3>
-      <p class="project-desc">Complete pharmacy locator & ordering system. Designed the landing page interface and contributed to the full working application with structured navigation and scalable solution architecture.</p>
-      <div class="exp-tags" style="margin-bottom:1.5rem;"><span class="tag">Flutter</span><span class="tag">Dart</span><span class="tag">SQL</span><span class="tag">UI/UX</span></div>
-      <div class="project-visual" style="margin-top:1.5rem;">
-        <svg class="project-svg" viewBox="0 0 340 220" fill="none">
-          <rect width="340" height="220" fill="#0e0e0e"/>
-          <rect x="110" y="10" width="120" height="200" rx="16" fill="#141414" stroke="rgba(240,237,230,0.1)" stroke-width="1"/>
-          <rect x="118" y="24" width="104" height="14" rx="4" fill="rgba(240,237,230,0.04)"/>
-          <circle cx="170" cy="80" r="30" fill="rgba(200,245,66,0.06)" stroke="rgba(200,245,66,0.2)" stroke-width="1"/>
-          <text x="170" y="86" font-family="sans-serif" font-size="22" fill="#c8f542" text-anchor="middle">+</text>
-          <rect x="118" y="120" width="104" height="8" rx="2" fill="rgba(240,237,230,0.06)"/>
-          <rect x="118" y="136" width="80" height="6" rx="2" fill="rgba(240,237,230,0.04)"/>
-          <rect x="118" y="150" width="104" height="28" rx="6" fill="rgba(200,245,66,0.15)"/>
-          <text x="170" y="169" font-family="sans-serif" font-size="9" fill="#c8f542" text-anchor="middle">Find Pharmacy</text>
-        </svg>
-      </div>
-      <a href="#" class="project-link" style="margin-top:1.5rem; display:inline-flex;">View Project →</a>
+      <p class="project-desc">Complete pharmacy locator & ordering system built with Flutter/Dart.</p>
+      <div class="exp-tags" style="margin-bottom:1.5rem;"><span class="tag">Flutter</span><span class="tag">Dart</span><span class="tag">SQL</span></div>
+      <a href="#" class="project-link" style="margin-top:1.5rem;display:inline-flex;">View Project →</a>
     </div>
     <div class="project-card reveal reveal-delay-2">
       <div class="project-number">03</div>
       <h3 class="project-title">Inseeks.lk — Job Platform</h3>
-      <p class="project-desc">Designed and developed a web-based job posting platform enabling employers to publish listings and users to explore opportunities. Core features supporting job posting workflows and user interaction.</p>
-      <div class="exp-tags" style="margin-bottom:1.5rem;"><span class="tag">HTML/CSS</span><span class="tag">JavaScript</span><span class="tag">Web Platform</span></div>
-      <div class="project-visual" style="margin-top:1.5rem;">
-        <svg class="project-svg" viewBox="0 0 340 220" fill="none">
-          <rect width="340" height="220" fill="#0e0e0e"/>
-          <rect x="20" y="20" width="300" height="36" rx="4" fill="#141414" stroke="rgba(240,237,230,0.08)" stroke-width="1"/>
-          <rect x="30" y="30" width="120" height="16" rx="3" fill="rgba(240,237,230,0.04)"/>
-          <rect x="278" y="28" width="30" height="20" rx="3" fill="rgba(200,245,66,0.2)"/>
-          <rect x="20" y="68" width="300" height="44" rx="4" fill="#141414" stroke="rgba(240,237,230,0.08)" stroke-width="1"/>
-          <rect x="30" y="78" width="100" height="8" rx="2" fill="rgba(240,237,230,0.1)"/>
-          <rect x="30" y="94" width="160" height="6" rx="2" fill="rgba(240,237,230,0.04)"/>
-          <rect x="20" y="122" width="300" height="44" rx="4" fill="#141414" stroke="rgba(240,237,230,0.08)" stroke-width="1"/>
-          <rect x="30" y="132" width="80" height="8" rx="2" fill="rgba(240,237,230,0.1)"/>
-          <rect x="30" y="148" width="200" height="6" rx="2" fill="rgba(240,237,230,0.04)"/>
-          <rect x="20" y="176" width="300" height="44" rx="4" fill="#141414" stroke="rgba(200,245,66,0.2)" stroke-width="1"/>
-          <rect x="30" y="186" width="120" height="8" rx="2" fill="rgba(200,245,66,0.3)"/>
-          <rect x="30" y="202" width="180" height="6" rx="2" fill="rgba(240,237,230,0.04)"/>
-        </svg>
-      </div>
-      <a href="#" class="project-link" style="margin-top:1.5rem; display:inline-flex;">View Project →</a>
+      <p class="project-desc">Web-based job posting platform enabling employers to publish listings and users to explore opportunities.</p>
+      <div class="exp-tags" style="margin-bottom:1.5rem;"><span class="tag">HTML/CSS</span><span class="tag">JavaScript</span></div>
+      <a href="#" class="project-link" style="margin-top:1.5rem;display:inline-flex;">View Project →</a>
     </div>
-    <div class="project-card reveal reveal-delay-1" style="grid-column: span 2;">
+    <div class="project-card reveal reveal-delay-1" style="grid-column:span 2;">
       <div class="project-number">04 — Animation Work</div>
       <h3 class="project-title">Freelance Animation Portfolio</h3>
-      <p class="project-desc">100+ delivered 2D animation projects for international clients across Fiverr and Upwork. Work spans character development, promotional ads, motion graphics, and brand animation for companies including Sail Internet, Kahua, Board Studios, and Groundswell.</p>
-      <div class="exp-tags" style="margin:1.5rem 0;">
-        <span class="tag">After Effects</span><span class="tag">Character Animator</span><span class="tag">Illustrator</span><span class="tag">Dimension</span><span class="tag">Media Encoder</span><span class="tag">Premiere Pro</span>
-      </div>
+      <p class="project-desc">100+ delivered 2D animation projects for international clients including Sail Internet, Kahua, Board Studios, and Groundswell.</p>
+      <div class="exp-tags" style="margin:1.5rem 0;"><span class="tag">After Effects</span><span class="tag">Character Animator</span><span class="tag">Illustrator</span><span class="tag">Dimension</span><span class="tag">Premiere Pro</span></div>
       <a href="#contact" class="project-link">Request Showreel →</a>
     </div>
   </div>
 </section>
-
-<!-- EDUCATION -->
-<section style="background: var(--bg2); border-top: 1px solid var(--border);">
+<section style="background:var(--bg2);border-top:1px solid var(--border);">
   <div class="section-label reveal">Education</div>
   <div class="edu-list">
-    <div class="edu-item reveal">
-      <div><div class="edu-degree">BSc (Hons) Software Engineering</div><div class="edu-school">University of Westminster · IIT Colombo · Presently Enrolled</div></div>
-      <div class="edu-year">2023 →</div>
-    </div>
-    <div class="edu-item reveal reveal-delay-1">
-      <div><div class="edu-degree">Foundation Programme</div><div class="edu-school">Informatics Institute of Technology (IIT) · 2024</div></div>
-      <div class="edu-year">2024</div>
-    </div>
-    <div class="edu-item reveal reveal-delay-2">
-      <div><div class="edu-degree">GCE Advanced & Ordinary Levels</div><div class="edu-school">Thurstan College, Colombo 07 · Mathematics Stream · 7As 1B 1C</div></div>
-      <div class="edu-year">2009 – 2022</div>
-    </div>
+    <div class="edu-item reveal"><div><div class="edu-degree">BSc (Hons) Software Engineering</div><div class="edu-school">University of Westminster · IIT Colombo · Presently Enrolled</div></div><div class="edu-year">2023 →</div></div>
+    <div class="edu-item reveal reveal-delay-1"><div><div class="edu-degree">Foundation Programme</div><div class="edu-school">Informatics Institute of Technology (IIT) · 2024</div></div><div class="edu-year">2024</div></div>
+    <div class="edu-item reveal reveal-delay-2"><div><div class="edu-degree">GCE Advanced &amp; Ordinary Levels</div><div class="edu-school">Thurstan College, Colombo 07 · Mathematics Stream · 7As 1B 1C</div></div><div class="edu-year">2009 – 2022</div></div>
   </div>
-  <div style="margin-top: 5rem;">
+  <div style="margin-top:5rem;">
     <div class="section-label reveal">Key Achievements</div>
     <div class="skills-grid reveal" style="margin-top:0;">
       <div class="skill-card"><span class="skill-icon">✦</span><div class="skill-name">Top Rated Seller</div><div class="skill-desc">Achieved Top Rated Seller status on Fiverr across 3 active accounts simultaneously</div></div>
       <div class="skill-card"><span class="skill-icon">✦</span><div class="skill-name">100+ Projects</div><div class="skill-desc">Delivered 100+ completed projects across animation, branding, and digital media</div></div>
       <div class="skill-card"><span class="skill-icon">✦</span><div class="skill-name">4+ Years Professional</div><div class="skill-desc">4+ years of professional freelance experience serving international clients globally</div></div>
-      <div class="skill-card"><span class="skill-icon">✦</span><div class="skill-name">IEEE RAS Vice Chair</div><div class="skill-desc">Led branding strategy for RobotNexus 2 — a major IEEE Robotics & Automation Society event</div></div>
+      <div class="skill-card"><span class="skill-icon">✦</span><div class="skill-name">IEEE RAS Vice Chair</div><div class="skill-desc">Led branding strategy for RobotNexus 2 — a major IEEE Robotics &amp; Automation Society event</div></div>
       <div class="skill-card"><span class="skill-icon">✦</span><div class="skill-name">hey_creations Agency</div><div class="skill-desc">Founded and scaled hey_creations into an active service-based creative agency</div></div>
-      <div class="skill-card"><span class="skill-icon">✦</span><div class="skill-name">Scout Leadership</div><div class="skill-desc">Participated in 2 Jamborees & 5 Camporees. Colombo Zonal Chess Participant</div></div>
+      <div class="skill-card"><span class="skill-icon">✦</span><div class="skill-name">Scout Leadership</div><div class="skill-desc">Participated in 2 Jamborees &amp; 5 Camporees. Colombo Zonal Chess Participant</div></div>
     </div>
   </div>
 </section>
-
-<!-- CONTACT -->
 <section class="contact-section" id="contact">
   <div class="contact-bg-text">LET'S TALK</div>
   <div class="contact-label reveal">Get in Touch</div>
@@ -976,435 +368,295 @@
     <a href="https://achinthajayaweera.com" class="contact-btn secondary" target="_blank">achinthajayaweera.com</a>
   </div>
 </section>
-
-<!-- FOOTER -->
 <footer>
   <span class="footer-logo">Achintha Jayaweera</span>
   <p>© 2026 · Built with intention.</p>
   <p>Colombo, Sri Lanka</p>
 </footer>
-
 <script>
-// ─── LOADER ───────────────────────────────────────────────────────────────────
-const loader = document.getElementById('loader');
-const pct = document.getElementById('loader-pct');
-let p = 0;
-const t = setInterval(() => {
-  p += Math.random() * 20;
-  if (p >= 100) { p = 100; clearInterval(t); setTimeout(() => loader.classList.add('done'), 200); }
-  pct.textContent = Math.floor(p) + '%';
-}, 80);
+// LOADER
+const loader=document.getElementById('loader'),pct=document.getElementById('loader-pct');let lp=0;const lt=setInterval(()=>{lp+=Math.random()*20;if(lp>=100){lp=100;clearInterval(lt);setTimeout(()=>loader.classList.add('done'),200)}pct.textContent=Math.floor(lp)+'%'},80);
+// CURSOR
+const cursor=document.getElementById('cursor'),trail=document.getElementById('cursorTrail');let mx=0,my=0,tx=0,ty=0;document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cursor.style.left=mx+'px';cursor.style.top=my+'px'});function animTrail(){tx+=(mx-tx)*0.12;ty+=(my-ty)*0.12;trail.style.left=tx+'px';trail.style.top=ty+'px';requestAnimationFrame(animTrail)}animTrail();
+document.querySelectorAll('a,button,.skill-card,.project-card,.exp-item,.orb-bubble').forEach(el=>{el.addEventListener('mouseenter',()=>{cursor.style.transform='translate(-50%,-50%) scale(2.5)';trail.style.transform='translate(-50%,-50%) scale(1.5)';trail.style.borderColor='rgba(200,245,66,0.6)'});el.addEventListener('mouseleave',()=>{cursor.style.transform='translate(-50%,-50%) scale(1)';trail.style.transform='translate(-50%,-50%) scale(1)';trail.style.borderColor='rgba(200,245,66,0.4)'})});
+// REVEAL
+const revealEls=document.querySelectorAll('.reveal');new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')})},{threshold:0.12,rootMargin:'0px 0px -60px 0px'}).observe.bind(new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')})},{threshold:0.12,rootMargin:'0px 0px -60px 0px'}));
+const ro=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')})},{threshold:0.12,rootMargin:'0px 0px -60px 0px'});revealEls.forEach(el=>ro.observe(el));
+// COUNTER
+const counters=document.querySelectorAll('.counter');new IntersectionObserver(entries=>{entries.forEach(entry=>{if(entry.isIntersecting){const el=entry.target,target=parseInt(el.getAttribute('data-target'));let current=0;const step=target/60,timer=setInterval(()=>{current+=step;if(current>=target){current=target;clearInterval(timer)}el.textContent=Math.floor(current)+'+'},16)}})},{threshold:0.5}).observe.bind(null);
+const co=new IntersectionObserver(entries=>{entries.forEach(entry=>{if(entry.isIntersecting){const el=entry.target,target=parseInt(el.getAttribute('data-target'));let current=0;const step=target/60;const timer=setInterval(()=>{current+=step;if(current>=target){current=target;clearInterval(timer)}el.textContent=Math.floor(current)+'+'},16);co.unobserve(el)}})},{threshold:0.5});counters.forEach(c=>co.observe(c));
+// HERO PARALLAX
+document.addEventListener('mousemove',e=>{const orb=document.querySelector('.hero-orb');if(!orb)return;orb.style.transform=`translate(${(e.clientX/window.innerWidth-0.5)*40}px,${(e.clientY/window.innerHeight-0.5)*40}px)`});
 
-// ─── CUSTOM CURSOR ────────────────────────────────────────────────────────────
-const cursor = document.getElementById('cursor');
-const trail = document.getElementById('cursorTrail');
-let mx = 0, my = 0, tx = 0, ty = 0;
-document.addEventListener('mousemove', e => {
-  mx = e.clientX; my = e.clientY;
-  cursor.style.left = mx + 'px'; cursor.style.top = my + 'px';
-});
-function animTrail() {
-  tx += (mx - tx) * 0.12; ty += (my - ty) * 0.12;
-  trail.style.left = tx + 'px'; trail.style.top = ty + 'px';
-  requestAnimationFrame(animTrail);
-}
-animTrail();
-document.querySelectorAll('a, button, .skill-card, .project-card, .exp-item, .globe-bubble').forEach(el => {
-  el.addEventListener('mouseenter', () => {
-    cursor.style.transform = 'translate(-50%,-50%) scale(2.5)';
-    trail.style.transform = 'translate(-50%,-50%) scale(1.5)';
-    trail.style.borderColor = 'rgba(200,245,66,0.6)';
-  });
-  el.addEventListener('mouseleave', () => {
-    cursor.style.transform = 'translate(-50%,-50%) scale(1)';
-    trail.style.transform = 'translate(-50%,-50%) scale(1)';
-    trail.style.borderColor = 'rgba(200,245,66,0.4)';
-  });
-});
+// ── SCRATCH CARD ──────────────────────────────────────────────────────────────
+(function(){
+  const wrapper=document.getElementById('scratchWrapper'),scCard=document.getElementById('scCard');
+  const scratchC=document.getElementById('scratchCanvas'),holoC=document.getElementById('holoCanvas');
+  const subLabel=document.querySelector('.scratch-sub');
+  let W=0,H=0,sCtx,hCtx,cardPopped=false,lastP=-1;
 
-// ─── SCROLL REVEAL ────────────────────────────────────────────────────────────
-const revealEls = document.querySelectorAll('.reveal');
-const revObserver = new IntersectionObserver(entries => {
-  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-}, { threshold: 0.12, rootMargin: '0px 0px -60px 0px' });
-revealEls.forEach(el => revObserver.observe(el));
-
-// ─── COUNTER ─────────────────────────────────────────────────────────────────
-const counters = document.querySelectorAll('.counter');
-const cObserver = new IntersectionObserver(entries => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      const el = entry.target;
-      const target = parseInt(el.getAttribute('data-target'));
-      let current = 0; const step = target / 60;
-      const timer = setInterval(() => {
-        current += step;
-        if (current >= target) { current = target; clearInterval(timer); }
-        el.textContent = Math.floor(current) + '+';
-      }, 16);
-      cObserver.unobserve(el);
+  function drawHolo(){
+    hCtx.clearRect(0,0,W,H);
+    const g=hCtx.createRadialGradient(W*.22,H*.42,0,W*.55,H*.55,W*.9);
+    g.addColorStop(0,'#00ff85');g.addColorStop(.15,'#00e070');g.addColorStop(.35,'#00b880');
+    g.addColorStop(.55,'#0090a8');g.addColorStop(.75,'#0060c0');g.addColorStop(1,'#003878');
+    hCtx.fillStyle=g;hCtx.fillRect(0,0,W,H);
+    const sp=W/44;
+    for(let x=sp*.5;x<W;x+=sp)for(let y=sp*.5;y<H;y+=sp){
+      hCtx.globalAlpha=.12+(x/W)*.28;hCtx.fillStyle='rgba(200,255,235,1)';
+      hCtx.beginPath();hCtx.arc(x,y,1.3,0,Math.PI*2);hCtx.fill();
     }
-  });
-}, { threshold: 0.5 });
-counters.forEach(c => cObserver.observe(c));
-
-// ─── HERO PARALLAX ───────────────────────────────────────────────────────────
-document.addEventListener('mousemove', e => {
-  const orb = document.querySelector('.hero-orb');
-  if (!orb) return;
-  const x = (e.clientX / window.innerWidth - 0.5) * 40;
-  const y = (e.clientY / window.innerHeight - 0.5) * 40;
-  orb.style.transform = `translate(${x}px, ${y}px)`;
-});
-
-// ─── SCRATCH CARD ────────────────────────────────────────────────────────────
-(function() {
-  const wrapper  = document.getElementById('scratchWrapper');
-  const scCard   = document.getElementById('scCard');
-  const scratchC = document.getElementById('scratchCanvas');
-  const holoC    = document.getElementById('holoCanvas');
-  const subLabel = document.querySelector('.scratch-sub');
-
-  let W = 0, H = 0, sCtx, hCtx;
-  let cardPopped = false, lastP = -1;
-
-  function rng(seed) {
-    let s = seed >>> 0;
-    return () => { s = Math.imul(s ^ s >>> 15, s | 1); s ^= s + Math.imul(s ^ s >>> 7, s | 61); return ((s ^ s >>> 14) >>> 0) / 4294967296; };
+    hCtx.globalAlpha=1;
   }
 
-  function drawHolo() {
-    hCtx.clearRect(0, 0, W, H);
-    const g = hCtx.createRadialGradient(W*0.22, H*0.42, 0, W*0.55, H*0.55, W*0.9);
-    g.addColorStop(0,    '#00ff85');
-    g.addColorStop(0.15, '#00e070');
-    g.addColorStop(0.35, '#00b880');
-    g.addColorStop(0.55, '#0090a8');
-    g.addColorStop(0.75, '#0060c0');
-    g.addColorStop(1,    '#003878');
-    hCtx.fillStyle = g;
-    hCtx.fillRect(0, 0, W, H);
-    const sp = W / 44;
-    for (let x = sp*0.5; x < W; x += sp) {
-      for (let y = sp*0.5; y < H; y += sp) {
-        hCtx.globalAlpha = 0.12 + (x/W)*0.28;
-        hCtx.fillStyle = 'rgba(200,255,235,1)';
-        hCtx.beginPath();
-        hCtx.arc(x, y, 1.3, 0, Math.PI*2);
-        hCtx.fill();
-      }
-    }
-    hCtx.globalAlpha = 1;
-  }
+  // STABLE NOISE — same result every call for same input
+  function sn(s){const v=Math.sin(s*127.1+311.7)*43758.5453;return v-Math.floor(v)}
+  function ei(t){return t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2}
 
-  function drawScratch(p) {
-    sCtx.clearRect(0, 0, W, H);
-    if (p <= 0) { sCtx.fillStyle = '#07110d'; sCtx.fillRect(0, 0, W, H); return; }
-    const r = rng(12345);
-    if (p < 1) {
-      sCtx.fillStyle = '#07110d'; sCtx.fillRect(0, 0, W, H);
-      sCtx.globalCompositeOperation = 'destination-out';
-      const eased = p < 0.5 ? 2*p*p : 1 - Math.pow(-2*p+2, 2)/2;
-      const pts = [];
-      pts.push([W, 0]); pts.push([W, H]);
-      const bottomLeft = W * (0.05 + (1-eased)*0.55);
-      for (let i = 0; i <= 12; i++) {
-        const t2 = i/12;
-        pts.push([W - (W-bottomLeft)*t2, H + (r()-0.5)*H*0.04]);
+  function drawScratch(p){
+    sCtx.clearRect(0,0,W,H);
+    if(p<=0) return; // card clean, teal fully visible
+
+    const e=ei(p);
+
+    // ─────────────────────────────────────────────────────────
+    // CORRECT shape based on PDF frame analysis:
+    //
+    // The dark silhouette is a DIAGONAL SLASH / WING shape:
+    // - Starts as tiny mark at ~(15%W, 25%H) — upper-left area
+    // - Grows into a shape like a FLYING BIRD WING or BOOMERANG
+    // - Upper edge: runs roughly from (5%W,18%H) to (65%W,38%H) — JAGGED
+    // - Lower edge: runs from (5%W,58%H) to (65%W,42%H) — SMOOTH
+    // - Left side: thin, tapers (the "head" of the bird)
+    // - Right side: pointed tip where top and bottom edges meet
+    // - The shape is WIDEST in the middle (around x=35%W)
+    // - Does NOT touch top or bottom of card
+    // - Separate small blob to the right (x≈62%, y≈40%)
+    // ─────────────────────────────────────────────────────────
+
+    // Shape anchor — upper-left start point
+    const x0 = W * 0.05;
+    const y0 = H * 0.20;
+
+    // How far the shape extends right at full size
+    const xEnd = W * 0.68 * e;
+
+    const STEPS = 140;
+    const topPts = [], botPts = [];
+
+    for(let i=0;i<=STEPS;i++){
+      const t = i/STEPS;
+      const x = x0 + t * xEnd;
+
+      // TOP EDGE: starts at y=20%, ends at y=38% (diagonal sweep down-right)
+      // Shape is widest at t≈0.45 then tapers right
+      const topY = H*(0.20 + t*0.18*e);
+      // Jagged teeth on top edge — the scratch texture
+      const jag =
+        Math.sin(t*51+1.2)*H*0.026*e +
+        Math.sin(t*97+2.6)*H*0.013*e +
+        Math.sin(t*19+0.5)*H*0.016*e +
+        (sn(t*43+1)-0.5)*H*0.014*e;
+      topPts.push([x, topY+jag]);
+
+      // BOTTOM EDGE: starts at y=58%, tapers to meet top at y=40% at right tip
+      // Creates the wide-left, pointed-right wing shape
+      const botY = H*(0.58*e - t*0.20*e);
+      const bJag =
+        Math.sin(t*23+0.8)*H*0.009*e +
+        (sn(t*31+5)-0.5)*H*0.006*e;
+      botPts.push([x, botY+bJag]);
+    }
+
+    // Right pointed tip
+    const lt = topPts[topPts.length-1];
+    const lb = botPts[botPts.length-1];
+    const tipX = lt[0] + W*0.008*e;
+    const tipY = (lt[1]+lb[1])*0.5;
+
+    sCtx.save();
+    sCtx.beginPath();
+    sCtx.moveTo(topPts[0][0],topPts[0][1]);
+    for(let i=1;i<topPts.length;i++) sCtx.lineTo(topPts[i][0],topPts[i][1]);
+    sCtx.lineTo(tipX,tipY);
+    for(let i=botPts.length-1;i>=0;i--) sCtx.lineTo(botPts[i][0],botPts[i][1]);
+    sCtx.closePath();
+    sCtx.fillStyle='rgba(4,13,8,0.97)';
+    sCtx.fill();
+    sCtx.restore();
+
+    // Small head blob upper-left (appears first, PDF frames 4-6)
+    if(e>0.05){
+      const hP=Math.min(1,e*2.5);
+      const hx=W*0.08*hP, hy=H*0.22*hP;
+      const hrx=W*0.055*hP, hry=H*0.085*hP;
+      sCtx.save();sCtx.beginPath();
+      for(let i=0;i<=24;i++){
+        const a=(i/24)*Math.PI*2;
+        const jx=(sn(i*11+2)-.5)*hrx*.3, jy=(sn(i*7+8)-.5)*hry*.3;
+        const px=hx+(hrx+jx)*Math.cos(a), py=hy+(hry+jy)*Math.sin(a);
+        i===0?sCtx.moveTo(px,py):sCtx.lineTo(px,py);
       }
-      const jagSteps = 60;
-      for (let i = 0; i <= jagSteps; i++) {
-        const t2 = 1 - i/jagSteps;
-        const fy = t2 * H;
-        const bellCurve = Math.exp(-((t2-0.48)**2)/0.12);
-        const headBulge = Math.exp(-((t2-0.28)**2)/0.04);
-        const baseBoundary = W*((1-eased)*0.92 + eased*(0.62 - bellCurve*0.44 - headBulge*0.22));
-        const jagAmp = W*0.018;
-        const jag = (r()-0.5)*jagAmp*2 + Math.sin(t2*31.4+1.2)*jagAmp*0.6 + Math.sin(t2*58.1+2.7)*jagAmp*0.3;
-        pts.push([Math.max(0, baseBoundary+jag), fy]);
+      sCtx.closePath();
+      sCtx.fillStyle=`rgba(4,13,8,${(0.95*hP).toFixed(2)})`;
+      sCtx.fill();sCtx.restore();
+    }
+
+    // Right detached blob (PDF frames 9-16)
+    if(e>0.50){
+      const rP=Math.min(1,(e-.50)/.50);
+      const rcx=W*(0.62+rP*.05), rcy=H*.40;
+      const rrx=W*.060*rP, rry=H*.075*rP;
+      sCtx.save();sCtx.beginPath();
+      for(let i=0;i<=22;i++){
+        const a=(i/22)*Math.PI*2;
+        const jx=(sn(i*13+3)-.5)*rrx*.35, jy=(sn(i*9+7)-.5)*rry*.35;
+        const px=rcx+(rrx+jx)*Math.cos(a), py=rcy+(rry+jy)*Math.sin(a);
+        i===0?sCtx.moveTo(px,py):sCtx.lineTo(px,py);
       }
-      pts.push([W, 0]);
-      sCtx.beginPath();
-      sCtx.moveTo(pts[0][0], pts[0][1]);
-      for (let i = 1; i < pts.length; i++) sCtx.lineTo(pts[i][0], pts[i][1]);
-      sCtx.closePath(); sCtx.fill();
-      sCtx.globalCompositeOperation = 'source-over';
-    } else {
-      sCtx.fillStyle = '#07110d'; sCtx.fillRect(0, 0, W, H);
-      sCtx.globalCompositeOperation = 'destination-out';
-      const bPts = [];
-      bPts.push([W, 0]); bPts.push([W, H]);
-      for (let i = 0; i <= 12; i++) bPts.push([W*0.05 + (r()-0.5)*W*0.02, H - i*(H/12)]);
-      bPts.push([W, 0]);
-      sCtx.beginPath(); sCtx.moveTo(bPts[0][0], bPts[0][1]);
-      bPts.forEach(pt => sCtx.lineTo(pt[0], pt[1]));
-      sCtx.closePath(); sCtx.fill();
-      sCtx.fillRect(W*0.38, 0, W*0.62, H*0.18);
-      sCtx.fillRect(0, H*0.82, W, H*0.18);
-      sCtx.globalCompositeOperation = 'source-over';
+      sCtx.closePath();
+      sCtx.fillStyle=`rgba(4,13,8,${(0.90*rP).toFixed(2)})`;
+      sCtx.fill();sCtx.restore();
     }
   }
 
-  function init() {
-    W = scCard.offsetWidth; H = scCard.offsetHeight;
-    holoC.width = scratchC.width = W;
-    holoC.height = scratchC.height = H;
-    hCtx = holoC.getContext('2d');
-    sCtx = scratchC.getContext('2d');
-    drawHolo(); drawScratch(0);
+  function init(){
+    W=scCard.offsetWidth;H=scCard.offsetHeight;
+    holoC.width=scratchC.width=W;holoC.height=scratchC.height=H;
+    hCtx=holoC.getContext('2d');sCtx=scratchC.getContext('2d');
+    drawHolo();drawScratch(0);
   }
 
-  new IntersectionObserver(entries => {
-    entries.forEach(e => {
-      if (e.isIntersecting && !cardPopped) {
-        cardPopped = true;
-        wrapper.classList.add('popped');
-        subLabel && subLabel.classList.add('visible');
-        setTimeout(init, 500);
+  new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting&&!cardPopped){
+        cardPopped=true;wrapper.classList.add('popped');
+        subLabel&&subLabel.classList.add('visible');
+        setTimeout(init,500);
       }
     });
-  }, { threshold: 0.25 }).observe(wrapper);
+  },{threshold:0.25}).observe(wrapper);
 
-  function onScroll() {
-    if (!sCtx) return;
-    const rect = document.getElementById('skills').getBoundingClientRect();
-    const viewH = window.innerHeight;
-    const raw = (viewH - rect.top) / (viewH * 1.2);
-    const p = Math.max(0, Math.min(1, raw));
-    if (Math.abs(p - lastP) < 0.003) return;
-    lastP = p;
-    drawScratch(p);
+  function onScroll(){
+    if(!sCtx)return;
+    const rect=document.getElementById('skills').getBoundingClientRect();
+    const raw=(window.innerHeight-rect.top)/(window.innerHeight*1.2);
+    const p=Math.max(0,Math.min(1,raw));
+    if(Math.abs(p-lastP)<.003)return;
+    lastP=p;drawScratch(p);
   }
-
-  window.addEventListener('scroll', onScroll, { passive: true });
-  window.addEventListener('resize', () => { if (cardPopped) init(); });
+  window.addEventListener('scroll',onScroll,{passive:true});
+  window.addEventListener('resize',()=>{if(cardPopped)init()});
 })();
 
-// ─── ORBITAL GLOBE SYSTEM ────────────────────────────────────────────────────
-// Center = a 3D white globe with "I Know" text, slowly rotating
-// Skills  = individual colored bubbles orbiting the center on tilted ellipses
-// Effect  = like a solar system — bubbles go off-screen at the edges
-(function() {
-  const scene    = document.getElementById('orbitalScene');
-  const section  = document.getElementById('orbitalSection');
-  if (!scene || !section) return;
-
-  const SKILLS = [
-    { icon:'🌐', name:'HTML/CSS',       pct:92, color:'#e34c26' },
-    { icon:'⚡', name:'JavaScript',     pct:80, color:'#e8c900' },
-    { icon:'☕', name:'Java',           pct:78, color:'#5382a1' },
-    { icon:'🐍', name:'Python',         pct:75, color:'#4b8bbe' },
-    { icon:'⚙️', name:'C++',           pct:65, color:'#6295cb' },
-    { icon:'🗄️', name:'SQL',           pct:72, color:'#00758f' },
-    { icon:'📱', name:'Flutter',        pct:68, color:'#02569b' },
-    { icon:'⚛️', name:'React',         pct:70, color:'#21d4fd' },
-    { icon:'🎬', name:'After Effects',  pct:95, color:'#8080ff' },
-    { icon:'🎨', name:'Illustrator',   pct:90, color:'#ff7c00' },
-    { icon:'🎭', name:'Char.Animator', pct:88, color:'#00b4d8' },
-    { icon:'🖼️', name:'Figma',         pct:82, color:'#f24e1e' },
-    { icon:'🎞️', name:'Premiere Pro',  pct:78, color:'#cc66ff' },
-    { icon:'📐', name:'Dimension',      pct:70, color:'#2d9e6b' },
-    { icon:'🔧', name:'Git',           pct:75, color:'#f05032' },
+// ── ORBITAL GLOBE ─────────────────────────────────────────────────────────────
+(function(){
+  const scene=document.getElementById('orbitalScene'),section=document.getElementById('orbitalSection');
+  if(!scene||!section)return;
+  const SKILLS=[
+    {icon:'🌐',name:'HTML/CSS',pct:92,color:'#e34c26'},
+    {icon:'⚡',name:'JavaScript',pct:80,color:'#e8c900'},
+    {icon:'☕',name:'Java',pct:78,color:'#5382a1'},
+    {icon:'🐍',name:'Python',pct:75,color:'#4b8bbe'},
+    {icon:'⚙️',name:'C++',pct:65,color:'#6295cb'},
+    {icon:'🗄️',name:'SQL',pct:72,color:'#00758f'},
+    {icon:'📱',name:'Flutter',pct:68,color:'#02569b'},
+    {icon:'⚛️',name:'React',pct:70,color:'#21d4fd'},
+    {icon:'🎬',name:'After Effects',pct:95,color:'#8080ff'},
+    {icon:'🎨',name:'Illustrator',pct:90,color:'#ff7c00'},
+    {icon:'🎭',name:'Char.Animator',pct:88,color:'#00b4d8'},
+    {icon:'🖼️',name:'Figma',pct:82,color:'#f24e1e'},
+    {icon:'🎞️',name:'Premiere Pro',pct:78,color:'#cc66ff'},
+    {icon:'📐',name:'Dimension',pct:70,color:'#2d9e6b'},
+    {icon:'🔧',name:'Git',pct:75,color:'#f05032'},
   ];
+  function lighten(hex,a){const r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16);return`rgb(${Math.min(255,r+a*255|0)},${Math.min(255,g+a*255|0)},${Math.min(255,b+a*255|0)})`}
+  function darken(hex,a){const r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16);return`rgb(${Math.max(0,r-a*255|0)},${Math.max(0,g-a*255|0)},${Math.max(0,b-a*255|0)})`}
 
-  // ── HELPERS ──────────────────────────────────────────────────────────────
-  function lighten(hex, a) {
-    const r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16);
-    return `rgb(${Math.min(255,r+a*255|0)},${Math.min(255,g+a*255|0)},${Math.min(255,b+a*255|0)})`;
-  }
-  function darken(hex, a) {
-    const r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16);
-    return `rgb(${Math.max(0,r-a*255|0)},${Math.max(0,g-a*255|0)},${Math.max(0,b-a*255|0)})`;
-  }
-
-  // ── CENTER GLOBE ─────────────────────────────────────────────────────────
-  const globeSize = Math.min(window.innerWidth, window.innerHeight) * 0.14;
-  const globe = document.createElement('div');
-  globe.className = 'center-globe';
-  globe.style.width  = globeSize + 'px';
-  globe.style.height = globeSize + 'px';
-  globe.style.left   = '50%';
-  globe.style.top    = '50%';
-  globe.innerHTML = `<div class="center-globe-text">I Know</div>`;
+  const gs=Math.min(window.innerWidth,window.innerHeight)*.14;
+  const globe=document.createElement('div');
+  globe.className='center-globe';
+  globe.style.cssText=`width:${gs}px;height:${gs}px;left:50%;top:50%;`;
+  globe.innerHTML='<div class="center-globe-text">I Know</div>';
   scene.appendChild(globe);
 
-  // Animate globe highlight rotating to simulate 3D spin
-  let globeAngle = 0;
-  function animGlobe() {
-    globeAngle += 0.008;
-    const hx = 50 + Math.cos(globeAngle) * 20;
-    const hy = 50 + Math.sin(globeAngle * 0.7) * 15;
-    globe.style.background = `
-      radial-gradient(circle at ${hx}% ${hy}%,
-        rgba(255,255,255,0.98) 0%,
-        rgba(240,240,240,0.90) 18%,
-        rgba(200,200,200,0.65) 35%,
-        rgba(155,155,155,0.55) 55%,
-        rgba(100,100,100,0.65) 75%,
-        rgba(50,50,50,0.75) 100%
-      )`;
+  let globeAngle=0;
+  function animGlobe(){
+    globeAngle+=.008;
+    const hx=50+Math.cos(globeAngle)*20,hy=50+Math.sin(globeAngle*.7)*15;
+    globe.style.background=`radial-gradient(circle at ${hx}% ${hy}%,rgba(255,255,255,0.98) 0%,rgba(240,240,240,0.90) 18%,rgba(200,200,200,0.65) 35%,rgba(155,155,155,0.55) 55%,rgba(100,100,100,0.65) 75%,rgba(50,50,50,0.75) 100%)`;
   }
 
-  // ── ORBITAL PATHS ────────────────────────────────────────────────────────
-  // Each orbit is an ellipse with: radius, inclination, initial angle, speed
-  // Spread across different tilted planes — exactly like the reference
-  function makeOrbit(i, total) {
-    const t = i / total;
-    // Base orbit radius — scaled so bubbles fill the screen generously
-    const minDim = Math.min(window.innerWidth, window.innerHeight);
-    const orbitR  = minDim * (0.30 + (i % 3) * 0.09 + Math.random() * 0.06);
-    // Tilt the orbital plane: inclination in degrees
-    const tilt    = (i * 37 + 15) % 165 - 82;  // spread between -82° and +82°
-    // How squished the ellipse is (perspective foreshortening of the plane)
-    const squeeze = 0.18 + Math.abs(Math.sin(tilt * Math.PI / 180)) * 0.55;
-    // Starting angle along orbit
-    const phase   = (i * 137.5) % 360;
-    // Orbital speed — alternating clockwise/counter
-    const speed   = (0.0018 + (i % 4) * 0.0006) * (i % 2 === 0 ? 1 : -1);
-
-    return { orbitR, tilt, squeeze, phase, speed };
+  function makeOrbit(i){
+    const minDim=Math.min(window.innerWidth,window.innerHeight);
+    const orbitR=minDim*(.30+(i%3)*.09);
+    const tilt=(i*37+15)%165-82;
+    const squeeze=.18+Math.abs(Math.sin(tilt*Math.PI/180))*.55;
+    const phase=(i*137.5)%360;
+    const speed=(.0018+(i%4)*.0006)*(i%2===0?1:-1);
+    return{orbitR,tilt,squeeze,phase,speed};
   }
 
-  // ── BUILD ORBITAL BUBBLES ────────────────────────────────────────────────
-  const planets = SKILLS.map((skill, i) => {
-    const size = 62 + skill.pct * 0.46;
-    const el = document.createElement('div');
-    el.className = 'orb-bubble';
-    el.style.cssText = `
-      width:${size}px; height:${size}px;
-      background: radial-gradient(circle at 30% 28%,
-        ${lighten(skill.color, 0.45)} 0%,
-        ${skill.color} 52%,
-        ${darken(skill.color, 0.38)} 100%);
-      box-shadow:
-        inset 0 -5px 15px rgba(0,0,0,0.45),
-        inset 0 5px 10px rgba(255,255,255,0.2),
-        0 4px 24px ${skill.color}55,
-        0 0 0 1px rgba(255,255,255,0.08);
-    `;
-    el.innerHTML = `<div class="orb-bubble-inner">
-      <span class="orb-icon" style="font-size:${(size*0.27)|0}px">${skill.icon}</span>
-      <span class="orb-name" style="font-size:${Math.max(9,size*0.13)|0}px">${skill.name}</span>
-      <span class="orb-pct"  style="font-size:${Math.max(7,size*0.10)|0}px">${skill.pct}%</span>
-    </div>`;
+  const planets=SKILLS.map((skill,i)=>{
+    const size=62+skill.pct*.46;
+    const el=document.createElement('div');
+    el.className='orb-bubble';
+    el.style.cssText=`width:${size}px;height:${size}px;background:radial-gradient(circle at 30% 28%,${lighten(skill.color,.45)} 0%,${skill.color} 52%,${darken(skill.color,.38)} 100%);box-shadow:inset 0 -5px 15px rgba(0,0,0,0.45),inset 0 5px 10px rgba(255,255,255,0.2),0 4px 24px ${skill.color}55,0 0 0 1px rgba(255,255,255,0.08);`;
+    el.innerHTML=`<div class="orb-bubble-inner"><span class="orb-icon" style="font-size:${(size*.27)|0}px">${skill.icon}</span><span class="orb-name" style="font-size:${Math.max(9,size*.13)|0}px">${skill.name}</span><span class="orb-pct" style="font-size:${Math.max(7,size*.10)|0}px">${skill.pct}%</span></div>`;
     scene.appendChild(el);
-
-    const orbit = makeOrbit(i, SKILLS.length);
-    let angle = orbit.phase * Math.PI / 180;
-
-    return { el, size, skill, orbit, angle };
+    const orbit=makeOrbit(i);
+    let angle=orbit.phase*Math.PI/180;
+    return{el,size,skill,orbit,angle};
   });
 
-  // ── STATE ─────────────────────────────────────────────────────────────────
-  let running     = false;
-  let mouseX = 0, mouseY = 0;     // normalized -1..1 from center
-  let smoothX= 0, smoothY= 0;
-  let isHover= false;
-  let masterSpeed = 1.0;          // global speed multiplier
+  let running=false,mouseX=0,mouseY=0,smoothX=0,smoothY=0,isHover=false;
 
-  // ── RENDER LOOP ───────────────────────────────────────────────────────────
-  function render() {
+  function render(){
     requestAnimationFrame(render);
-
-    const W = section.offsetWidth  || window.innerWidth;
-    const H = section.offsetHeight || window.innerHeight;
-    const cx = W / 2, cy = H / 2;
-
-    // Smooth mouse influence
-    smoothX += ((isHover ? mouseX : 0) - smoothX) * 0.035;
-    smoothY += ((isHover ? mouseY : 0) - smoothY) * 0.035;
-
-    // Animate center globe
+    const W=section.offsetWidth||window.innerWidth,H=section.offsetHeight||window.innerHeight;
+    const cx=W/2,cy=H/2;
+    smoothX+=((isHover?mouseX:0)-smoothX)*.035;
+    smoothY+=((isHover?mouseY:0)-smoothY)*.035;
     animGlobe();
-
-    // Update globe size dynamically
-    const gs = Math.min(W, H) * 0.14;
-    globe.style.width  = gs + 'px';
-    globe.style.height = gs + 'px';
-
-    if (!running) return;
-
-    planets.forEach(p => {
-      // Advance angle
-      p.angle += p.orbit.speed * masterSpeed;
-
-      // Tilt angle of orbital plane (in radians)
-      const tiltRad = p.orbit.tilt * Math.PI / 180;
-
-      // Position on flat ellipse
-      const ex = Math.cos(p.angle) * p.orbit.orbitR;
-      const ey = Math.sin(p.angle) * p.orbit.orbitR * p.orbit.squeeze;
-
-      // Apply mouse parallax tilt — rotate the orbital plane slightly
-      // This makes it feel like you're shifting perspective
-      const mTiltY = smoothX * 0.3;  // horizontal mouse → Y-axis tilt
-      const mTiltX = smoothY * -0.2; // vertical mouse   → X-axis tilt
-
-      // Rotate orbital plane by its tilt + mouse influence
-      const totalTilt = tiltRad + mTiltX;
-      const cosT = Math.cos(totalTilt), sinT = Math.sin(totalTilt);
-      const cosM = Math.cos(mTiltY),    sinM = Math.sin(mTiltY);
-
-      // Apply both rotations
-      const rx1 = ex;
-      const ry1 = ey * cosT;
-      const rz1 = ey * sinT;
-
-      const rx2 = rx1 * cosM + rz1 * sinM;
-      const rz2 = -rx1 * sinM + rz1 * cosM;
-
-      // Perspective projection — deep FOV for "inside" feel
-      const fov   = Math.max(W, H) * 1.1;
-      const scale = fov / (fov + rz2);
-      const px    = cx + rx2 * scale;
-      const py    = cy + ry1 * scale;
-
-      // Depth — rz2 range is roughly [-orbitR, +orbitR]
-      const depth = (rz2 + p.orbit.orbitR) / (2 * p.orbit.orbitR); // 0=back,1=front
-      const sz    = p.size * scale;
-      const op    = 0.2 + depth * 0.8;
-      const br    = 0.35 + depth * 0.75;
-      const sat   = 0.3 + depth * 0.8;
-      const blur  = depth > 0.5 ? 0 : (1 - depth / 0.5) * 1.8;
-
-      p.el.style.left   = (px - sz / 2) + 'px';
-      p.el.style.top    = (py - sz / 2) + 'px';
-      p.el.style.width  = sz + 'px';
-      p.el.style.height = sz + 'px';
-      p.el.style.opacity = op.toFixed(3);
-      p.el.style.zIndex  = Math.round(depth * 80);
-      p.el.style.filter  = `brightness(${br.toFixed(2)}) saturate(${sat.toFixed(2)})${blur > 0.2 ? ` blur(${blur.toFixed(1)}px)` : ''}`;
+    const gSize=Math.min(W,H)*.14;
+    globe.style.width=gSize+'px';globe.style.height=gSize+'px';
+    if(!running)return;
+    planets.forEach(p=>{
+      p.angle+=p.orbit.speed;
+      const tiltRad=p.orbit.tilt*Math.PI/180;
+      const ex=Math.cos(p.angle)*p.orbit.orbitR;
+      const ey=Math.sin(p.angle)*p.orbit.orbitR*p.orbit.squeeze;
+      const mTiltY=smoothX*.3,mTiltX=smoothY*-.2;
+      const totalTilt=tiltRad+mTiltX;
+      const cosT=Math.cos(totalTilt),sinT=Math.sin(totalTilt);
+      const cosM=Math.cos(mTiltY),sinM=Math.sin(mTiltY);
+      const rx1=ex,ry1=ey*cosT,rz1=ey*sinT;
+      const rx2=rx1*cosM+rz1*sinM,rz2=-rx1*sinM+rz1*cosM;
+      const fov=Math.max(W,H)*1.1,scale=fov/(fov+rz2);
+      const px=cx+rx2*scale,py=cy+ry1*scale;
+      const depth=(rz2+p.orbit.orbitR)/(2*p.orbit.orbitR);
+      const sz=p.size*scale,op=.2+depth*.8,br=.35+depth*.75,sat=.3+depth*.8;
+      const blur=depth>.5?0:(1-depth/.5)*1.8;
+      p.el.style.left=(px-sz/2)+'px';p.el.style.top=(py-sz/2)+'px';
+      p.el.style.width=sz+'px';p.el.style.height=sz+'px';
+      p.el.style.opacity=op.toFixed(3);p.el.style.zIndex=Math.round(depth*80);
+      p.el.style.filter=`brightness(${br.toFixed(2)}) saturate(${sat.toFixed(2)})${blur>.2?` blur(${blur.toFixed(1)}px)`:''}`;
     });
   }
 
-  // ── MOUSE MOVE → tilt effect ──────────────────────────────────────────────
-  section.addEventListener('mousemove', e => {
-    const r = section.getBoundingClientRect();
-    mouseX = ((e.clientX - r.left) / r.width  - 0.5) * 2;
-    mouseY = ((e.clientY - r.top)  / r.height - 0.5) * 2;
-    isHover = true;
+  section.addEventListener('mousemove',e=>{
+    const r=section.getBoundingClientRect();
+    mouseX=((e.clientX-r.left)/r.width-.5)*2;
+    mouseY=((e.clientY-r.top)/r.height-.5)*2;
+    isHover=true;
   });
-  section.addEventListener('mouseleave', () => { isHover = false; });
-
-  // ── CLICK GLOBE → toggle pause ────────────────────────────────────────────
-  globe.addEventListener('click', () => {
-    running = !running;
-    globe.querySelector('.center-globe-text').textContent = running ? 'I Know' : 'Paused';
+  section.addEventListener('mouseleave',()=>{isHover=false});
+  globe.addEventListener('click',()=>{
+    running=!running;
+    globe.querySelector('.center-globe-text').textContent=running?'I Know':'Paused';
   });
-
-  // ── AUTO-START when section enters viewport ───────────────────────────────
-  new IntersectionObserver(entries => {
-    entries.forEach(e => {
-      if (e.isIntersecting && !running) {
-        running = true;
-      }
-    });
-  }, { threshold: 0.1 }).observe(section);
-
-  // Fallback start
-  setTimeout(() => { running = true; }, 500);
-
-  // Kick off
+  new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting&&!running)running=true})},{threshold:0.1}).observe(section);
+  setTimeout(()=>{running=true},500);
   render();
 })();
 </script>
