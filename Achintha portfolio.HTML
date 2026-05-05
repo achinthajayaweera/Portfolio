@@ -482,137 +482,127 @@
   .sc-meta { font-family: 'DM Mono', monospace; font-size: 0.6rem; letter-spacing: 0.1em; color: rgba(255,255,255,0.35); text-transform: uppercase; }
 
   /* ============================
-     INNER GLOBE SECTION — full viewport immersive
+     ORBITAL GLOBE SECTION
   ============================== */
-  .globe-section {
+  .orbital-section {
     width: 100%;
     height: 100vh;
-    min-height: 600px;
+    min-height: 640px;
     position: relative;
     overflow: hidden;
-    /* Always visible — no fade-in opacity trick that can break */
-    opacity: 1;
-    background: radial-gradient(ellipse at center,
-      #0a0f0d 0%,
-      #060a08 45%,
-      #030505 100%
-    );
+    background: #050808;
   }
-
-  /* Ambient star dots */
-  .globe-section::before {
+  /* subtle radial glow behind center */
+  .orbital-section::before {
     content: '';
     position: absolute; inset: 0;
-    background-image:
-      radial-gradient(1px 1px at 15% 20%, rgba(200,245,66,0.18) 0%, transparent 100%),
-      radial-gradient(1px 1px at 80% 15%, rgba(200,245,66,0.12) 0%, transparent 100%),
-      radial-gradient(1px 1px at 60% 75%, rgba(200,245,66,0.1)  0%, transparent 100%),
-      radial-gradient(1px 1px at 25% 85%, rgba(200,245,66,0.08) 0%, transparent 100%),
-      radial-gradient(1px 1px at 90% 60%, rgba(200,245,66,0.14) 0%, transparent 100%),
-      radial-gradient(1.5px 1.5px at 45% 40%, rgba(255,255,255,0.06) 0%, transparent 100%),
-      radial-gradient(1px 1px at 70% 90%, rgba(255,255,255,0.05) 0%, transparent 100%);
-    pointer-events: none;
-    z-index: 0;
+    background: radial-gradient(ellipse 55% 55% at 50% 50%,
+      rgba(255,255,255,0.03) 0%,
+      transparent 70%);
+    pointer-events: none; z-index: 0;
   }
-
-  /* Edge vignette */
-  .globe-section::after {
+  /* edge vignette */
+  .orbital-section::after {
     content: '';
     position: absolute; inset: 0;
-    background: radial-gradient(ellipse 70% 70% at center,
-      transparent 30%,
-      rgba(3,5,5,0.5) 70%,
-      rgba(3,5,5,0.88) 100%
-    );
-    pointer-events: none;
-    z-index: 1;
+    background: radial-gradient(ellipse 80% 80% at 50% 50%,
+      transparent 40%,
+      rgba(5,8,8,0.6) 75%,
+      rgba(5,8,8,0.92) 100%);
+    pointer-events: none; z-index: 3;
   }
-
-  .globe-hint {
-    position: absolute;
-    bottom: 2.5rem; left: 50%;
+  .orbital-label {
+    position: absolute; top: 2.5rem; left: 3rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem; letter-spacing: 0.22em; text-transform: uppercase;
+    color: var(--accent); z-index: 10;
+    display: flex; align-items: center; gap: 0.8rem;
+  }
+  .orbital-label::after { content:''; width:40px; height:1px; background:var(--accent); opacity:0.4; }
+  .orbital-hint {
+    position: absolute; bottom: 2.2rem; left: 50%;
     transform: translateX(-50%);
     font-family: 'DM Mono', monospace;
-    font-size: 0.65rem; letter-spacing: 0.22em;
-    color: rgba(107,104,96,0.5); text-transform: uppercase;
-    z-index: 10; white-space: nowrap; pointer-events: none;
+    font-size: 0.63rem; letter-spacing: 0.2em; text-transform: uppercase;
+    color: rgba(107,104,96,0.45); z-index: 10;
+    white-space: nowrap; pointer-events: none;
     animation: hintPulse 3s ease-in-out infinite;
   }
-  @keyframes hintPulse { 0%,100%{opacity:.5} 50%{opacity:1} }
+  @keyframes hintPulse { 0%,100%{opacity:.4} 50%{opacity:.9} }
 
-  .globe-section-title {
-    position: absolute; top: 2.5rem; left: 3rem;
-    font-size: 0.65rem; letter-spacing: 0.22em; text-transform: uppercase;
-    color: var(--accent); font-family: 'DM Mono', monospace;
-    z-index: 10; display: flex; align-items: center; gap: 0.8rem;
-  }
-  .globe-section-title::after {
-    content: ''; width: 40px; height: 1px;
-    background: var(--accent); opacity: 0.4;
+  .orbital-scene {
+    position: absolute; inset: 0; z-index: 2;
+    /* canvas renders into this via JS */
   }
 
-  /* Globe container — MUST be position:relative with explicit size so JS can read offsetWidth/Height */
-  .globe-container {
+  /* Center globe — 3D sphere with "I Know" text */
+  .center-globe {
     position: absolute;
-    inset: 0;
-    z-index: 2;
-    /* overflow visible so bubbles can bleed to edges */
-  }
-
-  /* Center button */
-  .globe-center-btn {
-    position: absolute;
-    top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 50;
-    width: 100px; height: 100px;
     border-radius: 50%;
-    background: #ffffff;
-    color: #111;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.82rem; font-weight: 500; letter-spacing: 0.06em;
-    border: none; cursor: none;
+    cursor: none;
+    /* 3D sphere illusion via radial gradient + specular highlights */
+    background:
+      radial-gradient(circle at 38% 32%,
+        rgba(255,255,255,0.95) 0%,
+        rgba(235,235,235,0.88) 18%,
+        rgba(200,200,200,0.6) 35%,
+        rgba(160,160,160,0.5) 55%,
+        rgba(110,110,110,0.6) 75%,
+        rgba(60,60,60,0.7) 100%
+      );
+    box-shadow:
+      0 0 0 2px rgba(255,255,255,0.12),
+      0 0 60px rgba(255,255,255,0.08),
+      inset 0 -20px 40px rgba(0,0,0,0.3),
+      inset 0 10px 25px rgba(255,255,255,0.4);
     display: flex; align-items: center; justify-content: center;
-    box-shadow:
-      0 0 0 8px rgba(255,255,255,0.04),
-      0 0 0 20px rgba(255,255,255,0.02),
-      0 8px 40px rgba(0,0,0,0.6);
-    transition: box-shadow 0.4s ease;
-    pointer-events: all;
+    z-index: 20;
+    transition: box-shadow 0.3s ease;
+    transform: translate(-50%, -50%);
+    will-change: transform;
   }
-  .globe-center-btn:hover {
+  .center-globe:hover {
     box-shadow:
-      0 0 0 12px rgba(255,255,255,0.06),
-      0 0 0 28px rgba(255,255,255,0.03),
-      0 12px 50px rgba(0,0,0,0.7);
+      0 0 0 3px rgba(255,255,255,0.2),
+      0 0 80px rgba(255,255,255,0.15),
+      inset 0 -20px 40px rgba(0,0,0,0.3),
+      inset 0 10px 25px rgba(255,255,255,0.5);
   }
-  .globe-center-btn.spinning { animation: btnPulse 0.6s ease; }
-  @keyframes btnPulse {
-    0%  { transform: translate(-50%,-50%) scale(1); }
-    40% { transform: translate(-50%,-50%) scale(0.9); }
-    100%{ transform: translate(-50%,-50%) scale(1); }
+  .center-globe-text {
+    font-family: 'DM Sans', sans-serif;
+    font-size: clamp(0.6rem, 1.8vw, 1.1rem);
+    font-weight: 400;
+    color: rgba(30,30,30,0.85);
+    letter-spacing: 0.04em;
+    text-align: center;
+    line-height: 1.3;
+    pointer-events: none;
+    user-select: none;
+    text-shadow: 0 1px 2px rgba(255,255,255,0.5);
   }
 
-  /* Each skill bubble */
-  .globe-bubble {
+  /* Orbital bubbles */
+  .orb-bubble {
     position: absolute;
     border-radius: 50%;
-    display: flex; flex-direction: column;
-    align-items: center; justify-content: center; text-align: center;
-    will-change: transform, opacity, width, height;
-    cursor: none; overflow: hidden; user-select: none;
+    overflow: hidden;
+    will-change: transform, opacity;
+    cursor: none;
+    display: flex; align-items: center; justify-content: center;
+    text-align: center;
+    flex-direction: column;
   }
-  .globe-bubble:hover { z-index: 200 !important; }
-
-  .bubble-inner {
+  .orb-bubble-inner {
     display: flex; flex-direction: column;
     align-items: center; justify-content: center;
-    width: 100%; height: 100%; padding: 10px;
-    border-radius: 50%; position: relative; z-index: 2;
+    width: 100%; height: 100%;
+    border-radius: 50%;
+    pointer-events: none;
+    padding: 8px;
   }
-  .bubble-icon { line-height: 1; margin-bottom: 0.18em; filter: drop-shadow(0 2px 6px rgba(0,0,0,0.6)); pointer-events: none; }
-  .bubble-name { font-family: 'DM Sans', sans-serif; font-weight: 500; letter-spacing: 0.02em; color: #fff; text-shadow: 0 1px 6px rgba(0,0,0,0.8); line-height: 1.1; text-align: center; pointer-events: none; }
-  .bubble-pct  { font-family: 'DM Mono', monospace; letter-spacing: 0.04em; color: rgba(255,255,255,0.6); text-shadow: 0 1px 4px rgba(0,0,0,0.7); margin-top: 0.12em; pointer-events: none; }
+  .orb-icon { line-height: 1; pointer-events: none; filter: drop-shadow(0 1px 4px rgba(0,0,0,0.5)); }
+  .orb-name { font-family: 'DM Sans',sans-serif; font-weight: 500; color: #fff; text-shadow: 0 1px 4px rgba(0,0,0,0.8); pointer-events: none; line-height: 1.15; }
+  .orb-pct  { font-family: 'DM Mono',monospace; color: rgba(255,255,255,0.6); pointer-events: none; margin-top: 2px; }
 
 </style>
 </head>
@@ -767,13 +757,13 @@
   <!-- scratch wrapper ends above, globe is now outside scratch section -->
 </section>
 
-<!-- INNER GLOBE — full viewport, after scratch section -->
-<div class="globe-section" id="globeSection">
-  <div class="globe-section-title">What I Know</div>
-  <div class="globe-container" id="globeContainer">
-    <button class="globe-center-btn" id="globeCenterBtn">Start</button>
+<!-- ORBITAL GLOBE — full viewport -->
+<div class="orbital-section" id="orbitalSection">
+  <div class="orbital-label">What I Know</div>
+  <div class="orbital-scene" id="orbitalScene">
+    <!-- Center globe rendered by JS -->
   </div>
-  <div class="globe-hint">Move cursor to tilt · Drag to spin · Click to pause</div>
+  <div class="orbital-hint">Hover to tilt · Click globe to pause</div>
 </div>
 
 <!-- EXPERIENCE -->
@@ -1190,43 +1180,34 @@ document.addEventListener('mousemove', e => {
   window.addEventListener('resize', () => { if (cardPopped) init(); });
 })();
 
-// ─── INNER GLOBE — full viewport, mouse-parallax immersive ───────────────────
+// ─── ORBITAL GLOBE SYSTEM ────────────────────────────────────────────────────
+// Center = a 3D white globe with "I Know" text, slowly rotating
+// Skills  = individual colored bubbles orbiting the center on tilted ellipses
+// Effect  = like a solar system — bubbles go off-screen at the edges
 (function() {
-  const container   = document.getElementById('globeContainer');
-  const centerBtn   = document.getElementById('globeCenterBtn');
-  const globeSection = document.getElementById('globeSection');
+  const scene    = document.getElementById('orbitalScene');
+  const section  = document.getElementById('orbitalSection');
+  if (!scene || !section) return;
 
   const SKILLS = [
-    { icon: '🌐', name: 'HTML/CSS',        pct: 92, color: '#e34c26' },
-    { icon: '⚡', name: 'JavaScript',      pct: 80, color: '#e8c900' },
-    { icon: '☕', name: 'Java',            pct: 78, color: '#5382a1' },
-    { icon: '🐍', name: 'Python',          pct: 75, color: '#4b8bbe' },
-    { icon: '⚙️', name: 'C++',            pct: 65, color: '#6295cb' },
-    { icon: '🗄️', name: 'SQL',            pct: 72, color: '#00758f' },
-    { icon: '📱', name: 'Flutter',         pct: 68, color: '#02569b' },
-    { icon: '⚛️', name: 'React',          pct: 70, color: '#21d4fd' },
-    { icon: '🎬', name: 'After Effects',   pct: 95, color: '#8080ff' },
-    { icon: '🎨', name: 'Illustrator',    pct: 90, color: '#ff7c00' },
-    { icon: '🎭', name: 'Char. Animator', pct: 88, color: '#00b4d8' },
-    { icon: '🖼️', name: 'Figma',          pct: 82, color: '#f24e1e' },
-    { icon: '🎞️', name: 'Premiere Pro',   pct: 78, color: '#ea77ff' },
-    { icon: '📐', name: 'Dimension',       pct: 70, color: '#2d9e6b' },
-    { icon: '🔧', name: 'Git',            pct: 75, color: '#f05032' },
+    { icon:'🌐', name:'HTML/CSS',       pct:92, color:'#e34c26' },
+    { icon:'⚡', name:'JavaScript',     pct:80, color:'#e8c900' },
+    { icon:'☕', name:'Java',           pct:78, color:'#5382a1' },
+    { icon:'🐍', name:'Python',         pct:75, color:'#4b8bbe' },
+    { icon:'⚙️', name:'C++',           pct:65, color:'#6295cb' },
+    { icon:'🗄️', name:'SQL',           pct:72, color:'#00758f' },
+    { icon:'📱', name:'Flutter',        pct:68, color:'#02569b' },
+    { icon:'⚛️', name:'React',         pct:70, color:'#21d4fd' },
+    { icon:'🎬', name:'After Effects',  pct:95, color:'#8080ff' },
+    { icon:'🎨', name:'Illustrator',   pct:90, color:'#ff7c00' },
+    { icon:'🎭', name:'Char.Animator', pct:88, color:'#00b4d8' },
+    { icon:'🖼️', name:'Figma',         pct:82, color:'#f24e1e' },
+    { icon:'🎞️', name:'Premiere Pro',  pct:78, color:'#cc66ff' },
+    { icon:'📐', name:'Dimension',      pct:70, color:'#2d9e6b' },
+    { icon:'🔧', name:'Git',           pct:75, color:'#f05032' },
   ];
 
-  function fibonacciSphere(n) {
-    const pts = [], golden = Math.PI * (3 - Math.sqrt(5));
-    for (let i = 0; i < n; i++) {
-      const y = 1 - (i / (n - 1)) * 2;
-      const r = Math.sqrt(Math.max(0, 1 - y * y));
-      const theta = golden * i;
-      pts.push({ x: Math.cos(theta) * r, y, z: Math.sin(theta) * r });
-    }
-    return pts;
-  }
-
-  const positions = fibonacciSphere(SKILLS.length);
-
+  // ── HELPERS ──────────────────────────────────────────────────────────────
   function lighten(hex, a) {
     const r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16);
     return `rgb(${Math.min(255,r+a*255|0)},${Math.min(255,g+a*255|0)},${Math.min(255,b+a*255|0)})`;
@@ -1235,168 +1216,196 @@ document.addEventListener('mousemove', e => {
     const r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16);
     return `rgb(${Math.max(0,r-a*255|0)},${Math.max(0,g-a*255|0)},${Math.max(0,b-a*255|0)})`;
   }
-  function rotY3d(pt, a) { const c=Math.cos(a),s=Math.sin(a); return {x:pt.x*c+pt.z*s, y:pt.y, z:-pt.x*s+pt.z*c}; }
-  function rotX3d(pt, a) { const c=Math.cos(a),s=Math.sin(a); return {x:pt.x, y:pt.y*c-pt.z*s, z:pt.y*s+pt.z*c}; }
 
-  // Build bubbles once — base size stored, actual px set per frame
-  const bubbles = SKILLS.map((skill, i) => {
-    const div = document.createElement('div');
-    div.className = 'globe-bubble';
-    const baseSize = 68 + skill.pct * 0.52; // logical base
-    div.innerHTML = `<div class="bubble-inner">
-      <span class="bubble-icon" style="font-size:${(baseSize*0.28).toFixed(0)}px">${skill.icon}</span>
-      <span class="bubble-name" style="font-size:${Math.max(10,baseSize*0.14).toFixed(0)}px">${skill.name}</span>
-      <span class="bubble-pct"  style="font-size:${Math.max(8, baseSize*0.11).toFixed(0)}px">${skill.pct}%</span>
-    </div>`;
-    div.style.cssText = `
-      width:${baseSize}px; height:${baseSize}px;
+  // ── CENTER GLOBE ─────────────────────────────────────────────────────────
+  const globeSize = Math.min(window.innerWidth, window.innerHeight) * 0.14;
+  const globe = document.createElement('div');
+  globe.className = 'center-globe';
+  globe.style.width  = globeSize + 'px';
+  globe.style.height = globeSize + 'px';
+  globe.style.left   = '50%';
+  globe.style.top    = '50%';
+  globe.innerHTML = `<div class="center-globe-text">I Know</div>`;
+  scene.appendChild(globe);
+
+  // Animate globe highlight rotating to simulate 3D spin
+  let globeAngle = 0;
+  function animGlobe() {
+    globeAngle += 0.008;
+    const hx = 50 + Math.cos(globeAngle) * 20;
+    const hy = 50 + Math.sin(globeAngle * 0.7) * 15;
+    globe.style.background = `
+      radial-gradient(circle at ${hx}% ${hy}%,
+        rgba(255,255,255,0.98) 0%,
+        rgba(240,240,240,0.90) 18%,
+        rgba(200,200,200,0.65) 35%,
+        rgba(155,155,155,0.55) 55%,
+        rgba(100,100,100,0.65) 75%,
+        rgba(50,50,50,0.75) 100%
+      )`;
+  }
+
+  // ── ORBITAL PATHS ────────────────────────────────────────────────────────
+  // Each orbit is an ellipse with: radius, inclination, initial angle, speed
+  // Spread across different tilted planes — exactly like the reference
+  function makeOrbit(i, total) {
+    const t = i / total;
+    // Base orbit radius — scaled so bubbles fill the screen generously
+    const minDim = Math.min(window.innerWidth, window.innerHeight);
+    const orbitR  = minDim * (0.30 + (i % 3) * 0.09 + Math.random() * 0.06);
+    // Tilt the orbital plane: inclination in degrees
+    const tilt    = (i * 37 + 15) % 165 - 82;  // spread between -82° and +82°
+    // How squished the ellipse is (perspective foreshortening of the plane)
+    const squeeze = 0.18 + Math.abs(Math.sin(tilt * Math.PI / 180)) * 0.55;
+    // Starting angle along orbit
+    const phase   = (i * 137.5) % 360;
+    // Orbital speed — alternating clockwise/counter
+    const speed   = (0.0018 + (i % 4) * 0.0006) * (i % 2 === 0 ? 1 : -1);
+
+    return { orbitR, tilt, squeeze, phase, speed };
+  }
+
+  // ── BUILD ORBITAL BUBBLES ────────────────────────────────────────────────
+  const planets = SKILLS.map((skill, i) => {
+    const size = 62 + skill.pct * 0.46;
+    const el = document.createElement('div');
+    el.className = 'orb-bubble';
+    el.style.cssText = `
+      width:${size}px; height:${size}px;
       background: radial-gradient(circle at 30% 28%,
-        ${lighten(skill.color,0.45)} 0%, ${skill.color} 52%, ${darken(skill.color,0.38)} 100%);
+        ${lighten(skill.color, 0.45)} 0%,
+        ${skill.color} 52%,
+        ${darken(skill.color, 0.38)} 100%);
       box-shadow:
-        inset 0 -6px 18px rgba(0,0,0,0.45),
-        inset 0 5px 12px rgba(255,255,255,0.18),
-        0 6px 30px ${skill.color}44,
-        0 0 0 1.5px rgba(255,255,255,0.10);
+        inset 0 -5px 15px rgba(0,0,0,0.45),
+        inset 0 5px 10px rgba(255,255,255,0.2),
+        0 4px 24px ${skill.color}55,
+        0 0 0 1px rgba(255,255,255,0.08);
     `;
-    container.appendChild(div);
-    return { el: div, baseSize };
+    el.innerHTML = `<div class="orb-bubble-inner">
+      <span class="orb-icon" style="font-size:${(size*0.27)|0}px">${skill.icon}</span>
+      <span class="orb-name" style="font-size:${Math.max(9,size*0.13)|0}px">${skill.name}</span>
+      <span class="orb-pct"  style="font-size:${Math.max(7,size*0.10)|0}px">${skill.pct}%</span>
+    </div>`;
+    scene.appendChild(el);
+
+    const orbit = makeOrbit(i, SKILLS.length);
+    let angle = orbit.phase * Math.PI / 180;
+
+    return { el, size, skill, orbit, angle };
   });
 
-  // ── STATE ──
-  let rotY = 0.3, rotX = -0.15;
-  let autoSpin = true, globeActive = false;
-  let isDragging = false;
-  let dragStartX=0, dragStartY=0, dragRotY=0, dragRotX=0;
-  let mouseNX=0, mouseNY=0, smoothMX=0, smoothMY=0, isHovering=false;
+  // ── STATE ─────────────────────────────────────────────────────────────────
+  let running     = false;
+  let mouseX = 0, mouseY = 0;     // normalized -1..1 from center
+  let smoothX= 0, smoothY= 0;
+  let isHover= false;
+  let masterSpeed = 1.0;          // global speed multiplier
 
-  // ── RENDER ──
+  // ── RENDER LOOP ───────────────────────────────────────────────────────────
   function render() {
     requestAnimationFrame(render);
 
-    // Always read live dimensions — globeSection is always in DOM
-    const cW = globeSection.offsetWidth  || window.innerWidth;
-    const cH = globeSection.offsetHeight || window.innerHeight;
-    if (cW === 0 || cH === 0) return;
+    const W = section.offsetWidth  || window.innerWidth;
+    const H = section.offsetHeight || window.innerHeight;
+    const cx = W / 2, cy = H / 2;
 
-    if (globeActive) {
-      smoothMX += (mouseNX - smoothMX) * 0.04;
-      smoothMY += (mouseNY - smoothMY) * 0.04;
-      if (autoSpin && !isDragging) rotY += 0.003;
-    }
+    // Smooth mouse influence
+    smoothX += ((isHover ? mouseX : 0) - smoothX) * 0.035;
+    smoothY += ((isHover ? mouseY : 0) - smoothY) * 0.035;
 
-    const mouseOffY = isHovering ? smoothMX * 0.35 : 0;
-    const mouseOffX = isHovering ? smoothMY * -0.25 : 0;
-    const finalRotY = rotY + mouseOffY;
-    const finalRotX = rotX + mouseOffX;
+    // Animate center globe
+    animGlobe();
 
-    const RADIUS = Math.min(cW, cH) * 0.38;
-    const cx = cW / 2, cy = cH / 2;
-    const fov = Math.max(cW, cH) * 0.9;
+    // Update globe size dynamically
+    const gs = Math.min(W, H) * 0.14;
+    globe.style.width  = gs + 'px';
+    globe.style.height = gs + 'px';
 
-    // Pre-compute 3D positions & depth-sort
-    const projected = bubbles.map(({ el, baseSize }, i) => {
-      let pt = { ...positions[i] };
-      pt = rotX3d(pt, finalRotX);
-      pt = rotY3d(pt, finalRotY);
-      return { el, baseSize, pt };
-    });
-    projected.sort((a, b) => a.pt.z - b.pt.z);
+    if (!running) return;
 
-    projected.forEach(({ el, baseSize, pt }, sortIdx) => {
-      const scale3d = fov / (fov + pt.z * RADIUS);
-      const px = cx + pt.x * RADIUS * scale3d;
-      const py = cy + pt.y * RADIUS * scale3d;
-      const sz = baseSize * scale3d;
+    planets.forEach(p => {
+      // Advance angle
+      p.angle += p.orbit.speed * masterSpeed;
 
-      const depth = (pt.z + 1) / 2;
-      const opacity    = globeActive ? 0.15 + depth * 0.85 : 0;
-      const brightness = 0.4 + depth * 0.7;
-      const saturate   = 0.35 + depth * 0.75;
-      const blur       = depth > 0.45 ? 0 : (1 - depth / 0.45) * 2.2;
+      // Tilt angle of orbital plane (in radians)
+      const tiltRad = p.orbit.tilt * Math.PI / 180;
 
-      el.style.left   = (px - sz / 2) + 'px';
-      el.style.top    = (py - sz / 2) + 'px';
-      el.style.width  = sz + 'px';
-      el.style.height = sz + 'px';
-      el.style.opacity = opacity.toFixed(3);
-      el.style.filter  = `brightness(${brightness.toFixed(2)}) saturate(${saturate.toFixed(2)})${blur > 0.1 ? ` blur(${blur.toFixed(1)}px)` : ''}`;
-      el.style.zIndex  = sortIdx;
+      // Position on flat ellipse
+      const ex = Math.cos(p.angle) * p.orbit.orbitR;
+      const ey = Math.sin(p.angle) * p.orbit.orbitR * p.orbit.squeeze;
+
+      // Apply mouse parallax tilt — rotate the orbital plane slightly
+      // This makes it feel like you're shifting perspective
+      const mTiltY = smoothX * 0.3;  // horizontal mouse → Y-axis tilt
+      const mTiltX = smoothY * -0.2; // vertical mouse   → X-axis tilt
+
+      // Rotate orbital plane by its tilt + mouse influence
+      const totalTilt = tiltRad + mTiltX;
+      const cosT = Math.cos(totalTilt), sinT = Math.sin(totalTilt);
+      const cosM = Math.cos(mTiltY),    sinM = Math.sin(mTiltY);
+
+      // Apply both rotations
+      const rx1 = ex;
+      const ry1 = ey * cosT;
+      const rz1 = ey * sinT;
+
+      const rx2 = rx1 * cosM + rz1 * sinM;
+      const rz2 = -rx1 * sinM + rz1 * cosM;
+
+      // Perspective projection — deep FOV for "inside" feel
+      const fov   = Math.max(W, H) * 1.1;
+      const scale = fov / (fov + rz2);
+      const px    = cx + rx2 * scale;
+      const py    = cy + ry1 * scale;
+
+      // Depth — rz2 range is roughly [-orbitR, +orbitR]
+      const depth = (rz2 + p.orbit.orbitR) / (2 * p.orbit.orbitR); // 0=back,1=front
+      const sz    = p.size * scale;
+      const op    = 0.2 + depth * 0.8;
+      const br    = 0.35 + depth * 0.75;
+      const sat   = 0.3 + depth * 0.8;
+      const blur  = depth > 0.5 ? 0 : (1 - depth / 0.5) * 1.8;
+
+      p.el.style.left   = (px - sz / 2) + 'px';
+      p.el.style.top    = (py - sz / 2) + 'px';
+      p.el.style.width  = sz + 'px';
+      p.el.style.height = sz + 'px';
+      p.el.style.opacity = op.toFixed(3);
+      p.el.style.zIndex  = Math.round(depth * 80);
+      p.el.style.filter  = `brightness(${br.toFixed(2)}) saturate(${sat.toFixed(2)})${blur > 0.2 ? ` blur(${blur.toFixed(1)}px)` : ''}`;
     });
   }
 
-  // ── ACTIVATE ──
-  function activateGlobe() {
-    if (globeActive) return;
-    globeActive = true;
-    centerBtn.innerHTML = '<span style="font-size:1.3rem">✦</span>';
-    centerBtn.classList.add('spinning');
-    setTimeout(() => centerBtn.classList.remove('spinning'), 600);
-  }
+  // ── MOUSE MOVE → tilt effect ──────────────────────────────────────────────
+  section.addEventListener('mousemove', e => {
+    const r = section.getBoundingClientRect();
+    mouseX = ((e.clientX - r.left) / r.width  - 0.5) * 2;
+    mouseY = ((e.clientY - r.top)  / r.height - 0.5) * 2;
+    isHover = true;
+  });
+  section.addEventListener('mouseleave', () => { isHover = false; });
 
-  // Auto-activate as soon as globe section enters viewport
+  // ── CLICK GLOBE → toggle pause ────────────────────────────────────────────
+  globe.addEventListener('click', () => {
+    running = !running;
+    globe.querySelector('.center-globe-text').textContent = running ? 'I Know' : 'Paused';
+  });
+
+  // ── AUTO-START when section enters viewport ───────────────────────────────
   new IntersectionObserver(entries => {
-    entries.forEach(e => { if (e.isIntersecting) activateGlobe(); });
-  }, { threshold: 0.1 }).observe(globeSection);
+    entries.forEach(e => {
+      if (e.isIntersecting && !running) {
+        running = true;
+      }
+    });
+  }, { threshold: 0.1 }).observe(section);
 
-  // Also activate after a short delay as a fallback
-  setTimeout(activateGlobe, 800);
+  // Fallback start
+  setTimeout(() => { running = true; }, 500);
 
-  // Center button — toggle pause/spin
-  centerBtn.addEventListener('click', () => {
-    if (!globeActive) { activateGlobe(); return; }
-    autoSpin = !autoSpin;
-    centerBtn.innerHTML = autoSpin
-      ? '<span style="font-size:1.3rem">✦</span>'
-      : '<span style="font-size:0.68rem;letter-spacing:0.06em">PAUSE</span>';
-    centerBtn.classList.add('spinning');
-    setTimeout(() => centerBtn.classList.remove('spinning'), 600);
-  });
-
-  // ── MOUSE PARALLAX ──
-  globeSection.addEventListener('mousemove', e => {
-    const r = globeSection.getBoundingClientRect();
-    mouseNX = ((e.clientX - r.left)  / r.width  - 0.5) * 2;
-    mouseNY = ((e.clientY - r.top)   / r.height - 0.5) * 2;
-    isHovering = true;
-  });
-  globeSection.addEventListener('mouseleave', () => {
-    isHovering = false; mouseNX = 0; mouseNY = 0;
-  });
-
-  // ── DRAG ──
-  container.addEventListener('mousedown', e => {
-    if (centerBtn.contains(e.target)) return;
-    isDragging = true; autoSpin = false;
-    dragStartX = e.clientX; dragStartY = e.clientY;
-    dragRotY = rotY; dragRotX = rotX;
-    container.style.cursor = 'grabbing';
-  });
-  document.addEventListener('mousemove', e => {
-    if (!isDragging) return;
-    rotY = dragRotY + (e.clientX - dragStartX) * 0.007;
-    rotX = Math.max(-0.8, Math.min(0.8, dragRotX + (e.clientY - dragStartY) * 0.007));
-  });
-  document.addEventListener('mouseup', () => {
-    if (!isDragging) return;
-    isDragging = false; container.style.cursor = '';
-    setTimeout(() => { autoSpin = true; }, 1500);
-  });
-
-  // ── TOUCH ──
-  container.addEventListener('touchstart', e => {
-    if (e.touches.length !== 1) return;
-    isDragging = true; autoSpin = false;
-    dragStartX = e.touches[0].clientX; dragStartY = e.touches[0].clientY;
-    dragRotY = rotY; dragRotX = rotX;
-  }, { passive: true });
-  container.addEventListener('touchmove', e => {
-    if (!isDragging || e.touches.length !== 1) return;
-    rotY = dragRotY + (e.touches[0].clientX - dragStartX) * 0.007;
-    rotX = Math.max(-0.8, Math.min(0.8, dragRotX + (e.touches[0].clientY - dragStartY) * 0.007));
-  }, { passive: true });
-  container.addEventListener('touchend', () => { isDragging = false; setTimeout(()=>{autoSpin=true;},1500); });
-
-  render(); // kick off immediately
+  // Kick off
+  render();
 })();
 </script>
 </body>
