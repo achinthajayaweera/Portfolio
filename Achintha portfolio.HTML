@@ -247,26 +247,17 @@
 </section>
 <section class="scratch-section" id="skills">
   <div class="section-label reveal">What I Know</div>
-  <p class="scratch-sub reveal">Scroll down to scratch · Scroll up to restore</p>
-  <div class="scratch-wrapper" id="scratchWrapper">
-    <div class="sc-card" id="scCard">
-      <div class="sc-topbar">
-        <div class="sc-icon-box">
-          <svg width="16" height="16" viewBox="0 0 20 20" fill="none">
-            <rect x="1" y="1" width="7" height="7" rx="1" fill="white" opacity="0.9"/>
-            <rect x="12" y="1" width="7" height="7" rx="1" fill="white" opacity="0.9"/>
-            <rect x="1" y="12" width="7" height="7" rx="1" fill="white" opacity="0.9"/>
-            <rect x="12" y="12" width="7" height="7" rx="1" fill="white" opacity="0.9"/>
-          </svg>
-        </div>
-        <div class="sc-top-right">For Achintha</div>
-      </div>
-      <div class="sc-holo"><canvas id="holoCanvas" class="sc-holo-canvas"></canvas></div>
-      <canvas id="scratchCanvas" class="sc-scratch-canvas"></canvas>
-      <div class="sc-bottombar">
-        <div class="sc-bottom-left"><span class="sc-meta">PLAN / PRO</span><span class="sc-meta">PERIOD / 4+ YRS</span></div>
-        <div class="sc-bottom-right"><span class="sc-meta">GENERATED</span><span class="sc-meta">2026 · LK</span></div>
-      </div>
+  <p class="scratch-sub reveal">Scroll to scratch · Works on all devices</p>
+
+  <div class="scratch-wrapper" id="scratchWrapper" style="max-width:900px;width:100%;opacity:0;transform:scale(0.04);transition:transform 1.2s cubic-bezier(0.16,1,0.3,1),opacity 0.5s ease;">
+    <div style="position:relative;width:100%;border-radius:20px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,0.6),0 0 0 1px rgba(255,255,255,0.08);">
+      <iframe
+        src="https://small-startup-076587.framer.app/"
+        style="width:100%;height:580px;border:none;display:block;border-radius:20px;"
+        allow="fullscreen"
+        loading="lazy"
+        title="Scratch Reveal - What I Know"
+      ></iframe>
     </div>
   </div>
 </section>
@@ -388,165 +379,18 @@ const co=new IntersectionObserver(entries=>{entries.forEach(entry=>{if(entry.isI
 // HERO PARALLAX
 document.addEventListener('mousemove',e=>{const orb=document.querySelector('.hero-orb');if(!orb)return;orb.style.transform=`translate(${(e.clientX/window.innerWidth-0.5)*40}px,${(e.clientY/window.innerHeight-0.5)*40}px)`});
 
-// ── SCRATCH CARD ──────────────────────────────────────────────────────────────
+// ── SCRATCH IFRAME POP-IN ─────────────────────────────────────────────────────
 (function(){
-  const wrapper=document.getElementById('scratchWrapper'),scCard=document.getElementById('scCard');
-  const scratchC=document.getElementById('scratchCanvas'),holoC=document.getElementById('holoCanvas');
-  const subLabel=document.querySelector('.scratch-sub');
-  let W=0,H=0,sCtx,hCtx,cardPopped=false,lastP=-1;
-
-  function drawHolo(){
-    hCtx.clearRect(0,0,W,H);
-    const g=hCtx.createRadialGradient(W*.22,H*.42,0,W*.55,H*.55,W*.9);
-    g.addColorStop(0,'#00ff85');g.addColorStop(.15,'#00e070');g.addColorStop(.35,'#00b880');
-    g.addColorStop(.55,'#0090a8');g.addColorStop(.75,'#0060c0');g.addColorStop(1,'#003878');
-    hCtx.fillStyle=g;hCtx.fillRect(0,0,W,H);
-    const sp=W/44;
-    for(let x=sp*.5;x<W;x+=sp)for(let y=sp*.5;y<H;y+=sp){
-      hCtx.globalAlpha=.12+(x/W)*.28;hCtx.fillStyle='rgba(200,255,235,1)';
-      hCtx.beginPath();hCtx.arc(x,y,1.3,0,Math.PI*2);hCtx.fill();
-    }
-    hCtx.globalAlpha=1;
-  }
-
-  // STABLE NOISE — same result every call for same input
-  function sn(s){const v=Math.sin(s*127.1+311.7)*43758.5453;return v-Math.floor(v)}
-  function ei(t){return t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2}
-
-  function drawScratch(p){
-    sCtx.clearRect(0,0,W,H);
-    if(p<=0) return; // card clean, teal fully visible
-
-    const e=ei(p);
-
-    // ─────────────────────────────────────────────────────────
-    // CORRECT shape based on PDF frame analysis:
-    //
-    // The dark silhouette is a DIAGONAL SLASH / WING shape:
-    // - Starts as tiny mark at ~(15%W, 25%H) — upper-left area
-    // - Grows into a shape like a FLYING BIRD WING or BOOMERANG
-    // - Upper edge: runs roughly from (5%W,18%H) to (65%W,38%H) — JAGGED
-    // - Lower edge: runs from (5%W,58%H) to (65%W,42%H) — SMOOTH
-    // - Left side: thin, tapers (the "head" of the bird)
-    // - Right side: pointed tip where top and bottom edges meet
-    // - The shape is WIDEST in the middle (around x=35%W)
-    // - Does NOT touch top or bottom of card
-    // - Separate small blob to the right (x≈62%, y≈40%)
-    // ─────────────────────────────────────────────────────────
-
-    // Shape anchor — upper-left start point
-    const x0 = W * 0.05;
-    const y0 = H * 0.20;
-
-    // How far the shape extends right at full size
-    const xEnd = W * 0.68 * e;
-
-    const STEPS = 140;
-    const topPts = [], botPts = [];
-
-    for(let i=0;i<=STEPS;i++){
-      const t = i/STEPS;
-      const x = x0 + t * xEnd;
-
-      // TOP EDGE: starts at y=20%, ends at y=38% (diagonal sweep down-right)
-      // Shape is widest at t≈0.45 then tapers right
-      const topY = H*(0.20 + t*0.18*e);
-      // Jagged teeth on top edge — the scratch texture
-      const jag =
-        Math.sin(t*51+1.2)*H*0.026*e +
-        Math.sin(t*97+2.6)*H*0.013*e +
-        Math.sin(t*19+0.5)*H*0.016*e +
-        (sn(t*43+1)-0.5)*H*0.014*e;
-      topPts.push([x, topY+jag]);
-
-      // BOTTOM EDGE: starts at y=58%, tapers to meet top at y=40% at right tip
-      // Creates the wide-left, pointed-right wing shape
-      const botY = H*(0.58*e - t*0.20*e);
-      const bJag =
-        Math.sin(t*23+0.8)*H*0.009*e +
-        (sn(t*31+5)-0.5)*H*0.006*e;
-      botPts.push([x, botY+bJag]);
-    }
-
-    // Right pointed tip
-    const lt = topPts[topPts.length-1];
-    const lb = botPts[botPts.length-1];
-    const tipX = lt[0] + W*0.008*e;
-    const tipY = (lt[1]+lb[1])*0.5;
-
-    sCtx.save();
-    sCtx.beginPath();
-    sCtx.moveTo(topPts[0][0],topPts[0][1]);
-    for(let i=1;i<topPts.length;i++) sCtx.lineTo(topPts[i][0],topPts[i][1]);
-    sCtx.lineTo(tipX,tipY);
-    for(let i=botPts.length-1;i>=0;i--) sCtx.lineTo(botPts[i][0],botPts[i][1]);
-    sCtx.closePath();
-    sCtx.fillStyle='rgba(4,13,8,0.97)';
-    sCtx.fill();
-    sCtx.restore();
-
-    // Small head blob upper-left (appears first, PDF frames 4-6)
-    if(e>0.05){
-      const hP=Math.min(1,e*2.5);
-      const hx=W*0.08*hP, hy=H*0.22*hP;
-      const hrx=W*0.055*hP, hry=H*0.085*hP;
-      sCtx.save();sCtx.beginPath();
-      for(let i=0;i<=24;i++){
-        const a=(i/24)*Math.PI*2;
-        const jx=(sn(i*11+2)-.5)*hrx*.3, jy=(sn(i*7+8)-.5)*hry*.3;
-        const px=hx+(hrx+jx)*Math.cos(a), py=hy+(hry+jy)*Math.sin(a);
-        i===0?sCtx.moveTo(px,py):sCtx.lineTo(px,py);
-      }
-      sCtx.closePath();
-      sCtx.fillStyle=`rgba(4,13,8,${(0.95*hP).toFixed(2)})`;
-      sCtx.fill();sCtx.restore();
-    }
-
-    // Right detached blob (PDF frames 9-16)
-    if(e>0.50){
-      const rP=Math.min(1,(e-.50)/.50);
-      const rcx=W*(0.62+rP*.05), rcy=H*.40;
-      const rrx=W*.060*rP, rry=H*.075*rP;
-      sCtx.save();sCtx.beginPath();
-      for(let i=0;i<=22;i++){
-        const a=(i/22)*Math.PI*2;
-        const jx=(sn(i*13+3)-.5)*rrx*.35, jy=(sn(i*9+7)-.5)*rry*.35;
-        const px=rcx+(rrx+jx)*Math.cos(a), py=rcy+(rry+jy)*Math.sin(a);
-        i===0?sCtx.moveTo(px,py):sCtx.lineTo(px,py);
-      }
-      sCtx.closePath();
-      sCtx.fillStyle=`rgba(4,13,8,${(0.90*rP).toFixed(2)})`;
-      sCtx.fill();sCtx.restore();
-    }
-  }
-
-  function init(){
-    W=scCard.offsetWidth;H=scCard.offsetHeight;
-    holoC.width=scratchC.width=W;holoC.height=scratchC.height=H;
-    hCtx=holoC.getContext('2d');sCtx=scratchC.getContext('2d');
-    drawHolo();drawScratch(0);
-  }
-
+  const wrapper=document.getElementById('scratchWrapper');
+  if(!wrapper)return;
   new IntersectionObserver(entries=>{
     entries.forEach(e=>{
-      if(e.isIntersecting&&!cardPopped){
-        cardPopped=true;wrapper.classList.add('popped');
-        subLabel&&subLabel.classList.add('visible');
-        setTimeout(init,500);
+      if(e.isIntersecting){
+        wrapper.style.opacity='1';
+        wrapper.style.transform='scale(1)';
       }
     });
-  },{threshold:0.25}).observe(wrapper);
-
-  function onScroll(){
-    if(!sCtx)return;
-    const rect=document.getElementById('skills').getBoundingClientRect();
-    const raw=(window.innerHeight-rect.top)/(window.innerHeight*1.2);
-    const p=Math.max(0,Math.min(1,raw));
-    if(Math.abs(p-lastP)<.003)return;
-    lastP=p;drawScratch(p);
-  }
-  window.addEventListener('scroll',onScroll,{passive:true});
-  window.addEventListener('resize',()=>{if(cardPopped)init()});
+  },{threshold:0.15}).observe(wrapper);
 })();
 
 // ── ORBITAL GLOBE ─────────────────────────────────────────────────────────────
