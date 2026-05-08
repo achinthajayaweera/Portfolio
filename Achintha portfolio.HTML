@@ -138,7 +138,8 @@
   .loader-pct{font-family:'DM Mono',monospace;font-size:0.75rem;color:var(--muted);letter-spacing:0.1em}
 
   /* SCRATCH */
-  .scratch-section{padding:8rem 3rem 4rem;background:var(--bg);border-top:1px solid var(--border);display:flex;flex-direction:column;align-items:center}
+  .scratch-section{padding:8rem 3rem 0rem;background:var(--bg);border-top:1px solid var(--border);display:flex;flex-direction:column;align-items:center;position:relative;}
+  .scratch-section::after{content:'';position:absolute;bottom:0;left:0;right:0;height:100px;background:linear-gradient(to bottom,transparent,var(--bg));pointer-events:none;z-index:5;}
   .scratch-section .section-label{align-self:flex-start;width:100%}
   .scratch-sub{align-self:flex-start;font-family:'DM Mono',monospace;font-size:0.72rem;letter-spacing:0.15em;color:var(--muted);text-transform:uppercase;margin-bottom:3rem;margin-top:-2rem;opacity:0;transform:translateY(10px)}
   .scratch-sub.visible{opacity:1;transform:translateY(0);transition:all 0.6s ease 0.2s}
@@ -268,7 +269,25 @@
   </div>
 </section>
 <div class="orbital-section" id="orbitalSection" style="padding:0;overflow:hidden;height:100vh;position:relative;">
-  <div class="orbital-label" style="z-index:10;">What I Know</div>
+  <!-- Soft top fade — blends scratch section into globe -->
+  <div style="
+    position:absolute;
+    top:0;left:0;right:0;
+    height:180px;
+    background:linear-gradient(to bottom, #080808 0%, rgba(8,8,8,0.7) 40%, transparent 100%);
+    pointer-events:none;
+    z-index:20;
+  "></div>
+  <!-- Soft bottom fade -->
+  <div style="
+    position:absolute;
+    bottom:0;left:0;right:0;
+    height:120px;
+    background:linear-gradient(to top, #080808 0%, transparent 100%);
+    pointer-events:none;
+    z-index:20;
+  "></div>
+  <div class="orbital-label" style="z-index:30;">What I Know</div>
   <iframe
     src="https://broader-follow-689179.framer.app/"
     style="position:absolute;inset:0;width:100%;height:100%;border:none;display:block;background:#000;"
