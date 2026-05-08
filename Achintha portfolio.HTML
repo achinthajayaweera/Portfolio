@@ -129,13 +129,119 @@
   .skill-pill{flex-shrink:0;border:1px solid var(--border-light);padding:0.6rem 1.2rem;font-size:0.8rem;color:var(--muted);letter-spacing:0.06em;transition:all 0.3s;white-space:nowrap}
   .skill-pill:hover{border-color:var(--accent);color:var(--accent)}
   .counter{font-variant-numeric:tabular-nums}
-  .loader{position:fixed;inset:0;background:var(--bg);z-index:1000;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:1.5rem;transition:opacity 0.6s ease,visibility 0.6s ease}
-  .loader.done{opacity:0;visibility:hidden}
-  .loader-name{font-family:'Bebas Neue',sans-serif;font-size:1.8rem;letter-spacing:0.25em;color:var(--text)}
-  .loader-bar-wrap{width:200px;height:1px;background:var(--border-light);position:relative;overflow:hidden}
-  .loader-bar{position:absolute;top:0;left:0;height:100%;width:0;background:var(--accent);animation:loadBar 1.6s cubic-bezier(0.4,0,0.2,1) forwards}
-  @keyframes loadBar{to{width:100%}}
-  .loader-pct{font-family:'DM Mono',monospace;font-size:0.75rem;color:var(--muted);letter-spacing:0.1em}
+  /* ── CINEMATIC LOADER ── */
+  .loader{
+    position:fixed;inset:0;z-index:10000;
+    background:var(--accent);
+    display:flex;align-items:center;justify-content:center;
+    flex-direction:column;
+    transition:opacity 0.8s ease, visibility 0.8s ease;
+  }
+  .loader.done{opacity:0;visibility:hidden;pointer-events:none;}
+
+  .ld-scene{
+    position:relative;
+    display:flex;flex-direction:column;
+    align-items:center;justify-content:center;
+    gap:0;
+  }
+
+  /* The logo SVG container */
+  .ld-logo{
+    position:relative;
+    width:200px;height:200px;
+    display:flex;align-items:center;justify-content:center;
+  }
+
+  /* Triangle (A shape) */
+  .ld-triangle{
+    position:absolute;
+    width:0;height:0;
+    border-left:40px solid transparent;
+    border-right:40px solid transparent;
+    border-bottom:70px solid #080808;
+    top:50%;left:50%;
+    transform:translate(-50%,-60%) scale(0);
+    transform-origin:center bottom;
+    opacity:0;
+  }
+
+  /* Three dots */
+  .ld-dot{
+    position:absolute;
+    width:22px;height:22px;
+    background:#080808;
+    border-radius:50%;
+    transform:scale(0);
+    opacity:0;
+  }
+  .ld-dot-top{ top:18%; left:50%; transform:translateX(-50%) scale(0); }
+  .ld-dot-bl { bottom:22%; left:22%; transform:scale(0); }
+  .ld-dot-br { bottom:22%; right:22%; transform:scale(0); }
+
+  /* Three arm strokes */
+  .ld-arm{
+    position:absolute;
+    background:#080808;
+    border-radius:20px;
+    transform-origin:center;
+    transform:scale(0);
+    opacity:0;
+  }
+  /* Left arm — diagonal going bottom-left */
+  .ld-arm-l{
+    width:70px;height:16px;
+    bottom:24%;left:14%;
+    transform:rotate(-35deg) scale(0);
+  }
+  /* Right arm — diagonal going bottom-right */
+  .ld-arm-r{
+    width:70px;height:16px;
+    bottom:24%;right:10%;
+    transform:rotate(20deg) scale(0);
+  }
+  /* Top arm — the tall vertical stroke */
+  .ld-arm-t{
+    width:16px;height:80px;
+    top:10%;left:50%;
+    transform:translateX(-50%) scale(0);
+    border-radius:20px 20px 8px 8px;
+  }
+
+  /* Name text */
+  .ld-name{
+    font-family:'Bebas Neue',sans-serif;
+    font-size:1.3rem;
+    letter-spacing:0.22em;
+    color:#080808;
+    opacity:0;
+    transform:translateY(8px);
+    margin-top:8px;
+    white-space:nowrap;
+  }
+
+  /* Loading bar */
+  .ld-bar-wrap{
+    width:180px;height:1px;
+    background:rgba(8,8,8,0.2);
+    margin-top:2rem;
+    position:relative;overflow:hidden;
+    opacity:0;
+  }
+  .ld-bar-fill{
+    position:absolute;top:0;left:0;
+    height:100%;width:0;
+    background:#080808;
+    transition:width 0.1s linear;
+  }
+  .ld-pct{
+    font-family:'DM Mono',monospace;
+    font-size:0.65rem;
+    letter-spacing:0.15em;
+    color:rgba(8,8,8,0.6);
+    margin-top:0.5rem;
+    opacity:0;
+  }
 
   /* SCRATCH */
   .scratch-section{padding:8rem 3rem 0rem;background:var(--bg);border-top:1px solid var(--border);display:flex;flex-direction:column;align-items:center;position:relative;}
@@ -178,9 +284,25 @@
 </head>
 <body>
 <div class="loader" id="loader">
-  <div class="loader-name"><img src="Assets/A Final.png" alt="AJ" style="height:60px;width:auto;filter:brightness(0) invert(1);"></div>
-  <div class="loader-bar-wrap"><div class="loader-bar"></div></div>
-  <div class="loader-pct" id="loader-pct">0%</div>
+  <div class="ld-scene">
+    <div class="ld-logo" id="ldLogo">
+      <!-- Triangle (inner A shape) -->
+      <div class="ld-triangle" id="ldTriangle"></div>
+      <!-- Three dots -->
+      <div class="ld-dot ld-dot-top" id="ldDot1"></div>
+      <div class="ld-dot ld-dot-bl"  id="ldDot2"></div>
+      <div class="ld-dot ld-dot-br"  id="ldDot3"></div>
+      <!-- Three arms -->
+      <div class="ld-arm ld-arm-t" id="ldArmT"></div>
+      <div class="ld-arm ld-arm-l" id="ldArmL"></div>
+      <div class="ld-arm ld-arm-r" id="ldArmR"></div>
+    </div>
+    <div class="ld-name" id="ldName">ACHINTHA JAYAWEERA</div>
+    <div class="ld-bar-wrap" id="ldBarWrap">
+      <div class="ld-bar-fill" id="ldBarFill"></div>
+    </div>
+    <div class="ld-pct" id="ldPct">0%</div>
+  </div>
 </div>
 <div class="cursor" id="cursor"></div>
 <div class="cursor-trail" id="cursorTrail"></div>
@@ -397,7 +519,89 @@
 </footer>
 <script>
 // LOADER
-const loader=document.getElementById('loader'),pct=document.getElementById('loader-pct');let lp=0;const lt=setInterval(()=>{lp+=Math.random()*20;if(lp>=100){lp=100;clearInterval(lt);setTimeout(()=>loader.classList.add('done'),200)}pct.textContent=Math.floor(lp)+'%'},80);
+// ── CINEMATIC LOADER ANIMATION ────────────────────────────────────────────────
+(function(){
+  const loader  = document.getElementById('loader');
+  const tri     = document.getElementById('ldTriangle');
+  const dot1    = document.getElementById('ldDot1');
+  const dot2    = document.getElementById('ldDot2');
+  const dot3    = document.getElementById('ldDot3');
+  const armT    = document.getElementById('ldArmT');
+  const armL    = document.getElementById('ldArmL');
+  const armR    = document.getElementById('ldArmR');
+  const name    = document.getElementById('ldName');
+  const barWrap = document.getElementById('ldBarWrap');
+  const barFill = document.getElementById('ldBarFill');
+  const pct     = document.getElementById('ldPct');
+
+  // Bubble helper: scale 0 → big → settle at normal
+  function bubble(el, delay, finalTransform) {
+    setTimeout(() => {
+      el.style.transition = 'none';
+      el.style.opacity = '1';
+      el.style.transform = finalTransform.replace('scale(1)', 'scale(0)');
+      // Force reflow
+      el.offsetHeight;
+      el.style.transition = 'transform 0.35s cubic-bezier(0.34,1.56,0.64,1), opacity 0.2s ease';
+      el.style.transform = finalTransform.replace('scale(1)', 'scale(1.45)');
+      setTimeout(() => {
+        el.style.transition = 'transform 0.25s cubic-bezier(0.16,1,0.3,1)';
+        el.style.transform = finalTransform;
+      }, 350);
+    }, delay);
+  }
+
+  function fadeIn(el, delay, extraStyles) {
+    setTimeout(() => {
+      Object.assign(el.style, { opacity:'1', transition:'opacity 0.4s ease, transform 0.4s ease', transform:'translateY(0)', ...extraStyles });
+    }, delay);
+  }
+
+  // SEQUENCE —————————————————————————
+  // T=0:    Triangle bubbles in
+  bubble(tri, 100, 'translate(-50%, -60%) scale(1)');
+
+  // T=500:  Three dots bubble in (staggered)
+  bubble(dot1, 600,  'translateX(-50%) scale(1)');
+  bubble(dot2, 720,  'scale(1)');
+  bubble(dot3, 840,  'scale(1)');
+
+  // T=1100: Three arms pop in (staggered)
+  bubble(armT, 1100, 'translateX(-50%) scale(1)');
+  bubble(armL, 1220, 'rotate(-35deg) scale(1)');
+  bubble(armR, 1340, 'rotate(20deg) scale(1)');
+
+  // T=1700: Name fades up
+  setTimeout(() => {
+    name.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+    name.style.opacity    = '1';
+    name.style.transform  = 'translateY(0)';
+  }, 1700);
+
+  // T=2100: Bar + pct appear, then count to 100
+  setTimeout(() => {
+    barWrap.style.transition = 'opacity 0.4s ease';
+    barWrap.style.opacity    = '1';
+    pct.style.transition     = 'opacity 0.4s ease';
+    pct.style.opacity        = '1';
+
+    let progress = 0;
+    const interval = setInterval(() => {
+      progress += Math.random() * 8 + 3;
+      if (progress >= 100) {
+        progress = 100;
+        clearInterval(interval);
+        barFill.style.width = '100%';
+        pct.textContent     = '100%';
+        // Done — fade out loader after short pause
+        setTimeout(() => loader.classList.add('done'), 500);
+      } else {
+        barFill.style.width = progress + '%';
+        pct.textContent     = Math.floor(progress) + '%';
+      }
+    }, 80);
+  }, 2100);
+})();
 // CURSOR
 const cursor=document.getElementById('cursor'),trail=document.getElementById('cursorTrail');let mx=0,my=0,tx=0,ty=0;document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cursor.style.left=mx+'px';cursor.style.top=my+'px'});function animTrail(){tx+=(mx-tx)*0.12;ty+=(my-ty)*0.12;trail.style.left=tx+'px';trail.style.top=ty+'px';requestAnimationFrame(animTrail)}animTrail();
 document.querySelectorAll('a,button,.skill-card,.project-card,.exp-item,.orb-bubble').forEach(el=>{el.addEventListener('mouseenter',()=>{cursor.style.transform='translate(-50%,-50%) scale(2.5)';trail.style.transform='translate(-50%,-50%) scale(1.5)';trail.style.borderColor='rgba(200,245,66,0.6)'});el.addEventListener('mouseleave',()=>{cursor.style.transform='translate(-50%,-50%) scale(1)';trail.style.transform='translate(-50%,-50%) scale(1)';trail.style.borderColor='rgba(200,245,66,0.4)'})});
