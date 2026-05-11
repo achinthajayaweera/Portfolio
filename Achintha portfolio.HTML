@@ -62,7 +62,6 @@
   .about-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;border-top:1px solid var(--border);padding-top:2rem}
   .stat-num{font-family:'Bebas Neue',sans-serif;font-size:3rem;color:var(--text);line-height:1}
   .stat-label{font-size:0.75rem;color:var(--muted);letter-spacing:0.08em;text-transform:uppercase;margin-top:0.3rem}
-  .skills-section{background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
   .skills-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1px;background:var(--border);border:1px solid var(--border);margin-top:3rem}
   .skill-card{background:var(--bg2);padding:2rem 1.8rem;transition:background 0.3s;position:relative;overflow:hidden}
   .skill-card::before{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:var(--accent);transform:scaleX(0);transform-origin:left;transition:transform 0.4s cubic-bezier(0.16,1,0.3,1)}
@@ -120,159 +119,122 @@
   .footer-logo{font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:0.12em;color:var(--muted)}
   .reveal{opacity:0;transform:translateY(40px);transition:opacity 0.9s cubic-bezier(0.16,1,0.3,1),transform 0.9s cubic-bezier(0.16,1,0.3,1)}
   .reveal.visible{opacity:1;transform:translateY(0)}
-  .reveal-delay-1{transition-delay:0.1s}
-  .reveal-delay-2{transition-delay:0.2s}
-  .reveal-delay-3{transition-delay:0.3s}
-  .reveal-delay-4{transition-delay:0.4s}
+  .reveal-delay-1{transition-delay:0.1s}.reveal-delay-2{transition-delay:0.2s}.reveal-delay-3{transition-delay:0.3s}.reveal-delay-4{transition-delay:0.4s}
   .skills-scroller{display:flex;gap:2rem;overflow-x:auto;scrollbar-width:none;padding-bottom:1rem;margin-top:2rem}
   .skills-scroller::-webkit-scrollbar{display:none}
   .skill-pill{flex-shrink:0;border:1px solid var(--border-light);padding:0.6rem 1.2rem;font-size:0.8rem;color:var(--muted);letter-spacing:0.06em;transition:all 0.3s;white-space:nowrap}
   .skill-pill:hover{border-color:var(--accent);color:var(--accent)}
   .counter{font-variant-numeric:tabular-nums}
-
-  /* ══════════════════════════════════════════════
-     CINEMATIC LOADER — pure CSS shapes, no PNGs
-  ══════════════════════════════════════════════ */
-  .loader{
-    position:fixed;inset:0;z-index:10000;
-    background:var(--accent);
-    display:flex;align-items:center;justify-content:center;flex-direction:column;
-    transition:opacity 0.9s ease, visibility 0.9s ease;
-    overflow:hidden;
-  }
-  .loader.done{opacity:0;visibility:hidden;pointer-events:none;}
-
-  /* Logo container — all shapes positioned relative to this */
-  .ld-logo{
-    position:relative;
-    width:200px;height:200px;
-  }
-
-  /* ── CENTER TRIANGLE (CSS border trick) ── */
-  /* Starts at scale(0), bubbles to fill screen, settles */
-  .ld-tri{
-    position:absolute;
-    width:0;height:0;
-    border-left:  44px solid transparent;
-    border-right: 44px solid transparent;
-    border-bottom:76px solid #080808;
-    top:50%;left:50%;
-    transform:translate(-50%,-60%) scale(0);
-    transform-origin:50% 75%;
-    opacity:0;
-    will-change:transform,opacity;
-  }
-
-  /* ── 3 DOTS (circles) — appear after triangle settles ── */
-  .ld-dot{
-    position:absolute;
-    background:#080808;
-    border-radius:50%;
-    opacity:0;
-    will-change:transform,opacity;
-  }
-  /* Positions match frame 4: one top-center, two bottom-left & bottom-right */
-  .ld-dot-t  { width:16px;height:16px; top:14%; left:50%; transform:translate(-50%,-50%) scale(0); }
-  .ld-dot-bl { width:16px;height:16px; top:72%; left:18%; transform:translate(-50%,-50%) scale(0); }
-  .ld-dot-br { width:16px;height:16px; top:72%; left:82%; transform:translate(-50%,-50%) scale(0); }
-
-  /* ── 3 PILL ARMS — appear after dots, form logo ── */
-  /* Each is a rounded rectangle rotated into propeller position */
-  .ld-arm{
-    position:absolute;
-    background:#080808;
-    border-radius:40px;
-    opacity:0;
-    will-change:transform,opacity;
-  }
-  /* Top arm: tall pill, pointing straight up from center */
-  .ld-arm-t{
-    width:34px;height:106px;
-    top:50%;left:50%;
-    transform:translate(-50%,-92%) scale(0);
-    transform-origin:50% 100%;
-    border-radius:40px 40px 12px 12px;
-  }
-  /* Bottom-left arm: rotated -120deg */
-  .ld-arm-bl{
-    width:34px;height:106px;
-    top:50%;left:50%;
-    transform:translate(-50%,-8%) rotate(-120deg) scale(0);
-    transform-origin:50% 0%;
-    border-radius:40px 40px 12px 12px;
-  }
-  /* Bottom-right arm: rotated +120deg */
-  .ld-arm-br{
-    width:34px;height:106px;
-    top:50%;left:50%;
-    transform:translate(-50%,-8%) rotate(120deg) scale(0);
-    transform-origin:50% 0%;
-    border-radius:40px 40px 12px 12px;
-  }
-
-  /* ── NAME ── */
-  .ld-name{
-    font-family:'Bebas Neue',sans-serif;
-    font-size:1.8rem;
-    font-weight:400;
-    letter-spacing:0.25em;
-    color:#080808;
-    opacity:0;
-    transform:translateY(14px);
-    margin-top:18px;
-    white-space:nowrap;
-  }
-
-  /* ── LOADING BAR ── */
-  .ld-bar-wrap{
-    width:200px;height:1.5px;
-    background:rgba(8,8,8,0.2);
-    margin-top:1.6rem;
-    position:relative;overflow:hidden;
-    opacity:0;
-  }
-  .ld-bar-fill{
-    position:absolute;top:0;left:0;
-    height:100%;width:0;
-    background:#080808;
-    transition:width 0.12s linear;
-  }
-  .ld-pct{
-    font-family:'DM Mono',monospace;
-    font-size:0.62rem;
-    letter-spacing:0.18em;
-    color:rgba(8,8,8,0.5);
-    margin-top:0.5rem;
-    opacity:0;
-  }
-
-  /* SCRATCH */
   .scratch-section{padding:8rem 3rem 0rem;background:var(--bg);border-top:1px solid var(--border);display:flex;flex-direction:column;align-items:center;position:relative;}
   .scratch-section::after{content:'';position:absolute;bottom:0;left:0;right:0;height:100px;background:linear-gradient(to bottom,transparent,var(--bg));pointer-events:none;z-index:5;}
   .scratch-section .section-label{align-self:flex-start;width:100%}
   .scratch-sub{align-self:flex-start;font-family:'DM Mono',monospace;font-size:0.72rem;letter-spacing:0.15em;color:var(--muted);text-transform:uppercase;margin-bottom:3rem;margin-top:-2rem;opacity:0;transform:translateY(10px)}
   .scratch-sub.visible{opacity:1;transform:translateY(0);transition:all 0.6s ease 0.2s}
-  .scratch-wrapper{width:100%;max-width:760px;opacity:0;transform:scale(0.04);transition:transform 1.2s cubic-bezier(0.16,1,0.3,1),opacity 0.5s ease}
-  .scratch-wrapper.popped{opacity:1;transform:scale(1)}
-
-  /* ORBITAL */
-  .orbital-section{width:100%;height:100vh;min-height:640px;position:relative;overflow:hidden;background:#050808}
   .orbital-label{position:absolute;top:2.5rem;left:3rem;font-family:'DM Mono',monospace;font-size:0.65rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--accent);z-index:10;display:flex;align-items:center;gap:0.8rem}
   .orbital-label::after{content:'';width:40px;height:1px;background:var(--accent);opacity:0.4}
+
+  /* ══ LOADER ══════════════════════════════════════════════════════
+     lime green bg, all shapes assembled from PNG assets
+     Sequence matches PDF exactly using correct element roles
+  ════════════════════════════════════════════════════════════════ */
+  .loader{
+    position:fixed;inset:0;z-index:10000;
+    background:#c8f542;
+    display:flex;align-items:center;justify-content:center;flex-direction:column;
+    overflow:hidden;
+    transition:opacity 0.9s ease,visibility 0.9s ease;
+  }
+  .loader.done{opacity:0;visibility:hidden;pointer-events:none;}
+
+  /*
+    The logo (from image 2):
+    3x Triangle.png arranged as a propeller — each one rotated 120° apart.
+    Each Triangle.png has its ROUND end outward and POINTED end toward center.
+    The middle triangle.png sits in the negative space at center.
+    Total logo ~220px wide.
+
+    We use a 260×260 stage. transform-origin is key:
+    - Each arm pivots from its POINTED tip (which faces center).
+    - The pointed tip of each Triangle.png is at the BOTTOM of the image.
+    - So transform-origin: 50% 100% = pivot from bottom-center (pointed tip).
+    - Top arm: no rotation (round end up)
+    - BL arm:  rotate(120deg) — goes bottom-left
+    - BR arm:  rotate(-120deg) — goes bottom-right
+  */
+  .ld-stage{
+    position:relative;
+    width:260px;height:260px;
+  }
+
+  /* ── MIDDLE TRIANGLE — center of logo, appears first ── */
+  .ld-mid-tri{
+    position:absolute;
+    width:54px;height:auto;
+    /* center it in stage */
+    top:50%;left:50%;
+    transform:translate(-50%,-50%) scale(0);
+    opacity:0;
+    will-change:transform,opacity;
+  }
+
+  /* ── 3x Triangle.png ARMS ──
+     Each arm's pointed end faces the center.
+     Looking at image 2: the pointed tip is at bottom of Triangle.png,
+     round bulge is at top. Arms radiate outward from center.
+     We position each so its POINTED END is at center (50%,50% of stage).
+     arm height ~110px, so we offset by -110px upward from center for top arm.
+  */
+  .ld-arm{
+    position:absolute;
+    width:68px;height:auto;
+    top:50%;left:50%;
+    opacity:0;
+    will-change:transform,opacity;
+    /* pivot from the pointed tip = bottom of image */
+    transform-origin:50% 100%;
+  }
+  /* TOP arm: pointed tip at center, round end goes straight UP */
+  .ld-arm-t{
+    transform:translate(-50%,-100%) rotate(0deg) scale(0);
+  }
+  /* BOTTOM-LEFT arm: rotate 120deg clockwise from top position */
+  .ld-arm-bl{
+    transform:translate(-50%,-100%) rotate(120deg) scale(0);
+  }
+  /* BOTTOM-RIGHT arm: rotate -120deg (240deg) from top position */
+  .ld-arm-br{
+    transform:translate(-50%,-100%) rotate(-120deg) scale(0);
+  }
+
+  /* ── NAME ── */
+  .ld-name{
+    font-family:'Bebas Neue',sans-serif;
+    font-size:1.6rem;
+    font-weight:700;
+    letter-spacing:0.22em;
+    color:#080808;
+    opacity:0;
+    transform:translateY(14px);
+    margin-top:22px;
+    white-space:nowrap;
+  }
+  /* ── BAR ── */
+  .ld-bar-wrap{width:200px;height:1.5px;background:rgba(8,8,8,0.2);margin-top:1.4rem;position:relative;overflow:hidden;opacity:0;}
+  .ld-bar-fill{position:absolute;top:0;left:0;height:100%;width:0;background:#080808;transition:width 0.12s linear;}
+  .ld-pct{font-family:'DM Mono',monospace;font-size:0.62rem;letter-spacing:0.18em;color:rgba(8,8,8,0.5);margin-top:0.45rem;opacity:0;}
 </style>
 </head>
 <body>
 
 <!-- ══ LOADER ══ -->
 <div class="loader" id="loader">
-  <div class="ld-logo" id="ldLogo">
-    <div class="ld-tri"    id="ldTri"></div>
-    <div class="ld-dot ld-dot-t"  id="ldDotT"></div>
-    <div class="ld-dot ld-dot-bl" id="ldDotBL"></div>
-    <div class="ld-dot ld-dot-br" id="ldDotBR"></div>
-    <div class="ld-arm ld-arm-t"  id="ldArmT"></div>
-    <div class="ld-arm ld-arm-bl" id="ldArmBL"></div>
-    <div class="ld-arm ld-arm-br" id="ldArmBR"></div>
+  <div class="ld-stage">
+    <!-- Center triangle — appears first, big bubble, shrinks to final -->
+    <img class="ld-mid-tri" id="ldMidTri" src="Assets/middle triangle.png" alt="">
+    <!-- 3 arms — Triangle.png, each rotated 120° apart, round end outward -->
+    <img class="ld-arm ld-arm-t"  id="ldArmT"  src="Assets/Triangle.png" alt="">
+    <img class="ld-arm ld-arm-bl" id="ldArmBL" src="Assets/Triangle.png" alt="">
+    <img class="ld-arm ld-arm-br" id="ldArmBR" src="Assets/Triangle.png" alt="">
   </div>
   <div class="ld-name"     id="ldName">ACHINTHA JAYAWEERA</div>
   <div class="ld-bar-wrap" id="ldBarWrap"><div class="ld-bar-fill" id="ldBarFill"></div></div>
@@ -355,14 +317,14 @@
 <section class="scratch-section" id="skills">
   <div class="section-label reveal">What I Know</div>
   <p class="scratch-sub reveal">Scratch the card to reveal my skills</p>
-  <div class="scratch-wrapper" id="scratchWrapper" style="max-width:900px;width:100%;opacity:0;transform:scale(0.04);transition:transform 1.2s cubic-bezier(0.16,1,0.3,1),opacity 0.5s ease;">
+  <div id="scratchWrapper" style="max-width:900px;width:100%;opacity:0;transform:scale(0.04);transition:transform 1.2s cubic-bezier(0.16,1,0.3,1),opacity 0.5s ease;">
     <div style="position:relative;width:100%;border-radius:16px;overflow:hidden;background:var(--bg);">
       <iframe src="https://small-startup-076587.framer.app/" style="width:100%;height:600px;border:none;display:block;background:var(--bg);" allow="fullscreen" loading="lazy" scrolling="no" title="Scratch Reveal"></iframe>
     </div>
   </div>
 </section>
 
-<div class="orbital-section" id="orbitalSection" style="padding:0;overflow:hidden;height:100vh;position:relative;">
+<div style="padding:0;overflow:hidden;height:100vh;position:relative;background:#050808;">
   <div style="position:absolute;top:0;left:0;right:0;height:180px;background:linear-gradient(to bottom,#080808 0%,rgba(8,8,8,0.7) 40%,transparent 100%);pointer-events:none;z-index:20;"></div>
   <div style="position:absolute;bottom:0;left:0;right:0;height:120px;background:linear-gradient(to top,#080808 0%,transparent 100%);pointer-events:none;z-index:20;"></div>
   <div class="orbital-label" style="z-index:30;">What I Know</div>
@@ -473,23 +435,22 @@
 </footer>
 
 <script>
-/* ══════════════════════════════════════════════════════════
-   LOADER — exact PDF sequence
-   F1: tiny tri appears
-   F2: tri scales HUGE (fills screen)
-   F3: tri settles to normal size
-   F4: 3 dots pop in (small → bubble → settle)
-   F5: dots bigger
-   F6: dots vanish → 3 pill arms fly in → full logo
-   F7: name slides up
-   then: loading bar → done
-══════════════════════════════════════════════════════════ */
+/* ══════════════════════════════════════════════════════════════
+   LOADER SEQUENCE (matches image 2 logo structure exactly):
+
+   The logo = 3x Triangle.png (propeller arms, round-end outward)
+              + middle triangle.png in center gap
+
+   Animation order matching the PDF frames:
+   1. middle triangle.png: scale 0 → HUGE (fills screen) → normal size
+   2. 3x Triangle.png arms: spring in one by one with bubble overshoot
+   3. Name slides up
+   4. Loading bar 0→100%
+   5. Fade out → website
+══════════════════════════════════════════════════════════════ */
 (function(){
   const loader  = document.getElementById('loader');
-  const tri     = document.getElementById('ldTri');
-  const dotT    = document.getElementById('ldDotT');
-  const dotBL   = document.getElementById('ldDotBL');
-  const dotBR   = document.getElementById('ldDotBR');
+  const midTri  = document.getElementById('ldMidTri');
   const armT    = document.getElementById('ldArmT');
   const armBL   = document.getElementById('ldArmBL');
   const armBR   = document.getElementById('ldArmBR');
@@ -498,15 +459,14 @@
   const barFill = document.getElementById('ldBarFill');
   const pct     = document.getElementById('ldPct');
 
-  /* spring bubble helper: el scales 0 → overshoot → final */
-  function springIn(el, delay, finalTransform, overshoot) {
-    overshoot = overshoot || 1.5;
-    // build overshoot transform by swapping scale(0) → scale(overshoot)
-    const over  = finalTransform.replace('scale(0)', 'scale('+overshoot+')');
-    const final = finalTransform.replace('scale(0)', 'scale(1)');
+  /* Spring bubble helper */
+  function springIn(el, delay, finalTx, overshoot) {
+    overshoot = overshoot || 1.45;
+    const over  = finalTx.replace('scale(0)', 'scale('+overshoot+')');
+    const final = finalTx.replace('scale(0)', 'scale(1)');
     setTimeout(() => {
-      el.style.opacity = '1';
-      el.style.transition = 'transform 0.44s cubic-bezier(0.34,1.8,0.64,1), opacity 0.12s ease';
+      el.style.opacity    = '1';
+      el.style.transition = 'transform 0.44s cubic-bezier(0.34,1.8,0.64,1), opacity 0.1s ease';
       el.style.transform  = over;
       setTimeout(() => {
         el.style.transition = 'transform 0.26s cubic-bezier(0.16,1,0.3,1)';
@@ -515,54 +475,34 @@
     }, delay);
   }
 
-  /* fade+shrink out helper */
-  function fadeOut(el, delay) {
-    setTimeout(() => {
-      el.style.transition = 'transform 0.2s ease, opacity 0.2s ease';
-      el.style.opacity    = '0';
-      el.style.transform  = el.style.transform.replace('scale(1)', 'scale(0.3)');
-    }, delay);
-  }
-
-  /* ── FRAME 1-3: Center triangle
-     tiny at first, then HUGE (scale 8 = fills screen), then normal ── */
+  /* STEP 1: middle triangle — tiny → HUGE (fills screen) → settles to normal */
   setTimeout(() => {
-    tri.style.opacity    = '1';
-    tri.style.transition = 'transform 0.5s cubic-bezier(0.34,1.7,0.64,1), opacity 0.12s ease';
-    tri.style.transform  = 'translate(-50%,-60%) scale(8)';   // massive overshoot
+    midTri.style.opacity    = '1';
+    midTri.style.transition = 'transform 0.5s cubic-bezier(0.34,1.6,0.64,1), opacity 0.1s ease';
+    midTri.style.transform  = 'translate(-50%,-50%) scale(12)'; // fills screen
     setTimeout(() => {
-      tri.style.transition = 'transform 0.4s cubic-bezier(0.16,1,0.3,1)';
-      tri.style.transform  = 'translate(-50%,-60%) scale(1)';  // settle
+      midTri.style.transition = 'transform 0.5s cubic-bezier(0.16,1,0.3,1)';
+      midTri.style.transform  = 'translate(-50%,-50%) scale(1)'; // settle
     }, 500);
   }, 150);
 
-  /* ── FRAME 4-5: 3 dots pop in with bubble, staggered ── */
-  springIn(dotT,  1050, 'translate(-50%,-50%) scale(0)', 2.4);
-  springIn(dotBL, 1180, 'translate(-50%,-50%) scale(0)', 2.4);
-  springIn(dotBR, 1310, 'translate(-50%,-50%) scale(0)', 2.4);
+  /* STEP 2: 3 arms spring in — staggered, with bubble overshoot */
+  springIn(armT,  1150, 'translate(-50%,-100%) rotate(0deg) scale(0)',    1.35);
+  springIn(armBL, 1300, 'translate(-50%,-100%) rotate(120deg) scale(0)',  1.35);
+  springIn(armBR, 1450, 'translate(-50%,-100%) rotate(-120deg) scale(0)', 1.35);
 
-  /* ── FRAME 6: dots exit → arms fly in ── */
-  fadeOut(dotT,  1900);
-  fadeOut(dotBL, 1960);
-  fadeOut(dotBR, 2020);
-
-  /* Arms spring in right as dots leave */
-  springIn(armT,  1950, 'translate(-50%,-92%) scale(0)', 1.35);
-  springIn(armBL, 2080, 'translate(-50%,-8%) rotate(-120deg) scale(0)', 1.35);
-  springIn(armBR, 2210, 'translate(-50%,-8%) rotate(120deg)  scale(0)', 1.35);
-
-  /* ── FRAME 7: name slides up ── */
+  /* STEP 3: name slides up */
   setTimeout(() => {
-    name.style.transition = 'opacity 0.55s ease, transform 0.55s cubic-bezier(0.16,1,0.3,1)';
+    name.style.transition = 'opacity 0.5s ease, transform 0.5s cubic-bezier(0.16,1,0.3,1)';
     name.style.opacity    = '1';
     name.style.transform  = 'translateY(0)';
-  }, 2750);
+  }, 2100);
 
-  /* ── Loading bar ── */
+  /* STEP 4: loading bar */
   setTimeout(() => {
-    barWrap.style.transition = 'opacity 0.4s ease';
+    barWrap.style.transition = 'opacity 0.35s ease';
     barWrap.style.opacity    = '1';
-    pct.style.transition     = 'opacity 0.4s ease';
+    pct.style.transition     = 'opacity 0.35s ease';
     pct.style.opacity        = '1';
     let progress = 0;
     const iv = setInterval(() => {
@@ -571,69 +511,38 @@
         progress = 100; clearInterval(iv);
         barFill.style.width = '100%';
         pct.textContent     = '100%';
-        setTimeout(() => loader.classList.add('done'), 700);
+        setTimeout(() => loader.classList.add('done'), 650);
       } else {
         barFill.style.width = progress + '%';
         pct.textContent     = Math.floor(progress) + '%';
       }
     }, 80);
-  }, 3300);
+  }, 2650);
 })();
 
 /* ── CURSOR ── */
-const cursor = document.getElementById('cursor');
-const trail  = document.getElementById('cursorTrail');
+const cursor=document.getElementById('cursor'),trail=document.getElementById('cursorTrail');
 let mx=0,my=0,tx=0,ty=0;
-document.addEventListener('mousemove', e => {
-  mx=e.clientX; my=e.clientY;
-  cursor.style.left=mx+'px'; cursor.style.top=my+'px';
-});
-(function animTrail(){
-  tx+=(mx-tx)*0.12; ty+=(my-ty)*0.12;
-  trail.style.left=tx+'px'; trail.style.top=ty+'px';
-  requestAnimationFrame(animTrail);
-})();
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cursor.style.left=mx+'px';cursor.style.top=my+'px';});
+(function a(){tx+=(mx-tx)*0.12;ty+=(my-ty)*0.12;trail.style.left=tx+'px';trail.style.top=ty+'px';requestAnimationFrame(a);})();
 document.querySelectorAll('a,button,.skill-card,.project-card,.exp-item').forEach(el=>{
-  el.addEventListener('mouseenter',()=>{ cursor.style.transform='translate(-50%,-50%) scale(2.5)'; trail.style.transform='translate(-50%,-50%) scale(1.5)'; trail.style.borderColor='rgba(200,245,66,0.6)'; });
-  el.addEventListener('mouseleave',()=>{ cursor.style.transform='translate(-50%,-50%) scale(1)';   trail.style.transform='translate(-50%,-50%) scale(1)';   trail.style.borderColor='rgba(200,245,66,0.4)'; });
+  el.addEventListener('mouseenter',()=>{cursor.style.transform='translate(-50%,-50%) scale(2.5)';trail.style.transform='translate(-50%,-50%) scale(1.5)';trail.style.borderColor='rgba(200,245,66,0.6)';});
+  el.addEventListener('mouseleave',()=>{cursor.style.transform='translate(-50%,-50%) scale(1)';trail.style.transform='translate(-50%,-50%) scale(1)';trail.style.borderColor='rgba(200,245,66,0.4)';});
 });
 
 /* ── SCROLL REVEAL ── */
-const ro = new IntersectionObserver(entries => {
-  entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
-}, {threshold:0.12, rootMargin:'0px 0px -60px 0px'});
-document.querySelectorAll('.reveal').forEach(el => ro.observe(el));
+const ro=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');});},{threshold:0.12,rootMargin:'0px 0px -60px 0px'});
+document.querySelectorAll('.reveal').forEach(el=>ro.observe(el));
 
 /* ── COUNTERS ── */
-const co = new IntersectionObserver(entries => {
-  entries.forEach(entry => {
-    if(entry.isIntersecting){
-      const el=entry.target, target=parseInt(el.getAttribute('data-target'));
-      let current=0; const step=target/60;
-      const timer=setInterval(()=>{
-        current+=step;
-        if(current>=target){ current=target; clearInterval(timer); }
-        el.textContent=Math.floor(current)+'+';
-      },16);
-      co.unobserve(el);
-    }
-  });
-},{threshold:0.5});
+const co=new IntersectionObserver(entries=>{entries.forEach(entry=>{if(entry.isIntersecting){const el=entry.target,target=parseInt(el.getAttribute('data-target'));let cur=0;const step=target/60;const t=setInterval(()=>{cur+=step;if(cur>=target){cur=target;clearInterval(t);}el.textContent=Math.floor(cur)+'+';},16);co.unobserve(el);}});},{threshold:0.5});
 document.querySelectorAll('.counter').forEach(c=>co.observe(c));
 
 /* ── HERO PARALLAX ── */
-document.addEventListener('mousemove', e => {
-  const orb=document.querySelector('.hero-orb'); if(!orb) return;
-  orb.style.transform=`translate(${(e.clientX/window.innerWidth-0.5)*40}px,${(e.clientY/window.innerHeight-0.5)*40}px)`;
-});
+document.addEventListener('mousemove',e=>{const orb=document.querySelector('.hero-orb');if(!orb)return;orb.style.transform=`translate(${(e.clientX/window.innerWidth-0.5)*40}px,${(e.clientY/window.innerHeight-0.5)*40}px)`;});
 
-/* ── SCRATCH IFRAME POP-IN ── */
-(function(){
-  const wrapper=document.getElementById('scratchWrapper'); if(!wrapper) return;
-  new IntersectionObserver(entries=>{
-    entries.forEach(e=>{ if(e.isIntersecting){ wrapper.style.opacity='1'; wrapper.style.transform='scale(1)'; } });
-  },{threshold:0.15}).observe(wrapper);
-})();
+/* ── SCRATCH POP-IN ── */
+(function(){const w=document.getElementById('scratchWrapper');if(!w)return;new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){w.style.opacity='1';w.style.transform='scale(1)';}});},{threshold:0.15}).observe(w);})();
 </script>
 </body>
 </html>
