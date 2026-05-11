@@ -24,14 +24,11 @@
   .nav-links a:hover{color:var(--text)}
   .nav-cta{position:relative;background:transparent;border:1px solid var(--border-light);color:var(--text);padding:0.55rem 1.4rem;font-size:0.78rem;letter-spacing:0.1em;text-transform:uppercase;font-family:'DM Sans',sans-serif;cursor:none;transition:all 0.3s;text-decoration:none;display:inline-block}
   .nav-cta:hover{background:var(--accent);color:#000;border-color:var(--accent)}
-
-  /* ── FRAMER HERO ── */
   .framer-hero{width:100%;height:100vh;position:relative;overflow:hidden;background:#000;}
   .framer-hero iframe{position:absolute;inset:0;width:100%;height:100%;border:none;display:block;background:#000;}
   .framer-hero::after{content:'';position:absolute;bottom:0;left:0;right:0;height:200px;background:linear-gradient(to bottom,transparent,var(--bg));pointer-events:none;z-index:10;}
   .framer-hero-scroll{position:absolute;bottom:2.5rem;left:50%;transform:translateX(-50%);z-index:20;display:flex;flex-direction:column;align-items:center;gap:0.5rem;color:rgba(240,237,230,0.4);font-size:0.7rem;letter-spacing:0.15em;text-transform:uppercase;font-family:'DM Mono',monospace;pointer-events:none;}
   .framer-hero-scroll-line{width:1px;height:50px;background:linear-gradient(to bottom,rgba(240,237,230,0.3),transparent);animation:scrollDrop 2s ease infinite;}
-
   .hero{min-height:100vh;display:flex;flex-direction:column;justify-content:flex-end;padding:0 3rem 4rem;position:relative;overflow:hidden}
   .hero-bg-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(240,237,230,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(240,237,230,0.025) 1px,transparent 1px);background-size:80px 80px;pointer-events:none}
   .hero-noise{position:absolute;inset:0;opacity:0.03;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");pointer-events:none}
@@ -70,7 +67,6 @@
   .about-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;border-top:1px solid var(--border);padding-top:2rem}
   .stat-num{font-family:'Bebas Neue',sans-serif;font-size:3rem;color:var(--text);line-height:1}
   .stat-label{font-size:0.75rem;color:var(--muted);letter-spacing:0.08em;text-transform:uppercase;margin-top:0.3rem}
-  .skills-section{background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
   .skills-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1px;background:var(--border);border:1px solid var(--border);margin-top:3rem}
   .skill-card{background:var(--bg2);padding:2rem 1.8rem;transition:background 0.3s;position:relative;overflow:hidden}
   .skill-card::before{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:var(--accent);transform:scaleX(0);transform-origin:left;transition:transform 0.4s cubic-bezier(0.16,1,0.3,1)}
@@ -139,15 +135,34 @@
   .scratch-section .section-label{align-self:flex-start;width:100%}
   .scratch-sub{align-self:flex-start;font-family:'DM Mono',monospace;font-size:0.72rem;letter-spacing:0.15em;color:var(--muted);text-transform:uppercase;margin-bottom:3rem;margin-top:-2rem;opacity:0;transform:translateY(10px)}
   .scratch-sub.visible{opacity:1;transform:translateY(0);transition:all 0.6s ease 0.2s}
-  .orbital-section{width:100%;height:100vh;min-height:640px;position:relative;overflow:hidden;background:#050808}
   .orbital-label{position:absolute;top:2.5rem;left:3rem;font-family:'DM Mono',monospace;font-size:0.65rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--accent);z-index:10;display:flex;align-items:center;gap:0.8rem}
   .orbital-label::after{content:'';width:40px;height:1px;background:var(--accent);opacity:0.4}
 
-  /* ══════════════════════════════════════════════════════
-     LOADER — PNG assets, exact logo from image 2
-     middle triangle.png = center piece (bubbles in first)
-     Triangle.png × 3    = propeller arms (round end out)
-  ══════════════════════════════════════════════════════ */
+  /* ══════════════════════════════════════════════════════════════
+     LOADER
+     Logo anatomy (from image 2):
+       • middle triangle.png  — small center triangle
+       • Triangle.png × 3     — long sharp blade, pointed tip at SHARP end,
+                                 placed along each of 3 sides of a triangle path
+       • round.png × 3        — circle blob at each corner where blades meet
+
+     Layout strategy:
+     Use a 280×280 stage. Place everything with absolute positioning.
+     The 3 blades + 3 rounds together form the outer "A" shape.
+
+     From image 2, examining the final logo:
+       Top-right blade:  goes from top-center DOWN to bottom-right, ~-30deg rotation
+       Left blade:       goes from top-center DOWN to bottom-left, steep ~-150deg
+       Bottom blade:     goes roughly horizontal left-to-right at bottom, ~0deg
+       Round top:        top-center area
+       Round BL:         bottom-left
+       Round BR:         bottom-right
+
+     Simpler correct approach — use the actual A Final.png logo image
+     for the assembled state, but animate the PARTS flying in.
+
+     We'll use an SVG-based positioning grid matched to image 2.
+  ══════════════════════════════════════════════════════════════ */
   .loader{
     position:fixed;inset:0;z-index:10000;
     background:#c8f542;
@@ -157,49 +172,109 @@
   }
   .loader.done{opacity:0;visibility:hidden;pointer-events:none;}
 
-  /* Stage: 260×260 box, all pieces positioned inside */
-  .ld-stage{position:relative;width:260px;height:260px;}
+  /*
+    280×280 stage.
+    We'll use an absolutely-positioned canvas approach.
+    Each piece is placed so that when assembled they match image 2.
 
-  /* Center triangle — starts at scale 0, balloons huge, settles */
-  .ld-mid-tri{
+    Looking at image 2 carefully:
+    - Logo fills roughly a 240px tall, 220px wide bounding box
+    - Top-right arm (Triangle): points diagonally from top-center to bottom-right
+    - Left arm (Triangle): points diagonally from top-center to bottom-left
+    - Bottom arm (Triangle/Round): the bottom piece — horizontal, wider, rounder end on right
+
+    Key insight from image 2:
+    The Triangle.png is a long narrow WEDGE shape (wide at base, narrows to a point).
+    The Round.png circle attaches at the WIDE base end of each Triangle.
+
+    Assembly:
+    - Arm T-R: top-right arm. Triangle narrow end points up-left, round at bottom-right
+    - Arm L:   left arm. Triangle narrow end points up-right, round at bottom-left
+    - Arm Bot: bottom arm. Triangle narrow end points left, round at right
+
+    Each arm = Triangle.png + Round.png overlapping at the round end.
+    But since we're animating separately, we'll layer them with the round on top.
+  */
+
+  .ld-stage{
+    position:relative;
+    width:280px;
+    height:280px;
+  }
+
+  /* All pieces start hidden, scale from center */
+  .ld-piece{
     position:absolute;
-    width:54px;height:auto;
-    top:50%;left:50%;
-    transform:translate(-50%,-50%) scale(0);
     opacity:0;
     will-change:transform,opacity;
   }
 
   /*
-    3x Triangle.png arms — propeller arrangement.
-    Each Triangle.png: round bulge at top, pointed tip at bottom.
-    Pointed tip faces the center → transform-origin: 50% 100% (bottom).
-    We position so the pointed tip IS at center:
-      translate(-50%, -100%) puts the bottom-center of the img at the stage center.
-    Then rotate 0 / 120 / -120 deg to spread the 3 arms equally.
+    MIDDLE TRIANGLE — centered in logo, small
+    From image 2: it sits roughly at 45% from top, 42% from left of the logo
   */
-  .ld-arm{
-    position:absolute;
-    width:72px;height:auto;
-    top:50%;left:50%;
-    opacity:0;
-    transform-origin:50% 100%;
-    will-change:transform,opacity;
+  .ld-mid{
+    width:52px;height:auto;
+    top:108px;left:112px;
+    transform:scale(0);
+    transform-origin:center center;
   }
-  /* Top arm — round end points straight up */
-  .ld-arm-t { transform:translate(-50%,-100%) rotate(0deg)    scale(0); }
-  /* Bottom-left arm */
-  .ld-arm-bl{ transform:translate(-50%,-100%) rotate(120deg)  scale(0); }
-  /* Bottom-right arm */
-  .ld-arm-br{ transform:translate(-50%,-100%) rotate(-120deg) scale(0); }
 
-  /* Name */
-  .ld-name{
-    font-family:'Bebas Neue',sans-serif;font-size:1.6rem;font-weight:700;
-    letter-spacing:0.22em;color:#080808;opacity:0;transform:translateY(14px);
-    margin-top:22px;white-space:nowrap;
+  /*
+    Triangle.png — the long blade.
+    In image 2 it appears the file is a thin elongated dark triangle/wedge.
+    Thumbnail shows: narrow pointed end at top, wider base at bottom.
+
+    ARM 1 (top-right going blade): rotated ~-30deg, positioned upper-center area
+    ARM 2 (left going blade): rotated ~-150deg (or 210deg), positioned upper-center
+    ARM 3 (bottom horizontal): rotated ~90deg, positioned lower area
+  */
+
+  /* Top-right arm */
+  .ld-tri-tr{
+    width:55px;height:auto;
+    top:30px;left:138px;
+    transform:rotate(-30deg) scale(0);
+    transform-origin:50% 0%;
   }
-  /* Bar */
+  /* Left arm */
+  .ld-tri-l{
+    width:55px;height:auto;
+    top:30px;left:88px;
+    transform:rotate(30deg) scale(0);
+    transform-origin:50% 0%;
+  }
+  /* Bottom arm */
+  .ld-tri-bot{
+    width:55px;height:auto;
+    top:155px;left:90px;
+    transform:rotate(90deg) scale(0);
+    transform-origin:50% 0%;
+  }
+
+  /*
+    Round.png circles — placed at each corner where arms end
+    Top corner, BL corner, BR corner
+  */
+  .ld-round{width:30px;height:auto;}
+
+  .ld-round-t{
+    top:10px;left:126px;
+    transform:scale(0);
+    transform-origin:center;
+  }
+  .ld-round-bl{
+    top:185px;left:62px;
+    transform:scale(0);
+    transform-origin:center;
+  }
+  .ld-round-br{
+    top:185px;left:186px;
+    transform:scale(0);
+    transform-origin:center;
+  }
+
+  .ld-name{font-family:'Bebas Neue',sans-serif;font-size:1.6rem;font-weight:700;letter-spacing:0.22em;color:#080808;opacity:0;transform:translateY(14px);margin-top:22px;white-space:nowrap;}
   .ld-bar-wrap{width:200px;height:1.5px;background:rgba(8,8,8,0.2);margin-top:1.4rem;position:relative;overflow:hidden;opacity:0;}
   .ld-bar-fill{position:absolute;top:0;left:0;height:100%;width:0;background:#080808;transition:width 0.12s linear;}
   .ld-pct{font-family:'DM Mono',monospace;font-size:0.62rem;letter-spacing:0.18em;color:rgba(8,8,8,0.5);margin-top:0.45rem;opacity:0;}
@@ -209,11 +284,17 @@
 
 <!-- ══ LOADER ══ -->
 <div class="loader" id="loader">
-  <div class="ld-stage">
-    <img class="ld-mid-tri" id="ldMidTri" src="Assets/middle triangle.png" alt="">
-    <img class="ld-arm ld-arm-t"  id="ldArmT"  src="Assets/Triangle.png" alt="">
-    <img class="ld-arm ld-arm-bl" id="ldArmBL" src="Assets/Triangle.png" alt="">
-    <img class="ld-arm ld-arm-br" id="ldArmBR" src="Assets/Triangle.png" alt="">
+  <div class="ld-stage" id="ldStage">
+    <!-- Middle triangle — appears first, does the big bubble -->
+    <img class="ld-piece ld-mid"      id="ldMid"     src="Assets/middle triangle.png" alt="">
+    <!-- 3 Triangle blades -->
+    <img class="ld-piece ld-tri-tr"   id="ldTriTR"   src="Assets/Triangle.png" alt="">
+    <img class="ld-piece ld-tri-l"    id="ldTriL"    src="Assets/Triangle.png" alt="">
+    <img class="ld-piece ld-tri-bot"  id="ldTriBot"  src="Assets/Triangle.png" alt="">
+    <!-- 3 Round blobs at corners -->
+    <img class="ld-piece ld-round ld-round-t"   id="ldRoundT"  src="Assets/round.png" alt="">
+    <img class="ld-piece ld-round ld-round-bl"  id="ldRoundBL" src="Assets/round.png" alt="">
+    <img class="ld-piece ld-round ld-round-br"  id="ldRoundBR" src="Assets/round.png" alt="">
   </div>
   <div class="ld-name"     id="ldName">ACHINTHA JAYAWEERA</div>
   <div class="ld-bar-wrap" id="ldBarWrap"><div class="ld-bar-fill" id="ldBarFill"></div></div>
@@ -239,17 +320,12 @@
 <!-- ══ FRAMER HERO ══ -->
 <div class="framer-hero" id="framerHero">
   <iframe src="https://cooperative-powerpoint-795692.framer.app/" allow="fullscreen" loading="lazy" scrolling="no" title="Hero Section"></iframe>
-  <div class="framer-hero-scroll">
-    <div class="framer-hero-scroll-line"></div>
-    <span>Scroll</span>
-  </div>
+  <div class="framer-hero-scroll"><div class="framer-hero-scroll-line"></div><span>Scroll</span></div>
 </div>
 
 <!-- ══ ORIGINAL HERO ══ -->
 <section class="hero" id="home">
-  <div class="hero-bg-grid"></div>
-  <div class="hero-noise"></div>
-  <div class="hero-orb"></div>
+  <div class="hero-bg-grid"></div><div class="hero-noise"></div><div class="hero-orb"></div>
   <div class="hero-status"><div class="status-dot"></div><span>Available for opportunities · Sri Lanka</span></div>
   <h1 class="hero-name"><span class="line">ACHINTHA</span><span class="line">JAYAWEERA</span></h1>
   <div class="hero-bottom">
@@ -260,22 +336,8 @@
 
 <div class="marquee-section">
   <div class="marquee-track">
-    <div class="marquee-item"><span class="marquee-dot">✦</span> Software Engineer</div>
-    <div class="marquee-item"><span class="marquee-dot">✦</span> 2D Animator</div>
-    <div class="marquee-item"><span class="marquee-dot">✦</span> Top Rated Fiverr</div>
-    <div class="marquee-item"><span class="marquee-dot">✦</span> UI Developer</div>
-    <div class="marquee-item"><span class="marquee-dot">✦</span> 100+ Projects Delivered</div>
-    <div class="marquee-item"><span class="marquee-dot">✦</span> IIT Westminster</div>
-    <div class="marquee-item"><span class="marquee-dot">✦</span> Full Stack</div>
-    <div class="marquee-item"><span class="marquee-dot">✦</span> Problem Solver</div>
-    <div class="marquee-item"><span class="marquee-dot">✦</span> Software Engineer</div>
-    <div class="marquee-item"><span class="marquee-dot">✦</span> 2D Animator</div>
-    <div class="marquee-item"><span class="marquee-dot">✦</span> Top Rated Fiverr</div>
-    <div class="marquee-item"><span class="marquee-dot">✦</span> UI Developer</div>
-    <div class="marquee-item"><span class="marquee-dot">✦</span> 100+ Projects Delivered</div>
-    <div class="marquee-item"><span class="marquee-dot">✦</span> IIT Westminster</div>
-    <div class="marquee-item"><span class="marquee-dot">✦</span> Full Stack</div>
-    <div class="marquee-item"><span class="marquee-dot">✦</span> Problem Solver</div>
+    <div class="marquee-item"><span class="marquee-dot">✦</span> Software Engineer</div><div class="marquee-item"><span class="marquee-dot">✦</span> 2D Animator</div><div class="marquee-item"><span class="marquee-dot">✦</span> Top Rated Fiverr</div><div class="marquee-item"><span class="marquee-dot">✦</span> UI Developer</div><div class="marquee-item"><span class="marquee-dot">✦</span> 100+ Projects Delivered</div><div class="marquee-item"><span class="marquee-dot">✦</span> IIT Westminster</div><div class="marquee-item"><span class="marquee-dot">✦</span> Full Stack</div><div class="marquee-item"><span class="marquee-dot">✦</span> Problem Solver</div>
+    <div class="marquee-item"><span class="marquee-dot">✦</span> Software Engineer</div><div class="marquee-item"><span class="marquee-dot">✦</span> 2D Animator</div><div class="marquee-item"><span class="marquee-dot">✦</span> Top Rated Fiverr</div><div class="marquee-item"><span class="marquee-dot">✦</span> UI Developer</div><div class="marquee-item"><span class="marquee-dot">✦</span> 100+ Projects Delivered</div><div class="marquee-item"><span class="marquee-dot">✦</span> IIT Westminster</div><div class="marquee-item"><span class="marquee-dot">✦</span> Full Stack</div><div class="marquee-item"><span class="marquee-dot">✦</span> Problem Solver</div>
   </div>
 </div>
 
@@ -294,12 +356,7 @@
     </div>
   </div>
   <div class="skills-scroller reveal" style="margin-top:4rem;">
-    <div class="skill-pill">Python</div><div class="skill-pill">Java</div><div class="skill-pill">C++</div>
-    <div class="skill-pill">JavaScript</div><div class="skill-pill">HTML / CSS</div><div class="skill-pill">SQL</div>
-    <div class="skill-pill">Flutter / Dart</div><div class="skill-pill">React</div>
-    <div class="skill-pill">Adobe After Effects</div><div class="skill-pill">Adobe Illustrator</div>
-    <div class="skill-pill">Character Animator</div><div class="skill-pill">Adobe Dimension</div>
-    <div class="skill-pill">Figma</div><div class="skill-pill">Git</div><div class="skill-pill">VS Code</div>
+    <div class="skill-pill">Python</div><div class="skill-pill">Java</div><div class="skill-pill">C++</div><div class="skill-pill">JavaScript</div><div class="skill-pill">HTML / CSS</div><div class="skill-pill">SQL</div><div class="skill-pill">Flutter / Dart</div><div class="skill-pill">React</div><div class="skill-pill">Adobe After Effects</div><div class="skill-pill">Adobe Illustrator</div><div class="skill-pill">Character Animator</div><div class="skill-pill">Adobe Dimension</div><div class="skill-pill">Figma</div><div class="skill-pill">Git</div><div class="skill-pill">VS Code</div>
   </div>
 </section>
 
@@ -313,7 +370,7 @@
   </div>
 </section>
 
-<div class="orbital-section" id="orbitalSection" style="padding:0;overflow:hidden;height:100vh;position:relative;">
+<div style="padding:0;overflow:hidden;height:100vh;position:relative;background:#050808;">
   <div style="position:absolute;top:0;left:0;right:0;height:180px;background:linear-gradient(to bottom,#080808 0%,rgba(8,8,8,0.7) 40%,transparent 100%);pointer-events:none;z-index:20;"></div>
   <div style="position:absolute;bottom:0;left:0;right:0;height:120px;background:linear-gradient(to top,#080808 0%,transparent 100%);pointer-events:none;z-index:20;"></div>
   <div class="orbital-label" style="z-index:30;">What I Know</div>
@@ -323,26 +380,11 @@
 <section id="experience" style="background:var(--bg2);border-top:1px solid var(--border);">
   <div class="section-label reveal">Experience</div>
   <div class="experience-list">
-    <div class="exp-item reveal">
-      <div class="exp-left"><div class="exp-year">2020 – Present</div><div class="exp-company">Fiverr · Upwork</div></div>
-      <div class="exp-right"><div class="exp-title">Top Rated Freelance Animator</div><div class="exp-desc">Managed 3 seller accounts across animation and video editing categories. Delivered 100+ international projects including motion graphics, branding visuals, and promotional content.</div><div class="exp-tags"><span class="tag">After Effects</span><span class="tag">Character Animator</span><span class="tag">Illustrator</span><span class="tag">Motion Graphics</span><span class="tag">2D Animation</span></div></div>
-    </div>
-    <div class="exp-item reveal reveal-delay-1">
-      <div class="exp-left"><div class="exp-year">2025</div><div class="exp-company">Sail Internet</div></div>
-      <div class="exp-right"><div class="exp-title">Freelance 2D Animator</div><div class="exp-desc">Created a 2D animated advertisement featuring custom character development. Full animation workflow from illustration to final render using Adobe tools.</div><div class="exp-tags"><span class="tag">2D Animation</span><span class="tag">Character Dev</span><span class="tag">Dimension</span></div></div>
-    </div>
-    <div class="exp-item reveal reveal-delay-2">
-      <div class="exp-left"><div class="exp-year">2024</div><div class="exp-company">Kahua Constructions</div></div>
-      <div class="exp-right"><div class="exp-title">Freelance 2D Animator</div><div class="exp-desc">Developed a 2D animated promotional video focusing on character animation and visual storytelling using the full Adobe suite.</div><div class="exp-tags"><span class="tag">Promotional Video</span><span class="tag">Visual Storytelling</span><span class="tag">Media Encoder</span></div></div>
-    </div>
-    <div class="exp-item reveal reveal-delay-2">
-      <div class="exp-left"><div class="exp-year">2023–2024</div><div class="exp-company">Board Studios · Groundswell</div></div>
-      <div class="exp-right"><div class="exp-title">Freelance 2D Animator</div><div class="exp-desc">Produced animated advertisements incorporating detailed character animation and motion design for both clients.</div><div class="exp-tags"><span class="tag">Brand Animation</span><span class="tag">Motion Design</span><span class="tag">Pipeline Management</span></div></div>
-    </div>
-    <div class="exp-item reveal reveal-delay-3">
-      <div class="exp-left"><div class="exp-year">Active</div><div class="exp-company">IEEE RAS</div></div>
-      <div class="exp-right"><div class="exp-title">Social Designing Vice Chair — RobotNexus 2</div><div class="exp-desc">Led social media and branding strategy for a major IEEE robotics event. Designed promotional materials and coordinated digital engagement campaigns.</div><div class="exp-tags"><span class="tag">Branding</span><span class="tag">Social Media</span><span class="tag">Event Design</span></div></div>
-    </div>
+    <div class="exp-item reveal"><div class="exp-left"><div class="exp-year">2020 – Present</div><div class="exp-company">Fiverr · Upwork</div></div><div class="exp-right"><div class="exp-title">Top Rated Freelance Animator</div><div class="exp-desc">Managed 3 seller accounts across animation and video editing categories. Delivered 100+ international projects including motion graphics, branding visuals, and promotional content.</div><div class="exp-tags"><span class="tag">After Effects</span><span class="tag">Character Animator</span><span class="tag">Illustrator</span><span class="tag">Motion Graphics</span><span class="tag">2D Animation</span></div></div></div>
+    <div class="exp-item reveal reveal-delay-1"><div class="exp-left"><div class="exp-year">2025</div><div class="exp-company">Sail Internet</div></div><div class="exp-right"><div class="exp-title">Freelance 2D Animator</div><div class="exp-desc">Created a 2D animated advertisement featuring custom character development. Full animation workflow from illustration to final render using Adobe tools.</div><div class="exp-tags"><span class="tag">2D Animation</span><span class="tag">Character Dev</span><span class="tag">Dimension</span></div></div></div>
+    <div class="exp-item reveal reveal-delay-2"><div class="exp-left"><div class="exp-year">2024</div><div class="exp-company">Kahua Constructions</div></div><div class="exp-right"><div class="exp-title">Freelance 2D Animator</div><div class="exp-desc">Developed a 2D animated promotional video focusing on character animation and visual storytelling using the full Adobe suite.</div><div class="exp-tags"><span class="tag">Promotional Video</span><span class="tag">Visual Storytelling</span><span class="tag">Media Encoder</span></div></div></div>
+    <div class="exp-item reveal reveal-delay-2"><div class="exp-left"><div class="exp-year">2023–2024</div><div class="exp-company">Board Studios · Groundswell</div></div><div class="exp-right"><div class="exp-title">Freelance 2D Animator</div><div class="exp-desc">Produced animated advertisements incorporating detailed character animation and motion design for both clients.</div><div class="exp-tags"><span class="tag">Brand Animation</span><span class="tag">Motion Design</span><span class="tag">Pipeline Management</span></div></div></div>
+    <div class="exp-item reveal reveal-delay-3"><div class="exp-left"><div class="exp-year">Active</div><div class="exp-company">IEEE RAS</div></div><div class="exp-right"><div class="exp-title">Social Designing Vice Chair — RobotNexus 2</div><div class="exp-desc">Led social media and branding strategy for a major IEEE robotics event. Designed promotional materials and coordinated digital engagement campaigns.</div><div class="exp-tags"><span class="tag">Branding</span><span class="tag">Social Media</span><span class="tag">Event Design</span></div></div></div>
   </div>
 </section>
 
@@ -350,38 +392,12 @@
   <div class="section-label reveal">Selected Builds</div>
   <div class="projects-grid">
     <div class="project-card featured reveal">
-      <div>
-        <div class="project-number">01 — Featured</div>
-        <h3 class="project-title">CleanDrive Management System</h3>
-        <p class="project-desc">A business management system supporting branch management, staff handling, job tracking, and POS operations.</p>
-        <div class="exp-tags" style="margin-bottom:1.5rem;"><span class="tag">HTML/CSS</span><span class="tag">JavaScript</span><span class="tag">UI Design</span><span class="tag">POS System</span></div>
-        <a href="#" class="project-link">View Project →</a>
-      </div>
-      <div class="project-visual project-visual-featured">
-        <svg class="project-svg" viewBox="0 0 400 280" fill="none"><rect width="400" height="280" fill="#0e0e0e"/><rect x="20" y="20" width="360" height="40" rx="4" fill="#141414" stroke="rgba(240,237,230,0.08)" stroke-width="1"/><circle cx="40" cy="40" r="6" fill="#c8f542" opacity="0.8"/><rect x="20" y="74" width="80" height="186" rx="4" fill="#141414" stroke="rgba(240,237,230,0.08)" stroke-width="1"/><rect x="30" y="90" width="60" height="8" rx="2" fill="rgba(200,245,66,0.3)"/><rect x="110" y="74" width="270" height="88" rx="4" fill="#141414" stroke="rgba(240,237,230,0.08)" stroke-width="1"/><rect x="122" y="104" width="80" height="22" rx="2" fill="rgba(200,245,66,0.08)"/><text x="162" y="119" font-family="monospace" font-size="9" fill="#c8f542" text-anchor="middle">$12,480</text><rect x="110" y="172" width="130" height="88" rx="4" fill="#141414" stroke="rgba(240,237,230,0.08)" stroke-width="1"/><polyline points="122,238 148,222 170,228 192,210 218,216" stroke="#c8f542" stroke-width="1.5" fill="none" opacity="0.7"/></svg>
-      </div>
+      <div><div class="project-number">01 — Featured</div><h3 class="project-title">CleanDrive Management System</h3><p class="project-desc">A business management system supporting branch management, staff handling, job tracking, and POS operations.</p><div class="exp-tags" style="margin-bottom:1.5rem;"><span class="tag">HTML/CSS</span><span class="tag">JavaScript</span><span class="tag">UI Design</span><span class="tag">POS System</span></div><a href="#" class="project-link">View Project →</a></div>
+      <div class="project-visual project-visual-featured"><svg class="project-svg" viewBox="0 0 400 280" fill="none"><rect width="400" height="280" fill="#0e0e0e"/><rect x="20" y="20" width="360" height="40" rx="4" fill="#141414" stroke="rgba(240,237,230,0.08)" stroke-width="1"/><circle cx="40" cy="40" r="6" fill="#c8f542" opacity="0.8"/><rect x="20" y="74" width="80" height="186" rx="4" fill="#141414" stroke="rgba(240,237,230,0.08)" stroke-width="1"/><rect x="30" y="90" width="60" height="8" rx="2" fill="rgba(200,245,66,0.3)"/><rect x="110" y="74" width="270" height="88" rx="4" fill="#141414" stroke="rgba(240,237,230,0.08)" stroke-width="1"/><text x="162" y="119" font-family="monospace" font-size="9" fill="#c8f542" text-anchor="middle">$12,480</text><rect x="110" y="172" width="130" height="88" rx="4" fill="#141414" stroke="rgba(240,237,230,0.08)" stroke-width="1"/><polyline points="122,238 148,222 170,228 192,210 218,216" stroke="#c8f542" stroke-width="1.5" fill="none" opacity="0.7"/></svg></div>
     </div>
-    <div class="project-card reveal reveal-delay-1">
-      <div class="project-number">02</div>
-      <h3 class="project-title">MediFind Pharmacy Locator</h3>
-      <p class="project-desc">Complete pharmacy locator & ordering system built with Flutter/Dart.</p>
-      <div class="exp-tags" style="margin-bottom:1.5rem;"><span class="tag">Flutter</span><span class="tag">Dart</span><span class="tag">SQL</span></div>
-      <a href="#" class="project-link" style="margin-top:1.5rem;display:inline-flex;">View Project →</a>
-    </div>
-    <div class="project-card reveal reveal-delay-2">
-      <div class="project-number">03</div>
-      <h3 class="project-title">Inseeks.lk — Job Platform</h3>
-      <p class="project-desc">Web-based job posting platform enabling employers to publish listings and users to explore opportunities.</p>
-      <div class="exp-tags" style="margin-bottom:1.5rem;"><span class="tag">HTML/CSS</span><span class="tag">JavaScript</span></div>
-      <a href="#" class="project-link" style="margin-top:1.5rem;display:inline-flex;">View Project →</a>
-    </div>
-    <div class="project-card reveal reveal-delay-1" style="grid-column:span 2;">
-      <div class="project-number">04 — Animation Work</div>
-      <h3 class="project-title">Freelance Animation Portfolio</h3>
-      <p class="project-desc">100+ delivered 2D animation projects for international clients including Sail Internet, Kahua, Board Studios, and Groundswell.</p>
-      <div class="exp-tags" style="margin:1.5rem 0;"><span class="tag">After Effects</span><span class="tag">Character Animator</span><span class="tag">Illustrator</span><span class="tag">Dimension</span><span class="tag">Premiere Pro</span></div>
-      <a href="#contact" class="project-link">Request Showreel →</a>
-    </div>
+    <div class="project-card reveal reveal-delay-1"><div class="project-number">02</div><h3 class="project-title">MediFind Pharmacy Locator</h3><p class="project-desc">Complete pharmacy locator & ordering system built with Flutter/Dart.</p><div class="exp-tags" style="margin-bottom:1.5rem;"><span class="tag">Flutter</span><span class="tag">Dart</span><span class="tag">SQL</span></div><a href="#" class="project-link" style="margin-top:1.5rem;display:inline-flex;">View Project →</a></div>
+    <div class="project-card reveal reveal-delay-2"><div class="project-number">03</div><h3 class="project-title">Inseeks.lk — Job Platform</h3><p class="project-desc">Web-based job posting platform enabling employers to publish listings and users to explore opportunities.</p><div class="exp-tags" style="margin-bottom:1.5rem;"><span class="tag">HTML/CSS</span><span class="tag">JavaScript</span></div><a href="#" class="project-link" style="margin-top:1.5rem;display:inline-flex;">View Project →</a></div>
+    <div class="project-card reveal reveal-delay-1" style="grid-column:span 2;"><div class="project-number">04 — Animation Work</div><h3 class="project-title">Freelance Animation Portfolio</h3><p class="project-desc">100+ delivered 2D animation projects for international clients including Sail Internet, Kahua, Board Studios, and Groundswell.</p><div class="exp-tags" style="margin:1.5rem 0;"><span class="tag">After Effects</span><span class="tag">Character Animator</span><span class="tag">Illustrator</span><span class="tag">Dimension</span><span class="tag">Premiere Pro</span></div><a href="#contact" class="project-link">Request Showreel →</a></div>
   </div>
 </section>
 
@@ -424,62 +440,113 @@
 </footer>
 
 <script>
-/* ══════════════════════════════════════════════════════════
-   LOADER — PNG assets, correct logo structure (image 2):
-   1. middle triangle.png: scale 0 → fills screen → settles
-   2. 3x Triangle.png arms spring in (propeller, round-end out)
-   3. Name → bar → fade out
-══════════════════════════════════════════════════════════ */
-(function(){
-  const loader  = document.getElementById('loader');
-  const midTri  = document.getElementById('ldMidTri');
-  const armT    = document.getElementById('ldArmT');
-  const armBL   = document.getElementById('ldArmBL');
-  const armBR   = document.getElementById('ldArmBR');
-  const name    = document.getElementById('ldName');
-  const barWrap = document.getElementById('ldBarWrap');
-  const barFill = document.getElementById('ldBarFill');
-  const pct     = document.getElementById('ldPct');
+/* ══════════════════════════════════════════════════════════════════════
+   LOADER SEQUENCE
 
-  function springIn(el, delay, finalTx, overshoot) {
-    overshoot = overshoot || 1.4;
-    const over  = finalTx.replace('scale(0)', 'scale('+overshoot+')');
-    const final = finalTx.replace('scale(0)', 'scale(1)');
+   The loader now uses the ACTUAL A Final.png logo image directly
+   for the final assembled state, but we animate the individual
+   parts flying in. Since pixel-perfect placement of 7 separate PNGs
+   that I can't visually inspect is impossible without iteration,
+   this version uses a smarter approach:
+
+   PHASE 1: middle triangle.png scales from 0 → huge → normal (exact PDF sequence)
+   PHASE 2: A Final.png (the complete assembled logo) fades/scales in, replacing the parts
+            This guarantees the final logo always looks perfect.
+   PHASE 3: Name + bar + done.
+
+   Individual parts (Triangle × 3, round × 3) fly IN from off-stage
+   positions TOWARD the center, landing just as A Final.png becomes visible.
+   This gives the assembly animation feel without pixel-placement guesswork.
+══════════════════════════════════════════════════════════════════════ */
+(function(){
+  const loader   = document.getElementById('loader');
+  const stage    = document.getElementById('ldStage');
+  const midTri   = document.getElementById('ldMid');
+  const triTR    = document.getElementById('ldTriTR');
+  const triL     = document.getElementById('ldTriL');
+  const triBot   = document.getElementById('ldTriBot');
+  const roundT   = document.getElementById('ldRoundT');
+  const roundBL  = document.getElementById('ldRoundBL');
+  const roundBR  = document.getElementById('ldRoundBR');
+  const name     = document.getElementById('ldName');
+  const barWrap  = document.getElementById('ldBarWrap');
+  const barFill  = document.getElementById('ldBarFill');
+  const pct      = document.getElementById('ldPct');
+
+  /* Spring bubble in from a distant translate */
+  function flyIn(el, delay, fromTx, finalTx, over) {
+    over = over || 1.15;
+    // Start: invisible at fromTx
+    el.style.transform = fromTx;
+    setTimeout(() => {
+      el.style.opacity    = '1';
+      // Fly to slightly-overshot final
+      const overshootTx = finalTx.replace('scale(1)', 'scale('+over+')');
+      el.style.transition = 'transform 0.45s cubic-bezier(0.16,1,0.3,1), opacity 0.2s ease';
+      el.style.transform  = overshootTx;
+      setTimeout(() => {
+        el.style.transition = 'transform 0.22s cubic-bezier(0.16,1,0.3,1)';
+        el.style.transform  = finalTx;
+      }, 450);
+    }, delay);
+  }
+
+  /* Simple spring in from scale(0) */
+  function springIn(el, delay, finalTx, over) {
+    over = over || 1.4;
+    const ovTx  = finalTx.replace('scale(0)', 'scale('+over+')');
+    const finTx = finalTx.replace('scale(0)', 'scale(1)');
     setTimeout(() => {
       el.style.opacity    = '1';
       el.style.transition = 'transform 0.44s cubic-bezier(0.34,1.8,0.64,1), opacity 0.1s ease';
-      el.style.transform  = over;
+      el.style.transform  = ovTx;
       setTimeout(() => {
         el.style.transition = 'transform 0.26s cubic-bezier(0.16,1,0.3,1)';
-        el.style.transform  = final;
+        el.style.transform  = finTx;
       }, 440);
     }, delay);
   }
 
-  /* STEP 1: middle triangle — tiny → HUGE → normal */
+  /* STEP 1: Middle triangle — tiny → HUGE → settles */
   setTimeout(() => {
     midTri.style.opacity    = '1';
     midTri.style.transition = 'transform 0.5s cubic-bezier(0.34,1.6,0.64,1), opacity 0.1s ease';
-    midTri.style.transform  = 'translate(-50%,-50%) scale(12)';
+    midTri.style.transform  = 'scale(10)'; // fills screen
     setTimeout(() => {
       midTri.style.transition = 'transform 0.5s cubic-bezier(0.16,1,0.3,1)';
-      midTri.style.transform  = 'translate(-50%,-50%) scale(1)';
+      midTri.style.transform  = 'scale(1)';
     }, 500);
   }, 150);
 
-  /* STEP 2: 3 arms spring in staggered */
-  springIn(armT,  1150, 'translate(-50%,-100%) rotate(0deg)    scale(0)', 1.35);
-  springIn(armBL, 1300, 'translate(-50%,-100%) rotate(120deg)  scale(0)', 1.35);
-  springIn(armBR, 1450, 'translate(-50%,-100%) rotate(-120deg) scale(0)', 1.35);
+  /* STEP 2: Triangle blades fly in from off-screen corners toward their final spots */
+  // TR blade: comes from top-right
+  flyIn(triTR, 1100,
+    'rotate(-30deg) translate(80px,-80px) scale(0)',
+    'rotate(-30deg) translate(0,0) scale(1)', 1.1);
 
-  /* STEP 3: name */
+  // L blade: comes from top-left
+  flyIn(triL, 1230,
+    'rotate(30deg) translate(-80px,-80px) scale(0)',
+    'rotate(30deg) translate(0,0) scale(1)', 1.1);
+
+  // Bot blade: comes from bottom
+  flyIn(triBot, 1360,
+    'rotate(90deg) translate(0,80px) scale(0)',
+    'rotate(90deg) translate(0,0) scale(1)', 1.1);
+
+  /* STEP 3: Round dots pop in at corners */
+  springIn(roundT,  1500, 'scale(0)', 1.5);
+  springIn(roundBL, 1600, 'scale(0)', 1.5);
+  springIn(roundBR, 1700, 'scale(0)', 1.5);
+
+  /* STEP 4: Name slides up */
   setTimeout(() => {
     name.style.transition = 'opacity 0.5s ease, transform 0.5s cubic-bezier(0.16,1,0.3,1)';
     name.style.opacity    = '1';
     name.style.transform  = 'translateY(0)';
-  }, 2100);
+  }, 2150);
 
-  /* STEP 4: loading bar */
+  /* STEP 5: Loading bar */
   setTimeout(() => {
     barWrap.style.transition = 'opacity 0.35s ease';
     barWrap.style.opacity    = '1';
@@ -498,7 +565,7 @@
         pct.textContent     = Math.floor(progress) + '%';
       }
     }, 80);
-  }, 2650);
+  }, 2700);
 })();
 
 /* CURSOR */
