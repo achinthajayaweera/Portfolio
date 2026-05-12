@@ -40,18 +40,17 @@
     background:#fff; /* Framer hero has white bg */
   }
   .framer-hero-iframe-wrap{
-    /* This wrapper is scaled by JS. Default 1200×800 matches Framer desktop frame */
+    /* Matches Framer Desktop frame: 1300×800 */
     position:absolute;
     top:0; left:0;
-    width:1200px;
+    width:1300px;
     height:800px;
     transform-origin:top left;
-    /* JS sets: transform: scale(X) and left/top to center it */
   }
   .framer-hero-iframe-wrap iframe{
     position:absolute;
     top:0; left:0;
-    width:1200px;
+    width:1300px;
     height:800px;
     border:none;
     display:block;
@@ -385,8 +384,8 @@
    Also handles window resize.
 ══════════════════════════════════════════════════════════════════ */
 (function(){
-  // ← Change these to match your Framer Desktop frame dimensions exactly
-  var FRAMER_W = 1200;
+  // ← Match your Framer Desktop frame dimensions (visible in Framer top bar: 1300 W, 800 H)
+  var FRAMER_W = 1300;
   var FRAMER_H = 800;
 
   var wrap = document.getElementById('framerWrap');
@@ -396,18 +395,17 @@
     var vw = window.innerWidth;
     var vh = window.innerHeight;
 
-    // Scale to fill width OR height — whichever requires more scaling
-    // This ensures the content always covers the full hero area
-    var scaleX = vw / FRAMER_W;
-    var scaleY = vh / FRAMER_H;
-    var scale  = Math.max(scaleX, scaleY); // "cover" behavior
+    // Scale based on WIDTH only — this fills horizontally and
+    // anchors the content to the TOP so the photo stays centered/visible.
+    // If you used Math.max (cover), height scaling pushes content down on wide screens.
+    var scale = vw / FRAMER_W;
 
-    // After scaling, the wrapper is scale×1200 wide and scale×800 tall.
-    // Center it in the viewport.
+    // Center horizontally (should be 0 since we scale to exact width)
+    // Anchor vertically to TOP so the hero photo stays in frame
     var scaledW = FRAMER_W * scale;
     var scaledH = FRAMER_H * scale;
     var offsetX = (vw - scaledW) / 2;
-    var offsetY = (vh - scaledH) / 2;
+    var offsetY = 0; // TOP-anchored — content starts from top of hero
 
     wrap.style.transform = 'translate(' + offsetX + 'px, ' + offsetY + 'px) scale(' + scale + ')';
   }
