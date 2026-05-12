@@ -24,11 +24,64 @@
   .nav-links a:hover{color:var(--text)}
   .nav-cta{position:relative;background:transparent;border:1px solid var(--border-light);color:var(--text);padding:0.55rem 1.4rem;font-size:0.78rem;letter-spacing:0.1em;text-transform:uppercase;font-family:'DM Sans',sans-serif;cursor:none;transition:all 0.3s;text-decoration:none;display:inline-block}
   .nav-cta:hover{background:var(--accent);color:#000;border-color:var(--accent)}
-  .framer-hero{width:100%;height:100vh;position:relative;overflow:hidden;background:#000;}
-  .framer-hero iframe{position:absolute;inset:0;width:100%;height:100%;border:none;display:block;background:#000;}
-  .framer-hero::after{content:'';position:absolute;bottom:0;left:0;right:0;height:200px;background:linear-gradient(to bottom,transparent,var(--bg));pointer-events:none;z-index:10;}
-  .framer-hero-scroll{position:absolute;bottom:2.5rem;left:50%;transform:translateX(-50%);z-index:20;display:flex;flex-direction:column;align-items:center;gap:0.5rem;color:rgba(240,237,230,0.4);font-size:0.7rem;letter-spacing:0.15em;text-transform:uppercase;font-family:'DM Mono',monospace;pointer-events:none;}
-  .framer-hero-scroll-line{width:1px;height:50px;background:linear-gradient(to bottom,rgba(240,237,230,0.3),transparent);animation:scrollDrop 2s ease infinite;}
+
+  /* ══ FRAMER HERO FIX ══
+     The Framer project is built at 1200px wide (Desktop breakpoint).
+     On wider screens (32" monitor = 2560px+) the iframe content sits
+     left-aligned at 1200px. Fix: scale the iframe UP so it always
+     fills 100vw × 100vh, centered, regardless of screen size.
+     JS calculates the exact scale factor on load + resize.
+  */
+  .framer-hero{
+    width:100%;
+    height:100vh;
+    position:relative;
+    overflow:hidden;
+    background:#fff; /* Framer hero has white bg */
+  }
+  .framer-hero-iframe-wrap{
+    /* This wrapper is scaled by JS. Default 1200×800 matches Framer desktop frame */
+    position:absolute;
+    top:0; left:0;
+    width:1200px;
+    height:800px;
+    transform-origin:top left;
+    /* JS sets: transform: scale(X) and left/top to center it */
+  }
+  .framer-hero-iframe-wrap iframe{
+    position:absolute;
+    top:0; left:0;
+    width:1200px;
+    height:800px;
+    border:none;
+    display:block;
+  }
+  .framer-hero::after{
+    content:'';
+    position:absolute;
+    bottom:0;left:0;right:0;
+    height:200px;
+    background:linear-gradient(to bottom,transparent,var(--bg));
+    pointer-events:none;
+    z-index:10;
+  }
+  .framer-hero-scroll{
+    position:absolute;
+    bottom:2.5rem;left:50%;
+    transform:translateX(-50%);
+    z-index:20;
+    display:flex;flex-direction:column;align-items:center;gap:0.5rem;
+    color:rgba(240,237,230,0.4);
+    font-size:0.7rem;letter-spacing:0.15em;text-transform:uppercase;
+    font-family:'DM Mono',monospace;
+    pointer-events:none;
+  }
+  .framer-hero-scroll-line{
+    width:1px;height:50px;
+    background:linear-gradient(to bottom,rgba(240,237,230,0.3),transparent);
+    animation:scrollDrop 2s ease infinite;
+  }
+
   .hero{min-height:100vh;display:flex;flex-direction:column;justify-content:flex-end;padding:0 3rem 4rem;position:relative;overflow:hidden}
   .hero-bg-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(240,237,230,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(240,237,230,0.025) 1px,transparent 1px);background-size:80px 80px;pointer-events:none}
   .hero-noise{position:absolute;inset:0;opacity:0.03;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");pointer-events:none}
@@ -138,133 +191,19 @@
   .orbital-label{position:absolute;top:2.5rem;left:3rem;font-family:'DM Mono',monospace;font-size:0.65rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--accent);z-index:10;display:flex;align-items:center;gap:0.8rem}
   .orbital-label::after{content:'';width:40px;height:1px;background:var(--accent);opacity:0.4}
 
-  /* ══════════════════════════════════════════════════════════════════
-     LOADER — exact match to the PDF animation (frames 1-7)
-
-     PDF SEQUENCE:
-     F1:  middle triangle.png tiny (scale 0 → appears)
-     F2:  middle triangle.png HUGE (fills screen, big bubble)
-     F3:  middle triangle.png shrinks to final size, settles center
-     F4:  3x round.png dots appear tiny at 3 corners
-     F5:  3x round.png dots grow bigger (bubble effect)
-     F6:  Logo assembles — Triangle.png arms fly into position,
-          rounds stay at their corners, middle tri stays center
-     F7:  "ACHINTHA JAYAWEERA" text appears below
-     F8+: Loading bar → done
-
-     KEY INSIGHT FROM PDF F6:
-     The final assembled logo is the "achinha jayaweera logo.psd" layout:
-     - middle triangle: dead center
-     - top-right arm: Triangle.png rotated ~-30deg, round at top-right
-     - left arm: Triangle.png rotated ~150deg, round at bottom-left
-     - bottom arm: Triangle.png roughly horizontal, round at bottom-right
-
-     Using the SVG canvas approach for perfect positioning —
-     we draw the logo on an SVG canvas using actual img elements
-     positioned via JS after images load (so we know real dimensions).
-     Actually simplest: use the Achintha top logo.png (favicon = the
-     assembled black logo on green) BUT that has bg.
-
-     FINAL CORRECT APPROACH:
-     Use mix-blend-mode: multiply on the logo images so the lime green
-     bg shows through and only the BLACK parts are visible.
-     This means ANY logo PNG works regardless of whether bg is white or transparent.
-  ══════════════════════════════════════════════════════════════════ */
-  .loader{
-    position:fixed;inset:0;z-index:10000;
-    background:#c8f542;
-    display:flex;align-items:center;justify-content:center;flex-direction:column;
-    overflow:hidden;
-    transition:opacity 0.9s ease,visibility 0.9s ease;
-  }
+  /* LOADER */
+  .loader{position:fixed;inset:0;z-index:10000;background:#c8f542;display:flex;align-items:center;justify-content:center;flex-direction:column;overflow:hidden;transition:opacity 0.9s ease,visibility 0.9s ease;}
   .loader.done{opacity:0;visibility:hidden;pointer-events:none;}
-
-  /* ── Logo stage: fixed 220×220px container, all pieces inside ── */
-  .ld-stage{
-    position:relative;
-    width:220px;height:220px;
-    flex-shrink:0;
-  }
-
-  /*
-    All logo images use mix-blend-mode:multiply so white backgrounds
-    become invisible on the lime green loader — only the black logo
-    parts show through. This is the key fix.
-  */
-  .ld-img{
-    position:absolute;
-    mix-blend-mode:multiply;
-    opacity:0;
-    will-change:transform,opacity;
-  }
-
-  /* CENTER TRIANGLE — middle triangle.png
-     Sits dead center of the 220×220 stage.
-     Small: ~50px wide. Positioned so center of image = center of stage. */
-  #ldMidTri{
-    width:50px;height:auto;
-    top:50%;left:50%;
-    transform:translate(-50%,-50%) scale(0);
-    transform-origin:center;
-  }
-
-  /* TOP-RIGHT ARM — Triangle.png rotated ~-30deg
-     From PDF F6: arm goes from center-top to bottom-right area
-     Round end (fat end) is at top-right of stage */
-  #ldArmTR{
-    width:78px;height:auto;
-    top:50%;left:50%;
-    transform:translate(-50%,-50%) rotate(-30deg) translateY(-55px) scale(0);
-    transform-origin:50% 100%;
-  }
-
-  /* LEFT ARM — Triangle.png rotated ~150deg
-     From PDF F6: arm goes from center-top to bottom-left
-     Round end is at bottom-left of stage */
-  #ldArmL{
-    width:78px;height:auto;
-    top:50%;left:50%;
-    transform:translate(-50%,-50%) rotate(90deg) translateY(-55px) scale(0);
-    transform-origin:50% 100%;
-  }
-
-  /* BOTTOM ARM — Triangle.png rotated ~210deg
-     From PDF F6: the horizontal arm at bottom
-     Round end is at bottom-right */
-  #ldArmBot{
-    width:78px;height:auto;
-    top:50%;left:50%;
-    transform:translate(-50%,-50%) rotate(210deg) translateY(-55px) scale(0);
-    transform-origin:50% 100%;
-  }
-
-  /* 3x ROUND DOTS — round.png at each arm tip */
-  #ldRoundTR{
-    width:28px;height:auto;
-    top:8%;left:62%;
-    transform:translate(-50%,-50%) scale(0);
-    transform-origin:center;
-  }
-  #ldRoundL{
-    width:28px;height:auto;
-    top:78%;left:18%;
-    transform:translate(-50%,-50%) scale(0);
-    transform-origin:center;
-  }
-  #ldRoundBot{
-    width:28px;height:auto;
-    top:85%;left:72%;
-    transform:translate(-50%,-50%) scale(0);
-    transform-origin:center;
-  }
-
-  .ld-name{
-    font-family:'Bebas Neue',sans-serif;
-    font-size:1.6rem;font-weight:700;
-    letter-spacing:0.22em;color:#080808;
-    opacity:0;transform:translateY(14px);
-    margin-top:20px;white-space:nowrap;
-  }
+  .ld-stage{position:relative;width:220px;height:220px;flex-shrink:0;}
+  .ld-img{position:absolute;mix-blend-mode:multiply;opacity:0;will-change:transform,opacity;}
+  #ldMidTri{width:50px;height:auto;top:50%;left:50%;transform:translate(-50%,-50%) scale(0);transform-origin:center;}
+  #ldArmTR{width:78px;height:auto;top:50%;left:50%;transform:translate(-50%,-50%) rotate(-30deg) translateY(-55px) scale(0);transform-origin:50% 100%;}
+  #ldArmL{width:78px;height:auto;top:50%;left:50%;transform:translate(-50%,-50%) rotate(90deg) translateY(-55px) scale(0);transform-origin:50% 100%;}
+  #ldArmBot{width:78px;height:auto;top:50%;left:50%;transform:translate(-50%,-50%) rotate(210deg) translateY(-55px) scale(0);transform-origin:50% 100%;}
+  #ldRoundTR{width:28px;height:auto;top:8%;left:62%;transform:translate(-50%,-50%) scale(0);transform-origin:center;}
+  #ldRoundL{width:28px;height:auto;top:78%;left:18%;transform:translate(-50%,-50%) scale(0);transform-origin:center;}
+  #ldRoundBot{width:28px;height:auto;top:85%;left:72%;transform:translate(-50%,-50%) scale(0);transform-origin:center;}
+  .ld-name{font-family:'Bebas Neue',sans-serif;font-size:1.6rem;font-weight:700;letter-spacing:0.22em;color:#080808;opacity:0;transform:translateY(14px);margin-top:20px;white-space:nowrap;}
   .ld-bar-wrap{width:200px;height:1.5px;background:rgba(8,8,8,0.2);margin-top:1.4rem;position:relative;overflow:hidden;opacity:0;}
   .ld-bar-fill{position:absolute;top:0;left:0;height:100%;width:0;background:#080808;transition:width 0.12s linear;}
   .ld-pct{font-family:'DM Mono',monospace;font-size:0.62rem;letter-spacing:0.18em;color:rgba(8,8,8,0.5);margin-top:0.45rem;opacity:0;}
@@ -272,16 +211,13 @@
 </head>
 <body>
 
-<!-- ══ LOADER ══ -->
+<!-- LOADER -->
 <div class="loader" id="loader">
   <div class="ld-stage">
-    <!-- Middle triangle — does the big bubble first -->
     <img class="ld-img" id="ldMidTri" src="Assets/middle triangle.png" alt="">
-    <!-- 3 arms (Triangle.png, rotated to 3 positions) -->
     <img class="ld-img" id="ldArmTR"  src="Assets/Triangle.png" alt="">
     <img class="ld-img" id="ldArmL"   src="Assets/Triangle.png" alt="">
     <img class="ld-img" id="ldArmBot" src="Assets/Triangle.png" alt="">
-    <!-- 3 round dots at arm tips (round.png) -->
     <img class="ld-img" id="ldRoundTR"  src="Assets/round.png" alt="">
     <img class="ld-img" id="ldRoundL"   src="Assets/round.png" alt="">
     <img class="ld-img" id="ldRoundBot" src="Assets/round.png" alt="">
@@ -307,13 +243,24 @@
   <a href="mailto:achinthajayaweera26@gmail.com" class="nav-cta">Hire Me</a>
 </nav>
 
-<!-- ══ FRAMER HERO ══ -->
+<!-- FRAMER HERO — scaled to fill any screen -->
 <div class="framer-hero" id="framerHero">
-  <iframe src="https://cooperative-powerpoint-795692.framer.app/" allow="fullscreen" loading="lazy" scrolling="no" title="Hero Section"></iframe>
-  <div class="framer-hero-scroll"><div class="framer-hero-scroll-line"></div><span>Scroll</span></div>
+  <div class="framer-hero-iframe-wrap" id="framerWrap">
+    <iframe
+      src="https://cooperative-powerpoint-795692.framer.app/"
+      allow="fullscreen"
+      loading="lazy"
+      scrolling="no"
+      title="Hero Section"
+    ></iframe>
+  </div>
+  <div class="framer-hero-scroll">
+    <div class="framer-hero-scroll-line"></div>
+    <span>Scroll</span>
+  </div>
 </div>
 
-<!-- ══ ORIGINAL HERO ══ -->
+<!-- ORIGINAL HERO -->
 <section class="hero" id="home">
   <div class="hero-bg-grid"></div><div class="hero-noise"></div><div class="hero-orb"></div>
   <div class="hero-status"><div class="status-dot"></div><span>Available for opportunities · Sri Lanka</span></div>
@@ -430,16 +377,46 @@
 </footer>
 
 <script>
-/* ══════════════════════════════════════════════════════════════════
-   LOADER — exact PDF sequence:
-   F1-3: middle triangle tiny→huge→settles
-   F4-5: 3 round dots bubble in
-   F6:   Triangle arms fly in (rounds stay, logo assembles)
-   F7:   Name slides up
-   F8+:  Loading bar → done
-
-   mix-blend-mode:multiply on all images = white bg invisible on lime green
+/* ══ FRAMER HERO SCALE FIX ══════════════════════════════════════════
+   Your Framer desktop frame is 1200×800px.
+   This JS measures the actual viewport and scales the iframe wrapper
+   so it fills the screen perfectly — centered — on ANY display size.
+   Works on: 13" laptop, 27" monitor, 32" monitor, 4K displays.
+   Also handles window resize.
 ══════════════════════════════════════════════════════════════════ */
+(function(){
+  // ← Change these to match your Framer Desktop frame dimensions exactly
+  var FRAMER_W = 1200;
+  var FRAMER_H = 800;
+
+  var wrap = document.getElementById('framerWrap');
+  if (!wrap) return;
+
+  function scaleFramerHero() {
+    var vw = window.innerWidth;
+    var vh = window.innerHeight;
+
+    // Scale to fill width OR height — whichever requires more scaling
+    // This ensures the content always covers the full hero area
+    var scaleX = vw / FRAMER_W;
+    var scaleY = vh / FRAMER_H;
+    var scale  = Math.max(scaleX, scaleY); // "cover" behavior
+
+    // After scaling, the wrapper is scale×1200 wide and scale×800 tall.
+    // Center it in the viewport.
+    var scaledW = FRAMER_W * scale;
+    var scaledH = FRAMER_H * scale;
+    var offsetX = (vw - scaledW) / 2;
+    var offsetY = (vh - scaledH) / 2;
+
+    wrap.style.transform = 'translate(' + offsetX + 'px, ' + offsetY + 'px) scale(' + scale + ')';
+  }
+
+  scaleFramerHero();
+  window.addEventListener('resize', scaleFramerHero);
+})();
+
+/* ══ LOADER ══════════════════════════════════════════════════════ */
 (function(){
   const loader   = document.getElementById('loader');
   const midTri   = document.getElementById('ldMidTri');
@@ -469,7 +446,6 @@
     }, delay);
   }
 
-  /* F1-3: middle triangle tiny → HUGE fills screen → settles */
   setTimeout(() => {
     midTri.style.opacity    = '1';
     midTri.style.transition = 'transform 0.5s cubic-bezier(0.34,1.6,0.64,1), opacity 0.1s ease';
@@ -480,24 +456,20 @@
     }, 500);
   }, 150);
 
-  /* F4-5: 3 round dots bubble in staggered */
   springIn(roundTR,  1100, 'translate(-50%,-50%) scale(0)', 2.2);
   springIn(roundL,   1230, 'translate(-50%,-50%) scale(0)', 2.2);
   springIn(roundBot, 1360, 'translate(-50%,-50%) scale(0)', 2.2);
 
-  /* F6: Triangle arms spring in — rounds stay, logo assembles */
   springIn(armTR,  1700, 'translate(-50%,-50%) rotate(-30deg) translateY(-55px) scale(0)', 1.2);
   springIn(armL,   1840, 'translate(-50%,-50%) rotate(90deg) translateY(-55px) scale(0)',  1.2);
   springIn(armBot, 1980, 'translate(-50%,-50%) rotate(210deg) translateY(-55px) scale(0)', 1.2);
 
-  /* F7: name slides up */
   setTimeout(() => {
     name.style.transition = 'opacity 0.5s ease, transform 0.5s cubic-bezier(0.16,1,0.3,1)';
     name.style.opacity    = '1';
     name.style.transform  = 'translateY(0)';
   }, 2500);
 
-  /* Loading bar */
   setTimeout(() => {
     barWrap.style.transition = 'opacity 0.35s ease';
     barWrap.style.opacity    = '1';
@@ -528,11 +500,19 @@ document.querySelectorAll('a,button,.skill-card,.project-card,.exp-item').forEac
   el.addEventListener('mouseenter',()=>{cursor.style.transform='translate(-50%,-50%) scale(2.5)';trail.style.transform='translate(-50%,-50%) scale(1.5)';trail.style.borderColor='rgba(200,245,66,0.6)';});
   el.addEventListener('mouseleave',()=>{cursor.style.transform='translate(-50%,-50%) scale(1)';trail.style.transform='translate(-50%,-50%) scale(1)';trail.style.borderColor='rgba(200,245,66,0.4)';});
 });
+
+/* REVEAL */
 const ro=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');});},{threshold:0.12,rootMargin:'0px 0px -60px 0px'});
 document.querySelectorAll('.reveal').forEach(el=>ro.observe(el));
+
+/* COUNTERS */
 const co=new IntersectionObserver(entries=>{entries.forEach(entry=>{if(entry.isIntersecting){const el=entry.target,target=parseInt(el.getAttribute('data-target'));let cur=0;const step=target/60;const t=setInterval(()=>{cur+=step;if(cur>=target){cur=target;clearInterval(t);}el.textContent=Math.floor(cur)+'+';},16);co.unobserve(el);}});},{threshold:0.5});
 document.querySelectorAll('.counter').forEach(c=>co.observe(c));
+
+/* HERO ORB PARALLAX */
 document.addEventListener('mousemove',e=>{const orb=document.querySelector('.hero-orb');if(!orb)return;orb.style.transform=`translate(${(e.clientX/window.innerWidth-0.5)*40}px,${(e.clientY/window.innerHeight-0.5)*40}px)`;});
+
+/* SCRATCH CARD POP-IN */
 (function(){const w=document.getElementById('scratchWrapper');if(!w)return;new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){w.style.opacity='1';w.style.transform='scale(1)';}});},{threshold:0.15}).observe(w);})();
 </script>
 </body>
