@@ -138,31 +138,13 @@
   .orbital-label{position:absolute;top:2.5rem;left:3rem;font-family:'DM Mono',monospace;font-size:0.65rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--accent);z-index:10;display:flex;align-items:center;gap:0.8rem}
   .orbital-label::after{content:'';width:40px;height:1px;background:var(--accent);opacity:0.4}
 
-  /* ══════════════════════════════════════════════════════════════
-     LOADER
-     Logo anatomy (from image 2):
-       • middle triangle.png  — small center triangle
-       • Triangle.png × 3     — long sharp blade, pointed tip at SHARP end,
-                                 placed along each of 3 sides of a triangle path
-       • round.png × 3        — circle blob at each corner where blades meet
-
-     Layout strategy:
-     Use a 280×280 stage. Place everything with absolute positioning.
-     The 3 blades + 3 rounds together form the outer "A" shape.
-
-     From image 2, examining the final logo:
-       Top-right blade:  goes from top-center DOWN to bottom-right, ~-30deg rotation
-       Left blade:       goes from top-center DOWN to bottom-left, steep ~-150deg
-       Bottom blade:     goes roughly horizontal left-to-right at bottom, ~0deg
-       Round top:        top-center area
-       Round BL:         bottom-left
-       Round BR:         bottom-right
-
-     Simpler correct approach — use the actual A Final.png logo image
-     for the assembled state, but animate the PARTS flying in.
-
-     We'll use an SVG-based positioning grid matched to image 2.
-  ══════════════════════════════════════════════════════════════ */
+  /* ══════════════════════════════════════════════════════════
+     LOADER — uses A Final.png (the complete assembled logo)
+     with a 3-phase animation:
+     1. middle triangle.png: scale 0 → huge fill screen → shrink + fade out
+     2. A Final.png (whole logo): scales in with spring bubble
+     3. Name + loading bar → done
+  ══════════════════════════════════════════════════════════ */
   .loader{
     position:fixed;inset:0;z-index:10000;
     background:#c8f542;
@@ -172,109 +154,36 @@
   }
   .loader.done{opacity:0;visibility:hidden;pointer-events:none;}
 
-  /*
-    280×280 stage.
-    We'll use an absolutely-positioned canvas approach.
-    Each piece is placed so that when assembled they match image 2.
-
-    Looking at image 2 carefully:
-    - Logo fills roughly a 240px tall, 220px wide bounding box
-    - Top-right arm (Triangle): points diagonally from top-center to bottom-right
-    - Left arm (Triangle): points diagonally from top-center to bottom-left
-    - Bottom arm (Triangle/Round): the bottom piece — horizontal, wider, rounder end on right
-
-    Key insight from image 2:
-    The Triangle.png is a long narrow WEDGE shape (wide at base, narrows to a point).
-    The Round.png circle attaches at the WIDE base end of each Triangle.
-
-    Assembly:
-    - Arm T-R: top-right arm. Triangle narrow end points up-left, round at bottom-right
-    - Arm L:   left arm. Triangle narrow end points up-right, round at bottom-left
-    - Arm Bot: bottom arm. Triangle narrow end points left, round at right
-
-    Each arm = Triangle.png + Round.png overlapping at the round end.
-    But since we're animating separately, we'll layer them with the round on top.
-  */
-
-  .ld-stage{
+  /* Logo wrapper — flex center */
+  .ld-logo-wrap{
     position:relative;
-    width:280px;
-    height:280px;
+    display:flex;align-items:center;justify-content:center;
+    width:220px;height:220px;
   }
 
-  /* All pieces start hidden, scale from center */
-  .ld-piece{
+  /* The full assembled logo — A Final.png (black on transparent) */
+  .ld-logo-final{
     position:absolute;
+    width:180px;height:auto;
     opacity:0;
+    transform:scale(0);
     will-change:transform,opacity;
   }
 
-  /*
-    MIDDLE TRIANGLE — centered in logo, small
-    From image 2: it sits roughly at 45% from top, 42% from left of the logo
-  */
-  .ld-mid{
-    width:52px;height:auto;
-    top:108px;left:112px;
+  /* Middle triangle for the initial big bubble effect */
+  .ld-mid-tri{
+    position:absolute;
+    width:60px;height:auto;
+    opacity:0;
     transform:scale(0);
-    transform-origin:center center;
+    will-change:transform,opacity;
   }
 
-  /*
-    Triangle.png — the long blade.
-    In image 2 it appears the file is a thin elongated dark triangle/wedge.
-    Thumbnail shows: narrow pointed end at top, wider base at bottom.
-
-    ARM 1 (top-right going blade): rotated ~-30deg, positioned upper-center area
-    ARM 2 (left going blade): rotated ~-150deg (or 210deg), positioned upper-center
-    ARM 3 (bottom horizontal): rotated ~90deg, positioned lower area
-  */
-
-  /* Top-right arm */
-  .ld-tri-tr{
-    width:55px;height:auto;
-    top:30px;left:138px;
-    transform:rotate(-30deg) scale(0);
-    transform-origin:50% 0%;
+  .ld-name{
+    font-family:'Bebas Neue',sans-serif;font-size:1.6rem;font-weight:700;
+    letter-spacing:0.22em;color:#080808;opacity:0;transform:translateY(14px);
+    margin-top:24px;white-space:nowrap;
   }
-  /* Left arm */
-  .ld-tri-l{
-    width:55px;height:auto;
-    top:30px;left:88px;
-    transform:rotate(30deg) scale(0);
-    transform-origin:50% 0%;
-  }
-  /* Bottom arm */
-  .ld-tri-bot{
-    width:55px;height:auto;
-    top:155px;left:90px;
-    transform:rotate(90deg) scale(0);
-    transform-origin:50% 0%;
-  }
-
-  /*
-    Round.png circles — placed at each corner where arms end
-    Top corner, BL corner, BR corner
-  */
-  .ld-round{width:30px;height:auto;}
-
-  .ld-round-t{
-    top:10px;left:126px;
-    transform:scale(0);
-    transform-origin:center;
-  }
-  .ld-round-bl{
-    top:185px;left:62px;
-    transform:scale(0);
-    transform-origin:center;
-  }
-  .ld-round-br{
-    top:185px;left:186px;
-    transform:scale(0);
-    transform-origin:center;
-  }
-
-  .ld-name{font-family:'Bebas Neue',sans-serif;font-size:1.6rem;font-weight:700;letter-spacing:0.22em;color:#080808;opacity:0;transform:translateY(14px);margin-top:22px;white-space:nowrap;}
   .ld-bar-wrap{width:200px;height:1.5px;background:rgba(8,8,8,0.2);margin-top:1.4rem;position:relative;overflow:hidden;opacity:0;}
   .ld-bar-fill{position:absolute;top:0;left:0;height:100%;width:0;background:#080808;transition:width 0.12s linear;}
   .ld-pct{font-family:'DM Mono',monospace;font-size:0.62rem;letter-spacing:0.18em;color:rgba(8,8,8,0.5);margin-top:0.45rem;opacity:0;}
@@ -284,17 +193,11 @@
 
 <!-- ══ LOADER ══ -->
 <div class="loader" id="loader">
-  <div class="ld-stage" id="ldStage">
-    <!-- Middle triangle — appears first, does the big bubble -->
-    <img class="ld-piece ld-mid"      id="ldMid"     src="Assets/middle triangle.png" alt="">
-    <!-- 3 Triangle blades -->
-    <img class="ld-piece ld-tri-tr"   id="ldTriTR"   src="Assets/Triangle.png" alt="">
-    <img class="ld-piece ld-tri-l"    id="ldTriL"    src="Assets/Triangle.png" alt="">
-    <img class="ld-piece ld-tri-bot"  id="ldTriBot"  src="Assets/Triangle.png" alt="">
-    <!-- 3 Round blobs at corners -->
-    <img class="ld-piece ld-round ld-round-t"   id="ldRoundT"  src="Assets/round.png" alt="">
-    <img class="ld-piece ld-round ld-round-bl"  id="ldRoundBL" src="Assets/round.png" alt="">
-    <img class="ld-piece ld-round ld-round-br"  id="ldRoundBR" src="Assets/round.png" alt="">
+  <div class="ld-logo-wrap">
+    <!-- Phase 1: middle triangle does the big bubble -->
+    <img class="ld-mid-tri"    id="ldMidTri"    src="Assets/middle triangle.png" alt="">
+    <!-- Phase 2: full assembled logo springs in -->
+    <img class="ld-logo-final" id="ldLogoFinal" src="Assets/A Final.png" alt="">
   </div>
   <div class="ld-name"     id="ldName">ACHINTHA JAYAWEERA</div>
   <div class="ld-bar-wrap" id="ldBarWrap"><div class="ld-bar-fill" id="ldBarFill"></div></div>
@@ -440,113 +343,61 @@
 </footer>
 
 <script>
-/* ══════════════════════════════════════════════════════════════════════
-   LOADER SEQUENCE
+/* ══════════════════════════════════════════════════════════════
+   LOADER — clean 3-phase approach, guaranteed correct logo:
 
-   The loader now uses the ACTUAL A Final.png logo image directly
-   for the final assembled state, but we animate the individual
-   parts flying in. Since pixel-perfect placement of 7 separate PNGs
-   that I can't visually inspect is impossible without iteration,
-   this version uses a smarter approach:
+   PHASE 1 (0–1s):
+     middle triangle.png pops from scale(0) → scale(10) fills screen
+     → quickly shrinks back and fades out
 
-   PHASE 1: middle triangle.png scales from 0 → huge → normal (exact PDF sequence)
-   PHASE 2: A Final.png (the complete assembled logo) fades/scales in, replacing the parts
-            This guarantees the final logo always looks perfect.
-   PHASE 3: Name + bar + done.
+   PHASE 2 (0.9s–1.6s):
+     A Final.png (the complete, correct logo) springs in from scale(0)
+     with a satisfying overshoot bubble — logo always looks perfect
 
-   Individual parts (Triangle × 3, round × 3) fly IN from off-stage
-   positions TOWARD the center, landing just as A Final.png becomes visible.
-   This gives the assembly animation feel without pixel-placement guesswork.
-══════════════════════════════════════════════════════════════════════ */
+   PHASE 3 (1.8s+):
+     Name slides up, loading bar fills, loader fades out
+══════════════════════════════════════════════════════════════ */
 (function(){
   const loader   = document.getElementById('loader');
-  const stage    = document.getElementById('ldStage');
-  const midTri   = document.getElementById('ldMid');
-  const triTR    = document.getElementById('ldTriTR');
-  const triL     = document.getElementById('ldTriL');
-  const triBot   = document.getElementById('ldTriBot');
-  const roundT   = document.getElementById('ldRoundT');
-  const roundBL  = document.getElementById('ldRoundBL');
-  const roundBR  = document.getElementById('ldRoundBR');
+  const midTri   = document.getElementById('ldMidTri');
+  const logoFinal= document.getElementById('ldLogoFinal');
   const name     = document.getElementById('ldName');
   const barWrap  = document.getElementById('ldBarWrap');
   const barFill  = document.getElementById('ldBarFill');
   const pct      = document.getElementById('ldPct');
 
-  /* Spring bubble in from a distant translate */
-  function flyIn(el, delay, fromTx, finalTx, over) {
-    over = over || 1.15;
-    // Start: invisible at fromTx
-    el.style.transform = fromTx;
-    setTimeout(() => {
-      el.style.opacity    = '1';
-      // Fly to slightly-overshot final
-      const overshootTx = finalTx.replace('scale(1)', 'scale('+over+')');
-      el.style.transition = 'transform 0.45s cubic-bezier(0.16,1,0.3,1), opacity 0.2s ease';
-      el.style.transform  = overshootTx;
-      setTimeout(() => {
-        el.style.transition = 'transform 0.22s cubic-bezier(0.16,1,0.3,1)';
-        el.style.transform  = finalTx;
-      }, 450);
-    }, delay);
-  }
-
-  /* Simple spring in from scale(0) */
-  function springIn(el, delay, finalTx, over) {
-    over = over || 1.4;
-    const ovTx  = finalTx.replace('scale(0)', 'scale('+over+')');
-    const finTx = finalTx.replace('scale(0)', 'scale(1)');
-    setTimeout(() => {
-      el.style.opacity    = '1';
-      el.style.transition = 'transform 0.44s cubic-bezier(0.34,1.8,0.64,1), opacity 0.1s ease';
-      el.style.transform  = ovTx;
-      setTimeout(() => {
-        el.style.transition = 'transform 0.26s cubic-bezier(0.16,1,0.3,1)';
-        el.style.transform  = finTx;
-      }, 440);
-    }, delay);
-  }
-
-  /* STEP 1: Middle triangle — tiny → HUGE → settles */
+  /* PHASE 1: middle triangle tiny → fills screen → fades out */
   setTimeout(() => {
     midTri.style.opacity    = '1';
-    midTri.style.transition = 'transform 0.5s cubic-bezier(0.34,1.6,0.64,1), opacity 0.1s ease';
+    midTri.style.transition = 'transform 0.45s cubic-bezier(0.34,1.6,0.64,1), opacity 0.1s ease';
     midTri.style.transform  = 'scale(10)'; // fills screen
+    // Fade out middle tri as full logo comes in
     setTimeout(() => {
-      midTri.style.transition = 'transform 0.5s cubic-bezier(0.16,1,0.3,1)';
-      midTri.style.transform  = 'scale(1)';
-    }, 500);
+      midTri.style.transition = 'transform 0.3s ease, opacity 0.3s ease';
+      midTri.style.opacity    = '0';
+      midTri.style.transform  = 'scale(0.8)';
+    }, 600);
   }, 150);
 
-  /* STEP 2: Triangle blades fly in from off-screen corners toward their final spots */
-  // TR blade: comes from top-right
-  flyIn(triTR, 1100,
-    'rotate(-30deg) translate(80px,-80px) scale(0)',
-    'rotate(-30deg) translate(0,0) scale(1)', 1.1);
+  /* PHASE 2: full logo springs in with bubble overshoot */
+  setTimeout(() => {
+    logoFinal.style.opacity    = '1';
+    logoFinal.style.transition = 'transform 0.5s cubic-bezier(0.34,1.7,0.64,1), opacity 0.2s ease';
+    logoFinal.style.transform  = 'scale(1.3)'; // overshoot
+    setTimeout(() => {
+      logoFinal.style.transition = 'transform 0.3s cubic-bezier(0.16,1,0.3,1)';
+      logoFinal.style.transform  = 'scale(1)'; // settle
+    }, 500);
+  }, 850);
 
-  // L blade: comes from top-left
-  flyIn(triL, 1230,
-    'rotate(30deg) translate(-80px,-80px) scale(0)',
-    'rotate(30deg) translate(0,0) scale(1)', 1.1);
-
-  // Bot blade: comes from bottom
-  flyIn(triBot, 1360,
-    'rotate(90deg) translate(0,80px) scale(0)',
-    'rotate(90deg) translate(0,0) scale(1)', 1.1);
-
-  /* STEP 3: Round dots pop in at corners */
-  springIn(roundT,  1500, 'scale(0)', 1.5);
-  springIn(roundBL, 1600, 'scale(0)', 1.5);
-  springIn(roundBR, 1700, 'scale(0)', 1.5);
-
-  /* STEP 4: Name slides up */
+  /* PHASE 3: name slides up */
   setTimeout(() => {
     name.style.transition = 'opacity 0.5s ease, transform 0.5s cubic-bezier(0.16,1,0.3,1)';
     name.style.opacity    = '1';
     name.style.transform  = 'translateY(0)';
-  }, 2150);
+  }, 1600);
 
-  /* STEP 5: Loading bar */
+  /* Loading bar */
   setTimeout(() => {
     barWrap.style.transition = 'opacity 0.35s ease';
     barWrap.style.opacity    = '1';
@@ -559,13 +410,13 @@
         progress = 100; clearInterval(iv);
         barFill.style.width = '100%';
         pct.textContent     = '100%';
-        setTimeout(() => loader.classList.add('done'), 650);
+        setTimeout(() => loader.classList.add('done'), 600);
       } else {
         barFill.style.width = progress + '%';
         pct.textContent     = Math.floor(progress) + '%';
       }
     }, 80);
-  }, 2700);
+  }, 2050);
 })();
 
 /* CURSOR */
@@ -577,19 +428,11 @@ document.querySelectorAll('a,button,.skill-card,.project-card,.exp-item').forEac
   el.addEventListener('mouseenter',()=>{cursor.style.transform='translate(-50%,-50%) scale(2.5)';trail.style.transform='translate(-50%,-50%) scale(1.5)';trail.style.borderColor='rgba(200,245,66,0.6)';});
   el.addEventListener('mouseleave',()=>{cursor.style.transform='translate(-50%,-50%) scale(1)';trail.style.transform='translate(-50%,-50%) scale(1)';trail.style.borderColor='rgba(200,245,66,0.4)';});
 });
-
-/* SCROLL REVEAL */
 const ro=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');});},{threshold:0.12,rootMargin:'0px 0px -60px 0px'});
 document.querySelectorAll('.reveal').forEach(el=>ro.observe(el));
-
-/* COUNTERS */
 const co=new IntersectionObserver(entries=>{entries.forEach(entry=>{if(entry.isIntersecting){const el=entry.target,target=parseInt(el.getAttribute('data-target'));let cur=0;const step=target/60;const t=setInterval(()=>{cur+=step;if(cur>=target){cur=target;clearInterval(t);}el.textContent=Math.floor(cur)+'+';},16);co.unobserve(el);}});},{threshold:0.5});
 document.querySelectorAll('.counter').forEach(c=>co.observe(c));
-
-/* HERO PARALLAX */
 document.addEventListener('mousemove',e=>{const orb=document.querySelector('.hero-orb');if(!orb)return;orb.style.transform=`translate(${(e.clientX/window.innerWidth-0.5)*40}px,${(e.clientY/window.innerHeight-0.5)*40}px)`;});
-
-/* SCRATCH POP-IN */
 (function(){const w=document.getElementById('scratchWrapper');if(!w)return;new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){w.style.opacity='1';w.style.transform='scale(1)';}});},{threshold:0.15}).observe(w);})();
 </script>
 </body>
