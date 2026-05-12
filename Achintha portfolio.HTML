@@ -138,13 +138,38 @@
   .orbital-label{position:absolute;top:2.5rem;left:3rem;font-family:'DM Mono',monospace;font-size:0.65rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--accent);z-index:10;display:flex;align-items:center;gap:0.8rem}
   .orbital-label::after{content:'';width:40px;height:1px;background:var(--accent);opacity:0.4}
 
-  /* ══════════════════════════════════════════════════════════
-     LOADER — uses A Final.png (the complete assembled logo)
-     with a 3-phase animation:
-     1. middle triangle.png: scale 0 → huge fill screen → shrink + fade out
-     2. A Final.png (whole logo): scales in with spring bubble
-     3. Name + loading bar → done
-  ══════════════════════════════════════════════════════════ */
+  /* ══════════════════════════════════════════════════════════════════
+     LOADER — exact match to the PDF animation (frames 1-7)
+
+     PDF SEQUENCE:
+     F1:  middle triangle.png tiny (scale 0 → appears)
+     F2:  middle triangle.png HUGE (fills screen, big bubble)
+     F3:  middle triangle.png shrinks to final size, settles center
+     F4:  3x round.png dots appear tiny at 3 corners
+     F5:  3x round.png dots grow bigger (bubble effect)
+     F6:  Logo assembles — Triangle.png arms fly into position,
+          rounds stay at their corners, middle tri stays center
+     F7:  "ACHINTHA JAYAWEERA" text appears below
+     F8+: Loading bar → done
+
+     KEY INSIGHT FROM PDF F6:
+     The final assembled logo is the "achinha jayaweera logo.psd" layout:
+     - middle triangle: dead center
+     - top-right arm: Triangle.png rotated ~-30deg, round at top-right
+     - left arm: Triangle.png rotated ~150deg, round at bottom-left
+     - bottom arm: Triangle.png roughly horizontal, round at bottom-right
+
+     Using the SVG canvas approach for perfect positioning —
+     we draw the logo on an SVG canvas using actual img elements
+     positioned via JS after images load (so we know real dimensions).
+     Actually simplest: use the Achintha top logo.png (favicon = the
+     assembled black logo on green) BUT that has bg.
+
+     FINAL CORRECT APPROACH:
+     Use mix-blend-mode: multiply on the logo images so the lime green
+     bg shows through and only the BLACK parts are visible.
+     This means ANY logo PNG works regardless of whether bg is white or transparent.
+  ══════════════════════════════════════════════════════════════════ */
   .loader{
     position:fixed;inset:0;z-index:10000;
     background:#c8f542;
@@ -154,35 +179,91 @@
   }
   .loader.done{opacity:0;visibility:hidden;pointer-events:none;}
 
-  /* Logo wrapper — flex center */
-  .ld-logo-wrap{
+  /* ── Logo stage: fixed 220×220px container, all pieces inside ── */
+  .ld-stage{
     position:relative;
-    display:flex;align-items:center;justify-content:center;
     width:220px;height:220px;
+    flex-shrink:0;
   }
 
-  /* The full assembled logo — A Final.png (black on transparent) */
-  .ld-logo-final{
+  /*
+    All logo images use mix-blend-mode:multiply so white backgrounds
+    become invisible on the lime green loader — only the black logo
+    parts show through. This is the key fix.
+  */
+  .ld-img{
     position:absolute;
-    width:180px;height:auto;
+    mix-blend-mode:multiply;
     opacity:0;
-    transform:scale(0);
     will-change:transform,opacity;
   }
 
-  /* Middle triangle for the initial big bubble effect */
-  .ld-mid-tri{
-    position:absolute;
-    width:60px;height:auto;
-    opacity:0;
-    transform:scale(0);
-    will-change:transform,opacity;
+  /* CENTER TRIANGLE — middle triangle.png
+     Sits dead center of the 220×220 stage.
+     Small: ~50px wide. Positioned so center of image = center of stage. */
+  #ldMidTri{
+    width:50px;height:auto;
+    top:50%;left:50%;
+    transform:translate(-50%,-50%) scale(0);
+    transform-origin:center;
+  }
+
+  /* TOP-RIGHT ARM — Triangle.png rotated ~-30deg
+     From PDF F6: arm goes from center-top to bottom-right area
+     Round end (fat end) is at top-right of stage */
+  #ldArmTR{
+    width:78px;height:auto;
+    top:50%;left:50%;
+    transform:translate(-50%,-50%) rotate(-30deg) translateY(-55px) scale(0);
+    transform-origin:50% 100%;
+  }
+
+  /* LEFT ARM — Triangle.png rotated ~150deg
+     From PDF F6: arm goes from center-top to bottom-left
+     Round end is at bottom-left of stage */
+  #ldArmL{
+    width:78px;height:auto;
+    top:50%;left:50%;
+    transform:translate(-50%,-50%) rotate(90deg) translateY(-55px) scale(0);
+    transform-origin:50% 100%;
+  }
+
+  /* BOTTOM ARM — Triangle.png rotated ~210deg
+     From PDF F6: the horizontal arm at bottom
+     Round end is at bottom-right */
+  #ldArmBot{
+    width:78px;height:auto;
+    top:50%;left:50%;
+    transform:translate(-50%,-50%) rotate(210deg) translateY(-55px) scale(0);
+    transform-origin:50% 100%;
+  }
+
+  /* 3x ROUND DOTS — round.png at each arm tip */
+  #ldRoundTR{
+    width:28px;height:auto;
+    top:8%;left:62%;
+    transform:translate(-50%,-50%) scale(0);
+    transform-origin:center;
+  }
+  #ldRoundL{
+    width:28px;height:auto;
+    top:78%;left:18%;
+    transform:translate(-50%,-50%) scale(0);
+    transform-origin:center;
+  }
+  #ldRoundBot{
+    width:28px;height:auto;
+    top:85%;left:72%;
+    transform:translate(-50%,-50%) scale(0);
+    transform-origin:center;
   }
 
   .ld-name{
-    font-family:'Bebas Neue',sans-serif;font-size:1.6rem;font-weight:700;
-    letter-spacing:0.22em;color:#080808;opacity:0;transform:translateY(14px);
-    margin-top:24px;white-space:nowrap;
+    font-family:'Bebas Neue',sans-serif;
+    font-size:1.6rem;font-weight:700;
+    letter-spacing:0.22em;color:#080808;
+    opacity:0;transform:translateY(14px);
+    margin-top:20px;white-space:nowrap;
   }
   .ld-bar-wrap{width:200px;height:1.5px;background:rgba(8,8,8,0.2);margin-top:1.4rem;position:relative;overflow:hidden;opacity:0;}
   .ld-bar-fill{position:absolute;top:0;left:0;height:100%;width:0;background:#080808;transition:width 0.12s linear;}
@@ -193,11 +274,17 @@
 
 <!-- ══ LOADER ══ -->
 <div class="loader" id="loader">
-  <div class="ld-logo-wrap">
-    <!-- Phase 1: middle triangle does the big bubble -->
-    <img class="ld-mid-tri"    id="ldMidTri"    src="Assets/middle triangle.png" alt="">
-    <!-- Phase 2: full assembled logo springs in -->
-    <img class="ld-logo-final" id="ldLogoFinal" src="Assets/A Final.png" alt="">
+  <div class="ld-stage">
+    <!-- Middle triangle — does the big bubble first -->
+    <img class="ld-img" id="ldMidTri" src="Assets/middle triangle.png" alt="">
+    <!-- 3 arms (Triangle.png, rotated to 3 positions) -->
+    <img class="ld-img" id="ldArmTR"  src="Assets/Triangle.png" alt="">
+    <img class="ld-img" id="ldArmL"   src="Assets/Triangle.png" alt="">
+    <img class="ld-img" id="ldArmBot" src="Assets/Triangle.png" alt="">
+    <!-- 3 round dots at arm tips (round.png) -->
+    <img class="ld-img" id="ldRoundTR"  src="Assets/round.png" alt="">
+    <img class="ld-img" id="ldRoundL"   src="Assets/round.png" alt="">
+    <img class="ld-img" id="ldRoundBot" src="Assets/round.png" alt="">
   </div>
   <div class="ld-name"     id="ldName">ACHINTHA JAYAWEERA</div>
   <div class="ld-bar-wrap" id="ldBarWrap"><div class="ld-bar-fill" id="ldBarFill"></div></div>
@@ -343,59 +430,72 @@
 </footer>
 
 <script>
-/* ══════════════════════════════════════════════════════════════
-   LOADER — clean 3-phase approach, guaranteed correct logo:
+/* ══════════════════════════════════════════════════════════════════
+   LOADER — exact PDF sequence:
+   F1-3: middle triangle tiny→huge→settles
+   F4-5: 3 round dots bubble in
+   F6:   Triangle arms fly in (rounds stay, logo assembles)
+   F7:   Name slides up
+   F8+:  Loading bar → done
 
-   PHASE 1 (0–1s):
-     middle triangle.png pops from scale(0) → scale(10) fills screen
-     → quickly shrinks back and fades out
-
-   PHASE 2 (0.9s–1.6s):
-     A Final.png (the complete, correct logo) springs in from scale(0)
-     with a satisfying overshoot bubble — logo always looks perfect
-
-   PHASE 3 (1.8s+):
-     Name slides up, loading bar fills, loader fades out
-══════════════════════════════════════════════════════════════ */
+   mix-blend-mode:multiply on all images = white bg invisible on lime green
+══════════════════════════════════════════════════════════════════ */
 (function(){
   const loader   = document.getElementById('loader');
   const midTri   = document.getElementById('ldMidTri');
-  const logoFinal= document.getElementById('ldLogoFinal');
+  const armTR    = document.getElementById('ldArmTR');
+  const armL     = document.getElementById('ldArmL');
+  const armBot   = document.getElementById('ldArmBot');
+  const roundTR  = document.getElementById('ldRoundTR');
+  const roundL   = document.getElementById('ldRoundL');
+  const roundBot = document.getElementById('ldRoundBot');
   const name     = document.getElementById('ldName');
   const barWrap  = document.getElementById('ldBarWrap');
   const barFill  = document.getElementById('ldBarFill');
   const pct      = document.getElementById('ldPct');
 
-  /* PHASE 1: middle triangle tiny → fills screen → fades out */
+  function springIn(el, delay, finalTx, over) {
+    over = over || 1.4;
+    const ov = finalTx.replace('scale(0)', 'scale('+over+')');
+    const fn = finalTx.replace('scale(0)', 'scale(1)');
+    setTimeout(() => {
+      el.style.opacity    = '1';
+      el.style.transition = 'transform 0.44s cubic-bezier(0.34,1.8,0.64,1), opacity 0.1s ease';
+      el.style.transform  = ov;
+      setTimeout(() => {
+        el.style.transition = 'transform 0.26s cubic-bezier(0.16,1,0.3,1)';
+        el.style.transform  = fn;
+      }, 440);
+    }, delay);
+  }
+
+  /* F1-3: middle triangle tiny → HUGE fills screen → settles */
   setTimeout(() => {
     midTri.style.opacity    = '1';
-    midTri.style.transition = 'transform 0.45s cubic-bezier(0.34,1.6,0.64,1), opacity 0.1s ease';
-    midTri.style.transform  = 'scale(10)'; // fills screen
-    // Fade out middle tri as full logo comes in
+    midTri.style.transition = 'transform 0.5s cubic-bezier(0.34,1.6,0.64,1), opacity 0.1s ease';
+    midTri.style.transform  = 'translate(-50%,-50%) scale(12)';
     setTimeout(() => {
-      midTri.style.transition = 'transform 0.3s ease, opacity 0.3s ease';
-      midTri.style.opacity    = '0';
-      midTri.style.transform  = 'scale(0.8)';
-    }, 600);
+      midTri.style.transition = 'transform 0.5s cubic-bezier(0.16,1,0.3,1)';
+      midTri.style.transform  = 'translate(-50%,-50%) scale(1)';
+    }, 500);
   }, 150);
 
-  /* PHASE 2: full logo springs in with bubble overshoot */
-  setTimeout(() => {
-    logoFinal.style.opacity    = '1';
-    logoFinal.style.transition = 'transform 0.5s cubic-bezier(0.34,1.7,0.64,1), opacity 0.2s ease';
-    logoFinal.style.transform  = 'scale(1.3)'; // overshoot
-    setTimeout(() => {
-      logoFinal.style.transition = 'transform 0.3s cubic-bezier(0.16,1,0.3,1)';
-      logoFinal.style.transform  = 'scale(1)'; // settle
-    }, 500);
-  }, 850);
+  /* F4-5: 3 round dots bubble in staggered */
+  springIn(roundTR,  1100, 'translate(-50%,-50%) scale(0)', 2.2);
+  springIn(roundL,   1230, 'translate(-50%,-50%) scale(0)', 2.2);
+  springIn(roundBot, 1360, 'translate(-50%,-50%) scale(0)', 2.2);
 
-  /* PHASE 3: name slides up */
+  /* F6: Triangle arms spring in — rounds stay, logo assembles */
+  springIn(armTR,  1700, 'translate(-50%,-50%) rotate(-30deg) translateY(-55px) scale(0)', 1.2);
+  springIn(armL,   1840, 'translate(-50%,-50%) rotate(90deg) translateY(-55px) scale(0)',  1.2);
+  springIn(armBot, 1980, 'translate(-50%,-50%) rotate(210deg) translateY(-55px) scale(0)', 1.2);
+
+  /* F7: name slides up */
   setTimeout(() => {
     name.style.transition = 'opacity 0.5s ease, transform 0.5s cubic-bezier(0.16,1,0.3,1)';
     name.style.opacity    = '1';
     name.style.transform  = 'translateY(0)';
-  }, 1600);
+  }, 2500);
 
   /* Loading bar */
   setTimeout(() => {
@@ -410,13 +510,13 @@
         progress = 100; clearInterval(iv);
         barFill.style.width = '100%';
         pct.textContent     = '100%';
-        setTimeout(() => loader.classList.add('done'), 600);
+        setTimeout(() => loader.classList.add('done'), 650);
       } else {
         barFill.style.width = progress + '%';
         pct.textContent     = Math.floor(progress) + '%';
       }
     }, 80);
-  }, 2050);
+  }, 3050);
 })();
 
 /* CURSOR */
