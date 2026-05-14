@@ -25,6 +25,7 @@
   .cursor-trail{position:fixed;width:32px;height:32px;border:1px solid rgba(200,245,66,0.4);border-radius:50%;pointer-events:none;z-index:9998;transition:all 0.18s ease;transform:translate(-50%,-50%)}
   @media(hover:none){.cursor,.cursor-trail{display:none}body{cursor:auto}}
 
+  /* ══ NAV ══ */
   nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:1.5rem var(--pad);display:flex;align-items:center;justify-content:space-between}
   nav::before{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,rgba(8,8,8,0.9) 0%,transparent 100%);pointer-events:none}
   .nav-logo{text-decoration:none;position:relative;flex-shrink:0}
@@ -42,14 +43,61 @@
   .nav-mobile a:hover{color:var(--accent)}
   .nav-mobile .nav-mobile-email{font-family:'DM Mono',monospace;font-size:0.85rem;letter-spacing:0.1em;color:var(--accent)}
 
-  .framer-hero{width:100%;height:100vh;position:relative;overflow:hidden;background:#fff;}
-  .framer-hero-wrap{position:absolute;top:0;left:0;width:1300px;height:800px;transform-origin:top left;}
-  .framer-hero-wrap iframe{position:absolute;top:0;left:0;width:1300px;height:800px;border:none;display:block;}
-  .framer-hero::after{content:'';position:absolute;bottom:0;left:0;right:0;height:200px;background:linear-gradient(to bottom,transparent,var(--bg));pointer-events:none;z-index:10;}
-  .framer-hero-scroll{position:absolute;bottom:2.5rem;left:50%;transform:translateX(-50%);z-index:20;display:flex;flex-direction:column;align-items:center;gap:0.5rem;color:rgba(240,237,230,0.4);font-size:0.7rem;letter-spacing:0.15em;text-transform:uppercase;font-family:'DM Mono',monospace;pointer-events:none;}
-  .framer-hero-scroll-line{width:1px;height:50px;background:linear-gradient(to bottom,rgba(240,237,230,0.3),transparent);animation:scrollDrop 2s ease infinite;}
+  /* ══ FRAMER HERO ══
+     Landscape: always 100vh, scales to fill viewport
+     Portrait:  JS sets exact height = (FH * scale)px so it
+                exactly fits the scaled content with no gap below
+  */
+  .framer-hero{
+    width:100%;
+    height:100vh; /* overridden by JS in portrait */
+    position:relative;
+    overflow:hidden;
+    background:#fff;
+  }
+  .framer-hero-wrap{
+    position:absolute;
+    top:0;left:0;
+    width:1300px;height:800px;
+    transform-origin:top left;
+  }
+  .framer-hero-wrap iframe{
+    position:absolute;
+    top:0;left:0;
+    width:1300px;height:800px;
+    border:none;display:block;
+  }
+  .framer-hero::after{
+    content:'';position:absolute;bottom:0;left:0;right:0;
+    height:200px;
+    background:linear-gradient(to bottom,transparent,var(--bg));
+    pointer-events:none;z-index:10;
+  }
+  .framer-hero-scroll{
+    position:absolute;bottom:2.5rem;left:50%;transform:translateX(-50%);
+    z-index:20;display:flex;flex-direction:column;align-items:center;gap:0.5rem;
+    color:rgba(240,237,230,0.4);font-size:0.7rem;letter-spacing:0.15em;
+    text-transform:uppercase;font-family:'DM Mono',monospace;pointer-events:none;
+  }
+  .framer-hero-scroll-line{
+    width:1px;height:50px;
+    background:linear-gradient(to bottom,rgba(240,237,230,0.3),transparent);
+    animation:scrollDrop 2s ease infinite;
+  }
 
-  .hero{min-height:100vh;display:flex;flex-direction:column;justify-content:flex-end;padding:0 var(--pad) 4rem;position:relative;overflow:hidden}
+  /* ══ ORIGINAL HERO ══
+     Landscape: full 100vh hero
+     Portrait: auto height — JS hides it since Framer hero already fills screen
+  */
+  .hero{
+    min-height:100vh;
+    display:flex;flex-direction:column;justify-content:flex-end;
+    padding:0 var(--pad) 4rem;
+    position:relative;overflow:hidden;
+  }
+  /* Portrait: hide the redundant dark hero section */
+  .hero.portrait-hidden{display:none}
+
   .hero-bg-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(240,237,230,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(240,237,230,0.025) 1px,transparent 1px);background-size:80px 80px;pointer-events:none}
   .hero-noise{position:absolute;inset:0;opacity:0.03;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");pointer-events:none}
   .hero-orb{position:absolute;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(200,245,66,0.06) 0%,transparent 70%);top:-100px;right:-100px;pointer-events:none;animation:orbFloat 8s ease-in-out infinite}
@@ -71,6 +119,7 @@
   @keyframes scrollDrop{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform:scaleY(1);transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
   @keyframes fadeUp{to{opacity:1;transform:translateY(0)}}
 
+  /* ══ MARQUEE ══ */
   .marquee-section{border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:1.2rem 0;overflow:hidden;background:var(--bg2)}
   .marquee-track{display:flex;gap:3rem;animation:marquee 18s linear infinite;width:max-content}
   .marquee-item{display:flex;align-items:center;gap:1rem;white-space:nowrap;font-size:0.78rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted)}
@@ -81,6 +130,7 @@
   .section-label{font-size:0.72rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--accent);margin-bottom:3rem;display:flex;align-items:center;gap:1rem}
   .section-label::after{content:'';flex:1;max-width:60px;height:1px;background:var(--accent);opacity:0.4}
 
+  /* ══ ABOUT ══ */
   .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:6rem;align-items:start}
   .about-heading{font-family:'Bebas Neue',sans-serif;font-size:clamp(3rem,6vw,7rem);line-height:0.9;letter-spacing:0.01em;color:var(--text)}
   .about-heading .accent-word{color:var(--accent)}
@@ -104,6 +154,7 @@
   .skill-name{font-size:0.9rem;font-weight:500;color:var(--text);margin-bottom:0.4rem}
   .skill-desc{font-size:0.78rem;color:var(--muted);line-height:1.6}
 
+  /* ══ EXPERIENCE ══ */
   .experience-list{margin-top:3rem}
   .exp-item{display:grid;grid-template-columns:180px 1fr;gap:3rem;padding:2.5rem 0;border-bottom:1px solid var(--border);position:relative;transition:all 0.3s}
   .exp-item:first-child{border-top:1px solid var(--border)}
@@ -118,6 +169,7 @@
   .tag{font-size:0.7rem;letter-spacing:0.08em;text-transform:uppercase;border:1px solid var(--border-light);padding:0.3rem 0.8rem;color:var(--muted);transition:all 0.3s}
   .tag:hover{border-color:var(--accent);color:var(--accent)}
 
+  /* ══ PROJECTS ══ */
   .projects-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.5rem;margin-top:3rem}
   .project-card{background:var(--bg2);border:1px solid var(--border);padding:2.5rem;position:relative;overflow:hidden;transition:all 0.4s cubic-bezier(0.16,1,0.3,1);cursor:none}
   .project-card::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(200,245,66,0.04),transparent);opacity:0;transition:opacity 0.4s}
@@ -134,6 +186,7 @@
   .project-svg{width:100%;height:100%}
   .project-span2{grid-column:span 2}
 
+  /* ══ EDUCATION ══ */
   .edu-list{margin-top:3rem}
   .edu-item{display:flex;justify-content:space-between;align-items:flex-start;padding:2rem 0;border-bottom:1px solid var(--border);gap:2rem}
   .edu-item:first-child{border-top:1px solid var(--border)}
@@ -141,15 +194,16 @@
   .edu-school{font-size:0.85rem;color:var(--muted)}
   .edu-year{font-family:'DM Mono',monospace;font-size:0.8rem;color:var(--accent);white-space:nowrap}
 
+  /* ══ SCRATCH ══ */
   .scratch-section{padding:8rem var(--pad) 0;background:var(--bg);border-top:1px solid var(--border);display:flex;flex-direction:column;align-items:center;position:relative}
   .scratch-section::after{content:'';position:absolute;bottom:0;left:0;right:0;height:100px;background:linear-gradient(to bottom,transparent,var(--bg));pointer-events:none;z-index:5}
   .scratch-section .section-label{align-self:flex-start;width:100%}
   .scratch-sub{align-self:flex-start;font-family:'DM Mono',monospace;font-size:0.72rem;letter-spacing:0.15em;color:var(--muted);text-transform:uppercase;margin-bottom:3rem;margin-top:-2rem;opacity:0;transform:translateY(10px)}
   .scratch-sub.visible{opacity:1;transform:translateY(0);transition:all 0.6s ease 0.2s}
-
   .orbital-label{position:absolute;top:2.5rem;left:var(--pad);font-family:'DM Mono',monospace;font-size:0.65rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--accent);z-index:10;display:flex;align-items:center;gap:0.8rem}
   .orbital-label::after{content:'';width:40px;height:1px;background:var(--accent);opacity:0.4}
 
+  /* ══ CONTACT ══ */
   .contact-section{background:var(--bg2);border-top:1px solid var(--border);text-align:center;padding:10rem var(--pad);position:relative;overflow:hidden}
   .contact-bg-text{position:absolute;font-family:'Bebas Neue',sans-serif;font-size:clamp(8rem,20vw,22rem);color:rgba(240,237,230,0.02);top:50%;left:50%;transform:translate(-50%,-50%);white-space:nowrap;pointer-events:none;letter-spacing:0.05em}
   .contact-label{font-size:0.75rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--accent);margin-bottom:2rem;position:relative}
@@ -171,96 +225,22 @@
   .reveal-delay-1{transition-delay:0.1s}.reveal-delay-2{transition-delay:0.2s}.reveal-delay-3{transition-delay:0.3s}.reveal-delay-4{transition-delay:0.4s}
   .counter{font-variant-numeric:tabular-nums}
 
-  /* ══════════════════════════════════════════════════════════════
-     LOADER — Updated with correct logo assembly from PS guides
-
-     From Photoshop image:
-     ┌─────────────────────────────────────────────┐
-     │  Logo anatomy (240×260 stage):              │
-     │                                             │
-     │  Triangle.png = long blade:                 │
-     │    • ROUND blob at TOP of file              │
-     │    • SHARP tip  at BOTTOM of file           │
-     │                                             │
-     │  Assembly rule:                             │
-     │    top:50%, left:50% = position anchor      │
-     │    translate(-50%, -100%) = places the      │
-     │    BOTTOM (sharp tip) of img AT center      │
-     │    transform-origin: 50% 100% = pivots      │
-     │    around that sharp tip                    │
-     │                                             │
-     │  From PS guides rotations:                  │
-     │    Arm TR:  rotate(-30deg)  → round top-right│
-     │    Arm L:   rotate(90deg)   → round left-bot │
-     │    Arm B:   rotate(210deg)  → round bot-right│
-     └─────────────────────────────────────────────┘
-  ══════════════════════════════════════════════════════════════ */
-  .loader{
-    position:fixed;inset:0;z-index:10000;
-    background:#c8f542;
-    display:flex;align-items:center;justify-content:center;flex-direction:column;
-    overflow:hidden;
-    transition:opacity 0.9s ease,visibility 0.9s ease;
-  }
+  /* ══ LOADER ══ */
+  .loader{position:fixed;inset:0;z-index:10000;background:#c8f542;display:flex;align-items:center;justify-content:center;flex-direction:column;overflow:hidden;transition:opacity 0.9s ease,visibility 0.9s ease;}
   .loader.done{opacity:0;visibility:hidden;pointer-events:none;}
-
-  /* 240×260 stage, center = 120,130 */
-  .ld-stage{
-    position:relative;
-    width:240px;height:260px;
-    flex-shrink:0;
-  }
-
-  /* All PNGs use multiply so white bg = transparent on lime green */
-  .ld-img{
-    position:absolute;
-    mix-blend-mode:multiply;
-    opacity:0;
-    will-change:transform,opacity;
-  }
-
-  /* MIDDLE TRIANGLE — center of stage */
-  #ldMid{
-    width:52px;height:auto;
-    top:50%;left:50%;
-    transform:translate(-50%,-50%) scale(0);
-    transform-origin:center center;
-  }
-
-  /*
-    ARMS — Triangle.png
-    Round at TOP, sharp at BOTTOM.
-    translate(-50%, -100%) = bottom of img sits at top:50%,left:50% anchor = logo center.
-    transform-origin: 50% 100% = rotate around sharp tip (bottom of img).
-    
-    Rotations produce:
-      -30deg  → arm leans right, round goes upper-right  ✓
-      90deg   → arm leans left-down, round at lower-left  ✓
-      210deg  → arm leans right-down, round at lower-right ✓
-  */
-  .ld-arm{
-    width:80px;height:auto;
-    top:50%;left:50%;
-    transform-origin:50% 100%;
-  }
-  #ldArmTR { transform:translate(-50%,-100%) rotate(-30deg)  scale(0); }
-  #ldArmL  { transform:translate(-50%,-100%) rotate(90deg)   scale(0); }
-  #ldArmB  { transform:translate(-50%,-100%) rotate(210deg)  scale(0); }
-
-  .ld-name{
-    font-family:'Bebas Neue',sans-serif;
-    font-size:clamp(1rem,4vw,1.6rem);
-    font-weight:700;
-    letter-spacing:0.22em;
-    color:#080808;
-    opacity:0;transform:translateY(14px);
-    margin-top:20px;white-space:nowrap;
-  }
+  .ld-stage{position:relative;width:240px;height:260px;flex-shrink:0;}
+  .ld-img{position:absolute;mix-blend-mode:multiply;opacity:0;will-change:transform,opacity;}
+  #ldMid{width:52px;height:auto;top:50%;left:50%;transform:translate(-50%,-50%) scale(0);transform-origin:center center;}
+  .ld-arm{width:80px;height:auto;top:50%;left:50%;transform-origin:50% 100%;}
+  #ldArmTR{transform:translate(-50%,-100%) rotate(-30deg) scale(0);}
+  #ldArmL {transform:translate(-50%,-100%) rotate(90deg)  scale(0);}
+  #ldArmB {transform:translate(-50%,-100%) rotate(210deg) scale(0);}
+  .ld-name{font-family:'Bebas Neue',sans-serif;font-size:clamp(1rem,4vw,1.6rem);font-weight:700;letter-spacing:0.22em;color:#080808;opacity:0;transform:translateY(14px);margin-top:20px;white-space:nowrap;}
   .ld-bar-wrap{width:200px;height:1.5px;background:rgba(8,8,8,0.2);margin-top:1.4rem;position:relative;overflow:hidden;opacity:0;}
   .ld-bar-fill{position:absolute;top:0;left:0;height:100%;width:0;background:#080808;transition:width 0.12s linear;}
   .ld-pct{font-family:'DM Mono',monospace;font-size:0.62rem;letter-spacing:0.18em;color:rgba(8,8,8,0.5);margin-top:0.45rem;opacity:0;}
 
-  /* RESPONSIVE */
+  /* ══ RESPONSIVE ══ */
   @media(max-width:1024px){
     :root{--pad:2rem}
     .about-grid{grid-template-columns:1fr;gap:3rem}
@@ -302,18 +282,13 @@
     .scratch-section iframe{height:300px !important}
     .nav-mobile a{font-size:2.2rem}
   }
-  @media(orientation:portrait) and (min-width:600px){.framer-hero{height:55vh;min-height:400px}}
-  @media(orientation:portrait) and (max-width:599px){.framer-hero{height:50vh;min-height:320px}}
 </style>
 </head>
 <body>
 
-<!-- ══ LOADER ══ -->
 <div class="loader" id="loader">
   <div class="ld-stage">
-    <!-- Middle triangle: bubbles in first (tiny→huge→settles) -->
     <img class="ld-img" id="ldMid"   src="Assets/middle triangle.png" alt="">
-    <!-- 3 arms: Triangle.png, pivot at sharp tip (bottom), rotate to spread -->
     <img class="ld-img ld-arm" id="ldArmTR" src="Assets/Triangle.png" alt="">
     <img class="ld-img ld-arm" id="ldArmL"  src="Assets/Triangle.png" alt="">
     <img class="ld-img ld-arm" id="ldArmB"  src="Assets/Triangle.png" alt="">
@@ -348,6 +323,7 @@
   <a href="mailto:achinthajayaweera26@gmail.com" class="nav-mobile-email" onclick="toggleNav()">Hire Me</a>
 </div>
 
+<!-- FRAMER HERO -->
 <div class="framer-hero" id="framerHero">
   <div class="framer-hero-wrap" id="framerWrap">
     <iframe src="https://cooperative-powerpoint-795692.framer.app/" allow="fullscreen" loading="lazy" scrolling="no" title="Hero Section"></iframe>
@@ -355,6 +331,7 @@
   <div class="framer-hero-scroll"><div class="framer-hero-scroll-line"></div><span>Scroll</span></div>
 </div>
 
+<!-- ORIGINAL HERO — hidden in portrait by JS -->
 <section class="hero" id="home">
   <div class="hero-bg-grid"></div><div class="hero-noise"></div><div class="hero-orb"></div>
   <div class="hero-status"><div class="status-dot"></div><span>Available for opportunities · Sri Lanka</span></div>
@@ -474,43 +451,75 @@
 /* MOBILE NAV */
 function toggleNav(){document.getElementById('mobileNav').classList.toggle('open');}
 
-/* FRAMER HERO SCALE */
+/* ══ FRAMER HERO — Portrait-aware scaling ══════════════════════════
+   THE FIX FOR PORTRAIT/VERTICAL SCREENS:
+
+   Problem: In portrait mode the Framer iframe (1300×800) scaled to
+   fill the width leaves a big gap because:
+   1. The scaled height is less than viewport height
+   2. The dark .hero section below has min-height:100vh
+
+   Solution:
+   - Portrait: scale to fill WIDTH. Set .framer-hero height = exact
+     scaled height so there's zero gap. Hide the .hero section (it's
+     redundant since Framer hero already has the name/tagline in it).
+   - Landscape: cover-fill as before, keep .hero visible.
+════════════════════════════════════════════════════════════════ */
 (function(){
-  var FW=1300,FH=800;
-  var wrap=document.getElementById('framerWrap');
-  if(!wrap)return;
+  var FW = 1300, FH = 800;
+  var wrap      = document.getElementById('framerWrap');
+  var heroDiv   = document.getElementById('framerHero');
+  var darkHero  = document.getElementById('home');
+  if(!wrap) return;
+
   function fit(){
-    var vw=window.innerWidth,vh=window.innerHeight;
-    var isPortrait=vh>vw;
-    var scale,ox,oy;
+    var vw = window.innerWidth;
+    var vh = window.innerHeight;
+    var isPortrait = vh > vw;
+    var scale, ox, oy;
+
     if(isPortrait){
-      scale=vw/FW;
-      var sh=FH*scale;
-      ox=0;oy=(vh-sh)/2-(vh*0.08);
+      /* Portrait / vertical screen:
+         Scale to fill the full WIDTH exactly.
+         Set the hero container height = scaled content height,
+         so there's no gap underneath.
+         Hide the redundant dark .hero section. */
+      scale = vw / FW;
+      var scaledH = FH * scale;
+      ox = 0;
+      oy = 0; /* top-anchored: face/hair visible at top */
+
+      /* Set hero height to match scaled content exactly — no gap */
+      heroDiv.style.height = scaledH + 'px';
+
+      /* Hide the dark hero section — Framer hero already shows
+         the name and scroll indicator */
+      darkHero.classList.add('portrait-hidden');
+
     } else {
-      var sx=vw/FW,sy=vh/FH;
-      scale=Math.max(sx,sy);
-      if(scale>sx*1.15)scale=sx*1.15;
-      var sw=FW*scale,sh=FH*scale;
-      ox=(vw-sw)/2;oy=(vh-sh)/2-40;
+      /* Landscape: restore defaults */
+      heroDiv.style.height = '100vh';
+      darkHero.classList.remove('portrait-hidden');
+
+      /* Cover-fill with slight upward bias */
+      var sx = vw / FW, sy = vh / FH;
+      scale = Math.max(sx, sy);
+      if(scale > sx * 1.15) scale = sx * 1.15;
+      var sw = FW * scale, sh = FH * scale;
+      ox = (vw - sw) / 2;
+      oy = (vh - sh) / 2 - 40;
     }
-    wrap.style.transform='translate('+ox+'px,'+oy+'px) scale('+scale+')';
+
+    wrap.style.transform =
+      'translate(' + ox + 'px,' + oy + 'px) scale(' + scale + ')';
   }
+
   fit();
-  window.addEventListener('resize',fit);
-  window.addEventListener('orientationchange',function(){setTimeout(fit,200);});
+  window.addEventListener('resize', fit);
+  window.addEventListener('orientationchange', function(){ setTimeout(fit, 250); });
 })();
 
-/* ══ LOADER ══════════════════════════════════════════════════════
-   Sequence:
-   1. middle triangle.png: scale 0 → 12 (fills screen) → 1 (settles)
-   2. 3x Triangle.png arms spring in simultaneously (staggered 150ms)
-      Each arm pivots from its sharp tip (bottom of img) at logo center.
-      Round (top of img) extends outward in 3 directions.
-   3. Name slides up
-   4. Loading bar 0→100%
-   5. Loader fades out
-═══════════════════════════════════════════════════════════════ */
+/* ══ LOADER ══ */
 (function(){
   var loader = document.getElementById('loader');
   var mid    = document.getElementById('ldMid');
@@ -522,66 +531,50 @@ function toggleNav(){document.getElementById('mobileNav').classList.toggle('open
   var barFill= document.getElementById('ldBarFill');
   var pct    = document.getElementById('ldPct');
 
-  function spring(el, delay, finalTx, over) {
+  function spring(el, delay, finalTx, over){
     over = over || 1.3;
-    var ov = finalTx.replace('scale(0)', 'scale('+over+')');
-    var fn = finalTx.replace('scale(0)', 'scale(1)');
-    setTimeout(function() {
-      el.style.opacity    = '1';
-      el.style.transition = 'transform 0.44s cubic-bezier(0.34,1.8,0.64,1), opacity 0.1s ease';
-      el.style.transform  = ov;
-      setTimeout(function() {
-        el.style.transition = 'transform 0.26s cubic-bezier(0.16,1,0.3,1)';
-        el.style.transform  = fn;
-      }, 440);
-    }, delay);
+    var ov = finalTx.replace('scale(0)','scale('+over+')');
+    var fn = finalTx.replace('scale(0)','scale(1)');
+    setTimeout(function(){
+      el.style.opacity='1';
+      el.style.transition='transform 0.44s cubic-bezier(0.34,1.8,0.64,1),opacity 0.1s ease';
+      el.style.transform=ov;
+      setTimeout(function(){
+        el.style.transition='transform 0.26s cubic-bezier(0.16,1,0.3,1)';
+        el.style.transform=fn;
+      },440);
+    },delay);
   }
 
-  /* Step 1: middle tri bubbles */
-  setTimeout(function() {
-    mid.style.opacity    = '1';
-    mid.style.transition = 'transform 0.5s cubic-bezier(0.34,1.6,0.64,1), opacity 0.1s ease';
-    mid.style.transform  = 'translate(-50%,-50%) scale(12)';
-    setTimeout(function() {
-      mid.style.transition = 'transform 0.5s cubic-bezier(0.16,1,0.3,1)';
-      mid.style.transform  = 'translate(-50%,-50%) scale(1)';
-    }, 500);
-  }, 150);
+  setTimeout(function(){
+    mid.style.opacity='1';
+    mid.style.transition='transform 0.5s cubic-bezier(0.34,1.6,0.64,1),opacity 0.1s ease';
+    mid.style.transform='translate(-50%,-50%) scale(12)';
+    setTimeout(function(){
+      mid.style.transition='transform 0.5s cubic-bezier(0.16,1,0.3,1)';
+      mid.style.transform='translate(-50%,-50%) scale(1)';
+    },500);
+  },150);
 
-  /* Step 2: arms spring in
-     translate(-50%,-100%) = bottom (sharp tip) at logo center
-     rotate spreads them 120° apart with -30° offset to match PS layout */
-  spring(armTR, 1100, 'translate(-50%,-100%) rotate(-30deg)  scale(0)', 1.25);
-  spring(armL,  1250, 'translate(-50%,-100%) rotate(90deg)   scale(0)', 1.25);
-  spring(armB,  1400, 'translate(-50%,-100%) rotate(210deg)  scale(0)', 1.25);
+  spring(armTR,1100,'translate(-50%,-100%) rotate(-30deg) scale(0)',1.25);
+  spring(armL, 1250,'translate(-50%,-100%) rotate(90deg)  scale(0)',1.25);
+  spring(armB, 1400,'translate(-50%,-100%) rotate(210deg) scale(0)',1.25);
 
-  /* Step 3: name */
-  setTimeout(function() {
-    name.style.transition = 'opacity 0.5s ease, transform 0.5s cubic-bezier(0.16,1,0.3,1)';
-    name.style.opacity    = '1';
-    name.style.transform  = 'translateY(0)';
-  }, 2000);
+  setTimeout(function(){
+    name.style.transition='opacity 0.5s ease,transform 0.5s cubic-bezier(0.16,1,0.3,1)';
+    name.style.opacity='1';name.style.transform='translateY(0)';
+  },2000);
 
-  /* Step 4: bar */
-  setTimeout(function() {
-    barWrap.style.transition = 'opacity 0.35s ease';
-    barWrap.style.opacity    = '1';
-    pct.style.transition     = 'opacity 0.35s ease';
-    pct.style.opacity        = '1';
-    var p = 0;
-    var iv = setInterval(function() {
-      p += Math.random() * 7 + 3;
-      if (p >= 100) {
-        p = 100; clearInterval(iv);
-        barFill.style.width = '100%';
-        pct.textContent     = '100%';
-        setTimeout(function() { loader.classList.add('done'); }, 650);
-      } else {
-        barFill.style.width = p + '%';
-        pct.textContent     = Math.floor(p) + '%';
-      }
-    }, 80);
-  }, 2550);
+  setTimeout(function(){
+    barWrap.style.transition='opacity 0.35s ease';barWrap.style.opacity='1';
+    pct.style.transition='opacity 0.35s ease';pct.style.opacity='1';
+    var p=0,iv=setInterval(function(){
+      p+=Math.random()*7+3;
+      if(p>=100){p=100;clearInterval(iv);barFill.style.width='100%';pct.textContent='100%';
+        setTimeout(function(){loader.classList.add('done');},650);}
+      else{barFill.style.width=p+'%';pct.textContent=Math.floor(p)+'%';}
+    },80);
+  },2550);
 })();
 
 /* CURSOR */
