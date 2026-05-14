@@ -25,7 +25,6 @@
   .cursor-trail{position:fixed;width:32px;height:32px;border:1px solid rgba(200,245,66,0.4);border-radius:50%;pointer-events:none;z-index:9998;transition:all 0.18s ease;transform:translate(-50%,-50%)}
   @media(hover:none){.cursor,.cursor-trail{display:none}body{cursor:auto}}
 
-  /* NAV */
   nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:1.5rem var(--pad);display:flex;align-items:center;justify-content:space-between}
   nav::before{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,rgba(8,8,8,0.9) 0%,transparent 100%);pointer-events:none}
   .nav-logo{text-decoration:none;position:relative;flex-shrink:0}
@@ -43,7 +42,6 @@
   .nav-mobile a:hover{color:var(--accent)}
   .nav-mobile .nav-mobile-email{font-family:'DM Mono',monospace;font-size:0.85rem;letter-spacing:0.1em;color:var(--accent)}
 
-  /* FRAMER HERO */
   .framer-hero{width:100%;height:100vh;position:relative;overflow:hidden;background:#fff;}
   .framer-hero-wrap{position:absolute;top:0;left:0;width:1300px;height:800px;transform-origin:top left;}
   .framer-hero-wrap iframe{position:absolute;top:0;left:0;width:1300px;height:800px;border:none;display:block;}
@@ -51,7 +49,6 @@
   .framer-hero-scroll{position:absolute;bottom:2.5rem;left:50%;transform:translateX(-50%);z-index:20;display:flex;flex-direction:column;align-items:center;gap:0.5rem;color:rgba(240,237,230,0.4);font-size:0.7rem;letter-spacing:0.15em;text-transform:uppercase;font-family:'DM Mono',monospace;pointer-events:none;}
   .framer-hero-scroll-line{width:1px;height:50px;background:linear-gradient(to bottom,rgba(240,237,230,0.3),transparent);animation:scrollDrop 2s ease infinite;}
 
-  /* HERO */
   .hero{min-height:100vh;display:flex;flex-direction:column;justify-content:flex-end;padding:0 var(--pad) 4rem;position:relative;overflow:hidden}
   .hero-bg-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(240,237,230,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(240,237,230,0.025) 1px,transparent 1px);background-size:80px 80px;pointer-events:none}
   .hero-noise{position:absolute;inset:0;opacity:0.03;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");pointer-events:none}
@@ -74,7 +71,6 @@
   @keyframes scrollDrop{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform:scaleY(1);transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
   @keyframes fadeUp{to{opacity:1;transform:translateY(0)}}
 
-  /* MARQUEE */
   .marquee-section{border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:1.2rem 0;overflow:hidden;background:var(--bg2)}
   .marquee-track{display:flex;gap:3rem;animation:marquee 18s linear infinite;width:max-content}
   .marquee-item{display:flex;align-items:center;gap:1rem;white-space:nowrap;font-size:0.78rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted)}
@@ -85,7 +81,6 @@
   .section-label{font-size:0.72rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--accent);margin-bottom:3rem;display:flex;align-items:center;gap:1rem}
   .section-label::after{content:'';flex:1;max-width:60px;height:1px;background:var(--accent);opacity:0.4}
 
-  /* ABOUT */
   .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:6rem;align-items:start}
   .about-heading{font-family:'Bebas Neue',sans-serif;font-size:clamp(3rem,6vw,7rem);line-height:0.9;letter-spacing:0.01em;color:var(--text)}
   .about-heading .accent-word{color:var(--accent)}
@@ -100,7 +95,6 @@
   .skill-pill{flex-shrink:0;border:1px solid var(--border-light);padding:0.6rem 1.2rem;font-size:0.8rem;color:var(--muted);letter-spacing:0.06em;transition:all 0.3s;white-space:nowrap}
   .skill-pill:hover{border-color:var(--accent);color:var(--accent)}
 
-  /* SKILLS GRID */
   .skills-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1px;background:var(--border);border:1px solid var(--border);margin-top:3rem}
   .skill-card{background:var(--bg2);padding:2rem 1.8rem;transition:background 0.3s;position:relative;overflow:hidden}
   .skill-card::before{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:var(--accent);transform:scaleX(0);transform-origin:left;transition:transform 0.4s cubic-bezier(0.16,1,0.3,1)}
@@ -110,7 +104,6 @@
   .skill-name{font-size:0.9rem;font-weight:500;color:var(--text);margin-bottom:0.4rem}
   .skill-desc{font-size:0.78rem;color:var(--muted);line-height:1.6}
 
-  /* EXPERIENCE */
   .experience-list{margin-top:3rem}
   .exp-item{display:grid;grid-template-columns:180px 1fr;gap:3rem;padding:2.5rem 0;border-bottom:1px solid var(--border);position:relative;transition:all 0.3s}
   .exp-item:first-child{border-top:1px solid var(--border)}
@@ -125,7 +118,6 @@
   .tag{font-size:0.7rem;letter-spacing:0.08em;text-transform:uppercase;border:1px solid var(--border-light);padding:0.3rem 0.8rem;color:var(--muted);transition:all 0.3s}
   .tag:hover{border-color:var(--accent);color:var(--accent)}
 
-  /* PROJECTS */
   .projects-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.5rem;margin-top:3rem}
   .project-card{background:var(--bg2);border:1px solid var(--border);padding:2.5rem;position:relative;overflow:hidden;transition:all 0.4s cubic-bezier(0.16,1,0.3,1);cursor:none}
   .project-card::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(200,245,66,0.04),transparent);opacity:0;transition:opacity 0.4s}
@@ -142,7 +134,6 @@
   .project-svg{width:100%;height:100%}
   .project-span2{grid-column:span 2}
 
-  /* EDUCATION */
   .edu-list{margin-top:3rem}
   .edu-item{display:flex;justify-content:space-between;align-items:flex-start;padding:2rem 0;border-bottom:1px solid var(--border);gap:2rem}
   .edu-item:first-child{border-top:1px solid var(--border)}
@@ -150,7 +141,6 @@
   .edu-school{font-size:0.85rem;color:var(--muted)}
   .edu-year{font-family:'DM Mono',monospace;font-size:0.8rem;color:var(--accent);white-space:nowrap}
 
-  /* SCRATCH */
   .scratch-section{padding:8rem var(--pad) 0;background:var(--bg);border-top:1px solid var(--border);display:flex;flex-direction:column;align-items:center;position:relative}
   .scratch-section::after{content:'';position:absolute;bottom:0;left:0;right:0;height:100px;background:linear-gradient(to bottom,transparent,var(--bg));pointer-events:none;z-index:5}
   .scratch-section .section-label{align-self:flex-start;width:100%}
@@ -160,7 +150,6 @@
   .orbital-label{position:absolute;top:2.5rem;left:var(--pad);font-family:'DM Mono',monospace;font-size:0.65rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--accent);z-index:10;display:flex;align-items:center;gap:0.8rem}
   .orbital-label::after{content:'';width:40px;height:1px;background:var(--accent);opacity:0.4}
 
-  /* CONTACT */
   .contact-section{background:var(--bg2);border-top:1px solid var(--border);text-align:center;padding:10rem var(--pad);position:relative;overflow:hidden}
   .contact-bg-text{position:absolute;font-family:'Bebas Neue',sans-serif;font-size:clamp(8rem,20vw,22rem);color:rgba(240,237,230,0.02);top:50%;left:50%;transform:translate(-50%,-50%);white-space:nowrap;pointer-events:none;letter-spacing:0.05em}
   .contact-label{font-size:0.75rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--accent);margin-bottom:2rem;position:relative}
@@ -182,26 +171,96 @@
   .reveal-delay-1{transition-delay:0.1s}.reveal-delay-2{transition-delay:0.2s}.reveal-delay-3{transition-delay:0.3s}.reveal-delay-4{transition-delay:0.4s}
   .counter{font-variant-numeric:tabular-nums}
 
-  /* LOADER */
-  .loader{position:fixed;inset:0;z-index:10000;background:#c8f542;display:flex;align-items:center;justify-content:center;flex-direction:column;overflow:hidden;transition:opacity 0.9s ease,visibility 0.9s ease;}
+  /* ══════════════════════════════════════════════════════════════
+     LOADER — Updated with correct logo assembly from PS guides
+
+     From Photoshop image:
+     ┌─────────────────────────────────────────────┐
+     │  Logo anatomy (240×260 stage):              │
+     │                                             │
+     │  Triangle.png = long blade:                 │
+     │    • ROUND blob at TOP of file              │
+     │    • SHARP tip  at BOTTOM of file           │
+     │                                             │
+     │  Assembly rule:                             │
+     │    top:50%, left:50% = position anchor      │
+     │    translate(-50%, -100%) = places the      │
+     │    BOTTOM (sharp tip) of img AT center      │
+     │    transform-origin: 50% 100% = pivots      │
+     │    around that sharp tip                    │
+     │                                             │
+     │  From PS guides rotations:                  │
+     │    Arm TR:  rotate(-30deg)  → round top-right│
+     │    Arm L:   rotate(90deg)   → round left-bot │
+     │    Arm B:   rotate(210deg)  → round bot-right│
+     └─────────────────────────────────────────────┘
+  ══════════════════════════════════════════════════════════════ */
+  .loader{
+    position:fixed;inset:0;z-index:10000;
+    background:#c8f542;
+    display:flex;align-items:center;justify-content:center;flex-direction:column;
+    overflow:hidden;
+    transition:opacity 0.9s ease,visibility 0.9s ease;
+  }
   .loader.done{opacity:0;visibility:hidden;pointer-events:none;}
-  .ld-stage{position:relative;width:220px;height:220px;flex-shrink:0;}
-  .ld-img{position:absolute;mix-blend-mode:multiply;opacity:0;will-change:transform,opacity;}
-  #ldMidTri{width:50px;height:auto;top:50%;left:50%;transform:translate(-50%,-50%) scale(0);transform-origin:center;}
-  #ldArmTR{width:78px;height:auto;top:50%;left:50%;transform:translate(-50%,-50%) rotate(-30deg) translateY(-55px) scale(0);transform-origin:50% 100%;}
-  #ldArmL{width:78px;height:auto;top:50%;left:50%;transform:translate(-50%,-50%) rotate(90deg) translateY(-55px) scale(0);transform-origin:50% 100%;}
-  #ldArmBot{width:78px;height:auto;top:50%;left:50%;transform:translate(-50%,-50%) rotate(210deg) translateY(-55px) scale(0);transform-origin:50% 100%;}
-  #ldRoundTR{width:28px;height:auto;top:8%;left:62%;transform:translate(-50%,-50%) scale(0);transform-origin:center;}
-  #ldRoundL{width:28px;height:auto;top:78%;left:18%;transform:translate(-50%,-50%) scale(0);transform-origin:center;}
-  #ldRoundBot{width:28px;height:auto;top:85%;left:72%;transform:translate(-50%,-50%) scale(0);transform-origin:center;}
-  .ld-name{font-family:'Bebas Neue',sans-serif;font-size:clamp(1rem,4vw,1.6rem);font-weight:700;letter-spacing:0.22em;color:#080808;opacity:0;transform:translateY(14px);margin-top:20px;white-space:nowrap;}
+
+  /* 240×260 stage, center = 120,130 */
+  .ld-stage{
+    position:relative;
+    width:240px;height:260px;
+    flex-shrink:0;
+  }
+
+  /* All PNGs use multiply so white bg = transparent on lime green */
+  .ld-img{
+    position:absolute;
+    mix-blend-mode:multiply;
+    opacity:0;
+    will-change:transform,opacity;
+  }
+
+  /* MIDDLE TRIANGLE — center of stage */
+  #ldMid{
+    width:52px;height:auto;
+    top:50%;left:50%;
+    transform:translate(-50%,-50%) scale(0);
+    transform-origin:center center;
+  }
+
+  /*
+    ARMS — Triangle.png
+    Round at TOP, sharp at BOTTOM.
+    translate(-50%, -100%) = bottom of img sits at top:50%,left:50% anchor = logo center.
+    transform-origin: 50% 100% = rotate around sharp tip (bottom of img).
+    
+    Rotations produce:
+      -30deg  → arm leans right, round goes upper-right  ✓
+      90deg   → arm leans left-down, round at lower-left  ✓
+      210deg  → arm leans right-down, round at lower-right ✓
+  */
+  .ld-arm{
+    width:80px;height:auto;
+    top:50%;left:50%;
+    transform-origin:50% 100%;
+  }
+  #ldArmTR { transform:translate(-50%,-100%) rotate(-30deg)  scale(0); }
+  #ldArmL  { transform:translate(-50%,-100%) rotate(90deg)   scale(0); }
+  #ldArmB  { transform:translate(-50%,-100%) rotate(210deg)  scale(0); }
+
+  .ld-name{
+    font-family:'Bebas Neue',sans-serif;
+    font-size:clamp(1rem,4vw,1.6rem);
+    font-weight:700;
+    letter-spacing:0.22em;
+    color:#080808;
+    opacity:0;transform:translateY(14px);
+    margin-top:20px;white-space:nowrap;
+  }
   .ld-bar-wrap{width:200px;height:1.5px;background:rgba(8,8,8,0.2);margin-top:1.4rem;position:relative;overflow:hidden;opacity:0;}
   .ld-bar-fill{position:absolute;top:0;left:0;height:100%;width:0;background:#080808;transition:width 0.12s linear;}
   .ld-pct{font-family:'DM Mono',monospace;font-size:0.62rem;letter-spacing:0.18em;color:rgba(8,8,8,0.5);margin-top:0.45rem;opacity:0;}
 
-  /* ══ RESPONSIVE ══ */
-
-  /* Tablet landscape */
+  /* RESPONSIVE */
   @media(max-width:1024px){
     :root{--pad:2rem}
     .about-grid{grid-template-columns:1fr;gap:3rem}
@@ -210,8 +269,6 @@
     .exp-item{grid-template-columns:130px 1fr;gap:2rem}
     .nav-links{gap:1.5rem}
   }
-
-  /* Tablet portrait + large phones */
   @media(max-width:768px){
     :root{--pad:1.5rem}
     .nav-links,.nav-cta{display:none}
@@ -233,8 +290,6 @@
     footer{flex-direction:column;text-align:center;gap:0.5rem}
     .scratch-section iframe{height:380px !important}
   }
-
-  /* Small phones */
   @media(max-width:480px){
     :root{--pad:1.2rem}
     .hero-name{font-size:clamp(2.8rem,14vw,5rem)}
@@ -247,30 +302,21 @@
     .scratch-section iframe{height:300px !important}
     .nav-mobile a{font-size:2.2rem}
   }
-
-  /* Portrait orientation — vertical monitors, tablets upright, phones */
-  @media(orientation:portrait){
-    /* Reduce hero height so the face fits without cropping */
-    .framer-hero{height:48vh;min-height:280px}
-    .hero{min-height:52vh;padding-top:6rem}
-  }
-  @media(orientation:portrait) and (max-width:480px){
-    .framer-hero{height:42vh;min-height:240px}
-    .hero{min-height:auto;padding-top:5rem}
-  }
+  @media(orientation:portrait) and (min-width:600px){.framer-hero{height:55vh;min-height:400px}}
+  @media(orientation:portrait) and (max-width:599px){.framer-hero{height:50vh;min-height:320px}}
 </style>
 </head>
 <body>
 
+<!-- ══ LOADER ══ -->
 <div class="loader" id="loader">
   <div class="ld-stage">
-    <img class="ld-img" id="ldMidTri" src="Assets/middle triangle.png" alt="">
-    <img class="ld-img" id="ldArmTR"  src="Assets/Triangle.png" alt="">
-    <img class="ld-img" id="ldArmL"   src="Assets/Triangle.png" alt="">
-    <img class="ld-img" id="ldArmBot" src="Assets/Triangle.png" alt="">
-    <img class="ld-img" id="ldRoundTR"  src="Assets/round.png" alt="">
-    <img class="ld-img" id="ldRoundL"   src="Assets/round.png" alt="">
-    <img class="ld-img" id="ldRoundBot" src="Assets/round.png" alt="">
+    <!-- Middle triangle: bubbles in first (tiny→huge→settles) -->
+    <img class="ld-img" id="ldMid"   src="Assets/middle triangle.png" alt="">
+    <!-- 3 arms: Triangle.png, pivot at sharp tip (bottom), rotate to spread -->
+    <img class="ld-img ld-arm" id="ldArmTR" src="Assets/Triangle.png" alt="">
+    <img class="ld-img ld-arm" id="ldArmL"  src="Assets/Triangle.png" alt="">
+    <img class="ld-img ld-arm" id="ldArmB"  src="Assets/Triangle.png" alt="">
   </div>
   <div class="ld-name" id="ldName">ACHINTHA JAYAWEERA</div>
   <div class="ld-bar-wrap" id="ldBarWrap"><div class="ld-bar-fill" id="ldBarFill"></div></div>
@@ -426,11 +472,9 @@
 
 <script>
 /* MOBILE NAV */
-function toggleNav(){
-  document.getElementById('mobileNav').classList.toggle('open');
-}
+function toggleNav(){document.getElementById('mobileNav').classList.toggle('open');}
 
-/* FRAMER HERO SCALE — works on ALL screen sizes + orientations */
+/* FRAMER HERO SCALE */
 (function(){
   var FW=1300,FH=800;
   var wrap=document.getElementById('framerWrap');
@@ -440,70 +484,104 @@ function toggleNav(){
     var isPortrait=vh>vw;
     var scale,ox,oy;
     if(isPortrait){
-      /* Portrait: scale to fill width exactly, anchor to top.
-         CSS overflow:hidden on .framer-hero clips the bottom
-         so only the top portion (face area) shows. */
       scale=vw/FW;
-      ox=0;
-      oy=0;
+      var sh=FH*scale;
+      ox=0;oy=(vh-sh)/2-(vh*0.08);
     } else {
-      /* Landscape: cover fill, cap to prevent over-zoom */
       var sx=vw/FW,sy=vh/FH;
       scale=Math.max(sx,sy);
       if(scale>sx*1.15)scale=sx*1.15;
       var sw=FW*scale,sh=FH*scale;
-      ox=(vw-sw)/2;
-      oy=(vh-sh)/2-40;
+      ox=(vw-sw)/2;oy=(vh-sh)/2-40;
     }
     wrap.style.transform='translate('+ox+'px,'+oy+'px) scale('+scale+')';
   }
   fit();
   window.addEventListener('resize',fit);
-  /* Also re-fire on orientation change */
   window.addEventListener('orientationchange',function(){setTimeout(fit,200);});
 })();
 
-/* LOADER */
+/* ══ LOADER ══════════════════════════════════════════════════════
+   Sequence:
+   1. middle triangle.png: scale 0 → 12 (fills screen) → 1 (settles)
+   2. 3x Triangle.png arms spring in simultaneously (staggered 150ms)
+      Each arm pivots from its sharp tip (bottom of img) at logo center.
+      Round (top of img) extends outward in 3 directions.
+   3. Name slides up
+   4. Loading bar 0→100%
+   5. Loader fades out
+═══════════════════════════════════════════════════════════════ */
 (function(){
-  var loader=document.getElementById('loader');
-  var midTri=document.getElementById('ldMidTri');
-  var armTR=document.getElementById('ldArmTR'),armL=document.getElementById('ldArmL'),armBot=document.getElementById('ldArmBot');
-  var roundTR=document.getElementById('ldRoundTR'),roundL=document.getElementById('ldRoundL'),roundBot=document.getElementById('ldRoundBot');
-  var name=document.getElementById('ldName');
-  var barWrap=document.getElementById('ldBarWrap'),barFill=document.getElementById('ldBarFill'),pct=document.getElementById('ldPct');
-  function springIn(el,delay,ft,over){
-    over=over||1.4;
-    var ov=ft.replace('scale(0)','scale('+over+')');
-    var fn=ft.replace('scale(0)','scale(1)');
-    setTimeout(function(){
-      el.style.opacity='1';
-      el.style.transition='transform 0.44s cubic-bezier(0.34,1.8,0.64,1),opacity 0.1s ease';
-      el.style.transform=ov;
-      setTimeout(function(){el.style.transition='transform 0.26s cubic-bezier(0.16,1,0.3,1)';el.style.transform=fn;},440);
-    },delay);
+  var loader = document.getElementById('loader');
+  var mid    = document.getElementById('ldMid');
+  var armTR  = document.getElementById('ldArmTR');
+  var armL   = document.getElementById('ldArmL');
+  var armB   = document.getElementById('ldArmB');
+  var name   = document.getElementById('ldName');
+  var barWrap= document.getElementById('ldBarWrap');
+  var barFill= document.getElementById('ldBarFill');
+  var pct    = document.getElementById('ldPct');
+
+  function spring(el, delay, finalTx, over) {
+    over = over || 1.3;
+    var ov = finalTx.replace('scale(0)', 'scale('+over+')');
+    var fn = finalTx.replace('scale(0)', 'scale(1)');
+    setTimeout(function() {
+      el.style.opacity    = '1';
+      el.style.transition = 'transform 0.44s cubic-bezier(0.34,1.8,0.64,1), opacity 0.1s ease';
+      el.style.transform  = ov;
+      setTimeout(function() {
+        el.style.transition = 'transform 0.26s cubic-bezier(0.16,1,0.3,1)';
+        el.style.transform  = fn;
+      }, 440);
+    }, delay);
   }
-  setTimeout(function(){
-    midTri.style.opacity='1';
-    midTri.style.transition='transform 0.5s cubic-bezier(0.34,1.6,0.64,1),opacity 0.1s ease';
-    midTri.style.transform='translate(-50%,-50%) scale(12)';
-    setTimeout(function(){midTri.style.transition='transform 0.5s cubic-bezier(0.16,1,0.3,1)';midTri.style.transform='translate(-50%,-50%) scale(1)';},500);
-  },150);
-  springIn(roundTR,1100,'translate(-50%,-50%) scale(0)',2.2);
-  springIn(roundL,1230,'translate(-50%,-50%) scale(0)',2.2);
-  springIn(roundBot,1360,'translate(-50%,-50%) scale(0)',2.2);
-  springIn(armTR,1700,'translate(-50%,-50%) rotate(-30deg) translateY(-55px) scale(0)',1.2);
-  springIn(armL,1840,'translate(-50%,-50%) rotate(90deg) translateY(-55px) scale(0)',1.2);
-  springIn(armBot,1980,'translate(-50%,-50%) rotate(210deg) translateY(-55px) scale(0)',1.2);
-  setTimeout(function(){name.style.transition='opacity 0.5s ease,transform 0.5s cubic-bezier(0.16,1,0.3,1)';name.style.opacity='1';name.style.transform='translateY(0)';},2500);
-  setTimeout(function(){
-    barWrap.style.transition='opacity 0.35s ease';barWrap.style.opacity='1';
-    pct.style.transition='opacity 0.35s ease';pct.style.opacity='1';
-    var p=0,iv=setInterval(function(){
-      p+=Math.random()*7+3;
-      if(p>=100){p=100;clearInterval(iv);barFill.style.width='100%';pct.textContent='100%';setTimeout(function(){loader.classList.add('done');},650);}
-      else{barFill.style.width=p+'%';pct.textContent=Math.floor(p)+'%';}
-    },80);
-  },3050);
+
+  /* Step 1: middle tri bubbles */
+  setTimeout(function() {
+    mid.style.opacity    = '1';
+    mid.style.transition = 'transform 0.5s cubic-bezier(0.34,1.6,0.64,1), opacity 0.1s ease';
+    mid.style.transform  = 'translate(-50%,-50%) scale(12)';
+    setTimeout(function() {
+      mid.style.transition = 'transform 0.5s cubic-bezier(0.16,1,0.3,1)';
+      mid.style.transform  = 'translate(-50%,-50%) scale(1)';
+    }, 500);
+  }, 150);
+
+  /* Step 2: arms spring in
+     translate(-50%,-100%) = bottom (sharp tip) at logo center
+     rotate spreads them 120° apart with -30° offset to match PS layout */
+  spring(armTR, 1100, 'translate(-50%,-100%) rotate(-30deg)  scale(0)', 1.25);
+  spring(armL,  1250, 'translate(-50%,-100%) rotate(90deg)   scale(0)', 1.25);
+  spring(armB,  1400, 'translate(-50%,-100%) rotate(210deg)  scale(0)', 1.25);
+
+  /* Step 3: name */
+  setTimeout(function() {
+    name.style.transition = 'opacity 0.5s ease, transform 0.5s cubic-bezier(0.16,1,0.3,1)';
+    name.style.opacity    = '1';
+    name.style.transform  = 'translateY(0)';
+  }, 2000);
+
+  /* Step 4: bar */
+  setTimeout(function() {
+    barWrap.style.transition = 'opacity 0.35s ease';
+    barWrap.style.opacity    = '1';
+    pct.style.transition     = 'opacity 0.35s ease';
+    pct.style.opacity        = '1';
+    var p = 0;
+    var iv = setInterval(function() {
+      p += Math.random() * 7 + 3;
+      if (p >= 100) {
+        p = 100; clearInterval(iv);
+        barFill.style.width = '100%';
+        pct.textContent     = '100%';
+        setTimeout(function() { loader.classList.add('done'); }, 650);
+      } else {
+        barFill.style.width = p + '%';
+        pct.textContent     = Math.floor(p) + '%';
+      }
+    }, 80);
+  }, 2550);
 })();
 
 /* CURSOR */
