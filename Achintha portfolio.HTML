@@ -248,12 +248,15 @@
     .nav-mobile a{font-size:2.2rem}
   }
 
-  /* Portrait orientation (vertical monitors, tablets upright) */
-  @media(orientation:portrait) and (min-width:600px){
-    .framer-hero{height:55vh;min-height:400px}
+  /* Portrait orientation — vertical monitors, tablets upright, phones */
+  @media(orientation:portrait){
+    /* Reduce hero height so the face fits without cropping */
+    .framer-hero{height:48vh;min-height:280px}
+    .hero{min-height:52vh;padding-top:6rem}
   }
-  @media(orientation:portrait) and (max-width:599px){
-    .framer-hero{height:50vh;min-height:320px}
+  @media(orientation:portrait) and (max-width:480px){
+    .framer-hero{height:42vh;min-height:240px}
+    .hero{min-height:auto;padding-top:5rem}
   }
 </style>
 </head>
@@ -437,11 +440,12 @@ function toggleNav(){
     var isPortrait=vh>vw;
     var scale,ox,oy;
     if(isPortrait){
-      /* Portrait: fill width, center vertically with upward bias */
+      /* Portrait: scale to fill width exactly, anchor to top.
+         CSS overflow:hidden on .framer-hero clips the bottom
+         so only the top portion (face area) shows. */
       scale=vw/FW;
-      var sh=FH*scale;
       ox=0;
-      oy=(vh-sh)/2-(vh*0.08);
+      oy=0;
     } else {
       /* Landscape: cover fill, cap to prevent over-zoom */
       var sx=vw/FW,sy=vh/FH;
