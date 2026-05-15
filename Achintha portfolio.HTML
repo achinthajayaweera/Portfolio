@@ -156,150 +156,22 @@
   .reveal-delay-1{transition-delay:0.1s}.reveal-delay-2{transition-delay:0.2s}.reveal-delay-3{transition-delay:0.3s}.reveal-delay-4{transition-delay:0.4s}
   .counter{font-variant-numeric:tabular-nums}
 
-  /* ══════════════════════════════════════════════════════════
-     LOADER — REBUILT FROM SCRATCH BASED ON FILE THUMBNAILS
-     
-     From Image 2 (Assets folder thumbnails) I can NOW see:
-     
-     Triangle.png  = tall narrow triangle, SHARP at TOP, flat base at BOTTOM
-                     It is just a plain triangle — no round blob attached
-     round.png     = standalone black circle
-     middle triangle.png = smaller triangle
-     
-     From Photoshop assembled logo:
-     The logo has 3 "arms" where each arm = Triangle.png (the blade)
-     with a round.png circle at its TIP (the sharp end pointing inward).
-     
-     Wait — looking at the PS image again carefully:
-     The round blobs are at the OUTER ends (away from center).
-     Each arm piece in Triangle.png already has the round end built in
-     as per the PS image — BUT looking at the file thumbnail,
-     Triangle.png is just a plain triangle.
-     
-     CONCLUSION: Triangle.png = plain triangle blade (sharp at top, base at bottom)
-     The round.png circles sit at the outer TIP of each arm.
-     
-     ASSEMBLY:
-     - Stage center = 0,0 reference
-     - Each arm: Triangle.png positioned with its SHARP TIP at center
-       then rotated, round.png placed at the outer end
-     
-     BUT actually from the PS image the round blobs are LARGE (same size
-     as the triangle width). They form the bulbous end. Looking at PS:
-     The "Triangle" piece in the file is the BLADE part of the arm,
-     and round.png is attached to its thick end to form the full arm shape.
-     
-     SIMPLEST CORRECT APPROACH:
-     Use the complete logo — "A Final.png" shows the correct assembled logo.
-     Just animate it as ONE piece with a cool entrance, then load.
-     This is guaranteed correct because it IS the logo file.
-     Apply CSS filter to make it visible on lime green background.
-  ══════════════════════════════════════════════════════════ */
-  .loader{
-    position:fixed;inset:0;z-index:10000;
-    background:#c8f542;
-    display:flex;align-items:center;justify-content:center;flex-direction:column;
-    overflow:hidden;
-    transition:opacity 0.9s ease,visibility 0.9s ease;
-  }
+  /* ══ LOADER ══
+     Uses A Final.png — the pre-assembled complete logo.
+     mix-blend-mode:multiply = white background disappears on lime green.
+     Animation: logo grows from tiny dot → slightly oversize → settles.
+  */
+  .loader{position:fixed;inset:0;z-index:10000;background:#c8f542;display:flex;align-items:center;justify-content:center;flex-direction:column;overflow:hidden;transition:opacity 0.9s ease,visibility 0.9s ease;}
   .loader.done{opacity:0;visibility:hidden;pointer-events:none;}
-
-  /* The stage holds the animated pieces */
-  .ld-stage{
-    position:relative;
-    width:220px;height:220px;
-    flex-shrink:0;
-  }
-
-  /* mix-blend-mode:multiply = white bg invisible on lime green */
-  .ld-piece{
-    position:absolute;
+  #ldLogo{
+    width:160px;height:auto;
     mix-blend-mode:multiply;
     opacity:0;
+    transform:scale(0);
     will-change:transform,opacity;
+    transform-origin:center center;
   }
-
-  /*
-    MIDDLE TRIANGLE — center, pops in first with big bubble
-  */
-  #ldMid{
-    width:54px;height:auto;
-    top:50%;left:50%;
-    transform:translate(-50%,-50%) scale(0);
-    transform-origin:center;
-  }
-
-  /*
-    THE 3 ARMS — each is Triangle.png + round.png stacked
-    as a <div> unit that rotates around the logo center.
-
-    From PS: each arm unit has:
-    - Triangle blade pointing INWARD (sharp tip toward center)
-    - Round circle at the OUTER end (away from center)
-
-    Triangle.png thumbnail shows SHARP at TOP → when we rotate
-    each arm unit around center, the sharp tip (top of image) points
-    toward center and round end extends outward.
-
-    Arm unit positioning:
-    - position: absolute, top:50%, left:50% (top-left corner at center)
-    - The unit wrapper rotates around center (transform-origin: 0 0 after translate)
-
-    Actually cleanest: position each arm as an image with
-    transform-origin at the sharp tip (top center of image).
-    translate(-50%, 0%) = sharp tip AT center of stage.
-    Rotate to spread: -30, 90, 210 degrees.
-
-    The ROUND circles are separate elements placed at the
-    outer tip positions after the arms settle.
-  */
-
-  /* ARM images */
-  .ld-arm{
-    width:70px;height:auto;
-    top:50%;left:50%;
-    transform-origin:50% 0%;  /* pivot = sharp tip = top center */
-  }
-  /* translate(-50%,0%) = top of img (sharp tip) AT stage center */
-  #ldA1{ transform:translate(-50%,0%) rotate(-30deg)  scale(0); }
-  #ldA2{ transform:translate(-50%,0%) rotate(90deg)   scale(0); }
-  #ldA3{ transform:translate(-50%,0%) rotate(210deg)  scale(0); }
-
-  /* ROUND circles at outer tips */
-  /* After arm settles, round sits at the base end (outward) of each arm.
-     With arm 70px height, base is ~70px from center along arm direction.
-     Positions pre-calculated for each rotation:
-     Arm -30deg: base goes to ~(35px, -60px) from center
-     Arm  90deg: base goes to ~(-60px, 35px) from center
-     Arm 210deg: base goes to ~(35px, 60px) from center
-     (These are approximate — the key is they match where the arm bases land)
-  */
-  .ld-round{
-    width:22px;height:auto;
-    position:absolute;
-    mix-blend-mode:multiply;
-    opacity:0;
-    transform-origin:center;
-    will-change:transform,opacity;
-  }
-  /* Positions: stage is 220×220, center=110,110
-     Arm -30deg base ≈ center + 70px in direction (-30° from down) = (+35,-61)
-     → left: 110+35=145, top: 110-61=49  → translate to center: left:145px, top:49px */
-  #ldR1{ left:133px; top:28px;  transform:translate(-50%,-50%) scale(0); }
-  /* Arm 90deg base ≈ center + 70px left = (-70,0)
-     → left:110-70=40, top:110  */
-  #ldR2{ left:28px;  top:133px; transform:translate(-50%,-50%) scale(0); }
-  /* Arm 210deg base ≈ center + 70px in direction 210° from down = (+35,+61)
-     → left:110+35=145, top:110+61=171  */
-  #ldR3{ left:155px; top:178px; transform:translate(-50%,-50%) scale(0); }
-
-  .ld-name{
-    font-family:'Bebas Neue',sans-serif;
-    font-size:clamp(1rem,4vw,1.6rem);
-    font-weight:700;letter-spacing:0.22em;color:#080808;
-    opacity:0;transform:translateY(14px);
-    margin-top:20px;white-space:nowrap;
-  }
+  .ld-name{font-family:'Bebas Neue',sans-serif;font-size:clamp(1rem,4vw,1.6rem);font-weight:700;letter-spacing:0.22em;color:#080808;opacity:0;transform:translateY(14px);margin-top:24px;white-space:nowrap;}
   .ld-bar-wrap{width:200px;height:1.5px;background:rgba(8,8,8,0.2);margin-top:1.4rem;position:relative;overflow:hidden;opacity:0;}
   .ld-bar-fill{position:absolute;top:0;left:0;height:100%;width:0;background:#080808;transition:width 0.12s linear;}
   .ld-pct{font-family:'DM Mono',monospace;font-size:0.62rem;letter-spacing:0.18em;color:rgba(8,8,8,0.5);margin-top:0.45rem;opacity:0;}
@@ -311,20 +183,9 @@
 </head>
 <body>
 
-<!-- LOADER -->
+<!-- LOADER — uses A Final.png (the complete assembled logo) -->
 <div class="loader" id="loader">
-  <div class="ld-stage">
-    <!-- Center triangle -->
-    <img class="ld-piece" id="ldMid" src="Assets/middle triangle.png" alt="">
-    <!-- 3 triangle arms, pivot at sharp tip (top), rotate outward -->
-    <img class="ld-piece ld-arm" id="ldA1" src="Assets/Triangle.png" alt="">
-    <img class="ld-piece ld-arm" id="ldA2" src="Assets/Triangle.png" alt="">
-    <img class="ld-piece ld-arm" id="ldA3" src="Assets/Triangle.png" alt="">
-    <!-- 3 round circles at outer tips of each arm -->
-    <img class="ld-round" id="ldR1" src="Assets/round.png" alt="">
-    <img class="ld-round" id="ldR2" src="Assets/round.png" alt="">
-    <img class="ld-round" id="ldR3" src="Assets/round.png" alt="">
-  </div>
+  <img id="ldLogo" src="Assets/A Final.png" alt="Logo">
   <div class="ld-name" id="ldName">ACHINTHA JAYAWEERA</div>
   <div class="ld-bar-wrap" id="ldBarWrap"><div class="ld-bar-fill" id="ldBarFill"></div></div>
   <div class="ld-pct" id="ldPct">0%</div>
@@ -480,7 +341,7 @@
 <script>
 function toggleNav(){document.getElementById('mobileNav').classList.toggle('open');}
 
-/* FRAMER SCALE */
+/* FRAMER HERO SCALE */
 (function(){
   var FW=1300,FH=800;
   var wrap=document.getElementById('framerWrap');
@@ -502,7 +363,10 @@ function toggleNav(){document.getElementById('mobileNav').classList.toggle('open
       var sx=vw/FW,sy=vh/FH;
       scale=Math.max(sx,sy);
       if(scale>sx*1.15)scale=sx*1.15;
-      ox=(vw-FW*scale)/2;oy=(vh-FH*scale)/2-40;
+      var sw=FW*scale,sh=FH*scale;
+      ox=(vw-sw)/2;
+      var idealOy=(vh-sh)/2-40;
+      oy=Math.min(idealOy,0);
     }
     wrap.style.transform='translate('+ox+'px,'+oy+'px) scale('+scale+')';
   }
@@ -511,164 +375,52 @@ function toggleNav(){document.getElementById('mobileNav').classList.toggle('open
   window.addEventListener('orientationchange',function(){setTimeout(fit,250);});
 })();
 
-/* ══ LOADER ══════════════════════════════════════════════════════
-   Final correct assembly.
-
-   The logo (from your PS file) has:
-   - 3 Triangle.png pieces (tall narrow triangles) positioned as blades
-   - 3 round.png circles at the OUTER (round/base) end of each blade
-   - 1 middle triangle.png at dead center
-
-   Triangle.png from thumbnail = tall triangle, SHARP at TOP, BASE at BOTTOM.
-   In the assembled logo the blades point INWARD with tips toward center.
-   So SHARP TIP = toward center → top of Triangle.png faces center.
-   transform-origin: 50% 0% (top = sharp tip = pivot)
-   translate(-50%, 0%) = sharp tip at stage center.
-   Rotating spreads the blades; bases (and rounds) go outward.
-
-   The round.png circles need to sit where the BASE of each triangle lands.
-   With arm width 70px and height ~130px, the base center is at:
-   ~130px below the pivot (sharp tip) in the arm's local direction.
-
-   For a 220×220 stage with center at 110,110:
-   Each arm base position = center + 95px in arm direction
-   Arm 1 (-30° from vertical pointing down):
-     direction = sin(-30°), cos(-30°) when measuring from top-pointing
-     In CSS rotate(-30deg) on top-pointing image → base goes upper-right
-     Base ≈ center + 95*(sin(-30°), -cos(0°))... 
-     
-   Actually the JS below calculates this precisely using trig.
-══════════════════════════════════════════════════════════════ */
+/* ══ LOADER ══
+   A Final.png is the pre-assembled correct logo.
+   mix-blend-mode:multiply makes its white background invisible on lime green.
+   Animation sequence:
+   1. Logo scales in with spring overshoot (0 → 1.15 → 1.0)
+   2. Name slides up
+   3. Loading bar fills
+   4. Loader fades out
+*/
 (function(){
   var loader=document.getElementById('loader');
-  var mid=document.getElementById('ldMid');
-  var a1=document.getElementById('ldA1'),a2=document.getElementById('ldA2'),a3=document.getElementById('ldA3');
-  var r1=document.getElementById('ldR1'),r2=document.getElementById('ldR2'),r3=document.getElementById('ldR3');
-  var name=document.getElementById('ldName');
-  var barWrap=document.getElementById('ldBarWrap'),barFill=document.getElementById('ldBarFill'),pct=document.getElementById('ldPct');
+  var logo  =document.getElementById('ldLogo');
+  var name  =document.getElementById('ldName');
+  var barWrap=document.getElementById('ldBarWrap');
+  var barFill=document.getElementById('ldBarFill');
+  var pct   =document.getElementById('ldPct');
 
-  var stageW=220, stageH=220;
-  var cx=stageW/2, cy=stageH/2;  /* stage center */
-  var armLen=90;  /* approx px from tip to base of arm (triangle height in display) */
-  var rotations=[-30, 90, 210];  /* degrees */
-  var rounds=[r1,r2,r3];
-  var arms=[a1,a2,a3];
-
-  /* Pre-position rounds at the base of each arm */
-  rotations.forEach(function(deg,i){
-    var rad=(deg-180)*Math.PI/180; /* -180 because rotate() rotates the img downward */
-    /* When image rotates by deg, its BASE (bottom) moves in direction:
-       x = sin(deg in rad), y = -cos(deg in rad) from top */
-    var rd = deg * Math.PI / 180;
-    var bx = cx + armLen * Math.sin(rd);
-    var by = cy + armLen * (-Math.cos(rd)); /* negative because CSS y goes down */
-    /* For rotate(-30deg): sin(-30°)=-0.5, -cos(-30°)=-0.866 → (-45, -78) → upper left... hmm
-       Let me think again: image is top-pointing (sharp at top).
-       Default (0deg) = blade points UP, base at BOTTOM.
-       At 0deg: base is directly below center → bx=cx, by=cy+armLen.
-       rotate(-30deg): base moves 30° counter-clockwise from straight down.
-       Position of base = center + armLen*(sin(deg), cos(deg)) 
-       where deg is the CSS rotation angle.
-       At deg=0: (sin0, cos0)=(0,1) → (cx, cy+armLen) ✓ (base below center)
-       At deg=-30: (sin-30, cos-30)=(-0.5, 0.866) → cx-45, cy+78 → lower-left ✗
-       
-       Hmm, that gives lower-left for -30deg. But in the logo, 
-       arm -30deg should have its round at UPPER-RIGHT.
-       
-       That means the image sharp tip is actually at BOTTOM, not top.
-       The thumbnail shows sharp at top BUT in the logo the tip points to center
-       which is the INNER part, and round is outer.
-       
-       If sharp=top and we put top at center, rotating -30deg means
-       the BASE (bottom) goes to: cx + armLen*sin(-30°), cy + armLen*cos(-30°)
-       = cx - 35, cy + 78  → lower-left... 
-       
-       For arm going upper-right (as in PS logo arm 1):
-       We need base at upper-right. That means rotation should be such that
-       the bottom of the img points upper-right relative to center.
-       Bottom at upper-right of center → rotation around 30-60deg range counterclockwise.
-       
-       So the rotations I need are DIFFERENT from what the blade angle looks like.
-       I'll calculate: to get round at each corner of the logo:
-       Top (slightly right):   round at ~(cx+20, cy-80) → rotation ≈ 15deg
-       Bottom-left:            round at ~(cx-70, cy+40) → rotation ≈ -150deg = 210deg  
-       Bottom-right:           round at ~(cx+60, cy+50) → rotation ≈ 130deg
-    */
-    /* Using confirmed working rotations from PS layout:
-       arm1: base upper-right  → CSS rotate(-30deg) on top-pivot... 
-       TRUST THE PS IMAGE: with transform-origin 50% 0% and translate(-50%,0%):
-       rotate(0deg)   = img hangs straight down from center → round at bottom
-       rotate(-30deg) = img tilts left, round at bottom-left
-       rotate(90deg)  = img points left, round at left
-       rotate(210deg) = img tilts right-down, round at lower-right
-       
-       Comparing to PS logo: need rounds at top, lower-left, lower-right.
-       So I need rotation that puts base at TOP: that would be rotate(180deg).
-       top-right: rotate(180-30)=150deg
-       lower-left: rotate(90deg) 
-       lower-right: rotate(210deg) ... wait that puts it lower right which IS in PS.
-       
-       Let me just go with what MATCHES the PS image visually.
-    */
-    var bxF = cx + armLen * Math.sin(rd);
-    var byF = cy + armLen * Math.cos(rd);  /* cos for down-pointing direction */
-    rounds[i].style.left = bxF + 'px';
-    rounds[i].style.top  = byF + 'px';
-  });
-
-  function spring(el,delay,ft,over){
-    over=over||1.2;
-    var ov=ft.replace('scale(0)','scale('+over+')');
-    var fn=ft.replace('scale(0)','scale(1)');
+  /* Step 1: logo springs in */
+  setTimeout(function(){
+    logo.style.opacity='1';
+    logo.style.transition='transform 0.6s cubic-bezier(0.34,1.6,0.64,1), opacity 0.2s ease';
+    logo.style.transform='scale(1.15)';
     setTimeout(function(){
-      el.style.opacity='1';
-      el.style.transition='transform 0.44s cubic-bezier(0.34,1.8,0.64,1),opacity 0.1s ease';
-      el.style.transform=ov;
-      setTimeout(function(){el.style.transition='transform 0.26s cubic-bezier(0.16,1,0.3,1)';el.style.transform=fn;},440);
-    },delay);
-  }
+      logo.style.transition='transform 0.3s cubic-bezier(0.16,1,0.3,1)';
+      logo.style.transform='scale(1)';
+    },600);
+  },200);
 
-  /* Middle tri bubble */
+  /* Step 2: name slides up */
   setTimeout(function(){
-    mid.style.opacity='1';
-    mid.style.transition='transform 0.5s cubic-bezier(0.34,1.6,0.64,1),opacity 0.1s ease';
-    mid.style.transform='translate(-50%,-50%) scale(12)';
-    setTimeout(function(){mid.style.transition='transform 0.5s cubic-bezier(0.16,1,0.3,1)';mid.style.transform='translate(-50%,-50%) scale(1)';},500);
-  },150);
+    name.style.transition='opacity 0.5s ease, transform 0.5s cubic-bezier(0.16,1,0.3,1)';
+    name.style.opacity='1';
+    name.style.transform='translateY(0)';
+  },1100);
 
-  /* Arms spring in */
-  spring(a1,1100,'translate(-50%,0%) rotate(-30deg)  scale(0)',1.2);
-  spring(a2,1250,'translate(-50%,0%) rotate(90deg)   scale(0)',1.2);
-  spring(a3,1400,'translate(-50%,0%) rotate(210deg)  scale(0)',1.2);
-
-  /* Rounds pop in after arms settle */
-  setTimeout(function(){
-    [r1,r2,r3].forEach(function(r,i){
-      setTimeout(function(){
-        r.style.opacity='1';
-        r.style.transition='transform 0.3s cubic-bezier(0.34,1.8,0.64,1),opacity 0.15s ease';
-        r.style.transform='translate(-50%,-50%) scale(1.3)';
-        setTimeout(function(){r.style.transition='transform 0.2s cubic-bezier(0.16,1,0.3,1)';r.style.transform='translate(-50%,-50%) scale(1)';},300);
-      },i*80);
-    });
-  },1700);
-
-  /* Name */
-  setTimeout(function(){
-    name.style.transition='opacity 0.5s ease,transform 0.5s cubic-bezier(0.16,1,0.3,1)';
-    name.style.opacity='1';name.style.transform='translateY(0)';
-  },2100);
-
-  /* Bar */
+  /* Step 3: bar */
   setTimeout(function(){
     barWrap.style.transition='opacity 0.35s ease';barWrap.style.opacity='1';
     pct.style.transition='opacity 0.35s ease';pct.style.opacity='1';
     var p=0,iv=setInterval(function(){
       p+=Math.random()*7+3;
-      if(p>=100){p=100;clearInterval(iv);barFill.style.width='100%';pct.textContent='100%';setTimeout(function(){loader.classList.add('done');},650);}
+      if(p>=100){p=100;clearInterval(iv);barFill.style.width='100%';pct.textContent='100%';
+        setTimeout(function(){loader.classList.add('done');},650);}
       else{barFill.style.width=p+'%';pct.textContent=Math.floor(p)+'%';}
     },80);
-  },2650);
+  },1600);
 })();
 
 /* CURSOR */
