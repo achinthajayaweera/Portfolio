@@ -23,6 +23,7 @@
   .cursor{position:fixed;width:10px;height:10px;background:var(--accent);border-radius:50%;pointer-events:none;z-index:9999;transition:transform 0.1s ease;transform:translate(-50%,-50%)}
   .cursor-trail{position:fixed;width:32px;height:32px;border:1px solid rgba(200,245,66,0.4);border-radius:50%;pointer-events:none;z-index:9998;transition:all 0.18s ease;transform:translate(-50%,-50%)}
   @media(hover:none){.cursor,.cursor-trail{display:none}body{cursor:auto}}
+
   nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:1.5rem var(--pad);display:flex;align-items:center;justify-content:space-between}
   nav::before{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,rgba(8,8,8,0.9) 0%,transparent 100%);pointer-events:none}
   .nav-logo{text-decoration:none;position:relative;flex-shrink:0}
@@ -39,14 +40,20 @@
   .nav-mobile a{color:var(--text);text-decoration:none;font-family:'Bebas Neue',sans-serif;font-size:3rem;letter-spacing:0.1em;transition:color 0.3s}
   .nav-mobile a:hover{color:var(--accent)}
   .nav-mobile .nav-mobile-email{font-family:'DM Mono',monospace;font-size:0.85rem;letter-spacing:0.1em;color:var(--accent)}
+
+  /* FRAMER HERO — height always set by JS */
   .framer-hero{width:100%;height:100vh;position:relative;overflow:hidden;background:#fff;}
   .framer-hero-wrap{position:absolute;top:0;left:0;width:1300px;height:800px;transform-origin:top left;}
   .framer-hero-wrap iframe{position:absolute;top:0;left:0;width:1300px;height:800px;border:none;display:block;}
   .framer-hero::after{content:'';position:absolute;bottom:0;left:0;right:0;height:200px;background:linear-gradient(to bottom,transparent,var(--bg));pointer-events:none;z-index:10;}
   .framer-hero-scroll{position:absolute;bottom:2.5rem;left:50%;transform:translateX(-50%);z-index:20;display:flex;flex-direction:column;align-items:center;gap:0.5rem;color:rgba(240,237,230,0.4);font-size:0.7rem;letter-spacing:0.15em;text-transform:uppercase;font-family:'DM Mono',monospace;pointer-events:none;}
   .framer-hero-scroll-line{width:1px;height:50px;background:linear-gradient(to bottom,rgba(240,237,230,0.3),transparent);animation:scrollDrop 2s ease infinite;}
+
+  /* DARK HERO — always in DOM. JS adds .compact-mode when needed */
   .hero{min-height:100vh;display:flex;flex-direction:column;justify-content:flex-end;padding:0 var(--pad) 4rem;position:relative;overflow:hidden;}
-  .hero.portrait-hidden{display:none}
+  /* compact: sits below Framer hero, not full 100vh */
+  .hero.compact-mode{min-height:auto;padding-top:5rem;padding-bottom:3rem;}
+
   .hero-bg-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(240,237,230,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(240,237,230,0.025) 1px,transparent 1px);background-size:80px 80px;pointer-events:none}
   .hero-noise{position:absolute;inset:0;opacity:0.03;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");pointer-events:none}
   .hero-orb{position:absolute;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(200,245,66,0.06) 0%,transparent 70%);top:-100px;right:-100px;pointer-events:none;animation:orbFloat 8s ease-in-out infinite}
@@ -67,14 +74,17 @@
   .scroll-line{width:1px;height:60px;background:linear-gradient(to bottom,var(--muted),transparent);animation:scrollDrop 2s ease infinite}
   @keyframes scrollDrop{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform:scaleY(1);transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
   @keyframes fadeUp{to{opacity:1;transform:translateY(0)}}
+
   .marquee-section{border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:1.2rem 0;overflow:hidden;background:var(--bg2)}
   .marquee-track{display:flex;gap:3rem;animation:marquee 18s linear infinite;width:max-content}
   .marquee-item{display:flex;align-items:center;gap:1rem;white-space:nowrap;font-size:0.78rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted)}
   .marquee-dot{color:var(--accent);font-size:1.2rem}
   @keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
   section{padding:8rem var(--pad)}
   .section-label{font-size:0.72rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--accent);margin-bottom:3rem;display:flex;align-items:center;gap:1rem}
   .section-label::after{content:'';flex:1;max-width:60px;height:1px;background:var(--accent);opacity:0.4}
+
   .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:6rem;align-items:start}
   .about-heading{font-family:'Bebas Neue',sans-serif;font-size:clamp(3rem,6vw,7rem);line-height:0.9;letter-spacing:0.01em;color:var(--text)}
   .about-heading .accent-word{color:var(--accent)}
@@ -156,24 +166,10 @@
   .reveal-delay-1{transition-delay:0.1s}.reveal-delay-2{transition-delay:0.2s}.reveal-delay-3{transition-delay:0.3s}.reveal-delay-4{transition-delay:0.4s}
   .counter{font-variant-numeric:tabular-nums}
 
-  /* ══ LOADER ══
-     Uses A Final.png — the pre-assembled complete logo.
-     mix-blend-mode:multiply = white background disappears on lime green.
-     Animation: logo grows from tiny dot → slightly oversize → settles.
-  */
+  /* LOADER */
   .loader{position:fixed;inset:0;z-index:10000;background:#c8f542;display:flex;align-items:center;justify-content:center;flex-direction:column;overflow:hidden;transition:opacity 0.9s ease,visibility 0.9s ease;}
   .loader.done{opacity:0;visibility:hidden;pointer-events:none;}
-  #ldLogo{
-    width:160px;height:auto;
-    /* brightness(0) turns the entire image black including logo shapes,
-       making the white background match the lime green bg exactly
-       while all logo shapes become solid black — perfectly visible */
-    filter:brightness(0);
-    opacity:0;
-    transform:scale(0);
-    will-change:transform,opacity;
-    transform-origin:center center;
-  }
+  #ldLogo{width:160px;height:auto;filter:brightness(0);opacity:0;transform:scale(0);will-change:transform,opacity;transform-origin:center center;}
   .ld-name{font-family:'Bebas Neue',sans-serif;font-size:clamp(1rem,4vw,1.6rem);font-weight:700;letter-spacing:0.22em;color:#080808;opacity:0;transform:translateY(14px);margin-top:24px;white-space:nowrap;}
   .ld-bar-wrap{width:200px;height:1.5px;background:rgba(8,8,8,0.2);margin-top:1.4rem;position:relative;overflow:hidden;opacity:0;}
   .ld-bar-fill{position:absolute;top:0;left:0;height:100%;width:0;background:#080808;transition:width 0.12s linear;}
@@ -186,7 +182,6 @@
 </head>
 <body>
 
-<!-- LOADER — uses A Final.png (the complete assembled logo) -->
 <div class="loader" id="loader">
   <img id="ldLogo" src="Assets/A Final.png" alt="Logo">
   <div class="ld-name" id="ldName">ACHINTHA JAYAWEERA</div>
@@ -344,49 +339,84 @@
 <script>
 function toggleNav(){document.getElementById('mobileNav').classList.toggle('open');}
 
-/* FRAMER HERO SCALE */
+/* ══ FRAMER HERO SCALE ══════════════════════════════════════════
+   3 modes decided by a single ratio: scaledH vs vh
+
+   WIDE DESKTOP (scaledH <= vh * 1.1):
+     Content fits within viewport height with headroom.
+     Use cover-fill centered with upward bias.
+     Hero = 100vh. Dark hero = full 100vh below.
+
+   NARROW / SPLIT VIEW (scaledH > vh * 1.1):
+     Content is taller than viewport after width-scaling.
+     This means window is too narrow to show full content in cover mode.
+     Solution: scale by WIDTH only, set hero height = exact scaled height.
+     Dark hero shows below as compact section.
+     This covers: split view, restore-down, portrait, vertical monitor.
+
+   Key insight: we always scale by vw/FW first, then check if the
+   resulting height fits. If it doesn't fit, we're in narrow mode.
+════════════════════════════════════════════════════════════════ */
 (function(){
-  var FW=1300,FH=800;
-  var wrap=document.getElementById('framerWrap');
-  var heroDiv=document.getElementById('framerHero');
-  var darkHero=document.getElementById('home');
-  if(!wrap)return;
+  var FW = 1300, FH = 800;
+  var wrap     = document.getElementById('framerWrap');
+  var heroDiv  = document.getElementById('framerHero');
+  var darkHero = document.getElementById('home');
+  if(!wrap) return;
+
   function fit(){
-    var vw=window.innerWidth,vh=window.innerHeight;
-    var isPortrait=vh>vw;
-    var scale,ox,oy;
-    if(isPortrait){
-      scale=vw/FW;
-      heroDiv.style.height=(FH*scale)+'px';
-      darkHero.classList.add('portrait-hidden');
-      ox=0;oy=0;
+    var vw = window.innerWidth;
+    var vh = window.innerHeight;
+
+    /* Always start with width-based scale */
+    var scaleW   = vw / FW;
+    var scaledH  = FH * scaleW;
+
+    /* Does the width-scaled content fit vertically (with 10% tolerance)? */
+    var fitsVertically = scaledH <= vh * 1.1;
+
+    var scale, ox, oy;
+
+    if(fitsVertically){
+      /* WIDE DESKTOP MODE:
+         Content fits. Use cover-fill for a cinematic hero.
+         Cap to prevent over-zoom on ultra-wide screens. */
+      var scaleH = vh / FH;
+      scale = Math.max(scaleW, scaleH);
+      if(scale > scaleW * 1.15) scale = scaleW * 1.15;
+
+      var sw = FW * scale;
+      var sh = FH * scale;
+      ox = (vw - sw) / 2;
+      /* Center with upward bias so face is in upper portion */
+      oy = (vh - sh) / 2 - 40;
+
+      heroDiv.style.height = '100vh';
+      darkHero.classList.remove('compact-mode');
+
     } else {
-      heroDiv.style.height='100vh';
-      darkHero.classList.remove('portrait-hidden');
-      var sx=vw/FW,sy=vh/FH;
-      scale=Math.max(sx,sy);
-      if(scale>sx*1.15)scale=sx*1.15;
-      var sw=FW*scale,sh=FH*scale;
-      ox=(vw-sw)/2;
-      var idealOy=(vh-sh)/2-40;
-      oy=Math.min(idealOy,0);
+      /* NARROW / SPLIT / PORTRAIT MODE:
+         Content is taller than viewport — use width-only scale.
+         Set hero height = exact content height so no gap below.
+         Dark hero section shows below as compact. */
+      scale = scaleW;
+      ox    = 0;
+      oy    = 0; /* anchor to top — face always visible */
+
+      heroDiv.style.height = scaledH + 'px';
+      darkHero.classList.add('compact-mode');
     }
-    wrap.style.transform='translate('+ox+'px,'+oy+'px) scale('+scale+')';
+
+    wrap.style.transform =
+      'translate(' + ox + 'px,' + oy + 'px) scale(' + scale + ')';
   }
+
   fit();
-  window.addEventListener('resize',fit);
-  window.addEventListener('orientationchange',function(){setTimeout(fit,250);});
+  window.addEventListener('resize', fit);
+  window.addEventListener('orientationchange', function(){ setTimeout(fit, 250); });
 })();
 
-/* ══ LOADER ══
-   A Final.png is the pre-assembled correct logo.
-   mix-blend-mode:multiply makes its white background invisible on lime green.
-   Animation sequence:
-   1. Logo scales in with spring overshoot (0 → 1.15 → 1.0)
-   2. Name slides up
-   3. Loading bar fills
-   4. Loader fades out
-*/
+/* LOADER */
 (function(){
   var loader=document.getElementById('loader');
   var logo  =document.getElementById('ldLogo');
@@ -395,7 +425,6 @@ function toggleNav(){document.getElementById('mobileNav').classList.toggle('open
   var barFill=document.getElementById('ldBarFill');
   var pct   =document.getElementById('ldPct');
 
-  /* Step 1: logo springs in */
   setTimeout(function(){
     logo.style.opacity='1';
     logo.style.transition='transform 0.6s cubic-bezier(0.34,1.6,0.64,1), opacity 0.2s ease';
@@ -406,14 +435,12 @@ function toggleNav(){document.getElementById('mobileNav').classList.toggle('open
     },600);
   },200);
 
-  /* Step 2: name slides up */
   setTimeout(function(){
     name.style.transition='opacity 0.5s ease, transform 0.5s cubic-bezier(0.16,1,0.3,1)';
     name.style.opacity='1';
     name.style.transform='translateY(0)';
   },1100);
 
-  /* Step 3: bar */
   setTimeout(function(){
     barWrap.style.transition='opacity 0.35s ease';barWrap.style.opacity='1';
     pct.style.transition='opacity 0.35s ease';pct.style.opacity='1';
@@ -444,3 +471,4 @@ document.addEventListener('mousemove',function(e){var o=document.querySelector('
 </script>
 </body>
 </html>
+
