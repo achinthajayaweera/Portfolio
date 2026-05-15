@@ -371,34 +371,24 @@ function toggleNav(){document.getElementById('mobileNav').classList.toggle('open
     var scale, ox, oy;
 
     if(isPortrait){
-      /* PORTRAIT — vertical monitor, phone upright */
       scale = vw / FW;
       ox = 0; oy = 0;
       heroDiv.style.height = (FH * scale) + 'px';
       darkHero.classList.add('compact-mode');
-
     } else {
-      /* LANDSCAPE — all horizontal windows */
       darkHero.classList.remove('compact-mode');
-      var sx = vw / FW, sy = vh / FH;
+      heroDiv.style.height = '100vh';
+
+      /* Exact formula that worked on all desktop screens */
+      var sx = vw / FW;
+      var sy = vh / FH;
       scale = Math.max(sx, sy);
       if(scale > sx * 1.15) scale = sx * 1.15;
-      var sw = FW * scale, sh = FH * scale;
-      ox = (vw - sw) / 2;
 
-      /* sh - vh = how much content overflows the viewport.
-         If overflow <= 80px: close enough to fit — use centered formula.
-         This handles fullscreen where sh is slightly > vh due to scaling.
-         If overflow > 80px: genuinely narrow window (split view) —
-         anchor to top and expand hero to show all content. */
-      var overflow = sh - vh;
-      if(overflow <= 80){
-        oy = (vh - sh) / 2 - 40;
-        heroDiv.style.height = vh + 'px';
-      } else {
-        oy = 0;
-        heroDiv.style.height = sh + 'px';
-      }
+      var sw = FW * scale;
+      var sh = FH * scale;
+      ox = (vw - sw) / 2;
+      oy = (vh - sh) / 2 - 40;
     }
     wrap.style.transform = 'translate('+ox+'px,'+oy+'px) scale('+scale+')';
   }
