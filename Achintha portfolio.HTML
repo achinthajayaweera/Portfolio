@@ -369,44 +369,42 @@ function toggleNav(){document.getElementById('mobileNav').classList.toggle('open
     var vh = window.innerHeight;
     var isPortrait = vh > vw;
 
-    var scaleW  = vw / FW;
-    var scaledH = FH * scaleW;
-
     var scale, ox, oy;
 
     if(isPortrait){
-      /* PORTRAIT — vertical monitor, phone upright:
-         Scale by width, exact hero height, dark hero below */
-      scale = scaleW;
+      /* PORTRAIT — vertical monitor, phone upright */
+      scale = vw / FW;
       ox    = 0;
       oy    = 0;
-      heroDiv.style.height = scaledH + 'px';
+      heroDiv.style.height = (FH * scale) + 'px';
       darkHero.classList.add('compact-mode');
 
     } else {
-      /* LANDSCAPE — desktop, split view, restore-down:
-         Cover-fill capped at 115% of width-scale. */
+      /* LANDSCAPE — all horizontal windows */
       darkHero.classList.remove('compact-mode');
 
-      var scaleH = vh / FH;
-      scale = Math.max(scaleW, scaleH);
-      if(scale > scaleW * 1.15) scale = scaleW * 1.15;
+      /* Scale: fill width first */
+      var sx = vw / FW;
+      var sy = vh / FH;
+      /* Cover: use whichever scale fills the screen */
+      scale = Math.max(sx, sy);
+      /* Cap so ultra-wide screens don't over-zoom */
+      if(scale > sx * 1.15) scale = sx * 1.15;
 
       var sw = FW * scale;
       var sh = FH * scale;
+
+      /* Center horizontally */
       ox = (vw - sw) / 2;
 
-      if(sh <= vh){
-        /* Content fits inside viewport — center with upward bias */
-        oy = (vh - sh) / 2 - 40;
-        heroDiv.style.height = '100vh';
-      } else {
-        /* Content taller than viewport (split/narrow window):
-           Anchor to top, set hero height = exact scaled height
-           so no white gap below and dark hero sits right after */
-        oy = 0;
-        heroDiv.style.height = sh + 'px';
-      }
+      /* Vertical: center with -40px upward bias (works on full desktop).
+         But if content is taller than viewport (split view),
+         the center calc gives a large negative number cutting off the top.
+         Clamp to max -20px so face always stays visible from top. */
+      oy = Math.max((vh - sh) / 2 - 40, -20);
+
+      /* Hero height: always match scaled content so no white gap */
+      heroDiv.style.height = Math.max(vh, sh) + 'px';
     }
 
     wrap.style.transform =
