@@ -368,47 +368,38 @@ function toggleNav(){document.getElementById('mobileNav').classList.toggle('open
     var vw = window.innerWidth;
     var vh = window.innerHeight;
     var isPortrait = vh > vw;
-
     var scale, ox, oy;
 
     if(isPortrait){
-      /* PORTRAIT — vertical monitor, phone upright */
+      /* PORTRAIT */
       scale = vw / FW;
-      ox    = 0;
-      oy    = 0;
+      ox = 0; oy = 0;
       heroDiv.style.height = (FH * scale) + 'px';
       darkHero.classList.add('compact-mode');
-
     } else {
-      /* LANDSCAPE — all horizontal windows */
+      /* LANDSCAPE */
       darkHero.classList.remove('compact-mode');
-
-      /* Scale: fill width first */
-      var sx = vw / FW;
-      var sy = vh / FH;
-      /* Cover: use whichever scale fills the screen */
+      var sx = vw / FW, sy = vh / FH;
       scale = Math.max(sx, sy);
-      /* Cap so ultra-wide screens don't over-zoom */
       if(scale > sx * 1.15) scale = sx * 1.15;
-
-      var sw = FW * scale;
-      var sh = FH * scale;
-
-      /* Center horizontally */
+      var sw = FW * scale, sh = FH * scale;
       ox = (vw - sw) / 2;
 
-      /* Vertical: center with -40px upward bias (works on full desktop).
-         But if content is taller than viewport (split view),
-         the center calc gives a large negative number cutting off the top.
-         Clamp to max -20px so face always stays visible from top. */
-      oy = Math.max((vh - sh) / 2 - 40, -20);
-
-      /* Hero height: always match scaled content so no white gap */
-      heroDiv.style.height = Math.max(vh, sh) + 'px';
+      /* oy = center with -40 upward bias.
+         But if content is taller than viewport, this gives a huge
+         negative number that cuts the face off at the top.
+         Solution: never let oy go below -(sh - vh) - 40,
+         which is the max we can shift up before bottom content is lost.
+         In practice: clamp oy to max 0 when sh > vh. */
+      if(sh <= vh){
+        oy = (vh - sh) / 2 - 40;
+        heroDiv.style.height = vh + 'px';
+      } else {
+        oy = 0;
+        heroDiv.style.height = sh + 'px';
+      }
     }
-
-    wrap.style.transform =
-      'translate(' + ox + 'px,' + oy + 'px) scale(' + scale + ')';
+    wrap.style.transform = 'translate('+ox+'px,'+oy+'px) scale('+scale+')';
   }
 
   fit();
