@@ -23,7 +23,6 @@
   .cursor{position:fixed;width:10px;height:10px;background:var(--accent);border-radius:50%;pointer-events:none;z-index:9999;transition:transform 0.1s ease;transform:translate(-50%,-50%)}
   .cursor-trail{position:fixed;width:32px;height:32px;border:1px solid rgba(200,245,66,0.4);border-radius:50%;pointer-events:none;z-index:9998;transition:all 0.18s ease;transform:translate(-50%,-50%)}
   @media(hover:none){.cursor,.cursor-trail{display:none}body{cursor:auto}}
-
   nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:1.5rem var(--pad);display:flex;align-items:center;justify-content:space-between}
   nav::before{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,rgba(8,8,8,0.9) 0%,transparent 100%);pointer-events:none}
   .nav-logo{text-decoration:none;position:relative;flex-shrink:0}
@@ -40,20 +39,14 @@
   .nav-mobile a{color:var(--text);text-decoration:none;font-family:'Bebas Neue',sans-serif;font-size:3rem;letter-spacing:0.1em;transition:color 0.3s}
   .nav-mobile a:hover{color:var(--accent)}
   .nav-mobile .nav-mobile-email{font-family:'DM Mono',monospace;font-size:0.85rem;letter-spacing:0.1em;color:var(--accent)}
-
-  /* FRAMER HERO — height always set by JS */
   .framer-hero{width:100%;height:100vh;position:relative;overflow:hidden;background:#fff;}
   .framer-hero-wrap{position:absolute;top:0;left:0;width:1300px;height:800px;transform-origin:top left;}
   .framer-hero-wrap iframe{position:absolute;top:0;left:0;width:1300px;height:800px;border:none;display:block;}
   .framer-hero::after{content:'';position:absolute;bottom:0;left:0;right:0;height:200px;background:linear-gradient(to bottom,transparent,var(--bg));pointer-events:none;z-index:10;}
   .framer-hero-scroll{position:absolute;bottom:2.5rem;left:50%;transform:translateX(-50%);z-index:20;display:flex;flex-direction:column;align-items:center;gap:0.5rem;color:rgba(240,237,230,0.4);font-size:0.7rem;letter-spacing:0.15em;text-transform:uppercase;font-family:'DM Mono',monospace;pointer-events:none;}
   .framer-hero-scroll-line{width:1px;height:50px;background:linear-gradient(to bottom,rgba(240,237,230,0.3),transparent);animation:scrollDrop 2s ease infinite;}
-
-  /* DARK HERO — always in DOM. JS adds .compact-mode when needed */
   .hero{min-height:100vh;display:flex;flex-direction:column;justify-content:flex-end;padding:0 var(--pad) 4rem;position:relative;overflow:hidden;}
-  /* compact: sits below Framer hero, not full 100vh */
   .hero.compact-mode{min-height:auto;padding-top:5rem;padding-bottom:3rem;}
-
   .hero-bg-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(240,237,230,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(240,237,230,0.025) 1px,transparent 1px);background-size:80px 80px;pointer-events:none}
   .hero-noise{position:absolute;inset:0;opacity:0.03;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");pointer-events:none}
   .hero-orb{position:absolute;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(200,245,66,0.06) 0%,transparent 70%);top:-100px;right:-100px;pointer-events:none;animation:orbFloat 8s ease-in-out infinite}
@@ -74,17 +67,14 @@
   .scroll-line{width:1px;height:60px;background:linear-gradient(to bottom,var(--muted),transparent);animation:scrollDrop 2s ease infinite}
   @keyframes scrollDrop{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform:scaleY(1);transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
   @keyframes fadeUp{to{opacity:1;transform:translateY(0)}}
-
   .marquee-section{border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:1.2rem 0;overflow:hidden;background:var(--bg2)}
   .marquee-track{display:flex;gap:3rem;animation:marquee 18s linear infinite;width:max-content}
   .marquee-item{display:flex;align-items:center;gap:1rem;white-space:nowrap;font-size:0.78rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted)}
   .marquee-dot{color:var(--accent);font-size:1.2rem}
   @keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
-
   section{padding:8rem var(--pad)}
   .section-label{font-size:0.72rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--accent);margin-bottom:3rem;display:flex;align-items:center;gap:1rem}
   .section-label::after{content:'';flex:1;max-width:60px;height:1px;background:var(--accent);opacity:0.4}
-
   .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:6rem;align-items:start}
   .about-heading{font-family:'Bebas Neue',sans-serif;font-size:clamp(3rem,6vw,7rem);line-height:0.9;letter-spacing:0.01em;color:var(--text)}
   .about-heading .accent-word{color:var(--accent)}
@@ -166,11 +156,137 @@
   .reveal-delay-1{transition-delay:0.1s}.reveal-delay-2{transition-delay:0.2s}.reveal-delay-3{transition-delay:0.3s}.reveal-delay-4{transition-delay:0.4s}
   .counter{font-variant-numeric:tabular-nums}
 
-  /* LOADER */
-  .loader{position:fixed;inset:0;z-index:10000;background:#c8f542;display:flex;align-items:center;justify-content:center;flex-direction:column;overflow:hidden;transition:opacity 0.9s ease,visibility 0.9s ease;}
+  /* ══════════════════════════════════════════════════════════
+     LOADER — EXACT PDF SEQUENCE
+     
+     PDF breakdown:
+     P1: middle triangle.png appears tiny at center
+     P2: middle triangle EXPLODES to fill screen (scale ~10)
+     P3: middle triangle shrinks back to final size at center
+     P4: 3x round.png dots appear SMALL at 3 corner positions
+     P5: rounds GROW to full size (bubble pop)
+     P6: 3x Triangle.png arms appear — each grows FROM CENTER
+         toward its corresponding round dot (clip/scaleY animation)
+     P7: "ACHINTHA JAYAWEERA" text slides up below logo
+     
+     KEY INSIGHT from PDF:
+     The rounds are placed FIRST at the 3 corners.
+     The arms then GROW FROM CENTER OUTWARD to connect to them.
+     Each arm is clipped at the center end and reveals toward the round.
+  ══════════════════════════════════════════════════════════ */
+  .loader{
+    position:fixed;inset:0;z-index:10000;
+    background:#c8f542;
+    display:flex;align-items:center;justify-content:center;flex-direction:column;
+    overflow:hidden;
+    transition:opacity 0.9s ease,visibility 0.9s ease;
+  }
   .loader.done{opacity:0;visibility:hidden;pointer-events:none;}
-  #ldLogo{width:160px;height:auto;filter:brightness(0);opacity:0;transform:scale(0);will-change:transform,opacity;transform-origin:center center;}
-  .ld-name{font-family:'Bebas Neue',sans-serif;font-size:clamp(1rem,4vw,1.6rem);font-weight:700;letter-spacing:0.22em;color:#080808;opacity:0;transform:translateY(14px);margin-top:24px;white-space:nowrap;}
+
+  /*
+    Stage: 260×260px centered.
+    ALL images use filter:brightness(0) so they show as pure black.
+    Positions derived from the assembled logo in A Final.png.
+    
+    Logo bounding box (approximate from PS guides):
+    - Overall logo fits ~220×220px
+    - Center: 130,130 within the stage
+    
+    Three arm+round positions from PDF:
+    Round 1 (top): ~center-x, center-y - 90px  → top:40px, left:50%
+    Round 2 (lower-left): ~center-x-78px, center-y+45px → top:175px, left:25%
+    Round 3 (lower-right): ~center-x+78px, center-y+45px → top:175px, left:75%
+  */
+  .ld-stage{
+    position:relative;
+    width:260px;height:260px;
+    flex-shrink:0;
+  }
+
+  .ld-piece{
+    position:absolute;
+    filter:brightness(0);
+    opacity:0;
+    will-change:transform,opacity;
+  }
+
+  /* MIDDLE TRIANGLE — dead center */
+  #ldMid{
+    width:54px;height:auto;
+    top:50%;left:50%;
+    transform:translate(-50%,-50%) scale(0);
+    transform-origin:center center;
+  }
+
+  /*
+    ROUND DOTS — pre-positioned at the 3 outer corners of the logo.
+    From PDF pages 4-5: rounds appear at fixed positions BEFORE arms.
+    
+    Looking at final logo shape (A Final.png thumbnail, top-logo thumbnail):
+    - 1 round at TOP-CENTER (slightly right)
+    - 1 round at LOWER-LEFT
+    - 1 round at LOWER-RIGHT
+    
+    Stage 260×260, center = 130,130:
+    Round TOP:        left:140px, top:28px
+    Round LOWER-LEFT: left:28px,  top:195px
+    Round LOWER-RIGHT:left:205px, top:195px
+  */
+  .ld-round{
+    width:26px;height:auto;
+    transform:scale(0);
+    transform-origin:center center;
+  }
+  #ldR1{ left:140px; top:28px;  transform:translate(-50%,-50%) scale(0); }
+  #ldR2{ left:28px;  top:195px; transform:translate(-50%,-50%) scale(0); }
+  #ldR3{ left:205px; top:195px; transform:translate(-50%,-50%) scale(0); }
+
+  /*
+    ARMS (Triangle.png) — each arm GROWS FROM CENTER toward its round.
+    
+    The arm growth effect: each arm starts at scale(0) with transform-origin
+    pointing toward center. As it scales to 1, it "grows" outward.
+    
+    From PDF page 6: the arms reveal from center outward.
+    Each arm:
+    - transform-origin at the CENTER END (the sharp tip end toward logo center)
+    - scale(0) → scale(1) makes it grow from tip toward round
+    
+    ARM 1 (toward top round):
+      Sharp tip near center-top, round end at top
+      Position: tip at center, rotated ~-30deg from vertical
+      
+    ARM 2 (toward lower-left round):
+      Sharp tip near center, round end lower-left
+      Rotation: ~90deg or ~210deg from vertical
+      
+    ARM 3 (toward lower-right round):
+      Sharp tip near center, round end lower-right
+  */
+  .ld-arm{
+    width:76px;height:auto;
+    position:absolute;
+    filter:brightness(0);
+    opacity:0;
+    will-change:transform,opacity;
+    /* transform-origin at the SHARP TIP (top of image) = pivot at center of logo */
+    transform-origin:50% 0%;
+    /* Positioned so sharp tip (top of img) is at logo center: top:50%, left:50%
+       translate(-50%, 0%) places TOP of img at the 50%,50% point */
+    top:50%; left:50%;
+  }
+  /* Each arm: start at scale(0) from sharp tip, grow outward */
+  #ldArm1{ transform:translate(-50%,0%) rotate(-30deg)  scale(0); }
+  #ldArm2{ transform:translate(-50%,0%) rotate(90deg)   scale(0); }
+  #ldArm3{ transform:translate(-50%,0%) rotate(210deg)  scale(0); }
+
+  .ld-name{
+    font-family:'Bebas Neue',sans-serif;
+    font-size:clamp(1rem,4vw,1.6rem);
+    font-weight:700;letter-spacing:0.22em;color:#080808;
+    opacity:0;transform:translateY(14px);
+    margin-top:22px;white-space:nowrap;
+  }
   .ld-bar-wrap{width:200px;height:1.5px;background:rgba(8,8,8,0.2);margin-top:1.4rem;position:relative;overflow:hidden;opacity:0;}
   .ld-bar-fill{position:absolute;top:0;left:0;height:100%;width:0;background:#080808;transition:width 0.12s linear;}
   .ld-pct{font-family:'DM Mono',monospace;font-size:0.62rem;letter-spacing:0.18em;color:rgba(8,8,8,0.5);margin-top:0.45rem;opacity:0;}
@@ -182,11 +298,25 @@
 </head>
 <body>
 
+<!-- ══ LOADER ══
+  HTML structure matches PDF exactly:
+  - ldMid:  middle triangle.png  (center bubble)
+  - ldR1/2/3: round.png x3      (corner dots, appear before arms)
+  - ldArm1/2/3: Triangle.png x3 (arms grow from center to rounds)
+-->
 <div class="loader" id="loader">
-  <img id="ldLogo" src="Assets/A Final.png" alt="Logo">
-  <div class="ld-name" id="ldName">ACHINTHA JAYAWEERA</div>
+  <div class="ld-stage">
+    <img class="ld-piece" id="ldMid"  src="Assets/middle triangle.png" alt="">
+    <img class="ld-piece" id="ldR1"   src="Assets/round.png" alt="">
+    <img class="ld-piece" id="ldR2"   src="Assets/round.png" alt="">
+    <img class="ld-piece" id="ldR3"   src="Assets/round.png" alt="">
+    <img class="ld-arm"   id="ldArm1" src="Assets/Triangle.png" alt="">
+    <img class="ld-arm"   id="ldArm2" src="Assets/Triangle.png" alt="">
+    <img class="ld-arm"   id="ldArm3" src="Assets/Triangle.png" alt="">
+  </div>
+  <div class="ld-name"     id="ldName">ACHINTHA JAYAWEERA</div>
   <div class="ld-bar-wrap" id="ldBarWrap"><div class="ld-bar-fill" id="ldBarFill"></div></div>
-  <div class="ld-pct" id="ldPct">0%</div>
+  <div class="ld-pct"      id="ldPct">0%</div>
 </div>
 
 <div class="cursor" id="cursor"></div>
@@ -339,90 +469,112 @@
 <script>
 function toggleNav(){document.getElementById('mobileNav').classList.toggle('open');}
 
-/* ══ FRAMER HERO SCALE ══════════════════════════════════════════
-   3 modes decided by a single ratio: scaledH vs vh
-
-   WIDE DESKTOP (scaledH <= vh * 1.1):
-     Content fits within viewport height with headroom.
-     Use cover-fill centered with upward bias.
-     Hero = 100vh. Dark hero = full 100vh below.
-
-   NARROW / SPLIT VIEW (scaledH > vh * 1.1):
-     Content is taller than viewport after width-scaling.
-     This means window is too narrow to show full content in cover mode.
-     Solution: scale by WIDTH only, set hero height = exact scaled height.
-     Dark hero shows below as compact section.
-     This covers: split view, restore-down, portrait, vertical monitor.
-
-   Key insight: we always scale by vw/FW first, then check if the
-   resulting height fits. If it doesn't fit, we're in narrow mode.
-════════════════════════════════════════════════════════════════ */
+/* FRAMER HERO SCALE */
 (function(){
-  var FW = 1300, FH = 800;
-  var wrap     = document.getElementById('framerWrap');
-  var heroDiv  = document.getElementById('framerHero');
-  var darkHero = document.getElementById('home');
-  if(!wrap) return;
-
+  var FW=1300,FH=800;
+  var wrap=document.getElementById('framerWrap');
+  var heroDiv=document.getElementById('framerHero');
+  var darkHero=document.getElementById('home');
+  if(!wrap)return;
   function fit(){
-    var vw = window.innerWidth;
-    var vh = window.innerHeight;
-    var isPortrait = vh > vw;
-    var scale, ox, oy;
-
+    var vw=window.innerWidth,vh=window.innerHeight;
+    var isPortrait=vh>vw;
+    var scale,ox,oy;
     if(isPortrait){
-      scale = vw / FW;
-      ox = 0; oy = 0;
-      heroDiv.style.height = (FH * scale) + 'px';
+      scale=vw/FW;ox=0;oy=0;
+      heroDiv.style.height=(FH*scale)+'px';
       darkHero.classList.add('compact-mode');
     } else {
+      heroDiv.style.height='100vh';
       darkHero.classList.remove('compact-mode');
-      heroDiv.style.height = '100vh';
-
-      /* Exact formula that worked on all desktop screens */
-      var sx = vw / FW;
-      var sy = vh / FH;
-      scale = Math.max(sx, sy);
-      if(scale > sx * 1.15) scale = sx * 1.15;
-
-      var sw = FW * scale;
-      var sh = FH * scale;
-      ox = (vw - sw) / 2;
-      oy = (vh - sh) / 2 - 40;
+      var sx=vw/FW,sy=vh/FH;
+      scale=Math.max(sx,sy);
+      if(scale>sx*1.15)scale=sx*1.15;
+      var sw=FW*scale,sh=FH*scale;
+      ox=(vw-sw)/2;oy=(vh-sh)/2-40;
     }
-    wrap.style.transform = 'translate('+ox+'px,'+oy+'px) scale('+scale+')';
+    wrap.style.transform='translate('+ox+'px,'+oy+'px) scale('+scale+')';
   }
-
   fit();
-  window.addEventListener('resize', fit);
-  window.addEventListener('orientationchange', function(){ setTimeout(fit, 250); });
+  window.addEventListener('resize',fit);
+  window.addEventListener('orientationchange',function(){setTimeout(fit,250);});
 })();
 
-/* LOADER */
+/* ══ LOADER — Exact PDF sequence ══════════════════════════════
+  
+  PDF pages mapped to JS timing:
+  
+  P1→P3 (0–1000ms): middle triangle.png
+    - Appears tiny (scale 0→1 with spring)
+    - Grows to fill screen (scale →10)  
+    - Shrinks back to final size (scale →1)
+  
+  P4→P5 (1000–1500ms): round.png x3
+    - 3 dots appear at corner positions with bubble spring
+  
+  P6 (1500–2000ms): Triangle.png x3
+    - Arms grow FROM CENTER toward each round dot
+    - transform-origin: 50% 0% (sharp tip at center = pivot)
+    - scale 0→1 makes each arm "extend" outward
+  
+  P7 (2000ms+): text + bar
+══════════════════════════════════════════════════════════════ */
 (function(){
   var loader=document.getElementById('loader');
-  var logo  =document.getElementById('ldLogo');
-  var name  =document.getElementById('ldName');
-  var barWrap=document.getElementById('ldBarWrap');
-  var barFill=document.getElementById('ldBarFill');
-  var pct   =document.getElementById('ldPct');
+  var mid=document.getElementById('ldMid');
+  var r1=document.getElementById('ldR1'),r2=document.getElementById('ldR2'),r3=document.getElementById('ldR3');
+  var a1=document.getElementById('ldArm1'),a2=document.getElementById('ldArm2'),a3=document.getElementById('ldArm3');
+  var name=document.getElementById('ldName');
+  var barWrap=document.getElementById('ldBarWrap'),barFill=document.getElementById('ldBarFill'),pct=document.getElementById('ldPct');
 
-  setTimeout(function(){
-    logo.style.opacity='1';
-    logo.style.transition='transform 0.6s cubic-bezier(0.34,1.6,0.64,1), opacity 0.2s ease';
-    logo.style.transform='scale(1.15)';
+  function pop(el,delay,tx,over){
+    over=over||1.35;
+    var ov=tx.replace('scale(0)','scale('+over+')');
+    var fn=tx.replace('scale(0)','scale(1)');
     setTimeout(function(){
-      logo.style.transition='transform 0.3s cubic-bezier(0.16,1,0.3,1)';
-      logo.style.transform='scale(1)';
-    },600);
-  },200);
+      el.style.opacity='1';
+      el.style.transition='transform 0.4s cubic-bezier(0.34,1.8,0.64,1),opacity 0.15s ease';
+      el.style.transform=ov;
+      setTimeout(function(){el.style.transition='transform 0.22s cubic-bezier(0.16,1,0.3,1)';el.style.transform=fn;},400);
+    },delay);
+  }
 
+  /* P1→P3: middle tri — tiny → EXPLODES to fill screen → shrinks to center */
   setTimeout(function(){
-    name.style.transition='opacity 0.5s ease, transform 0.5s cubic-bezier(0.16,1,0.3,1)';
-    name.style.opacity='1';
-    name.style.transform='translateY(0)';
-  },1100);
+    mid.style.opacity='1';
+    mid.style.transition='transform 0.45s cubic-bezier(0.34,1.5,0.64,1),opacity 0.15s ease';
+    mid.style.transform='translate(-50%,-50%) scale(1.3)';  /* appear with spring */
+    setTimeout(function(){
+      /* EXPLODE to fill screen */
+      mid.style.transition='transform 0.4s cubic-bezier(0.16,1,0.3,1)';
+      mid.style.transform='translate(-50%,-50%) scale(11)';
+      setTimeout(function(){
+        /* Shrink back to final */
+        mid.style.transition='transform 0.55s cubic-bezier(0.34,1.4,0.64,1)';
+        mid.style.transform='translate(-50%,-50%) scale(1)';
+      },400);
+    },350);
+  },100);
 
+  /* P4→P5: rounds pop in at corner positions */
+  pop(r1, 1300, 'translate(-50%,-50%) scale(0)', 1.5);
+  pop(r2, 1450, 'translate(-50%,-50%) scale(0)', 1.5);
+  pop(r3, 1600, 'translate(-50%,-50%) scale(0)', 1.5);
+
+  /* P6: arms grow from center outward toward rounds
+     transform-origin: 50% 0% means scale grows FROM the top (sharp tip at center)
+     DOWN toward the round end — exactly matching PDF page 6 */
+  pop(a1, 1900, 'translate(-50%,0%) rotate(-30deg)  scale(0)', 1.1);
+  pop(a2, 2050, 'translate(-50%,0%) rotate(90deg)   scale(0)', 1.1);
+  pop(a3, 2200, 'translate(-50%,0%) rotate(210deg)  scale(0)', 1.1);
+
+  /* P7: name */
+  setTimeout(function(){
+    name.style.transition='opacity 0.5s ease,transform 0.5s cubic-bezier(0.16,1,0.3,1)';
+    name.style.opacity='1';name.style.transform='translateY(0)';
+  },2550);
+
+  /* Bar */
   setTimeout(function(){
     barWrap.style.transition='opacity 0.35s ease';barWrap.style.opacity='1';
     pct.style.transition='opacity 0.35s ease';pct.style.opacity='1';
@@ -432,7 +584,7 @@ function toggleNav(){document.getElementById('mobileNav').classList.toggle('open
         setTimeout(function(){loader.classList.add('done');},650);}
       else{barFill.style.width=p+'%';pct.textContent=Math.floor(p)+'%';}
     },80);
-  },1600);
+  },3100);
 })();
 
 /* CURSOR */
