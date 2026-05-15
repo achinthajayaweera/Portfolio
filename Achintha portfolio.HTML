@@ -367,20 +367,30 @@ function toggleNav(){document.getElementById('mobileNav').classList.toggle('open
   function fit(){
     var vw = window.innerWidth;
     var vh = window.innerHeight;
+    var isPortrait = vh > vw;
 
-    /* Always start with width-based scale */
-    var scaleW   = vw / FW;
-    var scaledH  = FH * scaleW;
-
-    /* Does the width-scaled content fit vertically (with 10% tolerance)? */
-    var fitsVertically = scaledH <= vh * 1.1;
+    /* Width-based scale — always calculated */
+    var scaleW  = vw / FW;
+    var scaledH = FH * scaleW;
 
     var scale, ox, oy;
 
-    if(fitsVertically){
-      /* WIDE DESKTOP MODE:
-         Content fits. Use cover-fill for a cinematic hero.
-         Cap to prevent over-zoom on ultra-wide screens. */
+    if(isPortrait){
+      /* PORTRAIT (vertical monitor, phone upright):
+         Scale by width. Set exact hero height. Dark hero below. */
+      scale = scaleW;
+      ox    = 0;
+      oy    = 0;
+      heroDiv.style.height = scaledH + 'px';
+      darkHero.classList.add('compact-mode');
+
+    } else {
+      /* LANDSCAPE (all horizontal layouts):
+         Use cover-fill. Cap to prevent over-zoom.
+         Set hero height to 100vh always so it fills the screen. */
+      heroDiv.style.height = '100vh';
+      darkHero.classList.remove('compact-mode');
+
       var scaleH = vh / FH;
       scale = Math.max(scaleW, scaleH);
       if(scale > scaleW * 1.15) scale = scaleW * 1.15;
@@ -388,23 +398,12 @@ function toggleNav(){document.getElementById('mobileNav').classList.toggle('open
       var sw = FW * scale;
       var sh = FH * scale;
       ox = (vw - sw) / 2;
-      /* Center with upward bias so face is in upper portion */
-      oy = (vh - sh) / 2 - 40;
 
-      heroDiv.style.height = '100vh';
-      darkHero.classList.remove('compact-mode');
-
-    } else {
-      /* NARROW / SPLIT / PORTRAIT MODE:
-         Content is taller than viewport — use width-only scale.
-         Set hero height = exact content height so no gap below.
-         Dark hero section shows below as compact. */
-      scale = scaleW;
-      ox    = 0;
-      oy    = 0; /* anchor to top — face always visible */
-
-      heroDiv.style.height = scaledH + 'px';
-      darkHero.classList.add('compact-mode');
+      /* Center vertically with upward bias.
+         If scaled content is taller than viewport (split/narrow window),
+         anchor to top (oy=0) so face is never cut off. */
+      var idealOy = (vh - sh) / 2 - 40;
+      oy = Math.min(idealOy, 0);
     }
 
     wrap.style.transform =
