@@ -210,36 +210,34 @@
     will-change:transform,opacity;
   }
 
-  /* MIDDLE TRIANGLE — dead center */
+  /* ── MIDDLE TRIANGLE ── size & position ──────────────────
+     width = size. top/left stay 50%/50% (always dead center).     */
   #ldMid{
-    width:54px;height:auto;
+    width:54px; /* ← CHANGE SIZE */
+    height:auto;
     top:50%;left:50%;
     transform:translate(-50%,-50%) scale(0);
     transform-origin:center center;
   }
 
-  /*
-    ROUND DOTS — pre-positioned at the 3 outer corners of the logo.
-    From PDF pages 4-5: rounds appear at fixed positions BEFORE arms.
-    
-    Looking at final logo shape (A Final.png thumbnail, top-logo thumbnail):
-    - 1 round at TOP-CENTER (slightly right)
-    - 1 round at LOWER-LEFT
-    - 1 round at LOWER-RIGHT
-    
-    Stage 260×260, center = 130,130:
-    Round TOP:        left:140px, top:28px
-    Round LOWER-LEFT: left:28px,  top:195px
-    Round LOWER-RIGHT:left:205px, top:195px
-  */
+  /* ── ROUND DOTS ── size & position ───────────────────────
+     .ld-round width  = size of ALL 3 rounds ← CHANGE SIZE
+     #ldR1/2/3 left   = horizontal pos (0=left, 260=right of stage)
+     #ldR1/2/3 top    = vertical pos   (0=top,  260=bottom of stage)
+     translate(-50%,-50%) centers dot on that point — keep it.
+     R1=TOP  R2=LOWER-LEFT  R3=LOWER-RIGHT                        */
   .ld-round{
-    width:26px;height:auto;
-    transform:scale(0);
+    width:26px; /* ← CHANGE ALL ROUNDS SIZE */
+    height:auto;
+    position:absolute;
+    filter:brightness(0);
+    opacity:0;
+    will-change:transform,opacity;
     transform-origin:center center;
   }
-  #ldR1{ left:140px; top:28px;  transform:translate(-50%,-50%) scale(0); }
-  #ldR2{ left:28px;  top:195px; transform:translate(-50%,-50%) scale(0); }
-  #ldR3{ left:205px; top:195px; transform:translate(-50%,-50%) scale(0); }
+  #ldR1{ left:140px; top:28px;  transform:translate(-50%,-50%) scale(0); } /* ← TOP round:         change left & top */
+  #ldR2{ left:28px;  top:195px; transform:translate(-50%,-50%) scale(0); } /* ← LOWER-LEFT round:  change left & top */
+  #ldR3{ left:205px; top:195px; transform:translate(-50%,-50%) scale(0); } /* ← LOWER-RIGHT round: change left & top */
 
   /*
     ARMS (Triangle.png) — each arm GROWS FROM CENTER toward its round.
@@ -263,22 +261,45 @@
     ARM 3 (toward lower-right round):
       Sharp tip near center, round end lower-right
   */
+  /* ── TRIANGLE ARMS ── size & rotation ────────────────────
+     .ld-arm width = size of ALL 3 arms ← CHANGE SIZE
+     Each arm pivots from its SHARP TIP (top of Triangle.png).
+     top:50% left:50% = sharp tip sits at stage center.
+     translate(-50%,0%) keeps tip at center.
+     rotate() spreads the arm in that direction.
+     
+     ARM1 = toward top-right   (rotate -30deg)
+     ARM2 = toward left        (rotate  90deg)
+     ARM3 = toward bottom-right(rotate 210deg)
+     
+     Change rotate() angle to adjust direction of each arm.      */
   .ld-arm{
-    width:76px;height:auto;
+    width:76px; /* ← CHANGE ALL ARMS SIZE */
+    height:auto;
     position:absolute;
     filter:brightness(0);
     opacity:0;
     will-change:transform,opacity;
-    /* transform-origin at the SHARP TIP (top of image) = pivot at center of logo */
-    transform-origin:50% 0%;
-    /* Positioned so sharp tip (top of img) is at logo center: top:50%, left:50%
-       translate(-50%, 0%) places TOP of img at the 50%,50% point */
-    top:50%; left:50%;
+    transform-origin:50% 0%; /* pivot at sharp tip — keep this */
+    top:50%; left:50%;       /* tip at center — keep this */
   }
-  /* Each arm: start at scale(0) from sharp tip, grow outward */
-  #ldArm1{ transform:translate(-50%,0%) rotate(-30deg)  scale(0); }
-  #ldArm2{ transform:translate(-50%,0%) rotate(90deg)   scale(0); }
-  #ldArm3{ transform:translate(-50%,0%) rotate(210deg)  scale(0); }
+  #ldArm1{ transform:translate(-50%,0%) rotate(-30deg)  scale(0); } /* ← ARM1: change -30deg to rotate direction */
+  #ldArm2{ transform:translate(-50%,0%) rotate(90deg)   scale(0); } /* ← ARM2: change 90deg  to rotate direction */
+  #ldArm3{ transform:translate(-50%,0%) rotate(210deg)  scale(0); } /* ← ARM3: change 210deg to rotate direction */
+
+  /* ── BLACK LOGO (shown after animation completes) ─────────
+     Fades in replacing the parts, giving clean final logo look. */
+  #ldBlackLogo{
+    width:180px; /* ← CHANGE FINAL LOGO SIZE */
+    height:auto;
+    filter:brightness(0);
+    opacity:0;
+    position:absolute;
+    top:50%;left:50%;
+    transform:translate(-50%,-50%);
+    transition:opacity 0.4s ease;
+    pointer-events:none;
+  }
 
   .ld-name{
     font-family:'Bebas Neue',sans-serif;
@@ -305,7 +326,7 @@
   - ldArm1/2/3: Triangle.png x3 (arms grow from center to rounds)
 -->
 <div class="loader" id="loader">
-  <div class="ld-stage">
+  <div class="ld-stage" style="position:relative;">
     <img class="ld-piece" id="ldMid"  src="Assets/middle triangle.png" alt="">
     <img class="ld-piece" id="ldR1"   src="Assets/round.png" alt="">
     <img class="ld-piece" id="ldR2"   src="Assets/round.png" alt="">
@@ -313,6 +334,8 @@
     <img class="ld-arm"   id="ldArm1" src="Assets/Triangle.png" alt="">
     <img class="ld-arm"   id="ldArm2" src="Assets/Triangle.png" alt="">
     <img class="ld-arm"   id="ldArm3" src="Assets/Triangle.png" alt="">
+    <!-- Black logo fades in after all parts settle, before name appears -->
+    <img id="ldBlackLogo" src="Assets/black logo.png" alt="">
   </div>
   <div class="ld-name"     id="ldName">ACHINTHA JAYAWEERA</div>
   <div class="ld-bar-wrap" id="ldBarWrap"><div class="ld-bar-fill" id="ldBarFill"></div></div>
@@ -524,6 +547,7 @@ function toggleNav(){document.getElementById('mobileNav').classList.toggle('open
   var mid=document.getElementById('ldMid');
   var r1=document.getElementById('ldR1'),r2=document.getElementById('ldR2'),r3=document.getElementById('ldR3');
   var a1=document.getElementById('ldArm1'),a2=document.getElementById('ldArm2'),a3=document.getElementById('ldArm3');
+  var blackLogo=document.getElementById('ldBlackLogo');
   var name=document.getElementById('ldName');
   var barWrap=document.getElementById('ldBarWrap'),barFill=document.getElementById('ldBarFill'),pct=document.getElementById('ldPct');
 
@@ -567,6 +591,17 @@ function toggleNav(){document.getElementById('mobileNav').classList.toggle('open
   pop(a1, 1900, 'translate(-50%,0%) rotate(-30deg)  scale(0)', 1.1);
   pop(a2, 2050, 'translate(-50%,0%) rotate(90deg)   scale(0)', 1.1);
   pop(a3, 2200, 'translate(-50%,0%) rotate(210deg)  scale(0)', 1.1);
+
+  /* After all parts settle: fade out parts, fade in black logo.png */
+  setTimeout(function(){
+    /* Fade out individual parts */
+    [mid,r1,r2,r3,a1,a2,a3].forEach(function(el){
+      el.style.transition='opacity 0.3s ease';
+      el.style.opacity='0';
+    });
+    /* Fade in the complete clean logo */
+    blackLogo.style.opacity='1';
+  }, 2450);
 
   /* P7: name */
   setTimeout(function(){
