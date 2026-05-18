@@ -213,7 +213,7 @@
   /* ── MIDDLE TRIANGLE ── size & position ──────────────────
      width = size. top/left stay 50%/50% (always dead center).     */
   #ldMid{
-    width: 48px;px; /* ← CHANGE SIZE */
+    width:54px; /* ← CHANGE SIZE */
     height:auto;
     top:50%;left:50%;
     transform:translate(-50%,-50%) scale(0);
@@ -235,9 +235,9 @@
     will-change:transform,opacity;
     transform-origin:center center;
   }
-  #ldR1{ left:140px; top:28px;  transform:translate(-50%,-50%) scale(0); } /* ← TOP round:         change left & top */
-  #ldR2{ left:-5px;  top:195px; transform:translate(-50%,-50%) scale(0); } /* ← LOWER-LEFT round:  change left & top */
-  #ldR3{ left:180px; top:195px; transform:translate(-50%,-50%) scale(0); } /* ← LOWER-RIGHT round: change left & top */
+  #ldR1{ left:148px; top:28px;  transform:translate(-50%,-50%) scale(0); } /* TOP round — moved left */
+  #ldR2{ left:52px;  top:195px; transform:translate(-50%,-50%) scale(0); } /* LOWER-LEFT — moved right */
+  #ldR3{ left:222px; top:198px; transform:translate(-50%,-50%) scale(0); } /* LOWER-RIGHT — moved right */
 
   /*
     ARMS (Triangle.png) — each arm GROWS FROM CENTER toward its round.
@@ -283,16 +283,17 @@
     transform-origin:50% 0%; /* pivot at sharp tip — keep this */
     top:50%; left:50%;       /* tip at center — keep this */
   }
-  #ldArm1{ transform:translate(-50%,0%) rotate(-30deg)  scale(0); } /* ← ARM1: change -30deg to rotate direction */
-  #ldArm2{ transform:translate(-50%,0%) rotate(90deg)   scale(0); } /* ← ARM2: change 90deg  to rotate direction */
-  #ldArm3{ transform:translate(-50%,0%) rotate(210deg)  scale(0); } /* ← ARM3: change 210deg to rotate direction */
+  #ldArm1{ transform:translate(-50%,0%) rotate(-15deg)  scale(0); } /* TOP arm — rotated clockwise (less negative = more CW), overlaps top circle */
+  #ldArm2{ transform:translate(-50%,0%) rotate(100deg)  scale(0); } /* LEFT arm — rotated slightly more to push down, overlaps left circle */
+  #ldArm3{ transform:translate(-50%,0%) rotate(220deg)  scale(0); } /* RIGHT arm — rotated a bit more clockwise to go further right */
 
   /* ── BLACK LOGO (shown after animation completes) ─────────
-     Fades in replacing the parts, giving clean final logo look. */
+     black logo.png is black on black bg — use mix-blend-mode:multiply
+     so the black background disappears on lime green, logo stays black */
   #ldBlackLogo{
     width:180px; /* ← CHANGE FINAL LOGO SIZE */
     height:auto;
-    filter:brightness(0);
+    mix-blend-mode:multiply;
     opacity:0;
     position:absolute;
     top:50%;left:50%;
@@ -588,9 +589,9 @@ function toggleNav(){document.getElementById('mobileNav').classList.toggle('open
   /* P6: arms grow from center outward toward rounds
      transform-origin: 50% 0% means scale grows FROM the top (sharp tip at center)
      DOWN toward the round end — exactly matching PDF page 6 */
-  pop(a1, 1900, 'translate(-50%,0%) rotate(-30deg)  scale(0)', 1.1);
-  pop(a2, 2050, 'translate(-50%,0%) rotate(90deg)   scale(0)', 1.1);
-  pop(a3, 2200, 'translate(-50%,0%) rotate(210deg)  scale(0)', 1.1);
+  pop(a1, 1900, 'translate(-50%,0%) rotate(-15deg)  scale(0)', 1.1);
+  pop(a2, 2050, 'translate(-50%,0%) rotate(100deg)  scale(0)', 1.1);
+  pop(a3, 2200, 'translate(-50%,0%) rotate(220deg)  scale(0)', 1.1);
 
   /* After all parts settle: fade out parts, fade in black logo.png */
   setTimeout(function(){
