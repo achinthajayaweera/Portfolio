@@ -156,159 +156,43 @@
   .reveal-delay-1{transition-delay:0.1s}.reveal-delay-2{transition-delay:0.2s}.reveal-delay-3{transition-delay:0.3s}.reveal-delay-4{transition-delay:0.4s}
   .counter{font-variant-numeric:tabular-nums}
 
-  /* ══════════════════════════════════════════════════════════
-     LOADER — EXACT PDF SEQUENCE
-     
-     PDF breakdown:
-     P1: middle triangle.png appears tiny at center
-     P2: middle triangle EXPLODES to fill screen (scale ~10)
-     P3: middle triangle shrinks back to final size at center
-     P4: 3x round.png dots appear SMALL at 3 corner positions
-     P5: rounds GROW to full size (bubble pop)
-     P6: 3x Triangle.png arms appear — each grows FROM CENTER
-         toward its corresponding round dot (clip/scaleY animation)
-     P7: "ACHINTHA JAYAWEERA" text slides up below logo
-     
-     KEY INSIGHT from PDF:
-     The rounds are placed FIRST at the 3 corners.
-     The arms then GROW FROM CENTER OUTWARD to connect to them.
-     Each arm is clipped at the center end and reveals toward the round.
-  ══════════════════════════════════════════════════════════ */
-  .loader{
-    position:fixed;inset:0;z-index:10000;
-    background:#c8f542;
-    display:flex;align-items:center;justify-content:center;flex-direction:column;
-    overflow:hidden;
-    transition:opacity 0.9s ease,visibility 0.9s ease;
-  }
+  /* ══ LOADER — VIDEO ════════════════════════════════════════
+     Loader.WEBM has real transparency (alpha channel).
+     Plays once on lime green bg → name + bar appear → done.
+     Fallback: black logo.png shown instantly for low-data users.
+  ════════════════════════════════════════════════════════ */
+  .loader{position:fixed;inset:0;z-index:10000;background:#c8f542;display:flex;align-items:center;justify-content:center;flex-direction:column;overflow:hidden;transition:opacity 0.9s ease,visibility 0.9s ease;}
   .loader.done{opacity:0;visibility:hidden;pointer-events:none;}
 
-  /*
-    Stage: 260×260px centered.
-    ALL images use filter:brightness(0) so they show as pure black.
-    Positions derived from the assembled logo in A Final.png.
-    
-    Logo bounding box (approximate from PS guides):
-    - Overall logo fits ~220×220px
-    - Center: 130,130 within the stage
-    
-    Three arm+round positions from PDF:
-    Round 1 (top): ~center-x, center-y - 90px  → top:40px, left:50%
-    Round 2 (lower-left): ~center-x-78px, center-y+45px → top:175px, left:25%
-    Round 3 (lower-right): ~center-x+78px, center-y+45px → top:175px, left:75%
-  */
-  .ld-stage{
+  .ld-video-wrap{
     position:relative;
-    width:260px;height:260px;
+    width:480px;
+    height:480px;
     flex-shrink:0;
   }
 
-  .ld-piece{
-    position:absolute;
-    filter:brightness(0);
-    opacity:0;
-    will-change:transform,opacity;
-  }
-
-  /* ── MIDDLE TRIANGLE ── size & position ──────────────────
-     width = size. top/left stay 50%/50% (always dead center).     */
-  #ldMid{
-    width:54px; /* ← CHANGE SIZE */
-    height:auto;
-    top:50%;left:50%;
-    transform:translate(-50%,-50%) scale(0);
-    transform-origin:center center;
-  }
-
-  /* ── ROUND DOTS ── size & position ───────────────────────
-     .ld-round width  = size of ALL 3 rounds ← CHANGE SIZE
-     #ldR1/2/3 left   = horizontal pos (0=left, 260=right of stage)
-     #ldR1/2/3 top    = vertical pos   (0=top,  260=bottom of stage)
-     translate(-50%,-50%) centers dot on that point — keep it.
-     R1=TOP  R2=LOWER-LEFT  R3=LOWER-RIGHT                        */
-  .ld-round{
-    width:26px; /* ← CHANGE ALL ROUNDS SIZE */
-    height:auto;
-    position:absolute;
-    filter:brightness(0);
-    opacity:0;
-    will-change:transform,opacity;
-    transform-origin:center center;
-  }
-  #ldR1{ left:148px; top:28px;  transform:translate(-50%,-50%) scale(0); } /* TOP round — moved left */
-  #ldR2{ left:52px;  top:195px; transform:translate(-50%,-50%) scale(0); } /* LOWER-LEFT — moved right */
-  #ldR3{ left:222px; top:198px; transform:translate(-50%,-50%) scale(0); } /* LOWER-RIGHT — moved right */
-
-  /*
-    ARMS (Triangle.png) — each arm GROWS FROM CENTER toward its round.
-    
-    The arm growth effect: each arm starts at scale(0) with transform-origin
-    pointing toward center. As it scales to 1, it "grows" outward.
-    
-    From PDF page 6: the arms reveal from center outward.
-    Each arm:
-    - transform-origin at the CENTER END (the sharp tip end toward logo center)
-    - scale(0) → scale(1) makes it grow from tip toward round
-    
-    ARM 1 (toward top round):
-      Sharp tip near center-top, round end at top
-      Position: tip at center, rotated ~-30deg from vertical
-      
-    ARM 2 (toward lower-left round):
-      Sharp tip near center, round end lower-left
-      Rotation: ~90deg or ~210deg from vertical
-      
-    ARM 3 (toward lower-right round):
-      Sharp tip near center, round end lower-right
-  */
-  /* ── TRIANGLE ARMS ── size & rotation ────────────────────
-     .ld-arm width = size of ALL 3 arms ← CHANGE SIZE
-     Each arm pivots from its SHARP TIP (top of Triangle.png).
-     top:50% left:50% = sharp tip sits at stage center.
-     translate(-50%,0%) keeps tip at center.
-     rotate() spreads the arm in that direction.
-     
-     ARM1 = toward top-right   (rotate -30deg)
-     ARM2 = toward left        (rotate  90deg)
-     ARM3 = toward bottom-right(rotate 210deg)
-     
-     Change rotate() angle to adjust direction of each arm.      */
-  .ld-arm{
-    width:76px; /* ← CHANGE ALL ARMS SIZE */
-    height:auto;
-    position:absolute;
-    filter:brightness(0);
-    opacity:0;
-    will-change:transform,opacity;
-    transform-origin:50% 0%; /* pivot at sharp tip — keep this */
-    top:50%; left:50%;       /* tip at center — keep this */
-  }
-  #ldArm1{ transform:translate(-50%,0%) rotate(-15deg)  scale(0); } /* TOP arm — rotated clockwise (less negative = more CW), overlaps top circle */
-  #ldArm2{ transform:translate(-50%,0%) rotate(100deg)  scale(0); } /* LEFT arm — rotated slightly more to push down, overlaps left circle */
-  #ldArm3{ transform:translate(-50%,0%) rotate(220deg)  scale(0); } /* RIGHT arm — rotated a bit more clockwise to go further right */
-
-  /* ── BLACK LOGO (shown after animation completes) ─────────
-     black logo.png is black on black bg — use mix-blend-mode:multiply
-     so the black background disappears on lime green, logo stays black */
-  #ldBlackLogo{
-    width:180px; /* ← CHANGE FINAL LOGO SIZE */
-    height:auto;
+  /* Fallback: black logo shown instantly, fades out when video starts */
+  #ldFallback{
+    position:absolute;inset:0;
+    width:100%;height:100%;
+    object-fit:contain;
     mix-blend-mode:multiply;
-    opacity:0;
-    position:absolute;
-    top:50%;left:50%;
-    transform:translate(-50%,-50%);
-    transition:opacity 0.4s ease;
-    pointer-events:none;
+    opacity:1;
+    transition:opacity 0.3s ease;
   }
+  #ldFallback.hidden{opacity:0;}
 
-  .ld-name{
-    font-family:'Bebas Neue',sans-serif;
-    font-size:clamp(1rem,4vw,1.6rem);
-    font-weight:700;letter-spacing:0.22em;color:#080808;
-    opacity:0;transform:translateY(14px);
-    margin-top:22px;white-space:nowrap;
+  /* WebM with real alpha — no blend mode needed, just fade in */
+  #ldVideo{
+    position:absolute;inset:0;
+    width:100%;height:100%;
+    object-fit:contain;
+    opacity:0;
+    transition:opacity 0.3s ease;
   }
+  #ldVideo.ready{opacity:1;}
+
+  .ld-name{font-family:'Bebas Neue',sans-serif;font-size:clamp(1rem,4vw,1.6rem);font-weight:700;letter-spacing:0.22em;color:#080808;opacity:0;transform:translateY(14px);margin-top:22px;white-space:nowrap;}
   .ld-bar-wrap{width:200px;height:1.5px;background:rgba(8,8,8,0.2);margin-top:1.4rem;position:relative;overflow:hidden;opacity:0;}
   .ld-bar-fill{position:absolute;top:0;left:0;height:100%;width:0;background:#080808;transition:width 0.12s linear;}
   .ld-pct{font-family:'DM Mono',monospace;font-size:0.62rem;letter-spacing:0.18em;color:rgba(8,8,8,0.5);margin-top:0.45rem;opacity:0;}
@@ -320,23 +204,15 @@
 </head>
 <body>
 
-<!-- ══ LOADER ══
-  HTML structure matches PDF exactly:
-  - ldMid:  middle triangle.png  (center bubble)
-  - ldR1/2/3: round.png x3      (corner dots, appear before arms)
-  - ldArm1/2/3: Triangle.png x3 (arms grow from center to rounds)
--->
+<!-- ══ LOADER ══ -->
 <div class="loader" id="loader">
-  <div class="ld-stage" style="position:relative;">
-    <img class="ld-piece" id="ldMid"  src="Assets/middle triangle.png" alt="">
-    <img class="ld-piece" id="ldR1"   src="Assets/round.png" alt="">
-    <img class="ld-piece" id="ldR2"   src="Assets/round.png" alt="">
-    <img class="ld-piece" id="ldR3"   src="Assets/round.png" alt="">
-    <img class="ld-arm"   id="ldArm1" src="Assets/Triangle.png" alt="">
-    <img class="ld-arm"   id="ldArm2" src="Assets/Triangle.png" alt="">
-    <img class="ld-arm"   id="ldArm3" src="Assets/Triangle.png" alt="">
-    <!-- Black logo fades in after all parts settle, before name appears -->
-    <img id="ldBlackLogo" src="Assets/black logo.png" alt="">
+  <div class="ld-video-wrap">
+    <!-- Fallback: shows instantly on slow connections -->
+    <img id="ldFallback" src="Assets/black logo.png" alt="Logo">
+    <!-- Loader.WEBM: transparent alpha, plays once, then name+bar appear -->
+    <video id="ldVideo" autoplay muted playsinline preload="auto">
+      <source src="Assets/Loader.WEBM" type="video/webm">
+    </video>
   </div>
   <div class="ld-name"     id="ldName">ACHINTHA JAYAWEERA</div>
   <div class="ld-bar-wrap" id="ldBarWrap"><div class="ld-bar-fill" id="ldBarFill"></div></div>
@@ -524,103 +400,63 @@ function toggleNav(){document.getElementById('mobileNav').classList.toggle('open
   window.addEventListener('orientationchange',function(){setTimeout(fit,250);});
 })();
 
-/* ══ LOADER — Exact PDF sequence ══════════════════════════════
-  
-  PDF pages mapped to JS timing:
-  
-  P1→P3 (0–1000ms): middle triangle.png
-    - Appears tiny (scale 0→1 with spring)
-    - Grows to fill screen (scale →10)  
-    - Shrinks back to final size (scale →1)
-  
-  P4→P5 (1000–1500ms): round.png x3
-    - 3 dots appear at corner positions with bubble spring
-  
-  P6 (1500–2000ms): Triangle.png x3
-    - Arms grow FROM CENTER toward each round dot
-    - transform-origin: 50% 0% (sharp tip at center = pivot)
-    - scale 0→1 makes each arm "extend" outward
-  
-  P7 (2000ms+): text + bar
-══════════════════════════════════════════════════════════════ */
+/* ══ LOADER — VIDEO ══════════════════════════════════════════
+   Loader.WEBM plays once with transparent bg on lime green.
+   When video ends → name slides up + loading bar → loader fades out.
+   Low data fallback: black logo.png stays visible until video plays.
+═══════════════════════════════════════════════════════════ */
 (function(){
-  var loader=document.getElementById('loader');
-  var mid=document.getElementById('ldMid');
-  var r1=document.getElementById('ldR1'),r2=document.getElementById('ldR2'),r3=document.getElementById('ldR3');
-  var a1=document.getElementById('ldArm1'),a2=document.getElementById('ldArm2'),a3=document.getElementById('ldArm3');
-  var blackLogo=document.getElementById('ldBlackLogo');
-  var name=document.getElementById('ldName');
-  var barWrap=document.getElementById('ldBarWrap'),barFill=document.getElementById('ldBarFill'),pct=document.getElementById('ldPct');
+  var loader   = document.getElementById('loader');
+  var video    = document.getElementById('ldVideo');
+  var fallback = document.getElementById('ldFallback');
+  var name     = document.getElementById('ldName');
+  var barWrap  = document.getElementById('ldBarWrap');
+  var barFill  = document.getElementById('ldBarFill');
+  var pct      = document.getElementById('ldPct');
+  var done     = false;
 
-  function pop(el,delay,tx,over){
-    over=over||1.35;
-    var ov=tx.replace('scale(0)','scale('+over+')');
-    var fn=tx.replace('scale(0)','scale(1)');
-    setTimeout(function(){
-      el.style.opacity='1';
-      el.style.transition='transform 0.4s cubic-bezier(0.34,1.8,0.64,1),opacity 0.15s ease';
-      el.style.transform=ov;
-      setTimeout(function(){el.style.transition='transform 0.22s cubic-bezier(0.16,1,0.3,1)';el.style.transform=fn;},400);
-    },delay);
+  function showNameAndBar(){
+    if(done) return;
+    done = true;
+    /* Slide name up IMMEDIATELY when video ends — no gap */
+    name.style.transition = 'opacity 0.4s ease, transform 0.4s cubic-bezier(0.16,1,0.3,1)';
+    name.style.opacity    = '1';
+    name.style.transform  = 'translateY(0)';
+    /* Loading bar starts right away alongside name */
+    barWrap.style.transition = 'opacity 0.3s ease';
+    barWrap.style.opacity    = '1';
+    pct.style.transition     = 'opacity 0.3s ease';
+    pct.style.opacity        = '1';
+    var p = 0;
+    var iv = setInterval(function(){
+      p += Math.random() * 8 + 4;
+      if(p >= 100){
+        p = 100; clearInterval(iv);
+        barFill.style.width = '100%';
+        pct.textContent     = '100%';
+        setTimeout(function(){ loader.classList.add('done'); }, 700);
+      } else {
+        barFill.style.width = p + '%';
+        pct.textContent     = Math.floor(p) + '%';
+      }
+    }, 80);
   }
 
-  /* P1→P3: middle tri — tiny → EXPLODES to fill screen → shrinks to center */
-  setTimeout(function(){
-    mid.style.opacity='1';
-    mid.style.transition='transform 0.45s cubic-bezier(0.34,1.5,0.64,1),opacity 0.15s ease';
-    mid.style.transform='translate(-50%,-50%) scale(1.3)';  /* appear with spring */
-    setTimeout(function(){
-      /* EXPLODE to fill screen */
-      mid.style.transition='transform 0.4s cubic-bezier(0.16,1,0.3,1)';
-      mid.style.transform='translate(-50%,-50%) scale(11)';
-      setTimeout(function(){
-        /* Shrink back to final */
-        mid.style.transition='transform 0.55s cubic-bezier(0.34,1.4,0.64,1)';
-        mid.style.transform='translate(-50%,-50%) scale(1)';
-      },400);
-    },350);
-  },100);
-
-  /* P4→P5: rounds pop in at corner positions */
-  pop(r1, 1300, 'translate(-50%,-50%) scale(0)', 1.5);
-  pop(r2, 1450, 'translate(-50%,-50%) scale(0)', 1.5);
-  pop(r3, 1600, 'translate(-50%,-50%) scale(0)', 1.5);
-
-  /* P6: arms grow from center outward toward rounds
-     transform-origin: 50% 0% means scale grows FROM the top (sharp tip at center)
-     DOWN toward the round end — exactly matching PDF page 6 */
-  pop(a1, 1900, 'translate(-50%,0%) rotate(-15deg)  scale(0)', 1.1);
-  pop(a2, 2050, 'translate(-50%,0%) rotate(100deg)  scale(0)', 1.1);
-  pop(a3, 2200, 'translate(-50%,0%) rotate(220deg)  scale(0)', 1.1);
-
-  /* After all parts settle: fade out parts, fade in black logo.png */
-  setTimeout(function(){
-    /* Fade out individual parts */
-    [mid,r1,r2,r3,a1,a2,a3].forEach(function(el){
-      el.style.transition='opacity 0.3s ease';
-      el.style.opacity='0';
+  if(video){
+    /* Video can play → fade it in, hide fallback */
+    video.addEventListener('canplay', function(){
+      video.classList.add('ready');       /* video fades in */
+      fallback.classList.add('hidden');   /* fallback fades out */
     });
-    /* Fade in the complete clean logo */
-    blackLogo.style.opacity='1';
-  }, 2450);
 
-  /* P7: name */
-  setTimeout(function(){
-    name.style.transition='opacity 0.5s ease,transform 0.5s cubic-bezier(0.16,1,0.3,1)';
-    name.style.opacity='1';name.style.transform='translateY(0)';
-  },2550);
+    /* Video finished → show name + bar */
+    video.addEventListener('ended', showNameAndBar);
 
-  /* Bar */
-  setTimeout(function(){
-    barWrap.style.transition='opacity 0.35s ease';barWrap.style.opacity='1';
-    pct.style.transition='opacity 0.35s ease';pct.style.opacity='1';
-    var p=0,iv=setInterval(function(){
-      p+=Math.random()*7+3;
-      if(p>=100){p=100;clearInterval(iv);barFill.style.width='100%';pct.textContent='100%';
-        setTimeout(function(){loader.classList.add('done');},650);}
-      else{barFill.style.width=p+'%';pct.textContent=Math.floor(p)+'%';}
-    },80);
-  },3100);
+    /* Safety: if video stalls or takes too long (video is ~5s) */
+    setTimeout(showNameAndBar, 6000);
+  } else {
+    setTimeout(showNameAndBar, 500);
+  }
 })();
 
 /* CURSOR */
