@@ -159,14 +159,16 @@
   .loader{position:fixed;inset:0;z-index:10000;background:#c8f542;display:flex;align-items:center;justify-content:center;flex-direction:column;overflow:hidden;transition:opacity 0.9s ease,visibility 0.9s ease;}
   .loader.done{opacity:0;visibility:hidden;pointer-events:none;}
 
+  /* Video/logo area — bigger, text overlaps bottom like the PS reference */
   .ld-video-wrap{
     position:relative;
-    width:500px;
-    height:500px;
+    width:560px;
+    height:560px;
     flex-shrink:0;
-    margin-bottom:-20px;
+    margin-bottom:-80px; /* text pulls up into bottom of logo */
   }
 
+  /* Fallback black logo — exact same 560×560 so they match */
   #ldFallback{
     position:absolute;inset:0;
     width:100%;height:100%;
@@ -177,6 +179,7 @@
   }
   #ldFallback.hidden{opacity:0;}
 
+  /* Video — transparent WebM */
   #ldVideo{
     position:absolute;inset:0;
     width:100%;height:100%;
@@ -186,10 +189,11 @@
   }
   #ldVideo.ready{opacity:1;}
 
-  .ld-name{font-family:'Bebas Neue',sans-serif;font-size:clamp(1rem,4vw,1.6rem);font-weight:700;letter-spacing:0.22em;color:#080808;opacity:0;transform:translateY(14px);margin-top:0;white-space:nowrap;}
-  .ld-bar-wrap{width:200px;height:1.5px;background:rgba(8,8,8,0.2);margin-top:1.4rem;position:relative;overflow:hidden;opacity:0;}
+  /* Text + bar sit on top of logo bottom edge */
+  .ld-name{font-family:'Bebas Neue',sans-serif;font-size:1.55rem;font-weight:700;letter-spacing:0.22em;color:#080808;opacity:0;transform:translateY(14px);white-space:nowrap;position:relative;z-index:2;}
+  .ld-bar-wrap{width:200px;height:1.5px;background:rgba(8,8,8,0.2);margin-top:1rem;position:relative;overflow:hidden;opacity:0;z-index:2;}
   .ld-bar-fill{position:absolute;top:0;left:0;height:100%;width:0;background:#080808;transition:width 0.12s linear;}
-  .ld-pct{font-family:'DM Mono',monospace;font-size:0.62rem;letter-spacing:0.18em;color:rgba(8,8,8,0.5);margin-top:0.45rem;opacity:0;}
+  .ld-pct{font-family:'DM Mono',monospace;font-size:0.62rem;letter-spacing:0.18em;color:rgba(8,8,8,0.5);margin-top:0.4rem;opacity:0;position:relative;z-index:2;}
 
   @media(max-width:1024px){:root{--pad:2rem}.about-grid{grid-template-columns:1fr;gap:3rem}.project-card.featured{grid-template-columns:1fr;gap:2rem}.project-visual-featured{height:200px !important}.exp-item{grid-template-columns:130px 1fr;gap:2rem}.nav-links{gap:1.5rem}}
   @media(max-width:768px){:root{--pad:1.5rem}.nav-links,.nav-cta{display:none}.nav-hamburger{display:flex}.hero{padding:0 var(--pad) 3rem}.hero-orb{width:300px;height:300px}.hero-bottom{flex-direction:column;align-items:flex-start;gap:1.5rem}.hero-scroll{display:none}.about-grid{grid-template-columns:1fr;gap:2.5rem}.exp-item{grid-template-columns:1fr;gap:0.5rem}.exp-item::before{display:none}.exp-left{padding-top:0}.projects-grid{grid-template-columns:1fr}.project-card.featured{grid-column:1 !important;grid-template-columns:1fr}.project-span2{grid-column:1 !important}.project-visual-featured{height:180px !important}.contact-links{flex-direction:column;align-items:center}.contact-btn{width:100%;max-width:360px;justify-content:center;font-size:0.72rem;padding:0.9rem 1rem;word-break:break-all}footer{flex-direction:column;text-align:center;gap:0.5rem}.scratch-section iframe{height:380px !important}}
