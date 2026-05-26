@@ -88,102 +88,22 @@
   .skills-scroller::-webkit-scrollbar{display:none}
   .skill-pill{flex-shrink:0;border:1px solid var(--border-light);padding:0.6rem 1.2rem;font-size:0.8rem;color:var(--muted);letter-spacing:0.06em;transition:all 0.3s;white-space:nowrap}
   .skill-pill:hover{border-color:var(--accent);color:var(--accent)}
-  /* ══ CATEGORY CARDS ══ */
-  .cat-tabs{display:none} /* hide the old filter tabs */
-  .cat-grid{
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:1.5rem;
-    margin-top:3rem;
-  }
-  .cat-card{
-    background:var(--bg2);
-    border:1px solid var(--border);
-    padding:2.5rem 2rem;
-    position:relative;
-    overflow:hidden;
-    transition:all 0.4s cubic-bezier(0.16,1,0.3,1);
-    cursor:none;
-    display:flex;
-    flex-direction:column;
-    gap:1.2rem;
-  }
-  .cat-card::before{
-    content:'';
-    position:absolute;
-    bottom:0;left:0;right:0;
-    height:2px;
-    background:var(--accent);
-    transform:scaleX(0);
-    transform-origin:left;
-    transition:transform 0.4s cubic-bezier(0.16,1,0.3,1);
-  }
+  .cat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:3rem;}
+  .cat-card{background:var(--bg2);border:1px solid var(--border);padding:2.5rem 2rem;position:relative;overflow:hidden;transition:all 0.4s cubic-bezier(0.16,1,0.3,1);cursor:none;display:flex;flex-direction:column;gap:1.2rem;}
+  .cat-card::before{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:var(--accent);transform:scaleX(0);transform-origin:left;transition:transform 0.4s cubic-bezier(0.16,1,0.3,1);}
   .cat-card:hover{border-color:var(--border-light);transform:translateY(-6px);}
   .cat-card:hover::before{transform:scaleX(1);}
-  .cat-card-icon{
-    width:52px;height:52px;
-    border:1px solid var(--border-light);
-    border-radius:50%;
-    display:flex;align-items:center;justify-content:center;
-    color:var(--accent);
-    flex-shrink:0;
-    transition:background 0.3s;
-  }
+  .cat-card-icon{width:52px;height:52px;border:1px solid var(--border-light);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--accent);flex-shrink:0;transition:background 0.3s;}
   .cat-card:hover .cat-card-icon{background:rgba(200,245,66,0.08);}
   .cat-card-icon svg{width:24px;height:24px;}
-  .cat-card-title{
-    font-family:'Bebas Neue',sans-serif;
-    font-size:1.8rem;
-    letter-spacing:0.02em;
-    color:var(--text);
-    line-height:1;
-  }
-  .cat-card-count{
-    font-family:'DM Mono',monospace;
-    font-size:0.7rem;
-    color:var(--accent);
-    letter-spacing:0.12em;
-    text-transform:uppercase;
-  }
-  .cat-card-desc{
-    font-size:0.85rem;
-    color:var(--muted);
-    line-height:1.7;
-    font-weight:300;
-    flex:1;
-  }
-  .cat-card-tools{
-    display:flex;flex-wrap:wrap;gap:0.4rem;
-    margin-top:auto;
-  }
-  .cat-card-tools span{
-    font-size:0.65rem;
-    letter-spacing:0.08em;
-    text-transform:uppercase;
-    border:1px solid var(--border);
-    padding:0.25rem 0.6rem;
-    color:var(--muted);
-  }
-  .cat-card-arrow{
-    display:inline-flex;align-items:center;gap:0.4rem;
-    font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;
-    color:var(--accent);text-decoration:none;
-    margin-top:0.5rem;
-    opacity:0;
-    transition:opacity 0.3s;
-  }
+  .cat-card-title{font-family:'Bebas Neue',sans-serif;font-size:1.8rem;letter-spacing:0.02em;color:var(--text);line-height:1;}
+  .cat-card-count{font-family:'DM Mono',monospace;font-size:0.7rem;color:var(--accent);letter-spacing:0.12em;text-transform:uppercase;}
+  .cat-card-desc{font-size:0.85rem;color:var(--muted);line-height:1.7;font-weight:300;flex:1;}
+  .cat-card-tools{display:flex;flex-wrap:wrap;gap:0.4rem;margin-top:auto;}
+  .cat-card-tools span{font-size:0.65rem;letter-spacing:0.08em;text-transform:uppercase;border:1px solid var(--border);padding:0.25rem 0.6rem;color:var(--muted);}
+  .cat-card-arrow{display:inline-flex;align-items:center;gap:0.4rem;font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent);text-decoration:none;margin-top:0.5rem;opacity:0;transition:opacity 0.3s;}
   .cat-card:hover .cat-card-arrow{opacity:1;}
-  /* Large number watermark */
-  .cat-card-bg-num{
-    position:absolute;
-    right:-0.5rem;top:-1rem;
-    font-family:'Bebas Neue',sans-serif;
-    font-size:8rem;
-    color:rgba(240,237,230,0.03);
-    line-height:1;
-    pointer-events:none;
-    user-select:none;
-  }
+  .cat-card-bg-num{position:absolute;right:-0.5rem;top:-1rem;font-family:'Bebas Neue',sans-serif;font-size:8rem;color:rgba(240,237,230,0.03);line-height:1;pointer-events:none;user-select:none;}
   @media(max-width:1024px){.cat-grid{grid-template-columns:repeat(2,1fr);}}
   @media(max-width:600px){.cat-grid{grid-template-columns:1fr;}}
   .skill-card{background:var(--bg2);padding:2rem 1.8rem;transition:background 0.3s;position:relative;overflow:hidden}
@@ -193,6 +113,7 @@
   .skill-icon{font-size:1.5rem;margin-bottom:1rem;display:block}
   .skill-name{font-size:0.9rem;font-weight:500;color:var(--text);margin-bottom:0.4rem}
   .skill-desc{font-size:0.78rem;color:var(--muted);line-height:1.6}
+  .skills-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1px;background:var(--border);border:1px solid var(--border);margin-top:3rem}
   .experience-list{margin-top:3rem}
   .exp-item{display:grid;grid-template-columns:180px 1fr;gap:3rem;padding:2.5rem 0;border-bottom:1px solid var(--border);position:relative;transition:all 0.3s}
   .exp-item:first-child{border-top:1px solid var(--border)}
@@ -206,21 +127,6 @@
   .exp-tags{display:flex;flex-wrap:wrap;gap:0.5rem;margin-top:1.2rem}
   .tag{font-size:0.7rem;letter-spacing:0.08em;text-transform:uppercase;border:1px solid var(--border-light);padding:0.3rem 0.8rem;color:var(--muted);transition:all 0.3s}
   .tag:hover{border-color:var(--accent);color:var(--accent)}
-  .projects-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.5rem;margin-top:3rem}
-  .project-card{background:var(--bg2);border:1px solid var(--border);padding:2.5rem;position:relative;overflow:hidden;transition:all 0.4s cubic-bezier(0.16,1,0.3,1);cursor:none}
-  .project-card::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(200,245,66,0.04),transparent);opacity:0;transition:opacity 0.4s}
-  .project-card:hover{border-color:var(--border-light);transform:translateY(-4px)}
-  .project-card:hover::after{opacity:1}
-  .project-card.featured{grid-column:span 2;display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:center}
-  .project-number{font-family:'DM Mono',monospace;font-size:0.7rem;color:var(--accent);letter-spacing:0.1em;margin-bottom:1.5rem}
-  .project-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(1.8rem,3vw,2.5rem);color:var(--text);line-height:1;margin-bottom:1rem;letter-spacing:0.02em}
-  .project-desc{font-size:0.88rem;color:var(--muted);line-height:1.7;font-weight:300;margin-bottom:1.5rem}
-  .project-link{display:inline-flex;align-items:center;gap:0.5rem;font-size:0.78rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent);text-decoration:none;border-bottom:1px solid rgba(200,245,66,0.3);padding-bottom:0.2rem;transition:border-color 0.3s}
-  .project-link:hover{border-color:var(--accent)}
-  .project-visual{background:var(--bg3);border:1px solid var(--border);height:220px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
-  .project-visual-featured{height:280px}
-  .project-svg{width:100%;height:100%}
-  .project-span2{grid-column:span 2}
   .edu-list{margin-top:3rem}
   .edu-item{display:flex;justify-content:space-between;align-items:flex-start;padding:2rem 0;border-bottom:1px solid var(--border);gap:2rem}
   .edu-item:first-child{border-top:1px solid var(--border)}
@@ -252,61 +158,20 @@
   .reveal.visible{opacity:1;transform:translateY(0)}
   .reveal-delay-1{transition-delay:0.1s}.reveal-delay-2{transition-delay:0.2s}.reveal-delay-3{transition-delay:0.3s}.reveal-delay-4{transition-delay:0.4s}
   .counter{font-variant-numeric:tabular-nums}
-
-  .loader{
-    position:fixed;inset:0;z-index:10000;
-    background:#c8f542;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    flex-direction:column;
-    overflow:hidden;
-    transition:opacity 0.9s ease,visibility 0.9s ease;
-  }
+  .loader{position:fixed;inset:0;z-index:10000;background:#c8f542;display:flex;align-items:center;justify-content:center;flex-direction:column;overflow:hidden;transition:opacity 0.9s ease,visibility 0.9s ease;}
   .loader.done{opacity:0;visibility:hidden;pointer-events:none;}
-
-  /* Whole unit: logo + text centered together */
-  .ld-unit{
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
-  }
-
-  .ld-video-wrap{
-    position:relative;
-    width:420px;
-    height:420px;
-    flex-shrink:0;
-    margin-bottom:-55px;
-  }
-
-  #ldFallback{
-    position:absolute;inset:0;
-    width:100%;height:100%;
-    object-fit:contain;
-    mix-blend-mode:multiply;
-    opacity:1;
-    transition:opacity 0.3s ease;
-  }
+  .ld-unit{display:flex;flex-direction:column;align-items:center;justify-content:center;}
+  .ld-video-wrap{position:relative;width:420px;height:420px;flex-shrink:0;margin-bottom:-55px;}
+  #ldFallback{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;mix-blend-mode:multiply;opacity:1;transition:opacity 0.3s ease;}
   #ldFallback.hidden{opacity:0;}
-
-  #ldVideo{
-    position:absolute;inset:0;
-    width:100%;height:100%;
-    object-fit:contain;
-    opacity:0;
-    transition:opacity 0.3s ease;
-  }
+  #ldVideo{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;opacity:0;transition:opacity 0.3s ease;}
   #ldVideo.ready{opacity:1;}
-
   .ld-name{font-family:'Bebas Neue',sans-serif;font-size:1.55rem;font-weight:700;letter-spacing:0.22em;color:#080808;opacity:0;transform:translateY(14px);white-space:nowrap;position:relative;z-index:2;}
   .ld-bar-wrap{width:200px;height:1.5px;background:rgba(8,8,8,0.2);margin-top:1rem;position:relative;overflow:hidden;opacity:0;z-index:2;}
   .ld-bar-fill{position:absolute;top:0;left:0;height:100%;width:0;background:#080808;transition:width 0.12s linear;}
   .ld-pct{font-family:'DM Mono',monospace;font-size:0.62rem;letter-spacing:0.18em;color:rgba(8,8,8,0.5);margin-top:0.4rem;opacity:0;position:relative;z-index:2;}
-
-  @media(max-width:1024px){:root{--pad:2rem}.about-grid{grid-template-columns:1fr;gap:3rem}.project-card.featured{grid-template-columns:1fr;gap:2rem}.project-visual-featured{height:200px !important}.exp-item{grid-template-columns:130px 1fr;gap:2rem}.nav-links{gap:1.5rem}}
-  @media(max-width:768px){:root{--pad:1.5rem}.nav-links,.nav-cta{display:none}.nav-hamburger{display:flex}.hero{padding:0 var(--pad) 3rem}.hero-orb{width:300px;height:300px}.hero-bottom{flex-direction:column;align-items:flex-start;gap:1.5rem}.hero-scroll{display:none}.about-grid{grid-template-columns:1fr;gap:2.5rem}.exp-item{grid-template-columns:1fr;gap:0.5rem}.exp-item::before{display:none}.exp-left{padding-top:0}.projects-grid{grid-template-columns:1fr}.project-card.featured{grid-column:1 !important;grid-template-columns:1fr}.project-span2{grid-column:1 !important}.project-visual-featured{height:180px !important}.contact-links{flex-direction:column;align-items:center}.contact-btn{width:100%;max-width:360px;justify-content:center;font-size:0.72rem;padding:0.9rem 1rem;word-break:break-all}footer{flex-direction:column;text-align:center;gap:0.5rem}.scratch-section iframe{height:380px !important}}
+  @media(max-width:1024px){:root{--pad:2rem}.about-grid{grid-template-columns:1fr;gap:3rem}.exp-item{grid-template-columns:130px 1fr;gap:2rem}.nav-links{gap:1.5rem}}
+  @media(max-width:768px){:root{--pad:1.5rem}.nav-links,.nav-cta{display:none}.nav-hamburger{display:flex}.hero{padding:0 var(--pad) 3rem}.hero-orb{width:300px;height:300px}.hero-bottom{flex-direction:column;align-items:flex-start;gap:1.5rem}.hero-scroll{display:none}.about-grid{grid-template-columns:1fr;gap:2.5rem}.exp-item{grid-template-columns:1fr;gap:0.5rem}.exp-item::before{display:none}.exp-left{padding-top:0}.contact-links{flex-direction:column;align-items:center}.contact-btn{width:100%;max-width:360px;justify-content:center;font-size:0.72rem;padding:0.9rem 1rem;word-break:break-all}footer{flex-direction:column;text-align:center;gap:0.5rem}.scratch-section iframe{height:380px !important}}
   @media(max-width:480px){:root{--pad:1.2rem}.hero-name{font-size:clamp(2.8rem,14vw,5rem)}.about-stats{grid-template-columns:1fr 1fr}.stat-num{font-size:2.2rem}.edu-item{flex-direction:column;gap:0.5rem}.edu-year{align-self:flex-start}section{padding:5rem var(--pad)}.contact-section{padding:6rem var(--pad)}.scratch-section iframe{height:300px !important}.nav-mobile a{font-size:2.2rem}}
 </style>
 </head>
@@ -321,9 +186,9 @@
         <source src="Assets/Loader.WEBM" type="video/webm">
       </video>
     </div>
-    <div class="ld-name"     id="ldName">ACHINTHA JAYAWEERA</div>
+    <div class="ld-name" id="ldName">ACHINTHA JAYAWEERA</div>
     <div class="ld-bar-wrap" id="ldBarWrap"><div class="ld-bar-fill" id="ldBarFill"></div></div>
-    <div class="ld-pct"      id="ldPct">0%</div>
+    <div class="ld-pct" id="ldPct">0%</div>
   </div>
 </div>
 
@@ -425,253 +290,76 @@
 
 <section id="projects">
   <div class="section-label reveal">What I Build</div>
-
   <div class="cat-grid">
 
-    <!-- Web Development -->
     <div class="cat-card reveal">
       <div class="cat-card-bg-num">01</div>
-      <div class="cat-card-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M2 7h20M8 21h8M12 17v4" stroke-linecap="round"/></svg>
-      </div>
+      <div class="cat-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M2 7h20M8 21h8M12 17v4" stroke-linecap="round"/></svg></div>
       <div class="cat-card-count">Web Development</div>
       <h3 class="cat-card-title">WEB DESIGNS</h3>
       <p class="cat-card-desc">Responsive websites and web applications built from scratch. Clean code, smooth interactions and pixel-perfect UI across all screen sizes.</p>
-      <div class="cat-card-tools">
-        <span>HTML/CSS</span><span>JavaScript</span><span>React</span><span>Figma</span>
-      </div>
+      <div class="cat-card-tools"><span>HTML/CSS</span><span>JavaScript</span><span>React</span><span>Figma</span></div>
       <a href="#contact" class="cat-card-arrow">Start a project →</a>
     </div>
 
-    <!-- Mobile App -->
     <div class="cat-card reveal reveal-delay-1">
       <div class="cat-card-bg-num">02</div>
-      <div class="cat-card-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="7" y="2" width="10" height="20" rx="2"/><path d="M7 6h10M7 18h10M11 20h2" stroke-linecap="round"/></svg>
-      </div>
+      <div class="cat-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="7" y="2" width="10" height="20" rx="2"/><path d="M7 6h10M7 18h10M11 20h2" stroke-linecap="round"/></svg></div>
       <div class="cat-card-count">Mobile Development</div>
       <h3 class="cat-card-title">MOBILE APPS</h3>
       <p class="cat-card-desc">Cross-platform mobile applications with clean architecture, smooth performance and intuitive user experience on both iOS and Android.</p>
-      <div class="cat-card-tools">
-        <span>Flutter</span><span>Dart</span><span>SQL</span><span>Firebase</span>
-      </div>
+      <div class="cat-card-tools"><span>Flutter</span><span>Dart</span><span>SQL</span><span>Firebase</span></div>
       <a href="#contact" class="cat-card-arrow">Start a project →</a>
     </div>
 
-    <!-- UI/UX Design -->
     <div class="cat-card reveal reveal-delay-2">
       <div class="cat-card-bg-num">03</div>
-      <div class="cat-card-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M8 12h8M12 8v8" stroke-linecap="round"/><circle cx="12" cy="12" r="3"/></svg>
-      </div>
+      <div class="cat-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M8 12h8M12 8v8" stroke-linecap="round"/><circle cx="12" cy="12" r="3"/></svg></div>
       <div class="cat-card-count">Design</div>
       <h3 class="cat-card-title">UI/UX DESIGNS</h3>
       <p class="cat-card-desc">User interface and experience design that balances aesthetics with usability. Full design systems, brand identities and interactive prototypes.</p>
-      <div class="cat-card-tools">
-        <span>Figma</span><span>Illustrator</span><span>Branding</span><span>Prototyping</span>
-      </div>
+      <div class="cat-card-tools"><span>Figma</span><span>Illustrator</span><span>Branding</span><span>Prototyping</span></div>
       <a href="#contact" class="cat-card-arrow">Start a project →</a>
     </div>
 
-    <!-- Backend -->
     <div class="cat-card reveal">
       <div class="cat-card-bg-num">04</div>
-      <div class="cat-card-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="5" width="20" height="5" rx="1"/><rect x="2" y="14" width="20" height="5" rx="1"/><circle cx="6" cy="7.5" r="1" fill="currentColor" stroke="none"/><circle cx="6" cy="16.5" r="1" fill="currentColor" stroke="none"/></svg>
-      </div>
+      <div class="cat-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="5" width="20" height="5" rx="1"/><rect x="2" y="14" width="20" height="5" rx="1"/><circle cx="6" cy="7.5" r="1" fill="currentColor" stroke="none"/><circle cx="6" cy="16.5" r="1" fill="currentColor" stroke="none"/></svg></div>
       <div class="cat-card-count">Engineering</div>
       <h3 class="cat-card-title">BACKEND PROJECTS</h3>
       <p class="cat-card-desc">Server-side logic, database architecture and API development. Scalable systems built with clean code principles and proper data management.</p>
-      <div class="cat-card-tools">
-        <span>Python</span><span>Java</span><span>SQL</span><span>REST API</span>
-      </div>
+      <div class="cat-card-tools"><span>Python</span><span>Java</span><span>SQL</span><span>REST API</span></div>
       <a href="#contact" class="cat-card-arrow">Start a project →</a>
     </div>
 
-    <!-- Video Edits -->
     <div class="cat-card reveal reveal-delay-1">
       <div class="cat-card-bg-num">05</div>
-      <div class="cat-card-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="6" width="14" height="12" rx="2"/><path d="M16 10l6-3v10l-6-3V10z" stroke-linejoin="round"/></svg>
-      </div>
+      <div class="cat-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="6" width="14" height="12" rx="2"/><path d="M16 10l6-3v10l-6-3V10z" stroke-linejoin="round"/></svg></div>
       <div class="cat-card-count">Post Production</div>
       <h3 class="cat-card-title">VIDEO EDITS</h3>
       <p class="cat-card-desc">Professional video editing for promotional, corporate and social content. 100+ delivered projects for international clients with fast turnaround.</p>
-      <div class="cat-card-tools">
-        <span>Premiere Pro</span><span>After Effects</span><span>Media Encoder</span>
-      </div>
+      <div class="cat-card-tools"><span>Premiere Pro</span><span>After Effects</span><span>Media Encoder</span></div>
       <a href="#contact" class="cat-card-arrow">Start a project →</a>
     </div>
 
-    <!-- 2D Animation -->
     <div class="cat-card reveal reveal-delay-2">
       <div class="cat-card-bg-num">06</div>
-      <div class="cat-card-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/><path d="M10 8l6 4-6 4V8z" stroke-linejoin="round" fill="currentColor" stroke="none"/></svg>
-      </div>
-      <div class="cat-card-count">Motion & Animation</div>
+      <div class="cat-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/><path d="M10 8l6 4-6 4V8z" stroke-linejoin="round" fill="currentColor" stroke="none"/></svg></div>
+      <div class="cat-card-count">Motion &amp; Animation</div>
       <h3 class="cat-card-title">2D ANIMATIONS</h3>
       <p class="cat-card-desc">Character animation, motion graphics and animated advertisements. Top Rated Fiverr seller with 100+ completed animation projects for global brands.</p>
-      <div class="cat-card-tools">
-        <span>After Effects</span><span>Character Animator</span><span>Illustrator</span><span>Dimension</span>
-      </div>
+      <div class="cat-card-tools"><span>After Effects</span><span>Character Animator</span><span>Illustrator</span><span>Dimension</span></div>
       <a href="#contact" class="cat-card-arrow">Start a project →</a>
     </div>
 
-    <!-- Graphics -->
     <div class="cat-card reveal">
       <div class="cat-card-bg-num">07</div>
-      <div class="cat-card-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke-linejoin="round"/></svg>
-      </div>
+      <div class="cat-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke-linejoin="round"/></svg></div>
       <div class="cat-card-count">Visual Design</div>
       <h3 class="cat-card-title">GRAPHICS</h3>
       <p class="cat-card-desc">Logos, posters, social media assets and print-ready graphic design. Creative visuals that communicate brand identity clearly and memorably.</p>
-      <div class="cat-card-tools">
-        <span>Illustrator</span><span>Photoshop</span><span>Dimension</span><span>InDesign</span>
-      </div>
+      <div class="cat-card-tools"><span>Illustrator</span><span>Photoshop</span><span>Dimension</span><span>InDesign</span></div>
       <a href="#contact" class="cat-card-arrow">Start a project →</a>
-    </div>
-
-  </div>
-</section>
-
-    <!-- WEB DESIGN -->
-    <div class="cat-card reveal" data-cat="web">
-      <div class="cat-card-icon">
-        <svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect x="2" y="4" width="28" height="20" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M2 9h28" stroke="currentColor" stroke-width="1.5"/><circle cx="6" cy="6.5" r="1" fill="currentColor"/><circle cx="10" cy="6.5" r="1" fill="currentColor"/><circle cx="14" cy="6.5" r="1" fill="currentColor"/><path d="M10 28h12M16 24v4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-      </div>
-      <div class="cat-card-num">01</div>
-      <h3 class="cat-card-title">CleanDrive Management System</h3>
-      <p class="cat-card-desc">Full business management system with branch management, staff tracking, job workflow and POS operations for a car wash chain.</p>
-      <div class="cat-card-tags"><span class="tag">HTML/CSS</span><span class="tag">JavaScript</span><span class="tag">UI Design</span><span class="tag">POS</span></div>
-      <a href="#" class="cat-card-link">View Project →</a>
-      <div class="cat-card-badge">Web Design</div>
-    </div>
-
-    <div class="cat-card reveal reveal-delay-1" data-cat="web">
-      <div class="cat-card-icon">
-        <svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect x="2" y="4" width="28" height="20" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M2 9h28" stroke="currentColor" stroke-width="1.5"/><circle cx="6" cy="6.5" r="1" fill="currentColor"/><circle cx="10" cy="6.5" r="1" fill="currentColor"/><circle cx="14" cy="6.5" r="1" fill="currentColor"/><path d="M10 28h12M16 24v4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-      </div>
-      <div class="cat-card-num">02</div>
-      <h3 class="cat-card-title">Inseeks.lk — Job Platform</h3>
-      <p class="cat-card-desc">Web-based job posting platform enabling employers to publish listings and users to explore opportunities across Sri Lanka.</p>
-      <div class="cat-card-tags"><span class="tag">HTML/CSS</span><span class="tag">JavaScript</span><span class="tag">Job Board</span></div>
-      <a href="#" class="cat-card-link">View Project →</a>
-      <div class="cat-card-badge">Web Design</div>
-    </div>
-
-    <!-- APP DEV -->
-    <div class="cat-card reveal reveal-delay-2" data-cat="app">
-      <div class="cat-card-icon">
-        <svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect x="9" y="2" width="14" height="28" rx="3" stroke="currentColor" stroke-width="1.5"/><path d="M14 26h4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M9 6h14M9 24h14" stroke="currentColor" stroke-width="1.5"/></svg>
-      </div>
-      <div class="cat-card-num">03</div>
-      <h3 class="cat-card-title">MediFind Pharmacy Locator</h3>
-      <p class="cat-card-desc">Complete mobile app for locating pharmacies and ordering medication. Built with Flutter for cross-platform deployment.</p>
-      <div class="cat-card-tags"><span class="tag">Flutter</span><span class="tag">Dart</span><span class="tag">SQL</span><span class="tag">Maps API</span></div>
-      <a href="#" class="cat-card-link">View Project →</a>
-      <div class="cat-card-badge">App Dev</div>
-    </div>
-
-    <!-- UI DESIGN -->
-    <div class="cat-card reveal" data-cat="ui">
-      <div class="cat-card-icon">
-        <svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect x="3" y="3" width="26" height="26" rx="3" stroke="currentColor" stroke-width="1.5"/><rect x="8" y="8" width="7" height="7" rx="1" stroke="currentColor" stroke-width="1.5"/><rect x="17" y="8" width="7" height="3" rx="1" stroke="currentColor" stroke-width="1.5"/><rect x="17" y="13" width="7" height="2" rx="1" fill="currentColor" opacity="0.4"/><rect x="8" y="17" width="16" height="2" rx="1" fill="currentColor" opacity="0.4"/><rect x="8" y="21" width="10" height="2" rx="1" fill="currentColor" opacity="0.4"/></svg>
-      </div>
-      <div class="cat-card-num">04</div>
-      <h3 class="cat-card-title">hey_creations Brand Identity</h3>
-      <p class="cat-card-desc">Full brand identity and UI design system for hey_creations creative agency. Logo, typography, color system and component library.</p>
-      <div class="cat-card-tags"><span class="tag">Figma</span><span class="tag">Branding</span><span class="tag">UI System</span></div>
-      <a href="#" class="cat-card-link">View Project →</a>
-      <div class="cat-card-badge">UI Design</div>
-    </div>
-
-    <div class="cat-card reveal reveal-delay-1" data-cat="ui">
-      <div class="cat-card-icon">
-        <svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect x="3" y="3" width="26" height="26" rx="3" stroke="currentColor" stroke-width="1.5"/><rect x="8" y="8" width="7" height="7" rx="1" stroke="currentColor" stroke-width="1.5"/><rect x="17" y="8" width="7" height="3" rx="1" stroke="currentColor" stroke-width="1.5"/><rect x="17" y="13" width="7" height="2" rx="1" fill="currentColor" opacity="0.4"/><rect x="8" y="17" width="16" height="2" rx="1" fill="currentColor" opacity="0.4"/><rect x="8" y="21" width="10" height="2" rx="1" fill="currentColor" opacity="0.4"/></svg>
-      </div>
-      <div class="cat-card-num">05</div>
-      <h3 class="cat-card-title">RobotNexus 2 Event Branding</h3>
-      <p class="cat-card-desc">Social media and event branding strategy for IEEE RAS RobotNexus 2. Poster design, digital assets and full visual identity.</p>
-      <div class="cat-card-tags"><span class="tag">Illustrator</span><span class="tag">Figma</span><span class="tag">Social Media</span></div>
-      <a href="#" class="cat-card-link">View Project →</a>
-      <div class="cat-card-badge">UI Design</div>
-    </div>
-
-    <!-- BACKEND -->
-    <div class="cat-card reveal reveal-delay-2" data-cat="backend">
-      <div class="cat-card-icon">
-        <svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect x="3" y="6" width="26" height="7" rx="2" stroke="currentColor" stroke-width="1.5"/><rect x="3" y="19" width="26" height="7" rx="2" stroke="currentColor" stroke-width="1.5"/><circle cx="8" cy="9.5" r="1.5" fill="currentColor"/><circle cx="8" cy="22.5" r="1.5" fill="currentColor"/><path d="M13 9.5h10M13 22.5h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" opacity="0.4"/></svg>
-      </div>
-      <div class="cat-card-num">06</div>
-      <h3 class="cat-card-title">CleanDrive Backend System</h3>
-      <p class="cat-card-desc">Database architecture and backend logic powering the CleanDrive management platform. Staff roles, job queues and reporting engine.</p>
-      <div class="cat-card-tags"><span class="tag">Python</span><span class="tag">SQL</span><span class="tag">REST API</span></div>
-      <a href="#" class="cat-card-link">View Project →</a>
-      <div class="cat-card-badge">Backend</div>
-    </div>
-
-    <!-- VIDEO EDITS -->
-    <div class="cat-card reveal" data-cat="video">
-      <div class="cat-card-icon">
-        <svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect x="2" y="7" width="20" height="18" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M22 13l8-4v14l-8-4V13z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
-      </div>
-      <div class="cat-card-num">07</div>
-      <h3 class="cat-card-title">Sail Internet Ad Campaign</h3>
-      <p class="cat-card-desc">Full video production for Sail Internet's promotional campaign. Editing, colour grading and motion graphics for broadcast delivery.</p>
-      <div class="cat-card-tags"><span class="tag">Premiere Pro</span><span class="tag">After Effects</span><span class="tag">Color Grade</span></div>
-      <a href="#" class="cat-card-link">View Project →</a>
-      <div class="cat-card-badge">Video Edit</div>
-    </div>
-
-    <div class="cat-card reveal reveal-delay-1" data-cat="video">
-      <div class="cat-card-icon">
-        <svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect x="2" y="7" width="20" height="18" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M22 13l8-4v14l-8-4V13z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
-      </div>
-      <div class="cat-card-num">08</div>
-      <h3 class="cat-card-title">100+ Freelance Video Projects</h3>
-      <p class="cat-card-desc">Delivered over 100 video editing projects for international clients on Fiverr and Upwork across promotional, corporate and social formats.</p>
-      <div class="cat-card-tags"><span class="tag">Premiere Pro</span><span class="tag">Media Encoder</span><span class="tag">Fiverr</span></div>
-      <a href="#contact" class="cat-card-link">Request Showreel →</a>
-      <div class="cat-card-badge">Video Edit</div>
-    </div>
-
-    <!-- ANIMATION -->
-    <div class="cat-card reveal" data-cat="animation">
-      <div class="cat-card-icon">
-        <svg width="32" height="32" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="12" stroke="currentColor" stroke-width="1.5"/><path d="M16 8v8l5 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="16" cy="16" r="2" fill="currentColor"/></svg>
-      </div>
-      <div class="cat-card-num">09</div>
-      <h3 class="cat-card-title">Kahua Constructions 2D Ad</h3>
-      <p class="cat-card-desc">2D animated promotional video for Kahua Constructions featuring custom character animation and brand storytelling.</p>
-      <div class="cat-card-tags"><span class="tag">After Effects</span><span class="tag">Character Animator</span><span class="tag">Illustrator</span></div>
-      <a href="#" class="cat-card-link">View Project →</a>
-      <div class="cat-card-badge">Animation</div>
-    </div>
-
-    <div class="cat-card reveal reveal-delay-1" data-cat="animation">
-      <div class="cat-card-icon">
-        <svg width="32" height="32" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="12" stroke="currentColor" stroke-width="1.5"/><path d="M16 8v8l5 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="16" cy="16" r="2" fill="currentColor"/></svg>
-      </div>
-      <div class="cat-card-num">10</div>
-      <h3 class="cat-card-title">Board Studios × Groundswell</h3>
-      <p class="cat-card-desc">Animated brand advertisements for Board Studios and Groundswell with detailed character animation and motion design.</p>
-      <div class="cat-card-tags"><span class="tag">2D Animation</span><span class="tag">Motion Design</span><span class="tag">Dimension</span></div>
-      <a href="#" class="cat-card-link">View Project →</a>
-      <div class="cat-card-badge">Animation</div>
-    </div>
-
-    <div class="cat-card reveal reveal-delay-2" data-cat="animation">
-      <div class="cat-card-icon">
-        <svg width="32" height="32" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="12" stroke="currentColor" stroke-width="1.5"/><path d="M16 8v8l5 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="16" cy="16" r="2" fill="currentColor"/></svg>
-      </div>
-      <div class="cat-card-num">11</div>
-      <h3 class="cat-card-title">Freelance Animation Portfolio</h3>
-      <p class="cat-card-desc">100+ completed 2D animation projects for international clients worldwide. Top Rated Seller across 3 Fiverr accounts.</p>
-      <div class="cat-card-tags"><span class="tag">After Effects</span><span class="tag">Character Animator</span><span class="tag">Fiverr</span></div>
-      <a href="#contact" class="cat-card-link">Request Showreel →</a>
-      <div class="cat-card-badge">Animation</div>
     </div>
 
   </div>
@@ -718,7 +406,6 @@
 <script>
 function toggleNav(){document.getElementById('mobileNav').classList.toggle('open');}
 
-/* FRAMER HERO SCALE */
 (function(){
   var FW=1300,FH=800;
   var wrap=document.getElementById('framerWrap');
@@ -749,10 +436,6 @@ function toggleNav(){document.getElementById('mobileNav').classList.toggle('open
   window.addEventListener('orientationchange',function(){setTimeout(fit,250);});
 })();
 
-/* ══ LOADER — VIDEO ══════════════════════════════════════════
-   Loader.WEBM plays once with transparent bg on lime green.
-   Name + bar appear THE INSTANT video ends — zero gap.
-═══════════════════════════════════════════════════════════ */
 (function(){
   var loader   = document.getElementById('loader');
   var video    = document.getElementById('ldVideo');
@@ -762,11 +445,9 @@ function toggleNav(){document.getElementById('mobileNav').classList.toggle('open
   var barFill  = document.getElementById('ldBarFill');
   var pct      = document.getElementById('ldPct');
   var done     = false;
-
   function showNameAndBar(){
     if(done) return;
     done = true;
-    /* Name + bar both appear instantly together */
     name.style.transition    = 'opacity 0.4s ease, transform 0.4s cubic-bezier(0.16,1,0.3,1)';
     name.style.opacity       = '1';
     name.style.transform     = 'translateY(0)';
@@ -774,7 +455,6 @@ function toggleNav(){document.getElementById('mobileNav').classList.toggle('open
     barWrap.style.opacity    = '1';
     pct.style.transition     = 'opacity 0.4s ease';
     pct.style.opacity        = '1';
-    /* Bar fills */
     var p = 0;
     var iv = setInterval(function(){
       p += Math.random() * 8 + 4;
@@ -789,30 +469,23 @@ function toggleNav(){document.getElementById('mobileNav').classList.toggle('open
       }
     }, 80);
   }
-
   if(video){
-    /* Fade video in as soon as it can play, fade fallback out */
     video.addEventListener('canplay', function(){
       video.classList.add('ready');
       fallback.classList.add('hidden');
     });
-
-    /* Show name+bar THE INSTANT video ends — no setTimeout, zero lag */
     video.addEventListener('ended', showNameAndBar);
-
-    /* Safety timeout slightly longer than video duration (19s + buffer) */
     setTimeout(showNameAndBar, 22000);
   } else {
     setTimeout(showNameAndBar, 500);
   }
 })();
 
-/* CURSOR */
 var cur=document.getElementById('cursor'),trail=document.getElementById('cursorTrail');
 var mx=0,my=0,tx=0,ty=0;
 document.addEventListener('mousemove',function(e){mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
 (function a(){tx+=(mx-tx)*0.12;ty+=(my-ty)*0.12;trail.style.left=tx+'px';trail.style.top=ty+'px';requestAnimationFrame(a);})();
-document.querySelectorAll('a,button,.skill-card,.project-card,.exp-item').forEach(function(el){
+document.querySelectorAll('a,button,.skill-card,.cat-card,.exp-item').forEach(function(el){
   el.addEventListener('mouseenter',function(){cur.style.transform='translate(-50%,-50%) scale(2.5)';trail.style.transform='translate(-50%,-50%) scale(1.5)';trail.style.borderColor='rgba(200,245,66,0.6)';});
   el.addEventListener('mouseleave',function(){cur.style.transform='translate(-50%,-50%) scale(1)';trail.style.transform='translate(-50%,-50%) scale(1)';trail.style.borderColor='rgba(200,245,66,0.4)';});
 });
