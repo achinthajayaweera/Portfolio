@@ -328,14 +328,158 @@
 
 <section id="projects">
   <div class="section-label reveal">Selected Builds</div>
-  <div class="projects-grid">
-    <div class="project-card featured reveal">
-      <div><div class="project-number">01 — Featured</div><h3 class="project-title">CleanDrive Management System</h3><p class="project-desc">A business management system supporting branch management, staff handling, job tracking, and POS operations.</p><div class="exp-tags" style="margin-bottom:1.5rem;"><span class="tag">HTML/CSS</span><span class="tag">JavaScript</span><span class="tag">UI Design</span><span class="tag">POS System</span></div><a href="#" class="project-link">View Project →</a></div>
-      <div class="project-visual project-visual-featured"><svg class="project-svg" viewBox="0 0 400 280" fill="none"><rect width="400" height="280" fill="#0e0e0e"/><rect x="20" y="20" width="360" height="40" rx="4" fill="#141414" stroke="rgba(240,237,230,0.08)" stroke-width="1"/><circle cx="40" cy="40" r="6" fill="#c8f542" opacity="0.8"/><rect x="20" y="74" width="80" height="186" rx="4" fill="#141414" stroke="rgba(240,237,230,0.08)" stroke-width="1"/><rect x="30" y="90" width="60" height="8" rx="2" fill="rgba(200,245,66,0.3)"/><rect x="110" y="74" width="270" height="88" rx="4" fill="#141414" stroke="rgba(240,237,230,0.08)" stroke-width="1"/><text x="162" y="119" font-family="monospace" font-size="9" fill="#c8f542" text-anchor="middle">$12,480</text><rect x="110" y="172" width="130" height="88" rx="4" fill="#141414" stroke="rgba(240,237,230,0.08)" stroke-width="1"/><polyline points="122,238 148,222 170,228 192,210 218,216" stroke="#c8f542" stroke-width="1.5" fill="none" opacity="0.7"/></svg></div>
+
+  <!-- Category filter tabs -->
+  <div class="cat-tabs reveal">
+    <button class="cat-tab active" onclick="filterCat(this,'all')">All</button>
+    <button class="cat-tab" onclick="filterCat(this,'web')">Web Design</button>
+    <button class="cat-tab" onclick="filterCat(this,'app')">App Dev</button>
+    <button class="cat-tab" onclick="filterCat(this,'ui')">UI Design</button>
+    <button class="cat-tab" onclick="filterCat(this,'backend')">Backend</button>
+    <button class="cat-tab" onclick="filterCat(this,'video')">Video Edits</button>
+    <button class="cat-tab" onclick="filterCat(this,'animation')">Animation</button>
+  </div>
+
+  <div class="cat-grid" id="catGrid">
+
+    <!-- WEB DESIGN -->
+    <div class="cat-card reveal" data-cat="web">
+      <div class="cat-card-icon">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect x="2" y="4" width="28" height="20" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M2 9h28" stroke="currentColor" stroke-width="1.5"/><circle cx="6" cy="6.5" r="1" fill="currentColor"/><circle cx="10" cy="6.5" r="1" fill="currentColor"/><circle cx="14" cy="6.5" r="1" fill="currentColor"/><path d="M10 28h12M16 24v4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </div>
+      <div class="cat-card-num">01</div>
+      <h3 class="cat-card-title">CleanDrive Management System</h3>
+      <p class="cat-card-desc">Full business management system with branch management, staff tracking, job workflow and POS operations for a car wash chain.</p>
+      <div class="cat-card-tags"><span class="tag">HTML/CSS</span><span class="tag">JavaScript</span><span class="tag">UI Design</span><span class="tag">POS</span></div>
+      <a href="#" class="cat-card-link">View Project →</a>
+      <div class="cat-card-badge">Web Design</div>
     </div>
-    <div class="project-card reveal reveal-delay-1"><div class="project-number">02</div><h3 class="project-title">MediFind Pharmacy Locator</h3><p class="project-desc">Complete pharmacy locator & ordering system built with Flutter/Dart.</p><div class="exp-tags" style="margin-bottom:1.5rem;"><span class="tag">Flutter</span><span class="tag">Dart</span><span class="tag">SQL</span></div><a href="#" class="project-link">View Project →</a></div>
-    <div class="project-card reveal reveal-delay-2"><div class="project-number">03</div><h3 class="project-title">Inseeks.lk — Job Platform</h3><p class="project-desc">Web-based job posting platform enabling employers to publish listings and users to explore opportunities.</p><div class="exp-tags" style="margin-bottom:1.5rem;"><span class="tag">HTML/CSS</span><span class="tag">JavaScript</span></div><a href="#" class="project-link">View Project →</a></div>
-    <div class="project-card project-span2 reveal reveal-delay-1"><div class="project-number">04 — Animation Work</div><h3 class="project-title">Freelance Animation Portfolio</h3><p class="project-desc">100+ delivered 2D animation projects for international clients including Sail Internet, Kahua, Board Studios, and Groundswell.</p><div class="exp-tags" style="margin:1.5rem 0;"><span class="tag">After Effects</span><span class="tag">Character Animator</span><span class="tag">Illustrator</span><span class="tag">Dimension</span><span class="tag">Premiere Pro</span></div><a href="#contact" class="project-link">Request Showreel →</a></div>
+
+    <div class="cat-card reveal reveal-delay-1" data-cat="web">
+      <div class="cat-card-icon">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect x="2" y="4" width="28" height="20" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M2 9h28" stroke="currentColor" stroke-width="1.5"/><circle cx="6" cy="6.5" r="1" fill="currentColor"/><circle cx="10" cy="6.5" r="1" fill="currentColor"/><circle cx="14" cy="6.5" r="1" fill="currentColor"/><path d="M10 28h12M16 24v4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </div>
+      <div class="cat-card-num">02</div>
+      <h3 class="cat-card-title">Inseeks.lk — Job Platform</h3>
+      <p class="cat-card-desc">Web-based job posting platform enabling employers to publish listings and users to explore opportunities across Sri Lanka.</p>
+      <div class="cat-card-tags"><span class="tag">HTML/CSS</span><span class="tag">JavaScript</span><span class="tag">Job Board</span></div>
+      <a href="#" class="cat-card-link">View Project →</a>
+      <div class="cat-card-badge">Web Design</div>
+    </div>
+
+    <!-- APP DEV -->
+    <div class="cat-card reveal reveal-delay-2" data-cat="app">
+      <div class="cat-card-icon">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect x="9" y="2" width="14" height="28" rx="3" stroke="currentColor" stroke-width="1.5"/><path d="M14 26h4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M9 6h14M9 24h14" stroke="currentColor" stroke-width="1.5"/></svg>
+      </div>
+      <div class="cat-card-num">03</div>
+      <h3 class="cat-card-title">MediFind Pharmacy Locator</h3>
+      <p class="cat-card-desc">Complete mobile app for locating pharmacies and ordering medication. Built with Flutter for cross-platform deployment.</p>
+      <div class="cat-card-tags"><span class="tag">Flutter</span><span class="tag">Dart</span><span class="tag">SQL</span><span class="tag">Maps API</span></div>
+      <a href="#" class="cat-card-link">View Project →</a>
+      <div class="cat-card-badge">App Dev</div>
+    </div>
+
+    <!-- UI DESIGN -->
+    <div class="cat-card reveal" data-cat="ui">
+      <div class="cat-card-icon">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect x="3" y="3" width="26" height="26" rx="3" stroke="currentColor" stroke-width="1.5"/><rect x="8" y="8" width="7" height="7" rx="1" stroke="currentColor" stroke-width="1.5"/><rect x="17" y="8" width="7" height="3" rx="1" stroke="currentColor" stroke-width="1.5"/><rect x="17" y="13" width="7" height="2" rx="1" fill="currentColor" opacity="0.4"/><rect x="8" y="17" width="16" height="2" rx="1" fill="currentColor" opacity="0.4"/><rect x="8" y="21" width="10" height="2" rx="1" fill="currentColor" opacity="0.4"/></svg>
+      </div>
+      <div class="cat-card-num">04</div>
+      <h3 class="cat-card-title">hey_creations Brand Identity</h3>
+      <p class="cat-card-desc">Full brand identity and UI design system for hey_creations creative agency. Logo, typography, color system and component library.</p>
+      <div class="cat-card-tags"><span class="tag">Figma</span><span class="tag">Branding</span><span class="tag">UI System</span></div>
+      <a href="#" class="cat-card-link">View Project →</a>
+      <div class="cat-card-badge">UI Design</div>
+    </div>
+
+    <div class="cat-card reveal reveal-delay-1" data-cat="ui">
+      <div class="cat-card-icon">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect x="3" y="3" width="26" height="26" rx="3" stroke="currentColor" stroke-width="1.5"/><rect x="8" y="8" width="7" height="7" rx="1" stroke="currentColor" stroke-width="1.5"/><rect x="17" y="8" width="7" height="3" rx="1" stroke="currentColor" stroke-width="1.5"/><rect x="17" y="13" width="7" height="2" rx="1" fill="currentColor" opacity="0.4"/><rect x="8" y="17" width="16" height="2" rx="1" fill="currentColor" opacity="0.4"/><rect x="8" y="21" width="10" height="2" rx="1" fill="currentColor" opacity="0.4"/></svg>
+      </div>
+      <div class="cat-card-num">05</div>
+      <h3 class="cat-card-title">RobotNexus 2 Event Branding</h3>
+      <p class="cat-card-desc">Social media and event branding strategy for IEEE RAS RobotNexus 2. Poster design, digital assets and full visual identity.</p>
+      <div class="cat-card-tags"><span class="tag">Illustrator</span><span class="tag">Figma</span><span class="tag">Social Media</span></div>
+      <a href="#" class="cat-card-link">View Project →</a>
+      <div class="cat-card-badge">UI Design</div>
+    </div>
+
+    <!-- BACKEND -->
+    <div class="cat-card reveal reveal-delay-2" data-cat="backend">
+      <div class="cat-card-icon">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect x="3" y="6" width="26" height="7" rx="2" stroke="currentColor" stroke-width="1.5"/><rect x="3" y="19" width="26" height="7" rx="2" stroke="currentColor" stroke-width="1.5"/><circle cx="8" cy="9.5" r="1.5" fill="currentColor"/><circle cx="8" cy="22.5" r="1.5" fill="currentColor"/><path d="M13 9.5h10M13 22.5h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" opacity="0.4"/></svg>
+      </div>
+      <div class="cat-card-num">06</div>
+      <h3 class="cat-card-title">CleanDrive Backend System</h3>
+      <p class="cat-card-desc">Database architecture and backend logic powering the CleanDrive management platform. Staff roles, job queues and reporting engine.</p>
+      <div class="cat-card-tags"><span class="tag">Python</span><span class="tag">SQL</span><span class="tag">REST API</span></div>
+      <a href="#" class="cat-card-link">View Project →</a>
+      <div class="cat-card-badge">Backend</div>
+    </div>
+
+    <!-- VIDEO EDITS -->
+    <div class="cat-card reveal" data-cat="video">
+      <div class="cat-card-icon">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect x="2" y="7" width="20" height="18" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M22 13l8-4v14l-8-4V13z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+      </div>
+      <div class="cat-card-num">07</div>
+      <h3 class="cat-card-title">Sail Internet Ad Campaign</h3>
+      <p class="cat-card-desc">Full video production for Sail Internet's promotional campaign. Editing, colour grading and motion graphics for broadcast delivery.</p>
+      <div class="cat-card-tags"><span class="tag">Premiere Pro</span><span class="tag">After Effects</span><span class="tag">Color Grade</span></div>
+      <a href="#" class="cat-card-link">View Project →</a>
+      <div class="cat-card-badge">Video Edit</div>
+    </div>
+
+    <div class="cat-card reveal reveal-delay-1" data-cat="video">
+      <div class="cat-card-icon">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect x="2" y="7" width="20" height="18" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M22 13l8-4v14l-8-4V13z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+      </div>
+      <div class="cat-card-num">08</div>
+      <h3 class="cat-card-title">100+ Freelance Video Projects</h3>
+      <p class="cat-card-desc">Delivered over 100 video editing projects for international clients on Fiverr and Upwork across promotional, corporate and social formats.</p>
+      <div class="cat-card-tags"><span class="tag">Premiere Pro</span><span class="tag">Media Encoder</span><span class="tag">Fiverr</span></div>
+      <a href="#contact" class="cat-card-link">Request Showreel →</a>
+      <div class="cat-card-badge">Video Edit</div>
+    </div>
+
+    <!-- ANIMATION -->
+    <div class="cat-card reveal" data-cat="animation">
+      <div class="cat-card-icon">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="12" stroke="currentColor" stroke-width="1.5"/><path d="M16 8v8l5 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="16" cy="16" r="2" fill="currentColor"/></svg>
+      </div>
+      <div class="cat-card-num">09</div>
+      <h3 class="cat-card-title">Kahua Constructions 2D Ad</h3>
+      <p class="cat-card-desc">2D animated promotional video for Kahua Constructions featuring custom character animation and brand storytelling.</p>
+      <div class="cat-card-tags"><span class="tag">After Effects</span><span class="tag">Character Animator</span><span class="tag">Illustrator</span></div>
+      <a href="#" class="cat-card-link">View Project →</a>
+      <div class="cat-card-badge">Animation</div>
+    </div>
+
+    <div class="cat-card reveal reveal-delay-1" data-cat="animation">
+      <div class="cat-card-icon">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="12" stroke="currentColor" stroke-width="1.5"/><path d="M16 8v8l5 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="16" cy="16" r="2" fill="currentColor"/></svg>
+      </div>
+      <div class="cat-card-num">10</div>
+      <h3 class="cat-card-title">Board Studios × Groundswell</h3>
+      <p class="cat-card-desc">Animated brand advertisements for Board Studios and Groundswell with detailed character animation and motion design.</p>
+      <div class="cat-card-tags"><span class="tag">2D Animation</span><span class="tag">Motion Design</span><span class="tag">Dimension</span></div>
+      <a href="#" class="cat-card-link">View Project →</a>
+      <div class="cat-card-badge">Animation</div>
+    </div>
+
+    <div class="cat-card reveal reveal-delay-2" data-cat="animation">
+      <div class="cat-card-icon">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="12" stroke="currentColor" stroke-width="1.5"/><path d="M16 8v8l5 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="16" cy="16" r="2" fill="currentColor"/></svg>
+      </div>
+      <div class="cat-card-num">11</div>
+      <h3 class="cat-card-title">Freelance Animation Portfolio</h3>
+      <p class="cat-card-desc">100+ completed 2D animation projects for international clients worldwide. Top Rated Seller across 3 Fiverr accounts.</p>
+      <div class="cat-card-tags"><span class="tag">After Effects</span><span class="tag">Character Animator</span><span class="tag">Fiverr</span></div>
+      <a href="#contact" class="cat-card-link">Request Showreel →</a>
+      <div class="cat-card-badge">Animation</div>
+    </div>
+
   </div>
 </section>
 
