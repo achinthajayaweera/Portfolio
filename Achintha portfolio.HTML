@@ -88,7 +88,104 @@
   .skills-scroller::-webkit-scrollbar{display:none}
   .skill-pill{flex-shrink:0;border:1px solid var(--border-light);padding:0.6rem 1.2rem;font-size:0.8rem;color:var(--muted);letter-spacing:0.06em;transition:all 0.3s;white-space:nowrap}
   .skill-pill:hover{border-color:var(--accent);color:var(--accent)}
-  .skills-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1px;background:var(--border);border:1px solid var(--border);margin-top:3rem}
+  /* ══ CATEGORY CARDS ══ */
+  .cat-tabs{display:none} /* hide the old filter tabs */
+  .cat-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:1.5rem;
+    margin-top:3rem;
+  }
+  .cat-card{
+    background:var(--bg2);
+    border:1px solid var(--border);
+    padding:2.5rem 2rem;
+    position:relative;
+    overflow:hidden;
+    transition:all 0.4s cubic-bezier(0.16,1,0.3,1);
+    cursor:none;
+    display:flex;
+    flex-direction:column;
+    gap:1.2rem;
+  }
+  .cat-card::before{
+    content:'';
+    position:absolute;
+    bottom:0;left:0;right:0;
+    height:2px;
+    background:var(--accent);
+    transform:scaleX(0);
+    transform-origin:left;
+    transition:transform 0.4s cubic-bezier(0.16,1,0.3,1);
+  }
+  .cat-card:hover{border-color:var(--border-light);transform:translateY(-6px);}
+  .cat-card:hover::before{transform:scaleX(1);}
+  .cat-card-icon{
+    width:52px;height:52px;
+    border:1px solid var(--border-light);
+    border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    color:var(--accent);
+    flex-shrink:0;
+    transition:background 0.3s;
+  }
+  .cat-card:hover .cat-card-icon{background:rgba(200,245,66,0.08);}
+  .cat-card-icon svg{width:24px;height:24px;}
+  .cat-card-title{
+    font-family:'Bebas Neue',sans-serif;
+    font-size:1.8rem;
+    letter-spacing:0.02em;
+    color:var(--text);
+    line-height:1;
+  }
+  .cat-card-count{
+    font-family:'DM Mono',monospace;
+    font-size:0.7rem;
+    color:var(--accent);
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+  }
+  .cat-card-desc{
+    font-size:0.85rem;
+    color:var(--muted);
+    line-height:1.7;
+    font-weight:300;
+    flex:1;
+  }
+  .cat-card-tools{
+    display:flex;flex-wrap:wrap;gap:0.4rem;
+    margin-top:auto;
+  }
+  .cat-card-tools span{
+    font-size:0.65rem;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    border:1px solid var(--border);
+    padding:0.25rem 0.6rem;
+    color:var(--muted);
+  }
+  .cat-card-arrow{
+    display:inline-flex;align-items:center;gap:0.4rem;
+    font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;
+    color:var(--accent);text-decoration:none;
+    margin-top:0.5rem;
+    opacity:0;
+    transition:opacity 0.3s;
+  }
+  .cat-card:hover .cat-card-arrow{opacity:1;}
+  /* Large number watermark */
+  .cat-card-bg-num{
+    position:absolute;
+    right:-0.5rem;top:-1rem;
+    font-family:'Bebas Neue',sans-serif;
+    font-size:8rem;
+    color:rgba(240,237,230,0.03);
+    line-height:1;
+    pointer-events:none;
+    user-select:none;
+  }
+  @media(max-width:1024px){.cat-grid{grid-template-columns:repeat(2,1fr);}}
+  @media(max-width:600px){.cat-grid{grid-template-columns:1fr;}}
   .skill-card{background:var(--bg2);padding:2rem 1.8rem;transition:background 0.3s;position:relative;overflow:hidden}
   .skill-card::before{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:var(--accent);transform:scaleX(0);transform-origin:left;transition:transform 0.4s cubic-bezier(0.16,1,0.3,1)}
   .skill-card:hover::before{transform:scaleX(1)}
@@ -327,20 +424,117 @@
 </section>
 
 <section id="projects">
-  <div class="section-label reveal">Selected Builds</div>
+  <div class="section-label reveal">What I Build</div>
 
-  <!-- Category filter tabs -->
-  <div class="cat-tabs reveal">
-    <button class="cat-tab active" onclick="filterCat(this,'all')">All</button>
-    <button class="cat-tab" onclick="filterCat(this,'web')">Web Design</button>
-    <button class="cat-tab" onclick="filterCat(this,'app')">App Dev</button>
-    <button class="cat-tab" onclick="filterCat(this,'ui')">UI Design</button>
-    <button class="cat-tab" onclick="filterCat(this,'backend')">Backend</button>
-    <button class="cat-tab" onclick="filterCat(this,'video')">Video Edits</button>
-    <button class="cat-tab" onclick="filterCat(this,'animation')">Animation</button>
+  <div class="cat-grid">
+
+    <!-- Web Development -->
+    <div class="cat-card reveal">
+      <div class="cat-card-bg-num">01</div>
+      <div class="cat-card-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M2 7h20M8 21h8M12 17v4" stroke-linecap="round"/></svg>
+      </div>
+      <div class="cat-card-count">Web Development</div>
+      <h3 class="cat-card-title">WEB DESIGNS</h3>
+      <p class="cat-card-desc">Responsive websites and web applications built from scratch. Clean code, smooth interactions and pixel-perfect UI across all screen sizes.</p>
+      <div class="cat-card-tools">
+        <span>HTML/CSS</span><span>JavaScript</span><span>React</span><span>Figma</span>
+      </div>
+      <a href="#contact" class="cat-card-arrow">Start a project →</a>
+    </div>
+
+    <!-- Mobile App -->
+    <div class="cat-card reveal reveal-delay-1">
+      <div class="cat-card-bg-num">02</div>
+      <div class="cat-card-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="7" y="2" width="10" height="20" rx="2"/><path d="M7 6h10M7 18h10M11 20h2" stroke-linecap="round"/></svg>
+      </div>
+      <div class="cat-card-count">Mobile Development</div>
+      <h3 class="cat-card-title">MOBILE APPS</h3>
+      <p class="cat-card-desc">Cross-platform mobile applications with clean architecture, smooth performance and intuitive user experience on both iOS and Android.</p>
+      <div class="cat-card-tools">
+        <span>Flutter</span><span>Dart</span><span>SQL</span><span>Firebase</span>
+      </div>
+      <a href="#contact" class="cat-card-arrow">Start a project →</a>
+    </div>
+
+    <!-- UI/UX Design -->
+    <div class="cat-card reveal reveal-delay-2">
+      <div class="cat-card-bg-num">03</div>
+      <div class="cat-card-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M8 12h8M12 8v8" stroke-linecap="round"/><circle cx="12" cy="12" r="3"/></svg>
+      </div>
+      <div class="cat-card-count">Design</div>
+      <h3 class="cat-card-title">UI/UX DESIGNS</h3>
+      <p class="cat-card-desc">User interface and experience design that balances aesthetics with usability. Full design systems, brand identities and interactive prototypes.</p>
+      <div class="cat-card-tools">
+        <span>Figma</span><span>Illustrator</span><span>Branding</span><span>Prototyping</span>
+      </div>
+      <a href="#contact" class="cat-card-arrow">Start a project →</a>
+    </div>
+
+    <!-- Backend -->
+    <div class="cat-card reveal">
+      <div class="cat-card-bg-num">04</div>
+      <div class="cat-card-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="5" width="20" height="5" rx="1"/><rect x="2" y="14" width="20" height="5" rx="1"/><circle cx="6" cy="7.5" r="1" fill="currentColor" stroke="none"/><circle cx="6" cy="16.5" r="1" fill="currentColor" stroke="none"/></svg>
+      </div>
+      <div class="cat-card-count">Engineering</div>
+      <h3 class="cat-card-title">BACKEND PROJECTS</h3>
+      <p class="cat-card-desc">Server-side logic, database architecture and API development. Scalable systems built with clean code principles and proper data management.</p>
+      <div class="cat-card-tools">
+        <span>Python</span><span>Java</span><span>SQL</span><span>REST API</span>
+      </div>
+      <a href="#contact" class="cat-card-arrow">Start a project →</a>
+    </div>
+
+    <!-- Video Edits -->
+    <div class="cat-card reveal reveal-delay-1">
+      <div class="cat-card-bg-num">05</div>
+      <div class="cat-card-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="6" width="14" height="12" rx="2"/><path d="M16 10l6-3v10l-6-3V10z" stroke-linejoin="round"/></svg>
+      </div>
+      <div class="cat-card-count">Post Production</div>
+      <h3 class="cat-card-title">VIDEO EDITS</h3>
+      <p class="cat-card-desc">Professional video editing for promotional, corporate and social content. 100+ delivered projects for international clients with fast turnaround.</p>
+      <div class="cat-card-tools">
+        <span>Premiere Pro</span><span>After Effects</span><span>Media Encoder</span>
+      </div>
+      <a href="#contact" class="cat-card-arrow">Start a project →</a>
+    </div>
+
+    <!-- 2D Animation -->
+    <div class="cat-card reveal reveal-delay-2">
+      <div class="cat-card-bg-num">06</div>
+      <div class="cat-card-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/><path d="M10 8l6 4-6 4V8z" stroke-linejoin="round" fill="currentColor" stroke="none"/></svg>
+      </div>
+      <div class="cat-card-count">Motion & Animation</div>
+      <h3 class="cat-card-title">2D ANIMATIONS</h3>
+      <p class="cat-card-desc">Character animation, motion graphics and animated advertisements. Top Rated Fiverr seller with 100+ completed animation projects for global brands.</p>
+      <div class="cat-card-tools">
+        <span>After Effects</span><span>Character Animator</span><span>Illustrator</span><span>Dimension</span>
+      </div>
+      <a href="#contact" class="cat-card-arrow">Start a project →</a>
+    </div>
+
+    <!-- Graphics -->
+    <div class="cat-card reveal">
+      <div class="cat-card-bg-num">07</div>
+      <div class="cat-card-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke-linejoin="round"/></svg>
+      </div>
+      <div class="cat-card-count">Visual Design</div>
+      <h3 class="cat-card-title">GRAPHICS</h3>
+      <p class="cat-card-desc">Logos, posters, social media assets and print-ready graphic design. Creative visuals that communicate brand identity clearly and memorably.</p>
+      <div class="cat-card-tools">
+        <span>Illustrator</span><span>Photoshop</span><span>Dimension</span><span>InDesign</span>
+      </div>
+      <a href="#contact" class="cat-card-arrow">Start a project →</a>
+    </div>
+
   </div>
-
-  <div class="cat-grid" id="catGrid">
+</section>
 
     <!-- WEB DESIGN -->
     <div class="cat-card reveal" data-cat="web">
