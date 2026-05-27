@@ -173,6 +173,120 @@
   @media(max-width:1024px){:root{--pad:2rem}.about-grid{grid-template-columns:1fr;gap:3rem}.exp-item{grid-template-columns:130px 1fr;gap:2rem}.nav-links{gap:1.5rem}}
   @media(max-width:768px){:root{--pad:1.5rem}.nav-links,.nav-cta{display:none}.nav-hamburger{display:flex}.hero{padding:0 var(--pad) 3rem}.hero-orb{width:300px;height:300px}.hero-bottom{flex-direction:column;align-items:flex-start;gap:1.5rem}.hero-scroll{display:none}.about-grid{grid-template-columns:1fr;gap:2.5rem}.exp-item{grid-template-columns:1fr;gap:0.5rem}.exp-item::before{display:none}.exp-left{padding-top:0}.contact-links{flex-direction:column;align-items:center}.contact-btn{width:100%;max-width:360px;justify-content:center;font-size:0.72rem;padding:0.9rem 1rem;word-break:break-all}footer{flex-direction:column;text-align:center;gap:0.5rem}.scratch-section iframe{height:380px !important}}
   @media(max-width:480px){:root{--pad:1.2rem}.hero-name{font-size:clamp(2.8rem,14vw,5rem)}.about-stats{grid-template-columns:1fr 1fr}.stat-num{font-size:2.2rem}.edu-item{flex-direction:column;gap:0.5rem}.edu-year{align-self:flex-start}section{padding:5rem var(--pad)}.contact-section{padding:6rem var(--pad)}.scratch-section iframe{height:300px !important}.nav-mobile a{font-size:2.2rem}}
+
+  /* ══ ANIMATED CATEGORY CARDS ══ */
+  .cat-card-bg-num{
+    position:absolute;right:-0.5rem;top:-1rem;
+    font-family:'Bebas Neue',sans-serif;
+    font-size:8rem;
+    color:rgba(200,200,200,0.12);
+    line-height:1;pointer-events:none;user-select:none;
+    transition:color 0.4s ease;
+    letter-spacing:-0.02em;
+  }
+  .cat-card:hover .cat-card-bg-num{
+    color:rgba(200,245,66,0.18);
+  }
+
+  /* Animated SVG icon wrapper */
+  .cat-card-icon{
+    width:52px;height:52px;
+    border:1px solid var(--border-light);
+    border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    color:var(--accent);
+    flex-shrink:0;
+    transition:background 0.35s ease, border-color 0.35s ease, transform 0.35s cubic-bezier(0.16,1,0.3,1);
+    overflow:hidden;
+    position:relative;
+  }
+  .cat-card:hover .cat-card-icon{
+    background:rgba(200,245,66,0.1);
+    border-color:rgba(200,245,66,0.4);
+    transform:scale(1.08) rotate(-4deg);
+  }
+
+  /* Number turns green on hover */
+  .cat-card-count{
+    font-family:'DM Mono',monospace;
+    font-size:0.7rem;
+    color:var(--muted);
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    transition:color 0.35s ease;
+  }
+  .cat-card:hover .cat-card-count{color:var(--accent);}
+
+  /* ── Scene containers inside icons ── */
+  .icon-scene{
+    position:absolute;inset:0;
+    display:flex;align-items:center;justify-content:center;
+    overflow:hidden;
+  }
+
+  /* WEB — browser window with scanning line */
+  .web-screen{width:32px;height:22px;border:1.5px solid currentColor;border-radius:2px;position:relative;opacity:0.8;}
+  .web-screen::before{content:'';position:absolute;top:-6px;left:2px;right:2px;height:4px;background:currentColor;border-radius:1px 1px 0 0;opacity:0.5;}
+  .web-scan{position:absolute;left:0;right:0;height:1.5px;background:currentColor;top:20%;animation:webScan 2.2s ease-in-out infinite;opacity:0;}
+  .cat-card:hover .web-scan{opacity:0.8;}
+  @keyframes webScan{0%{top:10%;opacity:0;}10%{opacity:1;}90%{opacity:1;}100%{top:85%;opacity:0;}}
+  .web-dots{position:absolute;top:-5px;left:4px;display:flex;gap:2px;}
+  .web-dots span{width:2.5px;height:2.5px;border-radius:50%;background:currentColor;opacity:0.5;}
+
+  /* MOBILE — phone with pulse */
+  .mob-frame{width:18px;height:28px;border:1.5px solid currentColor;border-radius:3px;position:relative;opacity:0.8;}
+  .mob-frame::after{content:'';position:absolute;bottom:2px;left:50%;transform:translateX(-50%);width:6px;height:1.5px;background:currentColor;border-radius:1px;opacity:0.5;}
+  .mob-pulse{position:absolute;width:8px;height:8px;border:1px solid currentColor;border-radius:50%;top:50%;left:50%;transform:translate(-50%,-50%) scale(0);animation:mobPulse 2s ease-out infinite;opacity:0;}
+  .cat-card:hover .mob-pulse{opacity:0.6;}
+  @keyframes mobPulse{0%{transform:translate(-50%,-50%) scale(0.2);opacity:0.8;}100%{transform:translate(-50%,-50%) scale(2.5);opacity:0;}}
+
+  /* UI/UX — cursor with click ripple */
+  .ui-cursor{width:0;height:0;border-left:7px solid currentColor;border-top:5px solid transparent;border-bottom:5px solid transparent;opacity:0.8;position:relative;margin-right:4px;}
+  .ui-click{position:absolute;width:12px;height:12px;border:1px solid currentColor;border-radius:50%;top:-6px;left:2px;transform:scale(0);animation:uiClick 1.8s ease-out infinite;opacity:0;}
+  .cat-card:hover .ui-click{opacity:0.7;}
+  @keyframes uiClick{0%{transform:scale(0.1);opacity:0.9;}100%{transform:scale(2);opacity:0;}}
+  .ui-row{display:flex;flex-direction:column;gap:2.5px;position:absolute;right:4px;top:50%;transform:translateY(-50%);}
+  .ui-row span{height:1.5px;background:currentColor;border-radius:1px;opacity:0.4;}
+  .ui-row span:nth-child(1){width:10px;}
+  .ui-row span:nth-child(2){width:7px;}
+  .ui-row span:nth-child(3){width:9px;}
+
+  /* BACKEND — server rack with blinking light */
+  .be-rack{display:flex;flex-direction:column;gap:2px;opacity:0.8;}
+  .be-row{width:24px;height:5px;border:1px solid currentColor;border-radius:1px;position:relative;display:flex;align-items:center;padding:0 2px;}
+  .be-row span{width:2.5px;height:2.5px;border-radius:50%;background:currentColor;opacity:0.4;transition:opacity 0.3s;}
+  .cat-card:hover .be-row:nth-child(1) span{animation:beLed 1.2s ease-in-out infinite;}
+  .cat-card:hover .be-row:nth-child(2) span{animation:beLed 1.2s ease-in-out infinite 0.4s;}
+  .cat-card:hover .be-row:nth-child(3) span{animation:beLed 1.2s ease-in-out infinite 0.8s;}
+  @keyframes beLed{0%,100%{opacity:0.2;background:currentColor;}50%{opacity:1;background:#c8f542;box-shadow:0 0 4px #c8f542;}}
+
+  /* VIDEO — film reel with rotating frames */
+  .vid-reel{width:28px;height:20px;border:1.5px solid currentColor;border-radius:2px;position:relative;opacity:0.8;overflow:hidden;}
+  .vid-play{position:absolute;top:50%;left:52%;transform:translate(-50%,-50%);width:0;height:0;border-top:5px solid transparent;border-bottom:5px solid transparent;border-left:7px solid currentColor;opacity:0.7;}
+  .vid-tape{position:absolute;top:0;left:0;right:0;bottom:0;background:repeating-linear-gradient(90deg,transparent,transparent 4px,rgba(200,245,66,0.08) 4px,rgba(200,245,66,0.08) 5px);transform:translateX(-100%);animation:none;}
+  .cat-card:hover .vid-tape{animation:vidTape 0.8s linear infinite;}
+  @keyframes vidTape{from{transform:translateX(-100%);}to{transform:translateX(0);}}
+  .vid-rec{position:absolute;top:3px;right:3px;width:4px;height:4px;border-radius:50%;background:currentColor;opacity:0;}
+  .cat-card:hover .vid-rec{animation:vidRec 1s ease-in-out infinite;}
+  @keyframes vidRec{0%,100%{opacity:0.2;}50%{opacity:1;background:#ff4444;box-shadow:0 0 4px #ff4444;}}
+
+  /* 2D ANIMATION — keyframe timeline */
+  .anim-timeline{display:flex;flex-direction:column;gap:3px;width:28px;opacity:0.8;}
+  .anim-track{width:100%;height:3px;background:rgba(200,245,66,0.15);border-radius:1px;position:relative;overflow:hidden;}
+  .anim-head{position:absolute;top:0;bottom:0;width:6px;background:currentColor;border-radius:1px;left:0;animation:none;}
+  .cat-card:hover .anim-track:nth-child(1) .anim-head{animation:animScrub 1.4s ease-in-out infinite;}
+  .cat-card:hover .anim-track:nth-child(2) .anim-head{animation:animScrub 1.4s ease-in-out infinite 0.3s;}
+  .cat-card:hover .anim-track:nth-child(3) .anim-head{animation:animScrub 1.4s ease-in-out infinite 0.6s;}
+  @keyframes animScrub{0%{left:0;}100%{left:calc(100% - 6px);}}
+  .anim-key{position:absolute;top:-1px;width:5px;height:5px;background:currentColor;transform:rotate(45deg);right:25%;opacity:0.6;}
+
+  /* GRAPHICS — rotating star/shape */
+  .gfx-star{width:24px;height:24px;position:relative;opacity:0.8;}
+  .gfx-star svg{position:absolute;inset:0;transition:transform 0.4s ease;}
+  .cat-card:hover .gfx-star svg:first-child{animation:gfxSpin 3s linear infinite;}
+  .cat-card:hover .gfx-star svg:last-child{animation:gfxSpinR 2s linear infinite;}
+  @keyframes gfxSpin{from{transform:rotate(0deg);}to{transform:rotate(360deg);}}
+  @keyframes gfxSpinR{from{transform:rotate(0deg);}to{transform:rotate(-360deg);}}
 </style>
 </head>
 <body>
@@ -292,70 +406,136 @@
   <div class="section-label reveal">What I Build</div>
   <div class="cat-grid">
 
+    <!-- 01 WEB DESIGNS -->
     <div class="cat-card reveal">
       <div class="cat-card-bg-num">01</div>
-      <div class="cat-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M2 7h20M8 21h8M12 17v4" stroke-linecap="round"/></svg></div>
-      <div class="cat-card-count">Web Development</div>
+      <div class="cat-card-icon">
+        <div class="icon-scene">
+          <div class="web-screen">
+            <div class="web-dots"><span></span><span></span><span></span></div>
+            <div class="web-scan"></div>
+          </div>
+        </div>
+      </div>
+      <div class="cat-card-count">01 &nbsp;·&nbsp; Web Development</div>
       <h3 class="cat-card-title">WEB DESIGNS</h3>
       <p class="cat-card-desc">Responsive websites and web applications built from scratch. Clean code, smooth interactions and pixel-perfect UI across all screen sizes.</p>
       <div class="cat-card-tools"><span>HTML/CSS</span><span>JavaScript</span><span>React</span><span>Figma</span></div>
       <a href="#contact" class="cat-card-arrow">Start a project →</a>
     </div>
 
+    <!-- 02 MOBILE APPS -->
     <div class="cat-card reveal reveal-delay-1">
       <div class="cat-card-bg-num">02</div>
-      <div class="cat-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="7" y="2" width="10" height="20" rx="2"/><path d="M7 6h10M7 18h10M11 20h2" stroke-linecap="round"/></svg></div>
-      <div class="cat-card-count">Mobile Development</div>
+      <div class="cat-card-icon">
+        <div class="icon-scene">
+          <div style="position:relative;">
+            <div class="mob-frame"></div>
+            <div class="mob-pulse"></div>
+          </div>
+        </div>
+      </div>
+      <div class="cat-card-count">02 &nbsp;·&nbsp; Mobile Development</div>
       <h3 class="cat-card-title">MOBILE APPS</h3>
       <p class="cat-card-desc">Cross-platform mobile applications with clean architecture, smooth performance and intuitive user experience on both iOS and Android.</p>
       <div class="cat-card-tools"><span>Flutter</span><span>Dart</span><span>SQL</span><span>Firebase</span></div>
       <a href="#contact" class="cat-card-arrow">Start a project →</a>
     </div>
 
+    <!-- 03 UI/UX DESIGNS -->
     <div class="cat-card reveal reveal-delay-2">
       <div class="cat-card-bg-num">03</div>
-      <div class="cat-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M8 12h8M12 8v8" stroke-linecap="round"/><circle cx="12" cy="12" r="3"/></svg></div>
-      <div class="cat-card-count">Design</div>
+      <div class="cat-card-icon">
+        <div class="icon-scene" style="position:relative;">
+          <div class="ui-cursor"></div>
+          <div class="ui-click"></div>
+          <div class="ui-row">
+            <span></span><span></span><span></span>
+          </div>
+        </div>
+      </div>
+      <div class="cat-card-count">03 &nbsp;·&nbsp; Design</div>
       <h3 class="cat-card-title">UI/UX DESIGNS</h3>
       <p class="cat-card-desc">User interface and experience design that balances aesthetics with usability. Full design systems, brand identities and interactive prototypes.</p>
       <div class="cat-card-tools"><span>Figma</span><span>Illustrator</span><span>Branding</span><span>Prototyping</span></div>
       <a href="#contact" class="cat-card-arrow">Start a project →</a>
     </div>
 
+    <!-- 04 BACKEND -->
     <div class="cat-card reveal">
       <div class="cat-card-bg-num">04</div>
-      <div class="cat-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="5" width="20" height="5" rx="1"/><rect x="2" y="14" width="20" height="5" rx="1"/><circle cx="6" cy="7.5" r="1" fill="currentColor" stroke="none"/><circle cx="6" cy="16.5" r="1" fill="currentColor" stroke="none"/></svg></div>
-      <div class="cat-card-count">Engineering</div>
+      <div class="cat-card-icon">
+        <div class="icon-scene">
+          <div class="be-rack">
+            <div class="be-row"><span></span></div>
+            <div class="be-row"><span></span></div>
+            <div class="be-row"><span></span></div>
+          </div>
+        </div>
+      </div>
+      <div class="cat-card-count">04 &nbsp;·&nbsp; Engineering</div>
       <h3 class="cat-card-title">BACKEND PROJECTS</h3>
       <p class="cat-card-desc">Server-side logic, database architecture and API development. Scalable systems built with clean code principles and proper data management.</p>
       <div class="cat-card-tools"><span>Python</span><span>Java</span><span>SQL</span><span>REST API</span></div>
       <a href="#contact" class="cat-card-arrow">Start a project →</a>
     </div>
 
+    <!-- 05 VIDEO EDITS -->
     <div class="cat-card reveal reveal-delay-1">
       <div class="cat-card-bg-num">05</div>
-      <div class="cat-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="6" width="14" height="12" rx="2"/><path d="M16 10l6-3v10l-6-3V10z" stroke-linejoin="round"/></svg></div>
-      <div class="cat-card-count">Post Production</div>
+      <div class="cat-card-icon">
+        <div class="icon-scene">
+          <div style="position:relative;">
+            <div class="vid-reel">
+              <div class="vid-tape"></div>
+              <div class="vid-play"></div>
+              <div class="vid-rec"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="cat-card-count">05 &nbsp;·&nbsp; Post Production</div>
       <h3 class="cat-card-title">VIDEO EDITS</h3>
       <p class="cat-card-desc">Professional video editing for promotional, corporate and social content. 100+ delivered projects for international clients with fast turnaround.</p>
       <div class="cat-card-tools"><span>Premiere Pro</span><span>After Effects</span><span>Media Encoder</span></div>
       <a href="#contact" class="cat-card-arrow">Start a project →</a>
     </div>
 
+    <!-- 06 2D ANIMATIONS -->
     <div class="cat-card reveal reveal-delay-2">
       <div class="cat-card-bg-num">06</div>
-      <div class="cat-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/><path d="M10 8l6 4-6 4V8z" stroke-linejoin="round" fill="currentColor" stroke="none"/></svg></div>
-      <div class="cat-card-count">Motion &amp; Animation</div>
+      <div class="cat-card-icon">
+        <div class="icon-scene">
+          <div class="anim-timeline">
+            <div class="anim-track"><div class="anim-head"></div><div class="anim-key"></div></div>
+            <div class="anim-track"><div class="anim-head"></div></div>
+            <div class="anim-track"><div class="anim-head"></div><div class="anim-key" style="right:55%;"></div></div>
+          </div>
+        </div>
+      </div>
+      <div class="cat-card-count">06 &nbsp;·&nbsp; Motion &amp; Animation</div>
       <h3 class="cat-card-title">2D ANIMATIONS</h3>
       <p class="cat-card-desc">Character animation, motion graphics and animated advertisements. Top Rated Fiverr seller with 100+ completed animation projects for global brands.</p>
       <div class="cat-card-tools"><span>After Effects</span><span>Character Animator</span><span>Illustrator</span><span>Dimension</span></div>
       <a href="#contact" class="cat-card-arrow">Start a project →</a>
     </div>
 
+    <!-- 07 GRAPHICS -->
     <div class="cat-card reveal">
       <div class="cat-card-bg-num">07</div>
-      <div class="cat-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke-linejoin="round"/></svg></div>
-      <div class="cat-card-count">Visual Design</div>
+      <div class="cat-card-icon">
+        <div class="icon-scene">
+          <div class="gfx-star">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="width:24px;height:24px;">
+              <path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6L12 2z"/>
+            </svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" style="width:24px;height:24px;opacity:0.4;">
+              <rect x="6" y="6" width="12" height="12" rx="1"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+      <div class="cat-card-count">07 &nbsp;·&nbsp; Visual Design</div>
       <h3 class="cat-card-title">GRAPHICS</h3>
       <p class="cat-card-desc">Logos, posters, social media assets and print-ready graphic design. Creative visuals that communicate brand identity clearly and memorably.</p>
       <div class="cat-card-tools"><span>Illustrator</span><span>Photoshop</span><span>Dimension</span><span>InDesign</span></div>
