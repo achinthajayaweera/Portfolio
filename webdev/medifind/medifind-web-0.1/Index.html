@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medifine - Intelligent Prescription Management</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Custom Cursor -->
+    <div class="custom-cursor"></div>
+    <div class="custom-cursor-dot"></div>
+
+    <!-- SVG Filter for Liquid Glass Effect -->
+    <svg style="position: absolute; width: 0; height: 0;">
+        <defs>
+            <filter id="liquid-glass">
+                <feTurbulence type="fractalNoise" baseFrequency="0.01" numOctaves="3" result="noise"/>
+                <feGaussianBlur in="noise" stdDeviation="10" result="blur"/>
+                <feDisplacementMap in="SourceGraphic" in2="blur" scale="30" xChannelSelector="R" yChannelSelector="G"/>
+            </filter>
+        </defs>
+    </svg>
+
+    <!-- Header -->
+    <header>
+        <nav class="navbar">
+            <div class="container">
+                <div class="logo-container">
+                    <img src="Asset  images\Medifing logo.png" alt="MediFind Logo" class="logo-image">
+                    <div class="logo">MediFind</div>
+                </div>
+                <ul class="nav-menu">
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#team">Team</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                    <li>
+                        <a href="#download" class="btn-download-nav">
+                            <span class="glass-wrapper">
+                                <span class="glass-blur"></span>
+                                <span class="glass-content">📱 Download the App</span>
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero finisher-header">
+        <!-- Animated Particles Canvas -->
+        <canvas id="particles-canvas"></canvas>
+        
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <h1>MediFind Tracker</h1>
+                    <h2 class="counter-number" id="deliveryCounter">0</h2>
+                    <p>Total Orders Delivered Till Today</p>
+                    <div class="stats">
+                        <div class="stat-item">
+                            <span class="stat-number">12458</span>
+                            <span class="stat-label">Successful Deliveries</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">3247</span>
+                            <span class="stat-label">Active Orders</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">156</span>
+                            <span class="stat-label">Partner Pharmacies</span>
+                        </div>
+                    </div>
+                    <a href="#download" class="btn-primary">
+                        <span class="glass-wrapper">
+                            <span class="glass-blur"></span>
+                            <span class="glass-content">📱 Download the App</span>
+                        </span>
+                    </a>
+                </div>
+                <div class="hero-image">
+                    <div class="spinning-globe-container">
+                        <img src="Asset  images\Virus globe.png" alt="MediFind Globe" class="spinning-globe" id="spinningGlobe">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about">
+        <div class="container">
+            <h2 class="section-title">About MediFind</h2>
+            <p class="section-subtitle">Your Intelligent Prescription Management System</p>
+            <div class="about-content">
+                <div class="about-image">
+                    <div class="circular-image">
+                        <img src="Asset  images\man in about.png" alt="About MediFind">
+                    </div>
+                </div>
+                <div class="about-text">
+                    <p>MediFind is an intelligent prescription management system designed to make getting medicines in Sri Lanka faster, safer, and more convenient. Our app revolutionizes the way you order and receive your medications.</p>
+                    <div class="features">
+                        <div class="feature-item">
+                            <div class="feature-icon">📸</div>
+                            <div class="feature-text">
+                                <h4>AI-Powered Prescription Reading</h4>
+                                <p>Upload a photo of your prescription and our AI reads medicines and verifies doctor signatures, seals, or RTP codes</p>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon">💊</div>
+                            <div class="feature-text">
+                                <h4>Smart Pharmacy Search</h4>
+                                <p>Automatically searches nearby pharmacies, compares prices, and checks medicine availability in real-time</p>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon">🚗</div>
+                            <div class="feature-text">
+                                <h4>Fast Delivery Partners</h4>
+                                <p>Get your medicines delivered through trusted partners like Uber and PickMe</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Benefits Section -->
+    <section id="benefits" class="benefits">
+        <div class="container">
+            <h2 class="section-title">Benefits of MediFind</h2>
+            <p class="section-subtitle">Why Choose Our Platform</p>
+            <div class="benefits-grid">
+                <div class="benefit-card">
+                    <div class="benefit-icon">⚡</div>
+                    <h3>Quick Orders</h3>
+                    <p>Place orders in seconds with our streamlined prescription upload process</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">💰</div>
+                    <h3>Best Prices</h3>
+                    <p>Compare prices across multiple pharmacies to get the best deals</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">✅</div>
+                    <h3>Verified Pharmacies</h3>
+                    <p>All partner pharmacies are licensed and verified for your safety</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">🔒</div>
+                    <h3>Secure Transactions</h3>
+                    <p>Your prescription data and payments are encrypted and protected</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">📱</div>
+                    <h3>Easy Tracking</h3>
+                    <p>Track your order in real-time from pharmacy to your doorstep</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">⏰</div>
+                    <h3>24/7 Availability</h3>
+                    <p>Order medicines anytime, anywhere with round-the-clock service</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Scope Section -->
+    <section id="scope" class="scope">
+        <div class="container">
+            <h2 class="section-title">MediFind Scope</h2>
+            <p class="section-subtitle">Our Platform Coverage and Features</p>
+            <div class="scope-content">
+                <div class="scope-text">
+                    <p>MediFind operates across Sri Lanka, connecting patients with pharmacies and delivery partners. Our intelligent system ensures that you get your medicines quickly, safely, and at the best prices available in your area.</p>
+                    <div class="scope-list">
+                        <div class="scope-item">
+                            <div class="scope-icon">🏥</div>
+                            <div class="scope-text-content">
+                                <h4>Nationwide Pharmacy Network</h4>
+                                <p>Access to 150+ verified pharmacies across all major cities in Sri Lanka</p>
+                            </div>
+                        </div>
+                        <div class="scope-item">
+                            <div class="scope-icon">🤖</div>
+                            <div class="scope-text-content">
+                                <h4>AI Prescription Analysis</h4>
+                                <p>Advanced OCR and signature verification technology for accurate prescription reading</p>
+                            </div>
+                        </div>
+                        <div class="scope-item">
+                            <div class="scope-icon">🌐</div>
+                            <div class="scope-text-content">
+                                <h4>Multi-Platform Support</h4>
+                                <p>Available on iOS, Android, and web platforms for maximum accessibility</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="scope-image">
+                    <div class="circular-image">
+                        <img src="Asset  images\sick girl.png" alt="MediFind Scope">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Team Section -->
+    <section id="team" class="team">
+        <div class="container">
+            <h2 class="section-title">Our Team</h2>
+            <p class="section-subtitle">Group G02-SE19</p>
+            <div class="team-grid">
+                <div class="team-card">
+                    <div class="team-image">
+                        <img src="Asset  images\Achintha Jayaweera-Team member 01.JPG" alt="Team Member 1">
+                    </div>
+                    <h3>Achintha Jayaweera</h3>
+                    <h4>W2149645 / 20233037</h4>
+                    <p class="role">Full Stack Developer</p>
+                    <p class="description">Leading the development of core features and backend architecture</p>
+                </div>
+                <div class="team-card">
+                    <div class="team-image">
+                        <img src="Asset  images\Buddhima.jpg" alt="Team Member 2">
+                    </div>
+                    <h3>Buddhima Samaraweera</h3>
+                    <h4>w2149643 / 20233053</h4>
+                    <p class="role">AI/ML Engineer</p>
+                    <p class="description">Developing prescription reading and verification algorithms</p>
+                </div>
+                <div class="team-card">
+                    <div class="team-image">
+                        <img src="Asset  images\Thisanda Perera - Team member 03.PNG" alt="Team Member 3">
+                    </div>
+                    <h3>Thisanda Perera</h3>
+                    <h4>w2149647 / 20233054</h4>
+                    <p class="role">UI/UX Designer</p>
+                    <p class="description">Designing intuitive and beautiful user interfaces</p>
+                </div>
+                <div class="team-card">
+                    <div class="team-image">
+                        <img src="Asset  images\Adithya - Team member 04.PNG" alt="Team Member 4">
+                    </div>
+                    <h3>A.A. D. Adithya</h3>
+                    <h4>w2149660 / 20232340</h4>
+                    <p class="role">Mobile Developer</p>
+                    <p class="description">Creating seamless mobile experiences for iOS and Android</p>
+                </div>
+                <div class="team-card">
+                    <div class="team-image">
+                        <img src="Asset  images\Senuth.jpg" alt="Team Member 5">
+                    </div>
+                    <h3>Senuth Randiya </h3>
+                    <h4>w2149657 / 20233037</h4>
+                    <p class="role">Business Analyst</p>
+                    <p class="description">Managing partnerships and business development</p>
+                </div>
+                <div class="team-card">
+                    <div class="team-image">
+                        <img src="Asset  images\Nisal Perera - Team member 06.jpg" alt="Team Member 6">
+                    </div>
+                    <h3>Nisal Perera</h3>
+                    <h4>w2149588 / 20232064</h4>
+                    <p class="role">QA Engineer</p>
+                    <p class="description">Ensuring quality and reliability across all platforms</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Download Section -->
+    <section id="download" class="download">
+        <div class="container">
+            <div class="download-content">
+                <div class="download-image">
+                    <div class="circular-image">
+                        <img src="Asset  images\Download the app figure.png" alt="Download MediFind">
+                    </div>
+                </div>
+                <div class="download-text">
+                    <h2>Download the App</h2>
+                    <p>Get MediFind on your mobile device and start ordering your medicines with ease. Available on iOS and Android platforms.</p>
+                    <button class="btn-download-large" id="downloadAppBtn">
+                        <span class="glass-wrapper">
+                            <span class="glass-blur"></span>
+                            <span class="glass-content">📱 Download the App</span>
+                        </span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
+        <div class="container">
+            <h2 class="section-title">Contact Us</h2>
+            <p class="section-subtitle">Let's Create Together</p>
+            <div class="contact-content">
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <div class="contact-icon">✉️</div>
+                        <span>medifind.g02@gmail.com</span>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">📞</div>
+                        <span>+94 (77) 123-4567</span>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">💼</div>
+                        <span>Available for new projects</span>
+                    </div>
+                </div>
+                <div class="contact-form">
+                    <form>
+                        <input type="text" placeholder="Your Name" required>
+                        <input type="email" placeholder="Your Email" required>
+                        <input type="text" placeholder="Project Budget">
+                        <textarea placeholder="Tell us about your project" rows="5" required></textarea>
+                        <button type="submit" class="btn-submit">Send Message</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 All Rights Reserved. Designed by Group G02-SE19</p>
+        </div>
+    </footer>
+
+    <!-- 404 Modal -->
+    <div id="modal404" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <img src="Asset  images\404.png" class="modal-404-image">
+            <h2>App Not Available Yet</h2>
+            <p>We are planning to develop the app in Semester 2. Stay tuned!</p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

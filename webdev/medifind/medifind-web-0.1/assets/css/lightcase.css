@@ -1,0 +1,138 @@
+/* Lightcase CSS - Condensed */
+@font-face {
+  font-family: 'lightcase';
+  src: url("../fonts/lightcase.eot?55356177");
+  src: url("../fonts/lightcase.eot?55356177#iefix") format("embedded-opentype"), 
+       url("../fonts/lightcase.woff?55356177") format("woff"), 
+       url("../fonts/lightcase.ttf?55356177") format("truetype"), 
+       url("../fonts/lightcase.svg?55356177#lightcase") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
+
+[class*='lightcase-icon-']:before {
+  font-family: 'lightcase', sans-serif;
+  font-style: normal;
+  font-weight: normal;
+  speak: none;
+  display: inline-block;
+  text-decoration: inherit;
+  width: 1em;
+  text-align: center;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1em;
+}
+
+.lightcase-icon-play:before { content: '\e800'; }
+.lightcase-icon-pause:before { content: '\e801'; }
+.lightcase-icon-close:before { content: '\e802'; }
+.lightcase-icon-prev:before { content: '\e803'; }
+.lightcase-icon-next:before { content: '\e804'; }
+.lightcase-icon-spin:before { content: '\e805'; }
+
+@keyframes lightcase-spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(359deg); }
+}
+
+#lightcase-case {
+  display: none;
+  position: fixed;
+  z-index: 2002;
+  top: 50%;
+  left: 50%;
+  font-family: arial, sans-serif;
+  font-size: 13px;
+  line-height: 1.5;
+  text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+@media screen and (max-width: 640px) {
+  html[data-lc-type=inline] #lightcase-case, 
+  html[data-lc-type=ajax] #lightcase-case {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    margin: 0 !important;
+    padding: 55px 0 70px;
+  }
+}
+
+@media screen and (min-width: 641px) {
+  html:not([data-lc-type=error]) #lightcase-content {
+    position: relative;
+    z-index: 1;
+    text-shadow: none;
+    background: #fff;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+    -webkit-backface-visibility: hidden;
+  }
+}
+
+#lightcase-loading,
+a[class*='lightcase-icon-'] {
+  position: fixed;
+  z-index: 9999;
+  font-size: 38px;
+  line-height: 1;
+  text-align: center;
+  text-shadow: none;
+  color: rgba(255, 255, 255, 0.6);
+  text-decoration: none;
+  transition: color, opacity, ease-in-out 0.25s;
+}
+
+#lightcase-loading {
+  animation: lightcase-spin 0.5s infinite linear;
+  top: 50%;
+  left: 50%;
+  margin: -0.5em 0 0 -0.5em;
+}
+
+a[class*='lightcase-icon-']:hover { color: white; text-shadow: 0 0 15px white; }
+.lightcase-icon-close { top: 15px; right: 15px; }
+.lightcase-icon-prev { left: 15px; }
+.lightcase-icon-next { right: 15px; }
+.lightcase-icon-pause, .lightcase-icon-play { left: 50%; margin-left: -0.5em; }
+
+@media screen and (max-width: 640px) {
+  a[class*='lightcase-icon-'] { bottom: 15px; font-size: 24px; }
+}
+@media screen and (min-width: 641px) {
+  a[class*='lightcase-icon-'] { bottom: 50%; margin-bottom: -0.5em; }
+}
+
+#lightcase-overlay {
+  display: none;
+  width: 100%;
+  min-height: 100%;
+  position: fixed;
+  z-index: 2000;
+  top: -9999px;
+  bottom: -9999px;
+  left: 0;
+  background: #333;
+}
+
+.lightcase-open body { overflow: hidden; }
+
+#lightcase-info {
+  position: absolute;
+  padding-top: 15px;
+}
+#lightcase-title { font-size: 17px; color: #aaa; }
+#lightcase-caption { font-size: 13px; color: #aaa; }
+
+@media screen and (max-width: 640px) {
+  #lightcase-title {
+    position: fixed;
+    top: 10px;
+    left: 0;
+    max-width: 87.5%;
+    padding: 5px 15px;
+    background: #333;
+  }
+}

@@ -1,0 +1,1223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>MediFind – Smart Medicine Finder</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --navy: #070B18;
+    --dark: #0A0F1E;
+    --card-dark: #111827;
+    --light-bg: #F4F7FF;
+    --card-light: #FFFFFF;
+    --blue-deep: #1A3AFF;
+    --blue-mid: #2563EB;
+    --blue-bright: #3B82F6;
+    --blue-cyan: #06B6D4;
+    --blue-pill: #1E3A5F;
+    --text-white: #FFFFFF;
+    --text-muted: #93C5FD;
+    --text-dark: #070B18;
+    --text-gray: #6B7280;
+    --divider: #1E3A5F;
+    --gradient-hero: linear-gradient(135deg, #1A3AFF 0%, #06B6D4 45%, #0A0F1E 100%);
+    --gradient-btn: linear-gradient(90deg, #2563EB, #06B6D4);
+    --gradient-text: linear-gradient(135deg, #60A5FA, #06B6D4);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 999;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 64px;
+    background: rgba(7, 11, 24, 0.92);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(37,99,235,0.2);
+    box-shadow: 0 2px 24px rgba(0,0,0,0.3);
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(-100%);
+    transition: opacity 0.35s ease, transform 0.35s ease;
+  }
+  nav.nav-solid {
+    opacity: 1;
+    pointer-events: all;
+    transform: translateY(0);
+  }
+
+  .hero-nav {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 64px;
+    background: rgba(8, 20, 60, 0.30);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border-bottom: 1px solid rgba(96,165,250,0.15);
+  }
+
+  .nav-logo, .hn-logo {
+    display: flex; align-items: center; gap: 10px; text-decoration: none;
+  }
+  .nav-logo img, .hn-logo img { height: 52px; width: auto; object-fit: contain; }
+  .nav-links, .hn-links {
+    display: flex; align-items: center; gap: 36px; list-style: none;
+  }
+  .nav-links a, .hn-links a {
+    color: rgba(255,255,255,0.85);
+    text-decoration: none;
+    font-size: 15px; font-weight: 500;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover, .hn-links a:hover { color: #fff; }
+  .nav-cta, .hn-cta {
+    background: var(--gradient-btn);
+    color: #fff; border: none; border-radius: 50px;
+    padding: 10px 24px; font-size: 14px; font-weight: 700;
+    font-family: 'DM Sans', sans-serif;
+    cursor: pointer; transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .nav-cta:hover, .hn-cta:hover {
+    transform: scale(1.05); box-shadow: 0 4px 20px rgba(6,182,212,0.4);
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--light-bg);
+    color: var(--text-white);
+    overflow-x: hidden;
+  }
+
+  .hero-border-wrap {
+    margin: 16px;
+    border-radius: 32px;
+    background: linear-gradient(170deg,
+      #1535CC 0%,
+      #0A5A8A 25%,
+      #06B6D4 52%,
+      #7FD8E8 75%,
+      #C5EEF5 88%,
+      var(--light-bg) 100%
+    );
+    overflow: hidden;
+    position: relative;
+    z-index: 1;
+  }
+
+  #hero {
+    min-height: calc(100vh - 32px);
+    border-radius: 0;
+    background: linear-gradient(155deg,
+      #1A3AFF 0%,
+      #0E6BA8 20%,
+      #06B6D4 48%,
+      #054E6B 72%,
+      #0A0F1E 100%
+    );
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 80px 48px 80px;
+    position: relative;
+    overflow: hidden;
+  }
+  #hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 60% 60% at 70% 30%, rgba(6,182,212,0.25) 0%, transparent 70%),
+                radial-gradient(ellipse 50% 50% at 20% 80%, rgba(26,58,255,0.3) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .hero-coming-soon {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(37,99,235,0.35);
+    border: 1px solid rgba(96,165,250,0.3);
+    color: #fff; border-radius: 50px;
+    padding: 6px 18px; font-size: 13px; font-weight: 700;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    margin-bottom: 20px; opacity: 0;
+  }
+  .hero-coming-soon::before {
+    content: ''; width: 6px; height: 6px; border-radius: 50%;
+    background: #06B6D4; display: block;
+  }
+  .hero-discover {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700; font-size: 18px;
+    letter-spacing: 0.25em; text-transform: uppercase;
+    color: #93C5FD; margin-bottom: 12px; opacity: 0;
+  }
+  .hero-title {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 900;
+    font-size: clamp(64px, 10vw, 100px);
+    line-height: 1.0;
+    background: linear-gradient(135deg, #ffffff 0%, #E0F2FE 40%, #BAE6FD 70%, #ffffff 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 20px; opacity: 0;
+    cursor: default;
+    background-size: 200% 200%;
+    animation: gradientShift 6s ease infinite;
+    text-shadow: 0 0 40px rgba(255,255,255,0.15);
+  }
+  .hero-title:hover {
+    background: linear-gradient(135deg, #06B6D4 0%, #38BDF8 30%, #ffffff 60%, #BFDBFE 100%);
+    -webkit-background-clip: text; background-clip: text; animation: none;
+  }
+  @keyframes gradientShift {
+    0%   { background-position: 0% 50%; }
+    50%  { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+  .hero-sub { color: #BFDBFE; font-size: 20px; font-weight: 400; margin-bottom: 40px; opacity: 0; }
+  .hero-pills {
+    display: flex; align-items: center; gap: 16px;
+    flex-wrap: wrap; justify-content: center; margin-bottom: 80px;
+  }
+  .hero-pill {
+    display: flex; align-items: center; gap: 8px;
+    background: rgba(30,58,95,0.7);
+    border: 1px solid rgba(96,165,250,0.2);
+    border-radius: 50px; padding: 10px 20px;
+    font-size: 14px; font-weight: 600; color: #fff; opacity: 0;
+  }
+  .hero-pill svg { width: 16px; height: 16px; color: #60A5FA; }
+  .scroll-hint {
+    position: absolute; bottom: 36px; left: 50%;
+    transform: translateX(-50%);
+    display: flex; flex-direction: column; align-items: center; gap: 6px;
+    color: #93C5FD; font-size: 11px;
+    letter-spacing: 0.2em; text-transform: uppercase;
+  }
+  .scroll-chevron { width: 28px; height: 28px; color: #60A5FA; }
+
+  #phone-showcase {
+    position: relative;
+    height: 900vh;
+    background: var(--light-bg);
+  }
+
+  #showcase-phone-wrap {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    isolation: isolate;
+  }
+
+  #horiz-text-track {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    transform: translateY(-50%);
+    height: 160px;
+    display: flex;
+    align-items: center;
+    z-index: 1;
+    pointer-events: none;
+    overflow: hidden;
+    opacity: 0;
+  }
+
+  #horiz-text-inner {
+    display: flex;
+    white-space: nowrap;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 900;
+    font-size: clamp(64px, 9vw, 120px);
+    line-height: 1;
+    color: var(--text-dark);
+    letter-spacing: -0.02em;
+    will-change: transform;
+  }
+
+  #phrase-reveal-layer {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  .reveal-phrase {
+    position: absolute;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 900;
+    font-size: clamp(48px, 7vw, 96px);
+    line-height: 1.05;
+    text-align: center;
+    color: var(--text-dark);
+    letter-spacing: -0.02em;
+    opacity: 0;
+    transform: translateY(40px);
+    max-width: 80vw;
+    z-index: 1;
+  }
+
+  .reveal-phrase span {
+    display: inline-block;
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  #showcase-phone-inner {
+    position: relative;
+    z-index: 10;
+    filter: drop-shadow(0 30px 50px rgba(37,99,235,0.18));
+    transform-origin: center center;
+    isolation: isolate;
+    opacity: 0;
+    transform: scale(0);
+  }
+
+  #scroll-phase-hint {
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    color: rgba(107,114,128,0.6);
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    opacity: 0;
+    z-index: 20;
+    transition: opacity 0.5s;
+  }
+  #scroll-phase-hint.visible { opacity: 1; }
+  #scroll-phase-hint svg { width: 20px; height: 20px; }
+
+  /* ---- DASHBOARD SECTION ---- */
+  #dashboard { background: var(--light-bg); padding: 60px 48px 40px; text-align: center; }
+  .dashboard-pill {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(37,99,235,0.1); border: 1px solid rgba(37,99,235,0.25);
+    color: #2563EB; border-radius: 50px; padding: 6px 18px;
+    font-size: 13px; font-weight: 700; letter-spacing: 0.08em;
+    text-transform: uppercase; margin-bottom: 16px;
+  }
+  .dashboard-title {
+    font-family: 'Montserrat', sans-serif; font-weight: 800;
+    font-size: clamp(32px, 4vw, 48px); color: var(--text-dark); margin-bottom: 10px;
+  }
+  .dashboard-sub {
+    color: var(--text-gray); font-size: 18px; max-width: 600px;
+    margin: 0 auto 16px; line-height: 1.6;
+  }
+  .laptop-mockup { max-width: 1200px; margin: -40px auto -120px; position: relative; }
+
+  .dash-cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; max-width: 1100px; margin: 0 auto; padding-top: 24px; }
+  .dash-card {
+    background: #fff; border-radius: 24px; padding: 32px 24px; text-align: left;
+    box-shadow: 0 4px 20px rgba(26,58,255,0.07); opacity: 0; transform: translateY(30px);
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+    cursor: pointer;
+  }
+  .dash-card:hover {
+    background: linear-gradient(135deg, #2563EB 0%, #06B6D4 100%);
+    box-shadow: 0 8px 40px rgba(37,99,235,0.5), 0 0 0 1px rgba(96,165,250,0.3);
+    transform: translateY(-4px);
+  }
+  .dash-card-num {
+    display: inline-flex; width: 36px; height: 36px;
+    background: linear-gradient(135deg, #2563EB, #06B6D4);
+    border-radius: 50%; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 800; color: #fff;
+    font-family: 'Montserrat', sans-serif; margin-bottom: 16px;
+    transition: background 0.3s ease, color 0.3s ease;
+  }
+  .dash-card:hover .dash-card-num {
+    background: #fff; background-image: none; color: #2563EB;
+  }
+  .dash-card-tag {
+    font-size: 10px; font-weight: 700; color: #2563EB;
+    letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 8px;
+    transition: color 0.3s ease;
+  }
+  .dash-card:hover .dash-card-tag { color: rgba(255,255,255,0.85); }
+  .dash-card-heading {
+    font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 18px;
+    color: var(--text-dark); margin-bottom: 8px; transition: color 0.3s ease;
+  }
+  .dash-card:hover .dash-card-heading { color: #fff; }
+  .dash-card-body { color: #6B7280; font-size: 14px; line-height: 1.6; transition: color 0.3s ease; }
+  .dash-card:hover .dash-card-body { color: rgba(255,255,255,0.85); }
+
+  /* ---- TEAM SECTION ---- */
+  #team { background: var(--light-bg); padding: 80px 48px; text-align: center; }
+  .team-title { font-family: 'Montserrat', sans-serif; font-weight: 800; font-size: clamp(28px, 4vw, 44px); color: var(--text-dark); margin-bottom: 10px; }
+  .team-sub { color: var(--text-gray); font-size: 17px; max-width: 520px; margin: 0 auto 48px; }
+  .team-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; max-width: 1000px; margin: 0 auto; }
+  .team-card {
+    background: #fff; border-radius: 20px; overflow: hidden;
+    box-shadow: 0 4px 20px rgba(26,58,255,0.07);
+    opacity: 0; transform: translateY(20px);
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+    cursor: pointer; text-align: left;
+  }
+  .team-card:hover {
+    background: linear-gradient(135deg, #2563EB 0%, #06B6D4 100%);
+    box-shadow: 0 8px 40px rgba(37,99,235,0.45), 0 0 0 1px rgba(96,165,250,0.3);
+    transform: translateY(-4px);
+  }
+  .team-photo { width: 100%; height: 260px; object-fit: cover; object-position: top center; display: block; }
+  .team-info { padding: 20px; }
+  .team-name {
+    font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 16px;
+    background: linear-gradient(135deg, #2563EB, #06B6D4);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    margin-bottom: 4px; transition: all 0.3s ease;
+  }
+  .team-card:hover .team-name { background: none; -webkit-text-fill-color: #fff; }
+  .team-role { font-size: 13px; color: #111; font-weight: 600; margin-bottom: 6px; transition: color 0.3s ease; }
+  .team-card:hover .team-role { color: rgba(255,255,255,0.95); }
+  .team-desc { font-size: 12px; color: #6B7280; line-height: 1.5; transition: color 0.3s ease; }
+  .team-card:hover .team-desc { color: rgba(255,255,255,0.8); }
+
+  /* ---- CTA/FOOTER ---- */
+  #cta { background: var(--light-bg); padding: 16px 16px 16px; }
+  .cta-inner {
+    border-radius: 32px;
+    background: linear-gradient(155deg,
+      #1A3AFF 0%, #0E6BA8 20%, #06B6D4 48%, #054E6B 72%, #0A0F1E 100%
+    );
+    padding: 100px 48px 60px;
+    min-height: calc(100vh - 32px);
+    display: flex; flex-direction: column; align-items: center;
+    justify-content: center; text-align: center;
+    position: relative; overflow: hidden;
+  }
+  .cta-inner::before {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(ellipse 50% 60% at 80% 20%, rgba(6,182,212,0.2) 0%, transparent 60%),
+                radial-gradient(ellipse 40% 50% at 10% 80%, rgba(26,58,255,0.3) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .cta-pill {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(37,99,235,0.3); border: 1px solid rgba(96,165,250,0.3);
+    color: #fff; border-radius: 50px; padding: 6px 18px;
+    font-size: 13px; font-weight: 700; letter-spacing: 0.08em;
+    text-transform: uppercase; margin-bottom: 20px;
+  }
+  .cta-title {
+    font-family: 'Montserrat', sans-serif; font-weight: 900;
+    font-size: clamp(28px, 4vw, 48px);
+    background: linear-gradient(135deg, #ffffff 0%, #E0F2FE 40%, #BAE6FD 70%, #ffffff 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text; margin-bottom: 16px;
+    max-width: 700px; margin-left: auto; margin-right: auto;
+    background-size: 200% 200%;
+    animation: ctaTitleShift 4s ease infinite;
+    text-shadow: 0 0 40px rgba(255,255,255,0.15);
+  }
+
+  @keyframes ctaTitleShift {
+    0%   { background-position: 0% 50%; }
+    50%  { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+  .cta-sub { color: #BFDBFE; font-size: 18px; max-width: 520px; margin: 0 auto 32px; line-height: 1.6; }
+  .cta-sub strong { color: #fff; }
+  .cta-feature-pills { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-bottom: 36px; }
+  .cta-feature-pill {
+    display: flex; flex-direction: column; align-items: flex-start; gap: 4px;
+    background: rgba(30,58,95,0.6); border: 1px solid rgba(96,165,250,0.2);
+    border-radius: 16px; padding: 14px 20px; min-width: 160px;
+  }
+  .cta-feature-pill-header { display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 700; color: #fff; }
+  .cta-feature-pill-body { font-size: 11px; color: #93C5FD; line-height: 1.4; }
+  .cta-form {
+    display: flex; gap: 0; max-width: 480px; margin: 0 auto 20px;
+    background: rgba(255,255,255,0.1); border-radius: 50px;
+    border: 1px solid rgba(255,255,255,0.2); overflow: hidden; backdrop-filter: blur(10px);
+  }
+  .cta-input {
+    flex: 1; background: transparent; border: none; outline: none;
+    padding: 14px 20px; color: #fff; font-size: 15px; font-family: 'DM Sans', sans-serif;
+  }
+  .cta-input::placeholder { color: rgba(191,219,254,0.6); }
+  .cta-btn {
+    background: var(--gradient-btn); color: #fff; border: none;
+    border-radius: 50px; padding: 14px 28px; font-size: 15px; font-weight: 700;
+    font-family: 'DM Sans', sans-serif; cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .cta-btn:hover { transform: scale(1.05); box-shadow: 0 4px 20px rgba(6,182,212,0.5); }
+  .cta-support { color: #93C5FD; font-size: 14px; margin-bottom: 48px; }
+  .cta-support a { color: #60A5FA; text-decoration: underline; }
+  .cta-footer { border-top: 1px solid rgba(30,58,95,0.5); padding-top: 24px; color: #93C5FD; font-size: 13px; }
+
+  .fade-up { opacity: 0; transform: translateY(30px); }
+
+  model-viewer::part(default-progress-bar),
+  model-viewer::part(default-progress-mask),
+  model-viewer::part(progress-bar) {
+    display: none !important;
+    opacity: 0 !important;
+  }
+  model-viewer {
+    --progress-bar-color: transparent;
+    --progress-mask: transparent;
+  }
+
+  /* ── DARK BLOB ── */
+  #phone-blob {
+    position: fixed;
+    top: 50vh; left: 50vw;
+    width: 150vmax; height: 150vmax;
+    border-radius: 50%;
+    background: #0A0F1E;
+    margin-top: -75vmax; margin-left: -75vmax;
+    transform: scale(0); opacity: 0;
+    z-index: 500; pointer-events: none;
+  }
+
+  /* ── FEATURES OVERLAY ── */
+  #features-overlay {
+    position: fixed; inset: 0;
+    z-index: 502; pointer-events: none;
+  }
+  .fo-panel {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0; transform: translateY(40px);
+  }
+  .fo-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 60px; align-items: center;
+    max-width: 1100px; width: 100%; padding: 0 80px;
+  }
+  .fo-col { display: flex; flex-direction: column; }
+  .fo-col.right { align-items: flex-end; text-align: right; }
+  .fo-icon { width: 40px; height: 40px; color: #60A5FA; margin-bottom: 16px; }
+  .fo-divider { width: 48px; height: 2px; background: #1E3A5F; margin-bottom: 20px; }
+  .fo-col.right .fo-divider { margin-left: auto; }
+  .fo-heading {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700; font-size: clamp(20px, 2.2vw, 30px);
+    color: #fff; line-height: 1.2; margin-bottom: 12px;
+  }
+  .fo-body { color: #93C5FD; font-size: 15px; line-height: 1.6; }
+
+/* ── FEATURE PANEL PHONE CENTER ── */
+  .fo-phone-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    z-index: 10;
+    margin: 0 -60px;
+  }
+
+  /* ── 3D MODEL IN FEATURE PANELS ── */
+  .fo-model-viewer {
+    width: 320px;
+    height: 640px;
+    background: transparent;
+    pointer-events: none;
+    animation: foPhoneFloat 2.4s ease-in-out infinite;
+    position: relative;
+    z-index: 10;
+  }
+
+  @keyframes foPhoneFloat {
+    0%, 100% { transform: translateY(0px); }
+    50%       { transform: translateY(-18px); }
+  }
+
+  #features-scroll-spacer { height: 0; display: none; }
+
+  @keyframes phoneFloat {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-18px); }
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 900px) {
+    nav { padding: 14px 24px; }
+    .nav-links { display: none; }
+    .fo-grid { grid-template-columns: 1fr; padding: 0 24px; }
+    .fo-col.right { align-items: flex-start; text-align: left; }
+    .fo-phone-center { order: -1; }
+    .dash-cards { grid-template-columns: 1fr 1fr; }
+    #dashboard { padding: 60px 24px; }
+    #team { padding: 60px 24px; }
+    .cta-inner { padding: 60px 24px 40px; border-radius: 20px; }
+    #cta { padding: 8px 8px 0; }
+    .cta-form { flex-direction: column; border-radius: 20px; }
+    .cta-btn { border-radius: 50px; }
+    .hero-nav { padding: 16px 24px; }
+    .fo-model-viewer { width: 160px; height: 320px; }
+  }
+  @media (max-width: 600px) {
+    .dash-cards { grid-template-columns: 1fr; }
+    .hero-title { font-size: 52px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- FIXED NAV -->
+<nav id="fixedNav">
+  <a class="nav-logo" href="#">
+    <img src="./Assets/New logo White text vrtical.png" alt="MediFind Logo"
+         onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+    <span style="display:none; align-items:center; gap:8px; font-family:Montserrat,sans-serif; font-weight:800; font-size:20px; color:#fff;">
+      <svg viewBox="0 0 32 32" fill="none" style="width:32px;height:32px">
+        <rect width="32" height="32" rx="8" fill="url(#ng)"/>
+        <path d="M16 7v4M16 21v4M7 16h4M21 16h4" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/>
+        <rect x="12" y="12" width="8" height="8" rx="2" fill="#fff" opacity="0.9"/>
+        <defs><linearGradient id="ng" x1="0" y1="0" x2="32" y2="32"><stop stop-color="#2563EB"/><stop offset="1" stop-color="#06B6D4"/></linearGradient></defs>
+      </svg>
+      MediFind
+    </span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#features-split">Features</a></li>
+    <li><a href="#team">Team</a></li>
+    <li><a href="#cta">Contact</a></li>
+  </ul>
+  <button class="nav-cta">Download the App</button>
+</nav>
+
+<!-- HERO BORDER WRAP -->
+<div class="hero-border-wrap" id="heroBorderWrap">
+  <nav class="hero-nav">
+    <a class="hn-logo" href="#">
+      <img src="./Assets/New logo White text vrtical.png" alt="MediFind Logo"
+           onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+      <span style="display:none; align-items:center; gap:8px; font-family:Montserrat,sans-serif; font-weight:800; font-size:20px; color:#fff;">
+        <svg viewBox="0 0 32 32" fill="none" style="width:32px;height:32px">
+          <rect width="32" height="32" rx="8" fill="url(#ng2)"/>
+          <path d="M16 7v4M16 21v4M7 16h4M21 16h4" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/>
+          <rect x="12" y="12" width="8" height="8" rx="2" fill="#fff" opacity="0.9"/>
+          <defs><linearGradient id="ng2" x1="0" y1="0" x2="32" y2="32"><stop stop-color="#2563EB"/><stop offset="1" stop-color="#06B6D4"/></linearGradient></defs>
+        </svg>
+        MediFind
+      </span>
+    </a>
+    <ul class="hn-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#features-split">Features</a></li>
+      <li><a href="#team">Team</a></li>
+      <li><a href="#cta">Contact</a></li>
+    </ul>
+    <button class="hn-cta">Download the App</button>
+  </nav>
+
+  <section id="hero">
+    <div class="hero-coming-soon">Coming Soon</div>
+    <div class="hero-discover">Discover</div>
+    <h1 class="hero-title">MediFind</h1>
+    <p class="hero-sub">The Future of Healthcare Delivery in Sri Lanka</p>
+    <div class="hero-pills">
+      <div class="hero-pill">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+        Verified Pharmacies
+      </div>
+      <div class="hero-pill">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
+        AI-Powered Prescriptions
+      </div>
+      <div class="hero-pill">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        Fast Delivery
+      </div>
+    </div>
+    <div class="scroll-hint">
+      <span>SCROLL TO EXPLORE</span>
+      <svg class="scroll-chevron" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
+      </svg>
+    </div>
+  </section>
+</div>
+
+<!-- PHONE SHOWCASE -->
+<section id="phone-showcase">
+  <div id="showcase-phone-wrap">
+    <div id="horiz-text-track">
+      <div id="horiz-text-inner">
+        <span>Find Your Medicine. Fast.&nbsp;&nbsp;&nbsp;·&nbsp;&nbsp;&nbsp;</span>
+        <span>Search Any Pharmacy.&nbsp;&nbsp;&nbsp;·&nbsp;&nbsp;&nbsp;</span>
+        <span>Upload Your Prescription.&nbsp;&nbsp;&nbsp;·&nbsp;&nbsp;&nbsp;</span>
+        <span>AI Reads It For You.&nbsp;&nbsp;&nbsp;·&nbsp;&nbsp;&nbsp;</span>
+        <span>Order &amp; Track Live.&nbsp;&nbsp;&nbsp;·&nbsp;&nbsp;&nbsp;</span>
+        <span>Healthcare With MediFind.&nbsp;&nbsp;&nbsp;·&nbsp;&nbsp;&nbsp;</span>
+      </div>
+    </div>
+    <div id="phrase-reveal-layer"></div>
+    <div id="showcase-phone-inner">
+      <model-viewer
+        id="showcaseModelViewer"
+        src="./17 pro max phone model 01/scene.gltf"
+        alt="MediFind App"
+        camera-orbit="270deg 90deg 105%"
+        field-of-view="30deg"
+        shadow-intensity="1.2"
+        exposure="1.1"
+        environment-image="neutral"
+        disable-zoom
+        interaction-prompt="none"
+        style="width: 320px; height: 640px; background: transparent; pointer-events: none;"
+      ></model-viewer>
+    </div>
+    <div id="scroll-phase-hint">
+      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<div id="features-scroll-spacer"></div>
+<div id="phone-blob"></div>
+
+<!-- FEATURES OVERLAY — now with real 3D models for all 3 panels -->
+<div id="features-overlay">
+
+  <!-- PANEL 1: One-stop medicine needs — model 07 -->
+  <div class="fo-panel" id="fo-panel-1">
+    <div class="fo-grid">
+      <div class="fo-col">
+        <svg class="fo-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z"/></svg>
+        <div class="fo-divider"></div>
+        <h3 class="fo-heading">The one-stop for all your medicine needs</h3>
+        <p class="fo-body">Discover and order medicines from verified local pharmacies through a single, unified platform experience.</p>
+      </div>
+      <div class="fo-phone-center">
+        <model-viewer
+          src="./17 pro max phone model 07/scene.gltf"
+          alt="MediFind App Screen 1"
+          camera-orbit="-90deg 90deg 105%"
+          field-of-view="30deg"
+          shadow-intensity="1.2"
+          exposure="1.1"
+          environment-image="neutral"
+          disable-zoom
+          interaction-prompt="none"
+          class="fo-model-viewer"
+        ></model-viewer>
+      </div>
+      <div class="fo-col right">
+        <svg class="fo-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" style="align-self:flex-end"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z"/></svg>
+        <div class="fo-divider"></div>
+        <h3 class="fo-heading">Verified pharmacies, trusted healthcare</h3>
+        <p class="fo-body">Shop with confidence knowing every pharmacy partner is licensed, verified, and rated for authenticity.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- PANEL 2: Prescriptions digitally — model 08 -->
+  <div class="fo-panel" id="fo-panel-2">
+    <div class="fo-grid">
+      <div class="fo-col">
+        <svg class="fo-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"/></svg>
+        <div class="fo-divider"></div>
+        <h3 class="fo-heading">Manage your prescriptions digitally</h3>
+        <p class="fo-body">Upload your prescription, our AI reads and verifies it instantly — no more manual pharmacy visits or lost papers.</p>
+      </div>
+      <div class="fo-phone-center">
+        <model-viewer
+          src="./17 pro max phone model 08/scene.gltf"
+          alt="MediFind App Screen 2"
+          camera-orbit="-90deg 90deg 105%"
+          field-of-view="30deg"
+          shadow-intensity="1.2"
+          exposure="1.1"
+          environment-image="neutral"
+          disable-zoom
+          interaction-prompt="none"
+          class="fo-model-viewer"
+        ></model-viewer>
+      </div>
+      <div class="fo-col right">
+        <svg class="fo-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" style="align-self:flex-end"><path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z"/></svg>
+        <div class="fo-divider"></div>
+        <h3 class="fo-heading">Your AI health partner</h3>
+        <p class="fo-body">Receive smart medicine suggestions, check drug interactions, and explore healthcare options curated just for you.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- PANEL 3: Fast delivery — model 09 -->
+  <div class="fo-panel" id="fo-panel-3">
+    <div class="fo-grid">
+      <div class="fo-col">
+        <svg class="fo-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 00-3.213-9.193 2.056 2.056 0 00-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 00-10.026 0 1.106 1.106 0 00-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12"/></svg>
+        <div class="fo-divider"></div>
+        <h3 class="fo-heading">Fast delivery to your doorstep</h3>
+        <p class="fo-body">Order medicines online and get them delivered within hours — track your order live every step of the way.</p>
+      </div>
+      <div class="fo-phone-center">
+        <model-viewer
+          src="./17 pro max phone model 09/scene.gltf"
+          alt="MediFind App Screen 3"
+          camera-orbit="-90deg 90deg 105%"
+          field-of-view="30deg"
+          shadow-intensity="1.2"
+          exposure="1.1"
+          environment-image="neutral"
+          disable-zoom
+          interaction-prompt="none"
+          class="fo-model-viewer"
+        ></model-viewer>
+      </div>
+      <div class="fo-col right">
+        <svg class="fo-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" style="align-self:flex-end"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        <div class="fo-divider"></div>
+        <h3 class="fo-heading">Real-time order tracking</h3>
+        <p class="fo-body">Stay informed with live updates from the moment you order to the second it arrives at your door.</p>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- DASHBOARD SECTION -->
+<section id="dashboard">
+  <div class="dashboard-pill">✦ Smart Dashboard</div>
+  <h2 class="dashboard-title">Grow your pharmacy with AI</h2>
+  <p class="dashboard-sub">Keep a pulse on inventory, orders, and analytics in one view while AI surfaces the next best actions for your business.</p>
+  <div class="laptop-mockup">
+    <model-viewer
+      id="macbookModelViewer"
+      src="./Mac book model/scene.gltf"
+      alt="MediFind Dashboard"
+      camera-orbit="0deg 68deg 90%"
+      camera-target="0m 0.05m 0m"
+      field-of-view="30deg"
+      shadow-intensity="1"
+      exposure="1.1"
+      environment-image="neutral"
+      disable-zoom
+      interaction-prompt="none"
+      auto-rotate
+      auto-rotate-delay="0"
+      rotation-per-second="4deg"
+      style="width: 100%; height: 820px; background: transparent;"
+    ></model-viewer>
+  </div>
+  <div class="dash-cards">
+    <div class="dash-card"><div class="dash-card-num">01</div><div class="dash-card-tag">Manage</div><div class="dash-card-heading">Control Your Medicine Listings</div><div class="dash-card-body">Create, update, and manage your products from pricing and stock to availability — all in one place.</div></div>
+    <div class="dash-card"><div class="dash-card-num">02</div><div class="dash-card-tag">Track</div><div class="dash-card-heading">Stay on Top of Every Order</div><div class="dash-card-body">Monitor incoming orders, track delivery progress, and ensure no order ever slips through the cracks.</div></div>
+    <div class="dash-card"><div class="dash-card-num">03</div><div class="dash-card-tag">Analyze</div><div class="dash-card-heading">Understand Demand & Patterns</div><div class="dash-card-body">Capture customer purchase patterns and medicine demand to improve your future stock decisions.</div></div>
+    <div class="dash-card"><div class="dash-card-num">04</div><div class="dash-card-tag">Improve</div><div class="dash-card-heading">Learn from Customer Feedback</div><div class="dash-card-body">Review feedback to spot recurring issues, refine your service, and reduce unnecessary returns.</div></div>
+  </div>
+</section>
+
+<!-- TEAM -->
+<section id="team">
+  <h2 class="team-title">Meet the Team</h2>
+  <p class="team-sub">Group G02-SE19 — building MediFind to transform healthcare access across Sri Lanka.</p>
+  <div class="team-grid">
+    <div class="team-card">
+      <img class="team-photo" src="./Assets/Achintha Jayaweera-Team member 01.jpg" alt="Achintha Jayaweera" onerror="this.style.background='linear-gradient(135deg,#DBEAFE,#BFDBFE)';this.style.height='220px'"/>
+      <div class="team-info">
+        <div class="team-name">Achintha Jayaweera</div>
+        <div class="team-role">Full-Stack Developer</div>
+        <div class="team-desc">Leading the development of core features and backend architecture.</div>
+      </div>
+    </div>
+    <div class="team-card">
+      <img class="team-photo" src="./Assets/Buddhima.jpg" alt="Buddhima Samaraweera" onerror="this.style.background='linear-gradient(135deg,#DBEAFE,#BFDBFE)';this.style.height='220px'"/>
+      <div class="team-info">
+        <div class="team-name">Buddhima Samaraweera</div>
+        <div class="team-role">AI/ML Engineer</div>
+        <div class="team-desc">Developing prescription reading and verification algorithms.</div>
+      </div>
+    </div>
+    <div class="team-card">
+      <img class="team-photo" src="./Assets/Thisanda Perera - Team member 03.png" alt="Thisanda Perera" onerror="this.style.background='linear-gradient(135deg,#DBEAFE,#BFDBFE)';this.style.height='220px'"/>
+      <div class="team-info">
+        <div class="team-name">Thisanda Perera</div>
+        <div class="team-role">UI/UX Designer</div>
+        <div class="team-desc">Designing intuitive and beautiful user interfaces.</div>
+      </div>
+    </div>
+    <div class="team-card">
+      <img class="team-photo" src="./Assets/Adithya - Team member 04.png" alt="A.A.D. Adithya" onerror="this.style.background='linear-gradient(135deg,#DBEAFE,#BFDBFE)';this.style.height='220px'"/>
+      <div class="team-info">
+        <div class="team-name">A.A.D. Adithya</div>
+        <div class="team-role">Mobile Developer</div>
+        <div class="team-desc">Creating seamless mobile experiences for iOS and Android.</div>
+      </div>
+    </div>
+    <div class="team-card">
+      <img class="team-photo" src="./Assets/Senuth.jpg" alt="Senuth Randiya" onerror="this.style.background='linear-gradient(135deg,#DBEAFE,#BFDBFE)';this.style.height='220px'"/>
+      <div class="team-info">
+        <div class="team-name">Senuth Randiya</div>
+        <div class="team-role">Business Analyst</div>
+        <div class="team-desc">Managing partnerships and business development.</div>
+      </div>
+    </div>
+    <div class="team-card">
+      <img class="team-photo" src="./Assets/Nisal Perera - Team member 06.jpg" alt="Nisal Perera" onerror="this.style.background='linear-gradient(135deg,#DBEAFE,#BFDBFE)';this.style.height='220px'"/>
+      <div class="team-info">
+        <div class="team-name">Nisal Perera</div>
+        <div class="team-role">QA Engineer</div>
+        <div class="team-desc">Ensuring quality and reliability across all platforms.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA / FOOTER -->
+<section id="cta">
+  <div class="cta-inner">
+    <div class="cta-pill">✦ MVP Launch</div>
+    <h2 class="cta-title">Join the Future of Healthcare Commerce</h2>
+    <p class="cta-sub">We're handpicking <strong>20 exceptional pharmacies</strong> for our curated MVP launch. Be among the first to reach patients across Sri Lanka.</p>
+    <div class="cta-feature-pills">
+      <div class="cta-feature-pill">
+        <div class="cta-feature-pill-header">
+          <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+          Curated Selection
+        </div>
+        <div class="cta-feature-pill-body">Your pharmacy featured among 20 handpicked partners</div>
+      </div>
+      <div class="cta-feature-pill">
+        <div class="cta-feature-pill-header">
+          <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          100% Free
+        </div>
+        <div class="cta-feature-pill-body">Zero setup fees, no hidden costs to join</div>
+      </div>
+      <div class="cta-feature-pill">
+        <div class="cta-feature-pill-header">
+          <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z"/></svg>
+          AI-Powered Growth
+        </div>
+        <div class="cta-feature-pill-body">Smart tools to accelerate your pharmacy business</div>
+      </div>
+    </div>
+    <div class="cta-form">
+      <input class="cta-input" type="email" placeholder="Enter your pharmacy email" />
+      <button class="cta-btn">Get Started →</button>
+    </div>
+    <p class="cta-support">Have questions? <a href="https://wa.me/94761490417" target="_blank" rel="noopener">Contact Support</a></p>
+
+    <!-- Previous version link -->
+    <a href="./medifind-web-0.1/Index.html" target="_blank" style="
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 16px;
+      background: linear-gradient(135deg, rgba(37,99,235,0.5), rgba(6,182,212,0.5));
+      border: 1px solid rgba(96,165,250,0.5);
+      color: #fff;
+      border-radius: 50px;
+      padding: 10px 24px;
+      font-size: 13px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.25s;
+      font-family: 'DM Sans', sans-serif;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 0 20px rgba(6,182,212,0.2);
+      letter-spacing: 0.02em;
+    "
+    onmouseover="this.style.background='linear-gradient(135deg, rgba(37,99,235,0.8), rgba(6,182,212,0.8))'; this.style.boxShadow='0 0 30px rgba(6,182,212,0.5)'; this.style.transform='scale(1.04)';"
+    onmouseout="this.style.background='linear-gradient(135deg, rgba(37,99,235,0.5), rgba(6,182,212,0.5))'; this.style.boxShadow='0 0 20px rgba(6,182,212,0.2)'; this.style.transform='scale(1)';"
+    >
+      <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+      </svg>
+      View Previous Version — MediFind v0.1
+      <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+      </svg>
+    </a>
+    <div class="cta-footer">© 2025–2026 MediFind. All rights reserved. · Designed by Achintha Jayaweera for Group G02-SE19</div>
+  </div>
+</section>
+
+<script>
+gsap.registerPlugin(ScrollTrigger);
+
+const heroSection = document.getElementById('hero');
+const fixedNav = document.getElementById('fixedNav');
+
+let hideSections = 0;
+const hideNavObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) hideSections++;
+    else hideSections = Math.max(0, hideSections - 1);
+    if (hideSections > 0) fixedNav.classList.remove('nav-solid');
+    else fixedNav.classList.add('nav-solid');
+  });
+}, { threshold: 0.05 });
+
+hideNavObserver.observe(heroSection);
+hideNavObserver.observe(document.querySelector('.cta-inner'));
+
+const heroTL = gsap.timeline({ defaults: { ease: 'power3.out' } });
+heroTL
+  .to('.hero-coming-soon', { opacity: 1, y: 0, duration: 0.6, delay: 0.2 })
+  .to('.hero-discover',    { opacity: 1, y: 0, duration: 0.6 }, '-=0.3')
+  .to('.hero-title',       { opacity: 1, y: 0, duration: 0.8 }, '-=0.4')
+  .to('.hero-sub',         { opacity: 1, y: 0, duration: 0.6 }, '-=0.5')
+  .to('.hero-pill',        { opacity: 1, y: 0, duration: 0.4, stagger: 0.15 }, '-=0.3');
+
+gsap.to('.scroll-chevron', { y: 8, duration: 0.8, repeat: -1, yoyo: true, ease: 'power1.inOut' });
+
+const showcaseMV     = document.getElementById('showcaseModelViewer');
+const showcaseInner  = document.getElementById('showcase-phone-inner');
+const horizTrack     = document.getElementById('horiz-text-track');
+const horizTextInner = document.getElementById('horiz-text-inner');
+
+const modelSources = [
+  './17 pro max phone model 01/scene.gltf',
+  './17 pro max phone model 02/scene.gltf',
+  './17 pro max phone model 03/scene.gltf',
+  './17 pro max phone model 04/scene.gltf',
+  './17 pro max phone model 05/scene.gltf',
+  './17 pro max phone model 06/scene.gltf',
+];
+let currentModelIdx = 0;
+const phoneBlob = document.getElementById('phone-blob');
+const featuresOverlay = document.getElementById('features-overlay');
+const foPanels = [
+  document.getElementById('fo-panel-1'),
+  document.getElementById('fo-panel-2'),
+  document.getElementById('fo-panel-3'),
+];
+gsap.set(foPanels, { opacity: 0, y: 40 });
+
+const phrases = [
+  'Find Your Medicine.',
+  'Search Any Pharmacy.',
+  'Upload Your Prescription.',
+  'Order & Track Live.',
+];
+const revealLayer = document.getElementById('phrase-reveal-layer');
+const phraseEls = phrases.map((text) => {
+  const el = document.createElement('div');
+  el.className = 'reveal-phrase';
+  el.innerHTML = text.split(' ').map(w => `<span>${w}</span>`).join(' ');
+  revealLayer.appendChild(el);
+  return el;
+});
+const allSpans = phraseEls.map(el => [...el.querySelectorAll('span')]);
+
+gsap.set(showcaseInner, { opacity: 0, scale: 0 });
+gsap.set(horizTrack, { opacity: 0 });
+gsap.set(phraseEls, { opacity: 0, y: 40 });
+phraseEls.forEach(el => gsap.set(el.querySelectorAll('span'), { opacity: 0, y: 24 }));
+gsap.set(phoneBlob, { scale: 0, opacity: 0, transformOrigin: '50% 50%' });
+if (showcaseMV) showcaseMV.setAttribute('camera-orbit', '270deg 90deg 105%');
+
+let floatTween = null;
+function startFloat() {
+  if (floatTween) return;
+  floatTween = gsap.to(showcaseInner, { y: -18, duration: 2.4, repeat: -1, yoyo: true, ease: 'sine.inOut' });
+}
+function stopFloat() {
+  if (floatTween) { floatTween.kill(); floatTween = null; }
+  gsap.set(showcaseInner, { y: 0 });
+}
+
+const P1_END   = 0.12;
+const P2_START = 0.12;
+const P2_END   = 0.30;
+const P3_START = 0.30;
+const P3_END   = 0.88;
+const P4_START = 0.88;
+const PHASE_END = 700/900;
+
+ScrollTrigger.create({
+  trigger: '#heroBorderWrap',
+  start: 'bottom 95%',
+  endTrigger: '#phone-showcase',
+  end: 'bottom bottom',
+  scrub: true,
+  onUpdate(self) {
+    const p = self.progress;
+    const pp = Math.min(p / PHASE_END, 1);
+
+    if (pp <= P1_END) {
+      stopFloat();
+      const t = pp / P1_END;
+      gsap.set(showcaseInner, { scale: Math.min(t * 1.18, 1), opacity: Math.min(t * 5, 1), y: 0 });
+      if (showcaseMV) showcaseMV.setAttribute('camera-orbit', `${270 - 360 * t}deg 90deg 105%`);
+      gsap.set(phraseEls, { opacity: 0, y: 40 });
+      phraseEls.forEach(el => gsap.set(el.querySelectorAll('span'), { opacity: 0, y: 24 }));
+      gsap.set(horizTrack, { opacity: 0 });
+      phoneBlob.style.transform = 'scale(0)'; phoneBlob.style.opacity = '0';
+      featuresOverlay.style.opacity = '0';
+    }
+    else if (pp <= P2_END) {
+      gsap.set(showcaseInner, { scale: 1, opacity: 1 });
+      if (showcaseMV) showcaseMV.setAttribute('camera-orbit', '-90deg 90deg 105%');
+      startFloat();
+      gsap.set(horizTrack, { opacity: 0 });
+      phoneBlob.style.transform = 'scale(0)'; phoneBlob.style.opacity = '0';
+      featuresOverlay.style.opacity = '0';
+      const t = (pp - P2_START) / (P2_END - P2_START);
+      phraseEls.forEach((el, i) => {
+        const spans = allSpans[i];
+        const tIn = i / phrases.length, tOut = (i + 1) / phrases.length, tMid = (tIn + tOut) / 2;
+        if (t < tIn) { gsap.set(el, { opacity: 0, y: 40 }); spans.forEach(s => gsap.set(s, { opacity: 0, y: 24 })); }
+        else if (t < tMid) { const sub = (t - tIn) / (tMid - tIn); gsap.set(el, { opacity: 1, y: 0 }); spans.forEach((s, si) => { const w = Math.max(0, Math.min(1, sub * spans.length - si * 0.6)); gsap.set(s, { opacity: w, y: 24 * (1 - w) }); }); }
+        else if (t < tOut) { const sub = (t - tMid) / (tOut - tMid); gsap.set(el, { opacity: 1 - sub, y: -30 * sub }); spans.forEach(s => gsap.set(s, { opacity: 1 - sub, y: 0 })); }
+        else { gsap.set(el, { opacity: 0, y: -30 }); spans.forEach(s => gsap.set(s, { opacity: 0, y: 0 })); }
+      });
+    }
+    else if (pp <= P3_END) {
+      gsap.set(showcaseInner, { scale: 1, opacity: 1 });
+      if (showcaseMV) showcaseMV.setAttribute('camera-orbit', '-90deg 90deg 105%');
+      startFloat();
+      gsap.set(phraseEls, { opacity: 0 });
+      gsap.set(horizTrack, { opacity: 1 });
+      phoneBlob.style.transform = 'scale(0)'; phoneBlob.style.opacity = '0';
+      featuresOverlay.style.opacity = '0';
+      const t = (pp - P3_START) / (P3_END - P3_START);
+      if (horizTextInner) horizTextInner.style.transform = `translateX(${-t * window.innerWidth * 5.5}px)`;
+      const newIdx = Math.min(Math.floor(t * 6), 5);
+      if (newIdx !== currentModelIdx && showcaseMV) {
+        currentModelIdx = newIdx;
+        gsap.to(showcaseInner, { opacity: 0.2, duration: 0.15, onComplete() { showcaseMV.setAttribute('src', modelSources[newIdx]); gsap.to(showcaseInner, { opacity: 1, duration: 0.3 }); } });
+      }
+    }
+    else if (p <= PHASE_END) {
+      stopFloat();
+      const t = (pp - P4_START) / (1 - P4_START);
+      gsap.set(showcaseInner, { scale: Math.max(1 - t * 1.18, 0), opacity: 1, y: 0 });
+      if (showcaseMV) showcaseMV.setAttribute('camera-orbit', `${-90 + 360 * t}deg 90deg 105%`);
+      gsap.set(horizTrack, { opacity: Math.max(1 - t * 4, 0) });
+      gsap.set(phraseEls, { opacity: 0 });
+      const blobT = Math.max(0, Math.min(1, t / 0.9));
+      phoneBlob.style.transform = `scale(${blobT})`;
+      phoneBlob.style.opacity = blobT > 0.01 ? '1' : '0';
+      featuresOverlay.style.opacity = '0';
+      gsap.set(foPanels, { opacity: 0, y: 40 });
+    }
+    else {
+      stopFloat();
+      gsap.set(showcaseInner, { scale: 0, opacity: 0 });
+      gsap.set(phraseEls, { opacity: 0 });
+      gsap.set(horizTrack, { opacity: 0 });
+      const t = (p - PHASE_END) / (1 - PHASE_END);
+      const exitAt = 0.75;
+      let bs = 1;
+      if (t > exitAt) bs = (1 - t) / (1 - exitAt);
+      bs = Math.max(0, bs);
+      phoneBlob.style.transform = `scale(${bs})`;
+      phoneBlob.style.opacity = bs > 0.01 ? '1' : '0';
+      featuresOverlay.style.opacity = bs > 0.05 ? '1' : '0';
+      const panelT = Math.min(t / exitAt, 1);
+      foPanels.forEach((panel, i) => {
+        const pIn = i/3, pMid = (i+0.4)/3, pOut = (i+0.85)/3, pEnd = (i+1)/3;
+        let op = 0, y = 40;
+        if (panelT >= pIn && panelT < pMid)       { const s=(panelT-pIn)/(pMid-pIn);   op=s;   y=40*(1-s); }
+        else if (panelT >= pMid && panelT < pOut) {                                      op=1;   y=0;        }
+        else if (panelT >= pOut && panelT < pEnd) { const s=(panelT-pOut)/(pEnd-pOut); op=1-s; y=-40*s;    }
+        else                                      { op=0; y=panelT<pIn?40:-40;                              }
+        gsap.set(panel, { opacity: op, y });
+      });
+    }
+  },
+  onLeave() {
+    phoneBlob.style.transform = 'scale(0)';
+    phoneBlob.style.opacity = '0';
+    featuresOverlay.style.opacity = '0';
+    gsap.set(foPanels, { opacity: 0 });
+  },
+  onLeaveBack() {
+    phoneBlob.style.transform = 'scale(0)';
+    phoneBlob.style.opacity = '0';
+    featuresOverlay.style.opacity = '0';
+    gsap.set(showcaseInner, { scale: 0, opacity: 0 });
+  }
+});
+
+window.addEventListener('load', () => { ScrollTrigger.refresh(); });
+
+const showcaseSection = document.getElementById('phone-showcase');
+if (showcaseSection) {
+  showcaseSection.addEventListener('mousemove', (e) => {
+    if (!showcaseMV) return;
+    const x = (e.clientX / window.innerWidth - 0.5) * 2;
+    const y = (e.clientY / window.innerHeight - 0.5) * 2;
+    const scaleVal = parseFloat(showcaseInner.style.transform?.match(/scale\(([^)]+)\)/)?.[1] || 0);
+    if (scaleVal > 0.9) {
+      showcaseMV.setAttribute('camera-orbit', `${-90 + x * 10}deg ${90 - y * 5}deg 105%`);
+    }
+  });
+  showcaseSection.addEventListener('mouseleave', () => {
+    if (showcaseMV) showcaseMV.setAttribute('camera-orbit', '-90deg 90deg 105%');
+  });
+}
+
+if (showcaseMV) {
+  showcaseMV.addEventListener('error', () => {
+    showcaseInner.innerHTML = `
+      <div style="width:280px;height:560px;background:#fff;border-radius:48px;border:8px solid #1a1a2e;
+        box-shadow:0 40px 80px rgba(26,58,255,0.18);overflow:hidden;display:flex;align-items:center;
+        justify-content:center;flex-direction:column;gap:12px;">
+        <span style="font-family:Montserrat,sans-serif;font-weight:800;font-size:22px;color:#1e40af">MediFind</span>
+      </div>`;
+  });
+}
+
+gsap.utils.toArray('.dash-card').forEach((card, i) => {
+  gsap.to(card, {
+    scrollTrigger: { trigger: '#dashboard', start: 'top 70%' },
+    opacity: 1, y: 0, duration: 0.6, delay: i * 0.15, ease: 'power3.out'
+  });
+});
+
+gsap.utils.toArray('.team-card').forEach((card, i) => {
+  gsap.to(card, {
+    scrollTrigger: { trigger: '#team', start: 'top 75%' },
+    opacity: 1, y: 0, duration: 0.5, delay: i * 0.1, ease: 'power3.out'
+  });
+});
+
+document.querySelectorAll('.hero-pill, .cta-feature-pill').forEach(el => {
+  el.addEventListener('mouseenter', () => gsap.to(el, { scale: 1.04, duration: 0.2 }));
+  el.addEventListener('mouseleave', () => gsap.to(el, { scale: 1, duration: 0.2 }));
+});
+
+const ctaBtn = document.querySelector('.cta-btn');
+if (ctaBtn) {
+  ctaBtn.addEventListener('mouseenter', () => gsap.to(ctaBtn, { scale: 1.06, duration: 0.2 }));
+  ctaBtn.addEventListener('mouseleave', () => gsap.to(ctaBtn, { scale: 1, duration: 0.2 }));
+}
+</script>
+</body>
+</html>

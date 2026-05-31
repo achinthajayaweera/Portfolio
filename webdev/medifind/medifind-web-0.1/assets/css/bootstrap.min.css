@@ -1,0 +1,35 @@
+/*! Bootstrap Core - Compact */
+:root{--primary:#007bff;--secondary:#6c757d;--success:#28a745;--danger:#dc3545;--breakpoint-md:768px;--font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
+*,::after,::before{box-sizing:border-box}
+body{margin:0;font-family:var(--font-family);font-size:14px;line-height:1.5;color:#212529;background:#fff}
+.container{width:100%;max-width:100%;padding:0 15px;margin:0 auto}
+@media(min-width:768px){.container{max-width:720px}}
+@media(min-width:992px){.container{max-width:960px}}
+.row{display:flex;flex-wrap:wrap;margin:0 -15px}
+.col{padding:0 15px}
+.col-6,.col-md-4,.col-md-6{flex:0 0 100%;max-width:100%}
+@media(min-width:768px){.col-md-6{flex:0 0 50%;max-width:50%}.col-md-4{flex:0 0 33.333%;max-width:33.333%}}
+.btn{display:inline-block;font-weight:400;text-align:center;border:1px solid transparent;padding:8px 16px;font-size:14px;line-height:1.5;border-radius:4px;transition:all .3s}
+.btn-primary{color:#fff;background:#007bff;border-color:#007bff}
+.btn-primary:hover{background:#0069d9}
+.form-control{display:block;width:100%;padding:8px 12px;font-size:14px;line-height:1.5;color:#495057;background:#fff;border:1px solid #ced4da;border-radius:4px}
+.form-control:focus{border-color:#80bdff;box-shadow:0 0 0 2px rgba(0,123,255,.25)}
+.card{background:#fff;border:1px solid rgba(0,0,0,.1);border-radius:4px;margin-bottom:20px}
+.card-body{padding:15px}
+.card img{max-width:100%;height:auto}
+.nav{display:flex;flex-wrap:wrap;padding:0;margin:0;list-style:none}
+.nav-link{display:block;padding:8px 16px;color:#007bff;text-decoration:none}
+.nav-link:hover{color:#0056b3}
+.d-none{display:none!important}
+.d-block{display:block!important}
+.d-flex{display:flex!important}
+.text-center{text-align:center!important}
+.mt-3{margin-top:15px!important}
+.mb-3{margin-bottom:15px!important}
+.p-3{padding:15px!important}
+img{max-width:100%;height:auto}
+h1,h2,h3,h4,h5,h6{margin-top:0;margin-bottom:10px;font-weight:500;line-height:1.2}
+h1{font-size:2rem}
+h2{font-size:1.75rem}
+h3{font-size:1.5rem}
+p{margin-top:0;margin-bottom:10px}
