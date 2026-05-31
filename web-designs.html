@@ -124,21 +124,6 @@
     text-transform:uppercase;color:var(--muted);opacity:0.5;
   }
 
-  /* Animated medical cross icon for Medifind */
-  .med-scene{position:relative;width:64px;height:64px;display:flex;align-items:center;justify-content:center;}
-  .med-pulse-ring{position:absolute;inset:-8px;border-radius:50%;border:1.5px solid rgba(191,223,255,0.2);animation:medRing 2.4s ease-in-out infinite;}
-  .med-pulse-ring:nth-child(2){inset:-16px;animation-delay:0.8s;opacity:0.6;}
-  @keyframes medRing{0%,100%{transform:scale(0.85);opacity:0.3;}50%{transform:scale(1);opacity:0.7;}}
-  .med-cross{position:relative;z-index:2;animation:medFloat 3s ease-in-out infinite;}
-  @keyframes medFloat{0%,100%{transform:translateY(0);}50%{transform:translateY(-5px);}}
-  .med-dot{
-    position:absolute;bottom:8px;right:8px;
-    width:6px;height:6px;border-radius:50%;
-    background:#bfdfff;
-    opacity:0;animation:medBlink 2.4s ease-in-out infinite 0.6s;
-  }
-  @keyframes medBlink{0%,100%{opacity:0;transform:scale(0.7);}50%{opacity:1;transform:scale(1.2);}}
-
   /* Card body */
   .proj-body{padding:1.8rem;display:flex;flex-direction:column;gap:0.9rem;flex:1;}
   .proj-num{font-family:'DM Mono',monospace;font-size:0.68rem;color:var(--accent);letter-spacing:0.14em;text-transform:uppercase;}
@@ -258,23 +243,20 @@
 
     <!-- ── MEDIFIND ── -->
     <div class="proj-card reveal reveal-delay-1" onclick="window.location.href='project-medifind.html'">
-      <!-- Animated placeholder with med icon (GitHub Pages not yet enabled) -->
-      <div class="proj-thumb-placeholder">
-        <div style="position:absolute;inset:0;background:linear-gradient(135deg,rgba(191,223,255,0.04) 0%,rgba(186,230,253,0.08) 50%,rgba(191,223,255,0.04) 100%);"></div>
-        <div class="med-scene">
-          <div class="med-pulse-ring"></div>
-          <div class="med-pulse-ring"></div>
-          <div class="med-cross">
-            <svg width="44" height="44" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <rect x="16" y="4" width="12" height="36" rx="3" fill="rgba(191,223,255,0.7)"/>
-              <rect x="4" y="16" width="36" height="12" rx="3" fill="rgba(191,223,255,0.7)"/>
-              <rect x="18" y="6" width="8" height="32" rx="2" fill="rgba(186,230,253,0.3)"/>
-              <rect x="6" y="18" width="32" height="8" rx="2" fill="rgba(186,230,253,0.3)"/>
-            </svg>
-          </div>
-          <div class="med-dot"></div>
+      <!-- Live preview window -->
+      <div class="proj-preview" title="Click to visit the live site">
+        <iframe
+          src="https://achinthajayaweera.github.io/Medifind-web/"
+          loading="lazy"
+          scrolling="no"
+          title="Medifind Preview"
+        ></iframe>
+        <div class="proj-preview-overlay">
+          <button class="preview-btn" onclick="event.stopPropagation();window.open('https://achinthajayaweera.github.io/Medifind-web/','_blank')">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 12L12 2M12 2H6M12 2V8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Visit Live Site
+          </button>
         </div>
-        <span class="coming-label">SDGP 2025</span>
       </div>
       <div class="proj-body">
         <div class="proj-num">02 · Web Design</div>
