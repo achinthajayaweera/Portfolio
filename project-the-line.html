@@ -138,6 +138,8 @@
   .gh-stat-num{font-family:'Bebas Neue',sans-serif;font-size:2.5rem;color:var(--text);line-height:1;}
   .gh-stat-label{font-size:0.72rem;color:var(--muted);letter-spacing:0.08em;text-transform:uppercase;margin-top:0.2rem;}
 
+  @keyframes ppFloat{0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);}}
+
   .reveal{opacity:0;transform:translateY(36px);transition:opacity 0.9s cubic-bezier(0.16,1,0.3,1),transform 0.9s cubic-bezier(0.16,1,0.3,1);}
   .reveal.visible{opacity:1;transform:translateY(0);}
   .reveal-delay-1{transition-delay:0.1s}.reveal-delay-2{transition-delay:0.2s}.reveal-delay-3{transition-delay:0.3s}
@@ -208,14 +210,44 @@
         Open
       </a>
     </div>
-    <div class="preview-iframe-container">
-      <iframe src="https://achinthajayaweera.github.io/the-line/" loading="lazy" scrolling="yes" title="The Line Studio Live Preview" allow="fullscreen"></iframe>
+    <div class="preview-iframe-container" id="lineIframeWrap" style="display:none;">
+     <iframe id="lineIframe" src="https://achinthajayaweera.github.io/the-line/" loading="lazy" scrolling="yes" title="The Line Studio Live Preview" allow="autoplay; fullscreen"></iframe> 
       <div class="preview-click-zone" onclick="window.open('https://achinthajayaweera.github.io/the-line/','_blank')">
         <div class="preview-click-btn">
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 14L14 2M14 2H7M14 2V9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
           Click to Experience the Full Site
         </div>
       </div>
+    </div>
+    <!-- Placeholder until GitHub Pages is live -->
+    <div id="linePlaceholder" style="width:100%;height:65vh;min-height:400px;background:var(--bg3);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2rem;position:relative;overflow:hidden;">
+      <div style="position:absolute;inset:0;background-image:linear-gradient(rgba(200,245,66,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(200,245,66,0.025) 1px,transparent 1px);background-size:48px 48px;"></div>
+      <div style="position:absolute;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(200,245,66,0.05) 0%,transparent 70%);top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;"></div>
+      <div style="position:relative;z-index:2;animation:ppFloat 3s ease-in-out infinite;">
+        <svg width="72" height="72" viewBox="0 0 72 72" fill="none">
+          <rect x="8" y="8" width="56" height="40" rx="4" stroke="rgba(200,245,66,0.5)" stroke-width="2" fill="none"/>
+          <rect x="8" y="8" width="56" height="10" rx="4" fill="rgba(200,245,66,0.15)"/>
+          <circle cx="16" cy="13" r="2" fill="rgba(200,245,66,0.6)"/>
+          <circle cx="24" cy="13" r="2" fill="rgba(200,245,66,0.4)"/>
+          <circle cx="32" cy="13" r="2" fill="rgba(200,245,66,0.2)"/>
+          <rect x="16" y="26" width="24" height="2" rx="1" fill="rgba(200,245,66,0.3)"/>
+          <rect x="16" y="32" width="36" height="2" rx="1" fill="rgba(200,245,66,0.2)"/>
+          <rect x="16" y="38" width="20" height="2" rx="1" fill="rgba(200,245,66,0.15)"/>
+          <rect x="28" y="48" width="16" height="6" rx="1" fill="rgba(200,245,66,0.2)"/>
+          <rect x="12" y="54" width="48" height="3" rx="1.5" fill="rgba(200,245,66,0.15)"/>
+        </svg>
+      </div>
+      <div style="position:relative;z-index:2;text-align:center;">
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:1.4rem;letter-spacing:0.12em;color:var(--text);margin-bottom:0.5rem;">THE LINE STUDIO</div>
+        <div style="font-family:'DM Mono',monospace;font-size:0.7rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--muted);line-height:1.9;">
+          Live preview coming soon<br>
+          <span style="opacity:0.45;font-size:0.62rem;">Enable GitHub Pages · Settings → Pages → Source: main → Save</span>
+        </div>
+      </div>
+      <a href="https://github.com/achinthajayaweera/the-line" target="_blank" style="position:relative;z-index:2;display:inline-flex;align-items:center;gap:0.6rem;border:1px solid var(--border-light);color:var(--muted);font-family:'DM Mono',monospace;font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;padding:0.65rem 1.3rem;text-decoration:none;transition:all 0.3s;" onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'" onmouseout="this.style.borderColor='var(--border-light)';this.style.color='var(--muted)'">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77A5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+        View on GitHub
+      </a>
     </div>
     <div class="preview-hint">Click the preview to open the full live website</div>
   </div>
@@ -378,6 +410,20 @@
 </footer>
 
 <script>
+/* Smart preview — show iframe once GitHub Pages is live */
+(function(){
+  var wrap=document.getElementById('lineIframeWrap');
+  var placeholder=document.getElementById('linePlaceholder');
+  var iframe=document.getElementById('lineIframe');
+  if(!wrap||!iframe) return;
+  iframe.addEventListener('load',function(){
+    try{
+      var entries=performance.getEntriesByType('resource').filter(function(e){return e.name.indexOf('github.io/the-line')>-1;});
+      if(entries.length>0){wrap.style.display='block';placeholder.style.display='none';}
+    }catch(e){wrap.style.display='block';placeholder.style.display='none';}
+  });
+})();
+
 var cur=document.getElementById('cursor'),trail=document.getElementById('cursorTrail');
 var mx=0,my=0,tx=0,ty=0;
 document.addEventListener('mousemove',function(e){mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
