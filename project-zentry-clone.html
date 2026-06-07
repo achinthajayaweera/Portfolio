@@ -261,15 +261,15 @@
   </h1>
   <div class="hero-meta">
     <p class="hero-desc">
-      A pixel-perfect clone of <strong>Zentry</strong> — an Awwwards-winning website — rebuilt from scratch using <strong>React 18, TypeScript, Vite, and Tailwind CSS 4</strong>. Features scroll-driven clip-path animations, GSAP-powered transitions, Lenis smooth scroll, and a fully responsive layout that mirrors the original's cinematic feel.
+      A full recreation of <strong>Zentry</strong> — an Awwwards-winning gaming and metaverse platform — rebuilt from scratch using <strong>React 18, TypeScript, Vite, GSAP, Tailwind CSS 3, and Locomotive Scroll</strong>. Every scroll animation, video interaction, polygon clip-path transition, and GSAP timeline was reverse-engineered and reconstructed entirely by hand.
     </p>
     <div class="hero-pills">
       <span class="hero-pill">React 18</span>
       <span class="hero-pill">TypeScript</span>
       <span class="hero-pill">Vite</span>
-      <span class="hero-pill">Tailwind CSS</span>
+      <span class="hero-pill">Tailwind CSS 3</span>
       <span class="hero-pill">GSAP</span>
-      <span class="hero-pill">Lenis</span>
+      <span class="hero-pill">Locomotive Scroll</span>
     </div>
   </div>
 </section>
@@ -321,15 +321,107 @@
     </div>
     <div class="about-body reveal reveal-delay-1">
       <p>
-        <strong>Zentry</strong> is one of the most celebrated websites on Awwwards — known for its cinematic scroll animations, immersive video backgrounds, and buttery-smooth transitions. This clone is a full technical recreation of that experience, built entirely from scratch without lifting a single line from the original source.
+        <strong>Zentry</strong> is a next-generation gaming and metaverse platform built around the concept of a unified "Play Economy" — a shared cross-world identity layer that connects players across every game, platform, and reality. Their website is one of the most technically ambitious gaming landing pages on the internet, combining cinematic scroll animations, multi-layer video compositing, physics-driven interactions, and a deeply custom scroll architecture into a single seamless experience.
       </p>
       <p>
-        The project was an exercise in advanced front-end engineering: implementing <strong>scroll-driven clip-path reveals</strong>, <strong>GSAP ScrollTrigger</strong> timelines, and <strong>Lenis smooth scroll</strong> integration — all within a modern <strong>React + TypeScript + Vite</strong> stack. Every section, animation and interaction was reconstructed by studying the original's behaviour and rebuilding the mechanics independently.
+        This project is a <strong>full recreation of that website</strong> — rebuilt entirely from scratch using React 18, TypeScript, Vite, GSAP, Tailwind CSS, and Locomotive Scroll. Every scroll-driven animation, every video interaction, every polygon clip-path transition, every GSAP timeline was <strong>reverse-engineered, understood, and reconstructed by hand</strong>. Nothing was copied. Everything was rebuilt.
       </p>
       <p>
-        Special attention was given to matching the <strong>typography system</strong>, <strong>video sequencing</strong>, and the signature <strong>"tilt on scroll"</strong> hero transition that makes Zentry instantly recognisable.
+        The result is a production-grade frontend application that matches the visual fidelity, interaction depth, and animation precision of the original — demonstrating advanced command of <strong>modern animation architecture</strong>, scroll-driven UI systems, and premium interactive web experiences.
       </p>
     </div>
+  </div>
+</section>
+
+<!-- ══ WHY THIS PROJECT ══ -->
+<section class="about-section" style="border-top:1px solid var(--border);padding-top:6rem;">
+  <div class="about-grid">
+    <div>
+      <h2 class="about-heading reveal">WHY THIS<br><span class="accent">CLONE</span></h2>
+    </div>
+    <div class="about-body reveal reveal-delay-1">
+      <p>
+        Recreating a website of this calibre is one of the most rigorous self-imposed challenges a frontend developer can take on. This is not a standard marketing page or a component library demo. It is a <strong>fully choreographed interactive experience</strong> where every section has its own animation system, its own scroll logic, and its own set of composited layers that must work together precisely or the illusion collapses entirely.
+      </p>
+      <p>
+        The decision to clone Zentry specifically was deliberate. The website uses <strong>scroll-driven clip-path morphing</strong>, multi-layer video stacking with GSAP-controlled z-index, mouse-position-aware cursor reveal systems, polygon-masked images with SVG gooey filters, scroll-pinned sections with cumulative animation offsets, and a smooth scroll engine that keeps GSAP's ScrollTrigger and Locomotive Scroll in perfect sync.
+      </p>
+      <p>
+        Building this forced a granular understanding of how <strong>world-class creative studios approach frontend architecture</strong> — not just what they build but why every technical decision was made the way it was, and what problems each system is solving.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ══ DEEP DIVE ══ -->
+<section class="highlights-section" style="background:var(--bg2);">
+  <div class="section-label reveal">Architecture Deep Dive</div>
+  <div class="highlights-list">
+
+    <div class="highlight-item reveal">
+      <div class="hl-num">01</div>
+      <div class="hl-content">
+        <div class="hl-title">Smooth Scroll Architecture — Locomotive + GSAP Sync</div>
+        <div class="hl-desc">Locomotive Scroll intercepts native scroll events and replaces them with lerp-interpolated position updates, creating the characteristic cinematic momentum. The <code>useLocoScroll</code> hook sets up a two-way synchronisation bridge with GSAP's ScrollTrigger via <code>ScrollTrigger.scrollerProxy()</code> — telling GSAP's entire animation engine to read scroll position from Locomotive's internal state rather than <code>window.scrollY</code>. <code>SmoothScrollProvider</code> wraps this in a React context, exposing the scroll instance and real-time progress to every component in the tree with zero redundant scroll handlers.</div>
+      </div>
+    </div>
+
+    <div class="highlight-item reveal reveal-delay-1">
+      <div class="hl-num">02</div>
+      <div class="hl-content">
+        <div class="hl-title">Hero — Multi-Layer Video System with Cursor Reveal</div>
+        <div class="hl-desc">The Hero manages four simultaneous interactive systems. Four looping video elements are absolutely stacked inside <code>#video-frame</code>, with GSAP controlling their z-index to bring the correct video forward. On click, <code>handleMiniVideoClick()</code> animates the video's <code>clipPath</code> from a small polygon to full viewport over one second. The cursor reveal creates a cinematic torch effect — on every <code>mousemove</code>, a 200×200px polygon is computed from cursor position and applied to the background video's <code>clipPath</code> with 0.2s easing, making the reveal square chase the cursor with slight lag. After one second of inactivity, the background video fades invisible.</div>
+      </div>
+    </div>
+
+    <div class="highlight-item reveal reveal-delay-2">
+      <div class="hl-num">03</div>
+      <div class="hl-content">
+        <div class="hl-title">AboutUs — Scroll-Pinned Clip-Path Morphing</div>
+        <div class="hl-desc">The About section starts as a small angled polygon shape centred on the page. A ScrollTrigger with <code>pin: true</code> and <code>scrub: 0.5</code> locks the section for 800px of scroll. As scroll progresses, the <code>onUpdate</code> callback fires on every frame, using <code>gsap.utils.interpolate()</code> to move all four corner coordinates from their angled starting positions toward a perfect rectangle — while the image simultaneously scales from <code>30vw</code> to full viewport. A <code>MouseParallaxContainer</code> adds a subtle mouse-tracking depth effect on desktop, giving the entire section a tactile quality.</div>
+      </div>
+    </div>
+
+    <div class="highlight-item reveal">
+      <div class="hl-num">04</div>
+      <div class="hl-content">
+        <div class="hl-title">AnimatedTitle — 3D Word Stagger System</div>
+        <div class="hl-desc">The most reused component in the codebase, appearing across six sections. Each title string is split by <code>&lt;br/&gt;</code> tags into lines, then each line split into individual word spans. Every word starts at <code>transform: translate3d(10px, 51px, -60px) rotateY(60deg) rotateX(-40deg)</code> with <code>transform-origin: 50% 50% -150px</code> and <code>perspective: 600px</code> — pushed back in 3D space. A GSAP timeline stagger-animates all spans forward to <code>translate3d(0,0,0)</code> with <code>stagger: 0.05</code>, making each word fly forward and flatten out sequentially — producing the signature Zentry title animation.</div>
+      </div>
+    </div>
+
+    <div class="highlight-item reveal reveal-delay-1">
+      <div class="hl-num">05</div>
+      <div class="hl-content">
+        <div class="hl-title">Features Grid — BentoCard with 3D Mouse Tilt</div>
+        <div class="hl-desc"><code>BentoTilt</code> calculates cursor position relative to each card using <code>getBoundingClientRect()</code>, normalises it to 0–1, and maps it to ±7.5° tilt angles. The transform is applied as <code>perspective(700px) rotateX() rotateY() scale3d(.95,.95,.95)</code> — pulling the card toward the user at its centre and away at its edges. On <code>mouseLeave</code> the transform resets cleanly. The grid assembles six cards in a responsive bento layout — from a full-width hero card for Radiant to two-column cards for Zigma, Nexus, Azul, and accent cards with oversized icon details at <code>scale-[5]</code>.</div>
+      </div>
+    </div>
+
+    <div class="highlight-item reveal reveal-delay-2">
+      <div class="hl-num">06</div>
+      <div class="hl-content">
+        <div class="hl-title">Story Section — Gooey SVG Filter + Mouse Tilt + Parallax</div>
+        <div class="hl-desc">Three independent interactions layered on one component. The mouse-tilt system maps cursor offset to ±25° on both axes via GSAP. The scroll parallax drifts the inner image at <code>y: 100</code> slower than page scroll, creating depth separation. <code>RoundedCorners</code> injects an invisible SVG filter (<code>feGaussianBlur → feColorMatrix → feComposite</code>) that the image container references via <code>filter: url("#flt_tag")</code> — the gooey filter technique that makes the polygon clip look liquid rather than geometric.</div>
+      </div>
+    </div>
+
+    <div class="highlight-item reveal">
+      <div class="hl-num">07</div>
+      <div class="hl-content">
+        <div class="hl-title">Pinned Section — Sequential Scroll with Cumulative Offsets</div>
+        <div class="hl-desc">The entire section is pinned for 4000px of scroll via ScrollTrigger with <code>pin: true, pinSpacing: true</code>. Three pagination items animate sequentially — each gets its own ScrollTrigger with a <code>start</code> offset that increments by 1000 per item (<code>cumulativeOffset += animationDuration</code>), so they fire one after the other through the pinned space. Each item runs two independent animations: a scrub-driven line that travels upward inside its container track, and a snap-in entry that expands the container height, brightens the title, and scales the description in from <code>scaleY: 0</code>.</div>
+      </div>
+    </div>
+
+    <div class="highlight-item reveal reveal-delay-1">
+      <div class="hl-num">08</div>
+      <div class="hl-content">
+        <div class="hl-title">NavBar — Scroll-Aware with Audio Visualiser</div>
+        <div class="hl-desc">The scroll visibility system reads progress from <code>useSmoothScroll()</code> and compares to <code>lastScrollY</code> on every frame. Scrolling down triggers a GSAP <code>y: -100, opacity: 0</code> slide-off. Scrolling back up triggers a return and adds the <code>floating-nav</code> class — transforming the navbar into a floating pill with black background and rounded corners. The audio system plays <code>/audio/loop.mp3</code> via a hidden <code>&lt;audio&gt;</code> ref, and four indicator bars receive the <code>active</code> class to trigger a staggered CSS keyframe oscillation — the characteristic music visualiser effect.</div>
+      </div>
+    </div>
+
   </div>
 </section>
 
@@ -340,73 +432,118 @@
     <div class="tech-card">
       <span class="tech-icon">⚛️</span>
       <div class="tech-name">React 18</div>
-      <div class="tech-desc">Component-based UI architecture with hooks and functional components throughout.</div>
+      <div class="tech-desc">Component-based UI architecture with hooks, context, and functional components throughout.</div>
     </div>
     <div class="tech-card">
       <span class="tech-icon">🔷</span>
       <div class="tech-name">TypeScript</div>
-      <div class="tech-desc">Strict typing across all components, props, and animation state management.</div>
+      <div class="tech-desc">Full type safety across all components, props, refs, and animation state management.</div>
     </div>
     <div class="tech-card">
       <span class="tech-icon">⚡</span>
       <div class="tech-name">Vite</div>
-      <div class="tech-desc">Lightning-fast dev server and build tooling with HMR for rapid iteration.</div>
+      <div class="tech-desc">Lightning-fast dev server and optimised build tooling with HMR for rapid iteration.</div>
     </div>
     <div class="tech-card">
       <span class="tech-icon">🎨</span>
-      <div class="tech-name">Tailwind CSS 4</div>
-      <div class="tech-desc">Utility-first styling with custom theme tokens, responsive breakpoints and animations.</div>
+      <div class="tech-name">Tailwind CSS 3</div>
+      <div class="tech-desc">Custom design token system with named colour palette, five typefaces, and responsive heading scales defined in <code>tailwind.config.js</code>.</div>
     </div>
     <div class="tech-card">
       <span class="tech-icon">🟢</span>
       <div class="tech-name">GSAP + ScrollTrigger</div>
-      <div class="tech-desc">Professional-grade scroll-driven animations, clip-path reveals, and timeline sequences.</div>
+      <div class="tech-desc">All scroll animations, clip-path morphing, pinned sections, timeline sequences, and z-index stacking via <code>@gsap/react</code> hooks.</div>
     </div>
     <div class="tech-card">
-      <span class="tech-icon">🌊</span>
-      <div class="tech-name">Lenis</div>
-      <div class="tech-desc">Silky smooth scroll with momentum and inertia, replacing native browser scroll behaviour.</div>
+      <span class="tech-icon">🚂</span>
+      <div class="tech-name">Locomotive Scroll</div>
+      <div class="tech-desc">Smooth scroll interpolation via lerp momentum. Two-way sync with GSAP ScrollTrigger through <code>scrollerProxy()</code> for frame-accurate animation firing.</div>
+    </div>
+    <div class="tech-card">
+      <span class="tech-icon">🖱️</span>
+      <div class="tech-name">react-parallax-mouse</div>
+      <div class="tech-desc">Mouse-tracking depth effect in the AboutUs section — the entire masked reveal drifts fractionally toward the cursor position.</div>
+    </div>
+    <div class="tech-card">
+      <span class="tech-icon">🔣</span>
+      <div class="tech-name">react-icons</div>
+      <div class="tech-desc">Icon library for navbar, footer, and feature cards — including the characteristic oversized arrow icons in the bento grid.</div>
     </div>
   </div>
 </section>
 
-<!-- ══ HIGHLIGHTS ══ -->
+<!-- ══ KEY ACHIEVEMENTS ══ -->
 <section class="highlights-section">
-  <div class="section-label reveal">Key Features</div>
+  <div class="section-label reveal">Key Achievements</div>
   <div class="highlights-list">
     <div class="highlight-item reveal">
       <div class="hl-num">01</div>
       <div class="hl-content">
-        <div class="hl-title">Scroll-Driven Clip-Path Hero</div>
-        <div class="hl-desc">The hero video expands from a small window to full-screen using a clip-path animation that's precisely tied to scroll position via GSAP ScrollTrigger — matching Zentry's signature entrance effect.</div>
+        <div class="hl-title">Full Recreation of a Premium Gaming Landing Page</div>
+        <div class="hl-desc">Every section, interaction, and animation system was reverse-engineered and rebuilt from scratch — matching the visual fidelity and interaction depth of an Awwwards-winning production site.</div>
       </div>
     </div>
     <div class="highlight-item reveal reveal-delay-1">
       <div class="hl-num">02</div>
       <div class="hl-content">
-        <div class="hl-title">Lenis Smooth Scroll Integration</div>
-        <div class="hl-desc">Lenis is wired into the GSAP ticker for frame-perfect smooth scroll. Every section transition feels cinematic and natural, not mechanical.</div>
+        <div class="hl-title">Multi-Layer Video System with GSAP Z-Index Control</div>
+        <div class="hl-desc">Four stacked video elements managed by GSAP z-index, with a clip-path expand animation on click that morphs from a small polygon to full viewport in one second — restarting the video from frame zero each time.</div>
       </div>
     </div>
     <div class="highlight-item reveal reveal-delay-2">
       <div class="hl-num">03</div>
       <div class="hl-content">
-        <div class="hl-title">Video Sequencing & Bento Grid</div>
-        <div class="hl-desc">Multiple autoplay video panels are managed with React state and IntersectionObserver, loading lazily and transitioning in sequence as the user scrolls through the bento grid layout.</div>
-      </div>
-    </div>
-    <div class="highlight-item reveal reveal-delay-3">
-      <div class="hl-num">04</div>
-      <div class="hl-content">
-        <div class="hl-title">3D Tilt Mouse Interaction</div>
-        <div class="hl-desc">Cards respond to mouse movement with a perspective tilt effect, calculated in real-time from cursor position relative to each element — adding depth without any external 3D library.</div>
+        <div class="hl-title">Locomotive Scroll + GSAP ScrollTrigger Two-Way Sync</div>
+        <div class="hl-desc">A <code>scrollerProxy()</code> bridge keeps Locomotive's interpolated position and GSAP's animation engine in perfect sync — ensuring every scroll-triggered animation fires at the correct position rather than being offset by the smooth scroll layer.</div>
       </div>
     </div>
     <div class="highlight-item reveal">
+      <div class="hl-num">04</div>
+      <div class="hl-content">
+        <div class="hl-title">Scroll-Driven Polygon Clip-Path Morphing</div>
+        <div class="hl-desc">An angled polygon shape morphs to a full-viewport rectangle as the user scrolls through the About section — pinned for 800px with <code>scrub: 0.5</code> and per-frame <code>gsap.utils.interpolate()</code> on all four corner coordinates simultaneously.</div>
+      </div>
+    </div>
+    <div class="highlight-item reveal reveal-delay-1">
       <div class="hl-num">05</div>
       <div class="hl-content">
-        <div class="hl-title">Fully Responsive Layout</div>
-        <div class="hl-desc">All animations and layouts adapt gracefully from desktop to mobile. Animations are disabled or simplified on reduced-motion preferences.</div>
+        <div class="hl-title">Mouse-Position Cursor Reveal with Inactivity Timeout</div>
+        <div class="hl-desc">A 200×200px polygon tracks the cursor position on every <code>mousemove</code> and applies it to the hero video's <code>clipPath</code> with constrained range and <code>power2.out</code> easing — creating a cinematic torch effect that fades after one second of inactivity.</div>
+      </div>
+    </div>
+    <div class="highlight-item reveal reveal-delay-2">
+      <div class="hl-num">06</div>
+      <div class="hl-content">
+        <div class="hl-title">3D Word Stagger Animation System Across Six Sections</div>
+        <div class="hl-desc">Each title word starts at <code>translate3d(10px, 51px, -60px) rotateY(60deg) rotateX(-40deg)</code> and flies forward on scroll with <code>stagger: 0.05</code> — a single reusable <code>AnimatedTitle</code> component powering the signature Zentry type animation across every major section.</div>
+      </div>
+    </div>
+    <div class="highlight-item reveal">
+      <div class="hl-num">07</div>
+      <div class="hl-content">
+        <div class="hl-title">Mouse Tilt on BentoCard Grid and Story Section</div>
+        <div class="hl-desc"><code>BentoTilt</code> calculates real-time cursor offset from each card's bounding rect and maps it to ±7.5° perspective tilt. The Story section image tilts independently at ±25° with a smooth settle on <code>mouseLeave</code> — both implemented without any external 3D library.</div>
+      </div>
+    </div>
+    <div class="highlight-item reveal reveal-delay-1">
+      <div class="hl-num">08</div>
+      <div class="hl-content">
+        <div class="hl-title">SVG Gooey Filter for Organic Polygon Edge Rounding</div>
+        <div class="hl-desc">An invisible SVG filter chain (<code>feGaussianBlur → feColorMatrix → feComposite</code>) referenced via <code>filter: url("#flt_tag")</code> makes the Story section's polygon clip look liquid and organic rather than hard-edged — the gooey filter technique used by top creative studios.</div>
+      </div>
+    </div>
+    <div class="highlight-item reveal reveal-delay-2">
+      <div class="hl-num">09</div>
+      <div class="hl-content">
+        <div class="hl-title">Sequential Scroll Animation with Cumulative Offset Pinning</div>
+        <div class="hl-desc">The Pinned section locks for 4000px of scroll while three items fire sequentially — each ScrollTrigger's start offset incremented by 1000 via <code>cumulativeOffset += animationDuration</code>, running independent scrub-line and snap-in entry animations per item.</div>
+      </div>
+    </div>
+    <div class="highlight-item reveal">
+      <div class="hl-num">10</div>
+      <div class="hl-content">
+        <div class="hl-title">12-Commit Version History with Structured Development Progression</div>
+        <div class="hl-desc">Built across 12 staged commits — from Vite scaffold to final production assembly — with global systems before section components and scroll infrastructure before the animations that depend on it. Mirrors professional frontend development practice with architectural intent throughout.</div>
       </div>
     </div>
   </div>
