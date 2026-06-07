@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zentry Clone — Achintha Jayaweera</title>
+<link rel="icon" type="image/png" href="Assets/Achintha top logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#080808;--bg2:#0e0e0e;--bg3:#141414;
+    --text:#f0ede6;--muted:#6b6860;
+    --accent:#c8f542;
+    --border:rgba(240,237,230,0.08);--border-light:rgba(240,237,230,0.15);
+    --pad:3rem;
+    --zentry:#8b5cf6;--zentry-light:#a78bfa;
+  }
+  *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-weight:300;overflow-x:hidden;cursor:none;}
+  .cursor{position:fixed;width:10px;height:10px;background:var(--accent);border-radius:50%;pointer-events:none;z-index:9999;transition:transform 0.1s ease;transform:translate(-50%,-50%)}
+  .cursor-trail{position:fixed;width:32px;height:32px;border:1px solid rgba(200,245,66,0.4);border-radius:50%;pointer-events:none;z-index:9998;transition:all 0.18s ease;transform:translate(-50%,-50%)}
+  @media(hover:none){.cursor,.cursor-trail{display:none}body{cursor:auto}}
+
+  /* ── NAV ── */
+  nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:1.5rem var(--pad);display:flex;align-items:center;justify-content:space-between;gap:1rem;}
+  nav::before{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,rgba(8,8,8,0.95) 0%,transparent 100%);pointer-events:none}
+  .nav-logo{text-decoration:none;position:relative;flex-shrink:0}
+  .nav-logo img{height:32px;width:auto;display:block;filter:brightness(0) invert(1)}
+  .nav-back{display:flex;align-items:center;gap:0.6rem;font-family:'DM Mono',monospace;font-size:0.75rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:color 0.3s;position:relative;}
+  .nav-back:hover{color:var(--accent)}
+  .nav-back svg{transition:transform 0.3s}
+  .nav-back:hover svg{transform:translateX(-4px)}
+
+  /* ── HERO ── */
+  .proj-hero{
+    min-height:100vh;display:flex;flex-direction:column;justify-content:flex-end;
+    padding:0 var(--pad) 5rem;position:relative;overflow:hidden;
+  }
+  .proj-hero::before{
+    content:'';position:absolute;inset:0;
+    background-image:linear-gradient(rgba(240,237,230,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(240,237,230,0.025) 1px,transparent 1px);
+    background-size:80px 80px;pointer-events:none;
+  }
+  .hero-orb{
+    position:absolute;width:700px;height:700px;border-radius:50%;
+    background:radial-gradient(circle,rgba(139,92,246,0.08) 0%,transparent 70%);
+    top:-200px;right:-200px;pointer-events:none;
+    animation:orbFloat 10s ease-in-out infinite;
+  }
+  @keyframes orbFloat{0%,100%{transform:translate(0,0);}50%{transform:translate(-30px,30px);}}
+  .hero-tag{
+    display:flex;align-items:center;gap:0.6rem;margin-bottom:1.5rem;
+    font-family:'DM Mono',monospace;font-size:0.72rem;letter-spacing:0.18em;
+    text-transform:uppercase;color:var(--accent);
+    opacity:0;animation:fadeUp 0.7s forwards 0.3s;
+  }
+  .hero-tag::before{content:'';width:24px;height:1px;background:var(--accent);}
+  .hero-number{
+    font-family:'Bebas Neue',sans-serif;font-size:clamp(1rem,2vw,1.4rem);
+    color:rgba(200,245,66,0.3);letter-spacing:0.08em;
+    margin-bottom:0.4rem;
+    opacity:0;animation:fadeUp 0.7s forwards 0.2s;
+  }
+  .proj-hero-title{
+    font-family:'Bebas Neue',sans-serif;
+    font-size:clamp(5rem,12vw,13rem);
+    line-height:0.85;letter-spacing:-0.02em;
+    overflow:hidden;margin-bottom:2.5rem;
+  }
+  .proj-hero-title .line{display:block;opacity:0;transform:translateY(100%);animation:slideUp 0.9s cubic-bezier(0.16,1,0.3,1) forwards;}
+  .proj-hero-title .line:nth-child(1){animation-delay:0.4s;}
+  .proj-hero-title .line:nth-child(2){animation-delay:0.55s;}
+  .proj-hero-title .line:nth-child(3){animation-delay:0.7s;}
+  @keyframes slideUp{to{opacity:1;transform:translateY(0);}}
+  @keyframes fadeUp{to{opacity:1;transform:translateY(0);}}
+  .hero-meta{
+    display:flex;align-items:flex-end;justify-content:space-between;gap:2rem;flex-wrap:wrap;
+    opacity:0;animation:fadeUp 0.8s forwards 0.9s;
+  }
+  .hero-desc{max-width:500px;font-size:1rem;color:var(--muted);line-height:1.8;}
+  .hero-desc strong{color:var(--text);font-weight:400;}
+  .hero-pills{display:flex;flex-wrap:wrap;gap:0.5rem;align-self:flex-start;}
+  .hero-pill{
+    font-family:'DM Mono',monospace;font-size:0.68rem;letter-spacing:0.1em;
+    text-transform:uppercase;border:1px solid var(--border-light);
+    padding:0.35rem 0.9rem;color:var(--muted);
+  }
+
+  /* ── PREVIEW SECTION ── */
+  .preview-section{
+    padding:5rem var(--pad);background:var(--bg2);border-top:1px solid var(--border);
+  }
+  .section-label{
+    font-size:0.72rem;letter-spacing:0.2em;text-transform:uppercase;
+    color:var(--accent);margin-bottom:2.5rem;
+    display:flex;align-items:center;gap:1rem;
+  }
+  .section-label::after{content:'';flex:1;max-width:60px;height:1px;background:var(--accent);opacity:0.4;}
+  .browser-chrome{
+    border:1px solid var(--border-light);border-radius:10px;overflow:hidden;
+    background:var(--bg3);box-shadow:0 40px 80px rgba(0,0,0,0.6);
+  }
+  .browser-bar{
+    background:var(--bg3);border-bottom:1px solid var(--border);
+    padding:0.7rem 1rem;display:flex;align-items:center;gap:0.8rem;
+  }
+  .b-dots{display:flex;gap:5px;}
+  .b-dot{width:10px;height:10px;border-radius:50%;}
+  .b-dot:nth-child(1){background:#ff5f57;}
+  .b-dot:nth-child(2){background:#ffbd2e;}
+  .b-dot:nth-child(3){background:#28ca41;}
+  .b-url{
+    flex:1;background:rgba(240,237,230,0.05);border:1px solid var(--border);
+    border-radius:4px;padding:0.3rem 0.8rem;
+    font-family:'DM Mono',monospace;font-size:0.72rem;color:var(--muted);
+    letter-spacing:0.04em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  }
+  .b-open{
+    display:flex;align-items:center;gap:0.4rem;
+    background:var(--accent);color:#000;border:none;
+    font-family:'DM Mono',monospace;font-size:0.68rem;font-weight:600;
+    letter-spacing:0.1em;text-transform:uppercase;
+    padding:0.35rem 0.9rem;cursor:pointer;border-radius:3px;
+    transition:background 0.2s;white-space:nowrap;text-decoration:none;
+  }
+  .b-open:hover{background:#d4ff4a;}
+  .browser-frame{
+    width:100%;aspect-ratio:16/9;position:relative;
+    background:var(--bg3);overflow:hidden;
+  }
+  .browser-frame iframe{
+    position:absolute;inset:0;width:100%;height:100%;border:none;
+  }
+  /* Placeholder shown until GitHub Pages is live */
+  .preview-placeholder{
+    position:absolute;inset:0;display:flex;flex-direction:column;
+    align-items:center;justify-content:center;gap:1.5rem;
+    background:var(--bg3);
+  }
+  .preview-placeholder .ph-icon{
+    width:64px;height:64px;border:1px solid var(--border-light);border-radius:50%;
+    display:flex;align-items:center;justify-content:center;color:var(--accent);
+    animation:phPulse 2.5s ease-in-out infinite;
+  }
+  @keyframes phPulse{0%,100%{box-shadow:0 0 0 0 rgba(200,245,66,0.2);}50%{box-shadow:0 0 0 12px rgba(200,245,66,0);}}
+  .preview-placeholder p{font-family:'DM Mono',monospace;font-size:0.75rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);text-align:center;max-width:300px;line-height:1.8;}
+  .preview-placeholder a{color:var(--accent);text-decoration:none;}
+  .preview-placeholder a:hover{text-decoration:underline;}
+  .preview-hint{
+    margin-top:1.2rem;font-size:0.78rem;color:var(--muted);text-align:center;
+    font-family:'DM Mono',monospace;font-size:0.7rem;letter-spacing:0.1em;
+    text-transform:uppercase;opacity:0.7;
+  }
+  .preview-hint a{color:var(--accent);text-decoration:none;}
+  .preview-hint a:hover{text-decoration:underline;}
+
+  /* ── ABOUT SECTION ── */
+  .about-section{padding:6rem var(--pad);border-top:1px solid var(--border);}
+  .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:6rem;align-items:start;}
+  .about-heading{font-family:'Bebas Neue',sans-serif;font-size:clamp(3rem,5vw,5.5rem);line-height:0.9;color:var(--text);}
+  .about-heading .accent{color:var(--accent);}
+  .about-body{font-size:0.95rem;line-height:1.9;color:var(--muted);font-weight:300;}
+  .about-body strong{color:var(--text);font-weight:400;}
+  .about-body p+p{margin-top:1.2rem;}
+
+  /* ── TECH STACK ── */
+  .tech-section{padding:6rem var(--pad);background:var(--bg2);border-top:1px solid var(--border);}
+  .tech-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1px;background:var(--border);border:1px solid var(--border);margin-top:2.5rem;}
+  .tech-card{background:var(--bg2);padding:2rem 1.8rem;transition:background 0.3s;position:relative;overflow:hidden;}
+  .tech-card::before{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:var(--accent);transform:scaleX(0);transform-origin:left;transition:transform 0.4s cubic-bezier(0.16,1,0.3,1);}
+  .tech-card:hover::before{transform:scaleX(1);}
+  .tech-card:hover{background:var(--bg3);}
+  .tech-icon{font-size:1.4rem;margin-bottom:0.8rem;display:block;}
+  .tech-name{font-size:0.9rem;font-weight:500;color:var(--text);margin-bottom:0.3rem;}
+  .tech-desc{font-size:0.78rem;color:var(--muted);line-height:1.6;}
+
+  /* ── HIGHLIGHTS ── */
+  .highlights-section{padding:6rem var(--pad);border-top:1px solid var(--border);}
+  .highlights-list{margin-top:2.5rem;display:flex;flex-direction:column;gap:0;}
+  .highlight-item{
+    display:flex;align-items:flex-start;gap:2rem;
+    padding:1.8rem 0;border-bottom:1px solid var(--border);
+  }
+  .highlight-item:first-child{border-top:1px solid var(--border);}
+  .hl-num{
+    font-family:'DM Mono',monospace;font-size:0.7rem;color:var(--accent);
+    letter-spacing:0.12em;flex-shrink:0;padding-top:0.25rem;min-width:2rem;
+  }
+  .hl-content{}
+  .hl-title{font-size:0.95rem;color:var(--text);margin-bottom:0.3rem;font-weight:400;}
+  .hl-desc{font-size:0.85rem;color:var(--muted);line-height:1.7;}
+
+  /* ── LINKS SECTION ── */
+  .links-section{
+    padding:6rem var(--pad);background:var(--bg2);border-top:1px solid var(--border);
+    display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:2rem;
+  }
+  .links-heading{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.5rem,5vw,5rem);line-height:0.9;color:var(--text);}
+  .links-heading span{color:var(--accent);}
+  .links-btns{display:flex;gap:1rem;flex-wrap:wrap;}
+  .link-btn{
+    display:inline-flex;align-items:center;gap:0.6rem;
+    padding:1rem 2rem;font-size:0.82rem;letter-spacing:0.1em;
+    text-transform:uppercase;font-family:'DM Mono',monospace;
+    text-decoration:none;transition:all 0.3s;
+  }
+  .link-btn.primary{background:var(--accent);color:#000;font-weight:600;}
+  .link-btn.primary:hover{background:#d4ff4a;transform:translateY(-2px);}
+  .link-btn.secondary{border:1px solid var(--border-light);color:var(--text);}
+  .link-btn.secondary:hover{border-color:var(--text);background:rgba(240,237,230,0.05);transform:translateY(-2px);}
+
+  /* ── NAV BETWEEN PROJECTS ── */
+  .proj-nav{
+    padding:3rem var(--pad);border-top:1px solid var(--border);
+    display:flex;justify-content:space-between;align-items:center;gap:2rem;flex-wrap:wrap;
+  }
+  .proj-nav-item{text-decoration:none;transition:color 0.3s;}
+  .proj-nav-item:hover .pn-title{color:var(--accent);}
+  .pn-label{font-family:'DM Mono',monospace;font-size:0.68rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);margin-bottom:0.4rem;}
+  .pn-title{font-family:'Bebas Neue',sans-serif;font-size:1.6rem;color:var(--text);letter-spacing:0.02em;transition:color 0.3s;}
+
+  footer{padding:2rem var(--pad);display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--border);flex-wrap:wrap;gap:1rem;}
+  footer p{font-size:0.75rem;color:var(--muted);letter-spacing:0.06em;}
+  .footer-logo{font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:0.12em;color:var(--muted);}
+
+  .reveal{opacity:0;transform:translateY(40px);transition:opacity 0.9s cubic-bezier(0.16,1,0.3,1),transform 0.9s cubic-bezier(0.16,1,0.3,1);}
+  .reveal.visible{opacity:1;transform:translateY(0);}
+  .reveal-delay-1{transition-delay:0.1s;}.reveal-delay-2{transition-delay:0.2s;}.reveal-delay-3{transition-delay:0.3s;}
+
+  @media(max-width:1024px){.about-grid{grid-template-columns:1fr;gap:3rem;}}
+  @media(max-width:768px){:root{--pad:1.5rem;}.links-section{flex-direction:column;align-items:flex-start;}.proj-nav{flex-direction:column;gap:1.5rem;}.tech-grid{grid-template-columns:1fr 1fr;}}
+  @media(max-width:480px){:root{--pad:1.2rem;}.tech-grid{grid-template-columns:1fr;}.links-btns{flex-direction:column;}.link-btn{justify-content:center;}}
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-trail" id="cursorTrail"></div>
+
+<nav>
+  <a href="Achintha%20portfolio.HTML" class="nav-logo">
+    <img src="Assets/A Final.png" alt="Achintha Jayaweera">
+  </a>
+  <a href="web-designs.html" class="nav-back">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8L10 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    Web Designs
+  </a>
+</nav>
+
+<!-- ══ HERO ══ -->
+<section class="proj-hero">
+  <div class="hero-orb"></div>
+  <div class="hero-number">02 · Web Development</div>
+  <div class="hero-tag">Awwwards-Inspired Clone · React · TypeScript</div>
+  <h1 class="proj-hero-title">
+    <span class="line">ZENTRY</span>
+    <span class="line">CLONE</span>
+  </h1>
+  <div class="hero-meta">
+    <p class="hero-desc">
+      A pixel-perfect clone of <strong>Zentry</strong> — an Awwwards-winning website — rebuilt from scratch using <strong>React 18, TypeScript, Vite, and Tailwind CSS 4</strong>. Features scroll-driven clip-path animations, GSAP-powered transitions, Lenis smooth scroll, and a fully responsive layout that mirrors the original's cinematic feel.
+    </p>
+    <div class="hero-pills">
+      <span class="hero-pill">React 18</span>
+      <span class="hero-pill">TypeScript</span>
+      <span class="hero-pill">Vite</span>
+      <span class="hero-pill">Tailwind CSS</span>
+      <span class="hero-pill">GSAP</span>
+      <span class="hero-pill">Lenis</span>
+    </div>
+  </div>
+</section>
+
+<!-- ══ PREVIEW ══ -->
+<section class="preview-section reveal">
+  <div class="section-label">Live Preview</div>
+  <div class="browser-chrome">
+    <div class="browser-bar">
+      <div class="b-dots">
+        <div class="b-dot"></div>
+        <div class="b-dot"></div>
+        <div class="b-dot"></div>
+      </div>
+      <div class="b-url" id="previewUrl">achinthajayaweera.github.io/Zentry-Clone/</div>
+      <a href="https://achinthajayaweera.github.io/Zentry-Clone/" target="_blank" class="b-open">
+        <svg width="12" height="12" viewBox="0 0 14 14" fill="none"><path d="M2 12L12 2M12 2H6M12 2V8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Open
+      </a>
+    </div>
+    <div class="browser-frame">
+      <iframe
+        id="sitePreview"
+        src="https://achinthajayaweera.github.io/Zentry-Clone/"
+        loading="lazy"
+        scrolling="no"
+        title="Zentry Clone Live Preview"
+      ></iframe>
+      <!-- Placeholder shown if GitHub Pages not yet live -->
+      <div class="preview-placeholder" id="previewPlaceholder" style="display:none;">
+        <div class="ph-icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+        </div>
+        <p>GitHub Pages not yet live.<br>Enable it in the repo settings and it'll appear here automatically.</p>
+        <a href="https://github.com/achinthajayaweera/Zentry-Clone" target="_blank">View on GitHub →</a>
+      </div>
+    </div>
+  </div>
+  <p class="preview-hint">
+    Click the preview or <a href="https://achinthajayaweera.github.io/Zentry-Clone/" target="_blank">open in a new tab</a> to experience the full site.
+  </p>
+</section>
+
+<!-- ══ ABOUT ══ -->
+<section class="about-section">
+  <div class="about-grid">
+    <div>
+      <h2 class="about-heading reveal">ABOUT<br>THE <span class="accent">PROJECT</span></h2>
+    </div>
+    <div class="about-body reveal reveal-delay-1">
+      <p>
+        <strong>Zentry</strong> is one of the most celebrated websites on Awwwards — known for its cinematic scroll animations, immersive video backgrounds, and buttery-smooth transitions. This clone is a full technical recreation of that experience, built entirely from scratch without lifting a single line from the original source.
+      </p>
+      <p>
+        The project was an exercise in advanced front-end engineering: implementing <strong>scroll-driven clip-path reveals</strong>, <strong>GSAP ScrollTrigger</strong> timelines, and <strong>Lenis smooth scroll</strong> integration — all within a modern <strong>React + TypeScript + Vite</strong> stack. Every section, animation and interaction was reconstructed by studying the original's behaviour and rebuilding the mechanics independently.
+      </p>
+      <p>
+        Special attention was given to matching the <strong>typography system</strong>, <strong>video sequencing</strong>, and the signature <strong>"tilt on scroll"</strong> hero transition that makes Zentry instantly recognisable.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ══ TECH STACK ══ -->
+<section class="tech-section">
+  <div class="section-label reveal">Tech Stack</div>
+  <div class="tech-grid reveal">
+    <div class="tech-card">
+      <span class="tech-icon">⚛️</span>
+      <div class="tech-name">React 18</div>
+      <div class="tech-desc">Component-based UI architecture with hooks and functional components throughout.</div>
+    </div>
+    <div class="tech-card">
+      <span class="tech-icon">🔷</span>
+      <div class="tech-name">TypeScript</div>
+      <div class="tech-desc">Strict typing across all components, props, and animation state management.</div>
+    </div>
+    <div class="tech-card">
+      <span class="tech-icon">⚡</span>
+      <div class="tech-name">Vite</div>
+      <div class="tech-desc">Lightning-fast dev server and build tooling with HMR for rapid iteration.</div>
+    </div>
+    <div class="tech-card">
+      <span class="tech-icon">🎨</span>
+      <div class="tech-name">Tailwind CSS 4</div>
+      <div class="tech-desc">Utility-first styling with custom theme tokens, responsive breakpoints and animations.</div>
+    </div>
+    <div class="tech-card">
+      <span class="tech-icon">🟢</span>
+      <div class="tech-name">GSAP + ScrollTrigger</div>
+      <div class="tech-desc">Professional-grade scroll-driven animations, clip-path reveals, and timeline sequences.</div>
+    </div>
+    <div class="tech-card">
+      <span class="tech-icon">🌊</span>
+      <div class="tech-name">Lenis</div>
+      <div class="tech-desc">Silky smooth scroll with momentum and inertia, replacing native browser scroll behaviour.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ HIGHLIGHTS ══ -->
+<section class="highlights-section">
+  <div class="section-label reveal">Key Features</div>
+  <div class="highlights-list">
+    <div class="highlight-item reveal">
+      <div class="hl-num">01</div>
+      <div class="hl-content">
+        <div class="hl-title">Scroll-Driven Clip-Path Hero</div>
+        <div class="hl-desc">The hero video expands from a small window to full-screen using a clip-path animation that's precisely tied to scroll position via GSAP ScrollTrigger — matching Zentry's signature entrance effect.</div>
+      </div>
+    </div>
+    <div class="highlight-item reveal reveal-delay-1">
+      <div class="hl-num">02</div>
+      <div class="hl-content">
+        <div class="hl-title">Lenis Smooth Scroll Integration</div>
+        <div class="hl-desc">Lenis is wired into the GSAP ticker for frame-perfect smooth scroll. Every section transition feels cinematic and natural, not mechanical.</div>
+      </div>
+    </div>
+    <div class="highlight-item reveal reveal-delay-2">
+      <div class="hl-num">03</div>
+      <div class="hl-content">
+        <div class="hl-title">Video Sequencing & Bento Grid</div>
+        <div class="hl-desc">Multiple autoplay video panels are managed with React state and IntersectionObserver, loading lazily and transitioning in sequence as the user scrolls through the bento grid layout.</div>
+      </div>
+    </div>
+    <div class="highlight-item reveal reveal-delay-3">
+      <div class="hl-num">04</div>
+      <div class="hl-content">
+        <div class="hl-title">3D Tilt Mouse Interaction</div>
+        <div class="hl-desc">Cards respond to mouse movement with a perspective tilt effect, calculated in real-time from cursor position relative to each element — adding depth without any external 3D library.</div>
+      </div>
+    </div>
+    <div class="highlight-item reveal">
+      <div class="hl-num">05</div>
+      <div class="hl-content">
+        <div class="hl-title">Fully Responsive Layout</div>
+        <div class="hl-desc">All animations and layouts adapt gracefully from desktop to mobile. Animations are disabled or simplified on reduced-motion preferences.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ LINKS ══ -->
+<section class="links-section reveal">
+  <div>
+    <div class="section-label" style="margin-bottom:1rem;">View the Work</div>
+    <h2 class="links-heading">EXPLORE<br><span>THE SITE</span></h2>
+  </div>
+  <div class="links-btns">
+    <a href="https://achinthajayaweera.github.io/Zentry-Clone/" target="_blank" class="link-btn primary">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 12L12 2M12 2H6M12 2V8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Visit Live Site
+    </a>
+    <a href="https://github.com/achinthajayaweera/Zentry-Clone" target="_blank" class="link-btn secondary">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77A5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+      View on GitHub
+    </a>
+  </div>
+</section>
+
+<!-- ══ PROJECT NAVIGATION ══ -->
+<div class="proj-nav">
+  <a href="project-copper-art.html" class="proj-nav-item">
+    <div class="pn-label">← Previous</div>
+    <div class="pn-title">Copper Art Antiques</div>
+  </a>
+  <a href="project-medifind.html" class="proj-nav-item" style="text-align:right;">
+    <div class="pn-label">Next →</div>
+    <div class="pn-title">Medifind</div>
+  </a>
+</div>
+
+<footer>
+  <span class="footer-logo">Achintha Jayaweera</span>
+  <p>© 2026 · Zentry Clone</p>
+  <p>Colombo, Sri Lanka</p>
+</footer>
+
+<script>
+// Custom cursor
+var cur=document.getElementById('cursor'),trail=document.getElementById('cursorTrail');
+var mx=0,my=0,tx=0,ty=0;
+document.addEventListener('mousemove',function(e){mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
+(function a(){tx+=(mx-tx)*0.12;ty+=(my-ty)*0.12;trail.style.left=tx+'px';trail.style.top=ty+'px';requestAnimationFrame(a);})();
+document.querySelectorAll('a,button').forEach(function(el){
+  el.addEventListener('mouseenter',function(){cur.style.transform='translate(-50%,-50%) scale(2.5)';trail.style.transform='translate(-50%,-50%) scale(1.5)';trail.style.borderColor='rgba(200,245,66,0.6)';});
+  el.addEventListener('mouseleave',function(){cur.style.transform='translate(-50%,-50%) scale(1)';trail.style.transform='translate(-50%,-50%) scale(1)';trail.style.borderColor='rgba(200,245,66,0.4)';});
+});
+
+// Scroll reveal
+var ro=new IntersectionObserver(function(e){e.forEach(function(x){if(x.isIntersecting)x.target.classList.add('visible');});},{threshold:0.1,rootMargin:'0px 0px -60px 0px'});
+document.querySelectorAll('.reveal').forEach(function(el){ro.observe(el);});
+
+// Check if iframe loads (GitHub Pages live check)
+var frame = document.getElementById('sitePreview');
+var placeholder = document.getElementById('previewPlaceholder');
+if(frame){
+  frame.addEventListener('error', function(){
+    frame.style.display = 'none';
+    if(placeholder) placeholder.style.display = 'flex';
+  });
+  // Give it 8s — if still no load, show placeholder
+  setTimeout(function(){
+    try{
+      if(!frame.contentDocument && !frame.contentWindow.document){
+        frame.style.display='none';
+        if(placeholder) placeholder.style.display='flex';
+      }
+    }catch(e){
+      // cross-origin = page loaded fine, hide placeholder
+    }
+  }, 8000);
+}
+</script>
+</body>
+</html>
