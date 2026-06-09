@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Video Edits — Achintha Jayaweera</title>
+<link rel="icon" type="image/png" href="Assets/Achintha top logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#080808;--bg2:#0e0e0e;--bg3:#141414;
+    --text:#f0ede6;--muted:#6b6860;
+    --accent:#c8f542;
+    --border:rgba(240,237,230,0.08);--border-light:rgba(240,237,230,0.15);
+    --pad:3rem;
+  }
+  *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-weight:300;overflow-x:hidden;cursor:none;min-height:100vh;}
+  .cursor{position:fixed;width:10px;height:10px;background:var(--accent);border-radius:50%;pointer-events:none;z-index:9999;transition:transform 0.1s ease;transform:translate(-50%,-50%)}
+  .cursor-trail{position:fixed;width:32px;height:32px;border:1px solid rgba(200,245,66,0.4);border-radius:50%;pointer-events:none;z-index:9998;transition:all 0.18s ease;transform:translate(-50%,-50%)}
+  @media(hover:none){.cursor,.cursor-trail{display:none}body{cursor:auto}}
+
+  nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:1.5rem var(--pad);display:flex;align-items:center;justify-content:space-between}
+  nav::before{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,rgba(8,8,8,0.95) 0%,transparent 100%);pointer-events:none}
+  .nav-logo{text-decoration:none;position:relative;flex-shrink:0}
+  .nav-logo img{height:32px;width:auto;display:block;filter:brightness(0) invert(1)}
+  .nav-back{display:flex;align-items:center;gap:0.6rem;font-family:'DM Mono',monospace;font-size:0.75rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:color 0.3s;position:relative;}
+  .nav-back:hover{color:var(--accent)}
+  .nav-back svg{transition:transform 0.3s}
+  .nav-back:hover svg{transform:translateX(-4px)}
+
+  .page-header{padding:9rem var(--pad) 4rem;position:relative;overflow:hidden;}
+  .page-header::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(240,237,230,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(240,237,230,0.025) 1px,transparent 1px);background-size:80px 80px;pointer-events:none;mask-image:linear-gradient(to bottom,transparent,rgba(0,0,0,0.3) 40%,transparent);}
+  .breadcrumb{display:flex;align-items:center;gap:0.6rem;font-family:'DM Mono',monospace;font-size:0.7rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);margin-bottom:1.5rem;}
+  .breadcrumb a{color:var(--muted);text-decoration:none;transition:color 0.3s}
+  .breadcrumb a:hover{color:var(--accent)}
+  .breadcrumb span{opacity:0.4}
+  .page-label{font-size:0.72rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--accent);margin-bottom:1rem;display:flex;align-items:center;gap:1rem;}
+  .page-label::after{content:'';flex:1;max-width:60px;height:1px;background:var(--accent);opacity:0.4}
+  .page-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(4rem,9vw,9rem);line-height:0.88;letter-spacing:-0.02em;margin-bottom:1.5rem;}
+  .page-sub{font-size:1rem;color:var(--muted);max-width:480px;line-height:1.7;}
+  .project-count{font-family:'DM Mono',monospace;font-size:0.72rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);margin-top:2rem;display:flex;align-items:center;gap:1rem;}
+  .project-count::before{content:'';width:40px;height:1px;background:var(--border-light);}
+
+  .projects-section{padding:2rem var(--pad) 8rem;}
+  .proj-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;}
+
+  .proj-card{
+    background:var(--bg2);border:1px solid var(--border);
+    position:relative;overflow:hidden;
+    transition:all 0.4s cubic-bezier(0.16,1,0.3,1);
+    cursor:pointer;display:flex;flex-direction:column;
+  }
+  .proj-card::before{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:var(--accent);transform:scaleX(0);transform-origin:left;transition:transform 0.4s cubic-bezier(0.16,1,0.3,1);z-index:2;}
+  .proj-card:hover{border-color:var(--border-light);transform:translateY(-6px);box-shadow:0 20px 60px rgba(0,0,0,0.5);}
+  .proj-card:hover::before{transform:scaleX(1);}
+
+  /* Animated thumbnail area */
+  .proj-thumb{
+    width:100%;aspect-ratio:16/10;
+    background:var(--bg3);border-bottom:1px solid var(--border);
+    display:flex;align-items:center;justify-content:center;
+    position:relative;overflow:hidden;
+  }
+  .proj-thumb::before{
+    content:'';position:absolute;inset:0;
+    background-image:linear-gradient(rgba(240,237,230,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(240,237,230,0.03) 1px,transparent 1px);
+    background-size:32px 32px;
+  }
+
+  /* Long-form icon — film reel */
+  .icon-scene{position:relative;width:72px;height:72px;display:flex;align-items:center;justify-content:center;}
+  .icon-glow{position:absolute;inset:-12px;border-radius:50%;background:radial-gradient(circle,rgba(200,245,66,0.12),transparent 70%);animation:iconGlow 2.5s ease-in-out infinite;}
+  @keyframes iconGlow{0%,100%{opacity:0.4;transform:scale(0.9);}50%{opacity:1;transform:scale(1.1);}}
+  .icon-svg{position:relative;z-index:2;}
+
+  /* Long-form: film strip animation */
+  .film-strip{animation:filmFloat 3s ease-in-out infinite;}
+  @keyframes filmFloat{0%,100%{transform:translateY(0);}50%{transform:translateY(-5px);}}
+  .film-frame{animation:filmFlicker 2s ease-in-out infinite;}
+  @keyframes filmFlicker{0%,100%{opacity:1;}50%{opacity:0.6;}}
+
+  /* Short-form: phone pulse animation */
+  .phone-body{animation:phoneFloat 3s ease-in-out infinite;}
+  @keyframes phoneFloat{0%,100%{transform:translateY(0);}50%{transform:translateY(-5px);}}
+  .phone-screen{animation:screenPulse 1.5s ease-in-out infinite;}
+  @keyframes screenPulse{0%,100%{fill:rgba(200,245,66,0.15);}50%{fill:rgba(200,245,66,0.35);}}
+  .play-dot{animation:playPulse 1.5s ease-in-out infinite 0.3s;}
+  @keyframes playPulse{0%,100%{opacity:0.6;transform:scale(1);}50%{opacity:1;transform:scale(1.15);}}
+
+  .proj-body{padding:1.8rem;display:flex;flex-direction:column;gap:1rem;flex:1;}
+  .proj-num{font-family:'DM Mono',monospace;font-size:0.68rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--accent);}
+  .proj-title{font-family:'Bebas Neue',sans-serif;font-size:2rem;letter-spacing:0.04em;line-height:1;color:var(--text);}
+  .proj-short{font-size:0.85rem;color:var(--muted);line-height:1.7;flex:1;}
+  .proj-tags{display:flex;flex-wrap:wrap;gap:0.4rem;}
+  .ptag{font-family:'DM Mono',monospace;font-size:0.62rem;letter-spacing:0.1em;text-transform:uppercase;border:1px solid var(--border);padding:0.25rem 0.65rem;color:var(--muted);}
+  .proj-actions{display:flex;gap:0.8rem;flex-wrap:wrap;margin-top:0.5rem;}
+  .proj-btn-primary{display:inline-flex;align-items:center;gap:0.4rem;background:var(--accent);color:#000;font-family:'DM Mono',monospace;font-size:0.7rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;padding:0.7rem 1.3rem;text-decoration:none;transition:all 0.3s;border:none;cursor:pointer;}
+  .proj-btn-primary:hover{background:#d4ff4a;transform:translateY(-2px);}
+  .proj-btn-secondary{display:inline-flex;align-items:center;gap:0.5rem;border:1px solid var(--border-light);color:var(--text);font-family:'DM Mono',monospace;font-size:0.7rem;letter-spacing:0.1em;text-transform:uppercase;padding:0.7rem 1.3rem;text-decoration:none;transition:all 0.3s;background:transparent;cursor:pointer;}
+  .proj-btn-secondary:hover{border-color:var(--text);transform:translateY(-2px);}
+
+  /* Coming soon card */
+  .coming-soon{opacity:0.4;cursor:default;}
+  .coming-soon:hover{transform:none;box-shadow:none;border-color:var(--border);}
+  .coming-soon::before{display:none;}
+
+  .reveal{opacity:0;transform:translateY(40px);transition:opacity 0.9s cubic-bezier(0.16,1,0.3,1),transform 0.9s cubic-bezier(0.16,1,0.3,1);}
+  .reveal.visible{opacity:1;transform:translateY(0);}
+  .reveal-delay-1{transition-delay:0.1s;}.reveal-delay-2{transition-delay:0.2s;}.reveal-delay-3{transition-delay:0.3s;}
+
+  footer{padding:2rem var(--pad);display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--border);flex-wrap:wrap;gap:1rem;}
+  footer p{font-size:0.75rem;color:var(--muted);letter-spacing:0.06em;}
+  .footer-logo{font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:0.12em;color:var(--muted);}
+
+  @media(max-width:1024px){.proj-grid{grid-template-columns:repeat(2,1fr);}}
+  @media(max-width:640px){:root{--pad:1.5rem;}.proj-grid{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-trail" id="cursorTrail"></div>
+
+<nav>
+  <a href="Achintha%20portfolio.HTML" class="nav-logo">
+    <img src="Assets/A Final.png" alt="Achintha Jayaweera">
+  </a>
+  <a href="Achintha%20portfolio.HTML#projects" class="nav-back">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8L10 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    Back to Portfolio
+  </a>
+</nav>
+
+<div class="page-header">
+  <div class="breadcrumb">
+    <a href="Achintha%20portfolio.HTML">Portfolio</a>
+    <span>→</span>
+    <span>Video Edits</span>
+  </div>
+  <div class="page-label">Post Production</div>
+  <h1 class="page-title">VIDEO<br>EDITS</h1>
+  <p class="page-sub">Professional video editing for promotional, corporate and social content — from cinematic long-form productions to high-retention short-form content.</p>
+  <div class="project-count">02 Categories · More projects coming soon</div>
+</div>
+
+<div class="projects-section">
+  <div class="proj-grid">
+
+    <!-- ── LONG-FORM VIDEOS ── -->
+    <div class="proj-card reveal" onclick="window.location.href='video-longform.html'">
+      <div class="proj-thumb">
+        <div class="icon-scene">
+          <div class="icon-glow"></div>
+          <svg class="icon-svg film-strip" width="64" height="64" viewBox="0 0 64 64" fill="none">
+            <!-- Film strip body -->
+            <rect x="12" y="20" width="40" height="24" rx="2" stroke="#c8f542" stroke-width="1.5"/>
+            <!-- Sprocket holes left -->
+            <rect x="8" y="24" width="4" height="4" rx="1" fill="rgba(200,245,66,0.3)" class="film-frame"/>
+            <rect x="8" y="32" width="4" height="4" rx="1" fill="rgba(200,245,66,0.3)" class="film-frame"/>
+            <rect x="8" y="40" width="4" height="4" rx="1" fill="rgba(200,245,66,0.3)" class="film-frame"/>
+            <!-- Sprocket holes right -->
+            <rect x="52" y="24" width="4" height="4" rx="1" fill="rgba(200,245,66,0.3)" class="film-frame"/>
+            <rect x="52" y="32" width="4" height="4" rx="1" fill="rgba(200,245,66,0.3)" class="film-frame"/>
+            <rect x="52" y="40" width="4" height="4" rx="1" fill="rgba(200,245,66,0.3)" class="film-frame"/>
+            <!-- Inner frames -->
+            <rect x="16" y="24" width="10" height="16" rx="1" stroke="rgba(200,245,66,0.4)" stroke-width="1"/>
+            <rect x="29" y="24" width="10" height="16" rx="1" stroke="rgba(200,245,66,0.4)" stroke-width="1"/>
+            <rect x="38" y="24" width="10" height="16" rx="1" stroke="rgba(200,245,66,0.4)" stroke-width="1"/>
+            <!-- Play triangle in middle frame -->
+            <polygon points="32,29 32,37 38,33" fill="rgba(200,245,66,0.6)" class="play-dot"/>
+          </svg>
+        </div>
+      </div>
+      <div class="proj-body">
+        <div class="proj-num">01 · Post Production</div>
+        <h2 class="proj-title">Long-Form Videos</h2>
+        <p class="proj-short">Cinematic long-form video productions — brand films, documentaries, corporate reels, and full-length commercial edits. Crafted for maximum impact with professional colour grading and sound design.</p>
+        <div class="proj-tags">
+          <span class="ptag">Premiere Pro</span>
+          <span class="ptag">After Effects</span>
+          <span class="ptag">Colour Grading</span>
+          <span class="ptag">Sound Design</span>
+        </div>
+        <div class="proj-actions">
+          <a href="video-longform.html" class="proj-btn-primary" onclick="event.stopPropagation();">View Projects →</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── SHORT-FORM VIDEOS ── -->
+    <div class="proj-card reveal reveal-delay-1" onclick="window.location.href='video-shortform.html'">
+      <div class="proj-thumb">
+        <div class="icon-scene">
+          <div class="icon-glow"></div>
+          <svg class="icon-svg" width="64" height="64" viewBox="0 0 64 64" fill="none">
+            <!-- Phone body -->
+            <g class="phone-body">
+              <rect x="22" y="10" width="20" height="36" rx="4" stroke="#c8f542" stroke-width="1.5"/>
+              <!-- Screen -->
+              <rect x="25" y="15" width="14" height="22" rx="2" class="phone-screen"/>
+              <!-- Home bar -->
+              <rect x="28" y="49" width="8" height="2" rx="1" fill="rgba(200,245,66,0.4)"/>
+              <!-- Camera -->
+              <circle cx="32" cy="13" r="1.5" fill="rgba(200,245,66,0.3)"/>
+              <!-- Play button on screen -->
+              <polygon points="30,23 30,31 37,27" fill="rgba(200,245,66,0.8)" class="play-dot"/>
+              <!-- Vertical lines suggesting reels -->
+              <line x1="42" y1="22" x2="42" y2="22" stroke="#c8f542" stroke-width="0"/>
+            </g>
+            <!-- Signal/wifi dots -->
+            <circle cx="46" cy="20" r="1.5" fill="rgba(200,245,66,0.5)" class="film-frame"/>
+            <circle cx="50" cy="17" r="1.5" fill="rgba(200,245,66,0.3)" class="film-frame" style="animation-delay:0.2s"/>
+            <circle cx="54" cy="14" r="1.5" fill="rgba(200,245,66,0.15)" class="film-frame" style="animation-delay:0.4s"/>
+          </svg>
+        </div>
+      </div>
+      <div class="proj-body">
+        <div class="proj-num">02 · Post Production</div>
+        <h2 class="proj-title">Short-Form Videos</h2>
+        <p class="proj-short">High-retention short-form content optimised for Instagram Reels, TikTok, and YouTube Shorts. Fast-paced edits, dynamic transitions, and scroll-stopping hooks — built for maximum engagement.</p>
+        <div class="proj-tags">
+          <span class="ptag">Reels</span>
+          <span class="ptag">TikTok</span>
+          <span class="ptag">YT Shorts</span>
+          <span class="ptag">Motion Graphics</span>
+        </div>
+        <div class="proj-actions">
+          <a href="video-shortform.html" class="proj-btn-primary" onclick="event.stopPropagation();">View Projects →</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── COMING SOON ── -->
+    <div class="proj-card coming-soon">
+      <div class="proj-thumb">
+        <span style="font-family:'DM Mono',monospace;font-size:0.7rem;letter-spacing:0.15em;color:var(--muted);opacity:0.4;text-transform:uppercase;">More Soon</span>
+      </div>
+      <div class="proj-body">
+        <div class="proj-num">03 · Post Production</div>
+        <h2 class="proj-title">More Coming</h2>
+        <p class="proj-short">More video categories being added soon.</p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<footer>
+  <span class="footer-logo">Achintha Jayaweera</span>
+  <p>© 2026 · Video Edits</p>
+  <p>Colombo, Sri Lanka</p>
+</footer>
+
+<script>
+var cur=document.getElementById('cursor'),trail=document.getElementById('cursorTrail');
+var mx=0,my=0,tx=0,ty=0;
+document.addEventListener('mousemove',function(e){mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
+(function a(){tx+=(mx-tx)*0.12;ty+=(my-ty)*0.12;trail.style.left=tx+'px';trail.style.top=ty+'px';requestAnimationFrame(a);})();
+document.querySelectorAll('a,button,.proj-card').forEach(function(el){
+  el.addEventListener('mouseenter',function(){cur.style.transform='translate(-50%,-50%) scale(2.5)';trail.style.transform='translate(-50%,-50%) scale(1.5)';trail.style.borderColor='rgba(200,245,66,0.6)';});
+  el.addEventListener('mouseleave',function(){cur.style.transform='translate(-50%,-50%) scale(1)';trail.style.transform='translate(-50%,-50%) scale(1)';trail.style.borderColor='rgba(200,245,66,0.4)';});
+});
+var ro=new IntersectionObserver(function(e){e.forEach(function(x){if(x.isIntersecting)x.target.classList.add('visible');});},{threshold:0.1,rootMargin:'0px 0px -60px 0px'});
+document.querySelectorAll('.reveal').forEach(function(el){ro.observe(el);});
+</script>
+</body>
+</html>
