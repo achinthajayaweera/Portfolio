@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Short-Form Videos — Achintha Jayaweera</title>
+<link rel="icon" type="image/png" href="Assets/Achintha top logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#080808;--bg2:#0e0e0e;--bg3:#141414;
+    --text:#f0ede6;--muted:#6b6860;
+    --accent:#c8f542;
+    --border:rgba(240,237,230,0.08);--border-light:rgba(240,237,230,0.15);
+    --pad:3rem;
+  }
+  *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-weight:300;overflow-x:hidden;cursor:none;min-height:100vh;}
+  .cursor{position:fixed;width:10px;height:10px;background:var(--accent);border-radius:50%;pointer-events:none;z-index:9999;transition:transform 0.1s ease;transform:translate(-50%,-50%)}
+  .cursor-trail{position:fixed;width:32px;height:32px;border:1px solid rgba(200,245,66,0.4);border-radius:50%;pointer-events:none;z-index:9998;transition:all 0.18s ease;transform:translate(-50%,-50%)}
+  @media(hover:none){.cursor,.cursor-trail{display:none}body{cursor:auto}}
+
+  nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:1.5rem var(--pad);display:flex;align-items:center;justify-content:space-between}
+  nav::before{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,rgba(8,8,8,0.95) 0%,transparent 100%);pointer-events:none}
+  .nav-logo{text-decoration:none;position:relative;flex-shrink:0}
+  .nav-logo img{height:32px;width:auto;display:block;filter:brightness(0) invert(1)}
+  .nav-back{display:flex;align-items:center;gap:0.6rem;font-family:'DM Mono',monospace;font-size:0.75rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:color 0.3s;position:relative;}
+  .nav-back:hover{color:var(--accent)}
+  .nav-back svg{transition:transform 0.3s}
+  .nav-back:hover svg{transform:translateX(-4px)}
+
+  .page-header{padding:9rem var(--pad) 4rem;position:relative;overflow:hidden;}
+  .page-header::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(240,237,230,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(240,237,230,0.025) 1px,transparent 1px);background-size:80px 80px;pointer-events:none;mask-image:linear-gradient(to bottom,transparent,rgba(0,0,0,0.3) 40%,transparent);}
+  .breadcrumb{display:flex;align-items:center;gap:0.6rem;font-family:'DM Mono',monospace;font-size:0.7rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);margin-bottom:1.5rem;}
+  .breadcrumb a{color:var(--muted);text-decoration:none;transition:color 0.3s}
+  .breadcrumb a:hover{color:var(--accent)}
+  .breadcrumb span{opacity:0.4}
+  .page-label{font-size:0.72rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--accent);margin-bottom:1rem;display:flex;align-items:center;gap:1rem;}
+  .page-label::after{content:'';flex:1;max-width:60px;height:1px;background:var(--accent);opacity:0.4}
+  .page-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(4rem,9vw,9rem);line-height:0.88;letter-spacing:-0.02em;margin-bottom:1.5rem;}
+  .page-sub{font-size:1rem;color:var(--muted);max-width:480px;line-height:1.7;}
+  .project-count{font-family:'DM Mono',monospace;font-size:0.72rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);margin-top:2rem;display:flex;align-items:center;gap:1rem;}
+  .project-count::before{content:'';width:40px;height:1px;background:var(--border-light);}
+
+  .projects-section{padding:2rem var(--pad) 8rem;}
+
+  /* Short-form grid — 4 columns (portrait 9:16 ratio) */
+  .proj-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.2rem;}
+
+  /* ── VIDEO CARD ── */
+  .vid-card{
+    background:var(--bg2);border:1px solid var(--border);
+    position:relative;overflow:hidden;
+    transition:all 0.4s cubic-bezier(0.16,1,0.3,1);
+    cursor:pointer;display:flex;flex-direction:column;
+    text-decoration:none;color:var(--text);
+  }
+  .vid-card::before{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:var(--accent);transform:scaleX(0);transform-origin:left;transition:transform 0.4s cubic-bezier(0.16,1,0.3,1);z-index:2;}
+  .vid-card:hover{border-color:var(--border-light);transform:translateY(-6px);box-shadow:0 20px 60px rgba(0,0,0,0.5);}
+  .vid-card:hover::before{transform:scaleX(1);}
+
+  /* Portrait thumbnail — 9:16 for short-form/reels */
+  .vid-thumb{
+    width:100%;aspect-ratio:9/16;position:relative;overflow:hidden;
+    background:var(--bg3);border-bottom:1px solid var(--border);
+  }
+  .vid-thumb img{
+    width:100%;height:100%;object-fit:cover;display:block;
+    transition:transform 0.6s cubic-bezier(0.16,1,0.3,1);
+    filter:brightness(0.85);
+  }
+  .vid-card:hover .vid-thumb img{transform:scale(1.04);filter:brightness(1);}
+
+  /* Play overlay */
+  .vid-overlay{
+    position:absolute;inset:0;
+    background:linear-gradient(to bottom,transparent 40%,rgba(8,8,8,0.7) 100%);
+    display:flex;align-items:center;justify-content:center;
+    opacity:0;transition:opacity 0.3s;
+  }
+  .vid-card:hover .vid-overlay{opacity:1;}
+  .play-btn{
+    width:52px;height:52px;border-radius:50%;
+    background:var(--accent);
+    display:flex;align-items:center;justify-content:center;
+    transform:scale(0.8);transition:transform 0.3s cubic-bezier(0.16,1,0.3,1);
+  }
+  .vid-card:hover .play-btn{transform:scale(1);}
+  .play-btn svg{margin-left:3px;}
+
+  /* Drive badge */
+  .gdrive-badge{
+    position:absolute;top:8px;left:8px;
+    background:rgba(0,0,0,0.7);border:1px solid rgba(255,255,255,0.1);
+    font-family:'DM Mono',monospace;font-size:0.6rem;letter-spacing:0.08em;
+    text-transform:uppercase;color:var(--muted);
+    padding:0.2rem 0.55rem;z-index:3;
+    display:flex;align-items:center;gap:0.4rem;
+  }
+  .gdrive-dot{width:6px;height:6px;border-radius:50%;background:var(--accent);}
+
+  /* Thumb fallback */
+  .vid-thumb-fallback{
+    width:100%;height:100%;
+    background:var(--bg3);
+    display:flex;align-items:center;justify-content:center;
+    position:absolute;inset:0;z-index:0;
+  }
+
+  .vid-body{padding:1.2rem 1.4rem 1.4rem;display:flex;flex-direction:column;gap:0.5rem;flex:1;}
+  .vid-num{font-family:'DM Mono',monospace;font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--accent);}
+  .vid-title{font-family:'Bebas Neue',sans-serif;font-size:1.35rem;letter-spacing:0.04em;line-height:1.1;color:var(--text);}
+  .vid-desc{font-size:0.78rem;color:var(--muted);line-height:1.6;flex:1;}
+  .vid-tags{display:flex;flex-wrap:wrap;gap:0.4rem;margin-top:0.2rem;}
+  .vtag{font-family:'DM Mono',monospace;font-size:0.58rem;letter-spacing:0.1em;text-transform:uppercase;border:1px solid var(--border);padding:0.2rem 0.5rem;color:var(--muted);}
+  .watch-btn{
+    display:inline-flex;align-items:center;gap:0.5rem;margin-top:0.6rem;
+    background:var(--accent);color:#000;
+    font-family:'DM Mono',monospace;font-size:0.65rem;font-weight:600;
+    letter-spacing:0.1em;text-transform:uppercase;
+    padding:0.6rem 1rem;align-self:flex-start;
+    transition:all 0.3s;border:none;
+  }
+  .watch-btn:hover{background:#d4ff4a;transform:translateY(-2px);}
+
+  .reveal{opacity:0;transform:translateY(40px);transition:opacity 0.9s cubic-bezier(0.16,1,0.3,1),transform 0.9s cubic-bezier(0.16,1,0.3,1);}
+  .reveal.visible{opacity:1;transform:translateY(0);}
+  .reveal-delay-1{transition-delay:0.08s;}.reveal-delay-2{transition-delay:0.16s;}.reveal-delay-3{transition-delay:0.24s;}
+
+  footer{padding:2rem var(--pad);display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--border);flex-wrap:wrap;gap:1rem;}
+  footer p{font-size:0.75rem;color:var(--muted);letter-spacing:0.06em;}
+  .footer-logo{font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:0.12em;color:var(--muted);}
+
+  @media(max-width:1200px){.proj-grid{grid-template-columns:repeat(3,1fr);}}
+  @media(max-width:860px){.proj-grid{grid-template-columns:repeat(2,1fr);}}
+  @media(max-width:480px){:root{--pad:1.5rem;}.proj-grid{grid-template-columns:repeat(2,1fr);gap:0.8rem;}}
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-trail" id="cursorTrail"></div>
+
+<nav>
+  <a href="Achintha%20portfolio.HTML" class="nav-logo">
+    <img src="Assets/A Final.png" alt="Achintha Jayaweera">
+  </a>
+  <a href="video-edits.html" class="nav-back">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8L10 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    Video Edits
+  </a>
+</nav>
+
+<div class="page-header">
+  <div class="breadcrumb">
+    <a href="Achintha%20portfolio.HTML">Portfolio</a>
+    <span>→</span>
+    <a href="video-edits.html">Video Edits</a>
+    <span>→</span>
+    <span>Short-Form</span>
+  </div>
+  <div class="page-label">Post Production · Short-Form</div>
+  <h1 class="page-title">SHORT-FORM<br>VIDEOS</h1>
+  <p class="page-sub">Reels, shorts, and social content — high-impact edits crafted for maximum engagement in a short runtime.</p>
+  <div class="project-count">15 Projects</div>
+</div>
+
+<div class="projects-section">
+  <div class="proj-grid">
+
+    <!-- 01 -->
+    <a class="vid-card reveal" href="https://drive.google.com/file/d/1LJWpCZbeKaa96a84BkCtERs_7SH46RON/view" target="_blank">
+      <div class="vid-thumb">
+        <div class="vid-thumb-fallback">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="rgba(200,245,66,0.3)" stroke-width="1.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        </div>
+        <img src="https://drive.google.com/thumbnail?id=1LJWpCZbeKaa96a84BkCtERs_7SH46RON&sz=w480" alt="Short-Form 01" onerror="this.style.display='none'">
+        <div class="gdrive-badge"><span class="gdrive-dot"></span>Drive</div>
+        <div class="vid-overlay"><div class="play-btn"><svg width="18" height="18" viewBox="0 0 24 24" fill="#000"><polygon points="5 3 19 12 5 21 5 3"/></svg></div></div>
+      </div>
+      <div class="vid-body">
+        <div class="vid-num">01 · Short-Form</div>
+        <div class="vid-title">Short Video 01</div>
+        <div class="vid-desc">Short-form edit — fast-paced cuts, motion graphics, and sound design optimised for social platforms.</div>
+        <div class="vid-tags"><span class="vtag">Premiere Pro</span><span class="vtag">After Effects</span></div>
+        <span class="watch-btn"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3" fill="currentColor"/></svg>Watch Video</span>
+      </div>
+    </a>
+
+    <!-- 02 -->
+    <a class="vid-card reveal reveal-delay-1" href="https://drive.google.com/file/d/143Rahp-XO5l3-PIZCTxXuVRFSZOzOv0v/view" target="_blank">
+      <div class="vid-thumb">
+        <div class="vid-thumb-fallback">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="rgba(200,245,66,0.3)" stroke-width="1.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        </div>
+        <img src="https://drive.google.com/thumbnail?id=143Rahp-XO5l3-PIZCTxXuVRFSZOzOv0v&sz=w480" alt="Short-Form 02" onerror="this.style.display='none'">
+        <div class="gdrive-badge"><span class="gdrive-dot"></span>Drive</div>
+        <div class="vid-overlay"><div class="play-btn"><svg width="18" height="18" viewBox="0 0 24 24" fill="#000"><polygon points="5 3 19 12 5 21 5 3"/></svg></div></div>
+      </div>
+      <div class="vid-body">
+        <div class="vid-num">02 · Short-Form</div>
+        <div class="vid-title">Short Video 02</div>
+        <div class="vid-desc">Short-form edit — fast-paced cuts, motion graphics, and sound design optimised for social platforms.</div>
+        <div class="vid-tags"><span class="vtag">Premiere Pro</span><span class="vtag">After Effects</span></div>
+        <span class="watch-btn"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3" fill="currentColor"/></svg>Watch Video</span>
+      </div>
+    </a>
+
+    <!-- 03 -->
+    <a class="vid-card reveal reveal-delay-2" href="https://drive.google.com/file/d/1DokZA4EwSAAiQ1QbQnFXI4o9p1HYfI_C/view" target="_blank">
+      <div class="vid-thumb">
+        <div class="vid-thumb-fallback">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="rgba(200,245,66,0.3)" stroke-width="1.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        </div>
+        <img src="https://drive.google.com/thumbnail?id=1DokZA4EwSAAiQ1QbQnFXI4o9p1HYfI_C&sz=w480" alt="Short-Form 03" onerror="this.style.display='none'">
+        <div class="gdrive-badge"><span class="gdrive-dot"></span>Drive</div>
+        <div class="vid-overlay"><div class="play-btn"><svg width="18" height="18" viewBox="0 0 24 24" fill="#000"><polygon points="5 3 19 12 5 21 5 3"/></svg></div></div>
+      </div>
+      <div class="vid-body">
+        <div class="vid-num">03 · Short-Form</div>
+        <div class="vid-title">Short Video 03</div>
+        <div class="vid-desc">Short-form edit — fast-paced cuts, motion graphics, and sound design optimised for social platforms.</div>
+        <div class="vid-tags"><span class="vtag">Premiere Pro</span><span class="vtag">After Effects</span></div>
+        <span class="watch-btn"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3" fill="currentColor"/></svg>Watch Video</span>
+      </div>
+    </a>
+
+    <!-- 04 -->
+    <a class="vid-card reveal reveal-delay-3" href="https://drive.google.com/file/d/1jQXtcIwqzA-WRenn1Aqy8478tTwXX_p1/view" target="_blank">
+      <div class="vid-thumb">
+        <div class="vid-thumb-fallback">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="rgba(200,245,66,0.3)" stroke-width="1.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        </div>
+        <img src="https://drive.google.com/thumbnail?id=1jQXtcIwqzA-WRenn1Aqy8478tTwXX_p1&sz=w480" alt="Short-Form 04" onerror="this.style.display='none'">
+        <div class="gdrive-badge"><span class="gdrive-dot"></span>Drive</div>
+        <div class="vid-overlay"><div class="play-btn"><svg width="18" height="18" viewBox="0 0 24 24" fill="#000"><polygon points="5 3 19 12 5 21 5 3"/></svg></div></div>
+      </div>
+      <div class="vid-body">
+        <div class="vid-num">04 · Short-Form</div>
+        <div class="vid-title">Short Video 04</div>
+        <div class="vid-desc">Short-form edit — fast-paced cuts, motion graphics, and sound design optimised for social platforms.</div>
+        <div class="vid-tags"><span class="vtag">Premiere Pro</span><span class="vtag">After Effects</span></div>
+        <span class="watch-btn"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3" fill="currentColor"/></svg>Watch Video</span>
+      </div>
+    </a>
+
+    <!-- 05 -->
+    <a class="vid-card reveal" href="https://drive.google.com/file/d/1xswqzMd5m2QUBHdmFpwxnauNm2SLV7RH/view" target="_blank">
+      <div class="vid-thumb">
+        <div class="vid-thumb-fallback">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="rgba(200,245,66,0.3)" stroke-width="1.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        </div>
+        <img src="https://drive.google.com/thumbnail?id=1xswqzMd5m2QUBHdmFpwxnauNm2SLV7RH&sz=w480" alt="Short-Form 05" onerror="this.style.display='none'">
+        <div class="gdrive-badge"><span class="gdrive-dot"></span>Drive</div>
+        <div class="vid-overlay"><div class="play-btn"><svg width="18" height="18" viewBox="0 0 24 24" fill="#000"><polygon points="5 3 19 12 5 21 5 3"/></svg></div></div>
+      </div>
+      <div class="vid-body">
+        <div class="vid-num">05 · Short-Form</div>
+        <div class="vid-title">Short Video 05</div>
+        <div class="vid-desc">Short-form edit — fast-paced cuts, motion graphics, and sound design optimised for social platforms.</div>
+        <div class="vid-tags"><span class="vtag">Premiere Pro</span><span class="vtag">After Effects</span></div>
+        <span class="watch-btn"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3" fill="currentColor"/></svg>Watch Video</span>
+      </div>
+    </a>
+
+    <!-- 06 -->
+    <a class="vid-card reveal reveal-delay-1" href="https://drive.google.com/file/d/1Oh1fBFiUDIY-ALBeiUjRtbECnFnbgbck/view" target="_blank">
+      <div class="vid-thumb">
+        <div class="vid-thumb-fallback">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="rgba(200,245,66,0.3)" stroke-width="1.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        </div>
+        <img src="https://drive.google.com/thumbnail?id=1Oh1fBFiUDIY-ALBeiUjRtbECnFnbgbck&sz=w480" alt="Short-Form 06" onerror="this.style.display='none'">
+        <div class="gdrive-badge"><span class="gdrive-dot"></span>Drive</div>
+        <div class="vid-overlay"><div class="play-btn"><svg width="18" height="18" viewBox="0 0 24 24" fill="#000"><polygon points="5 3 19 12 5 21 5 3"/></svg></div></div>
+      </div>
+      <div class="vid-body">
+        <div class="vid-num">06 · Short-Form</div>
+        <div class="vid-title">Short Video 06</div>
+        <div class="vid-desc">Short-form edit — fast-paced cuts, motion graphics, and sound design optimised for social platforms.</div>
+        <div class="vid-tags"><span class="vtag">Premiere Pro</span><span class="vtag">After Effects</span></div>
+        <span class="watch-btn"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3" fill="currentColor"/></svg>Watch Video</span>
+      </div>
+    </a>
+
+    <!-- 07 -->
+    <a class="vid-card reveal reveal-delay-2" href="https://drive.google.com/file/d/1k_GZATtjc0WTgdc-5JXQ0Nt_mrs7CQF2/view" target="_blank">
+      <div class="vid-thumb">
+        <div class="vid-thumb-fallback">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="rgba(200,245,66,0.3)" stroke-width="1.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        </div>
+        <img src="https://drive.google.com/thumbnail?id=1k_GZATtjc0WTgdc-5JXQ0Nt_mrs7CQF2&sz=w480" alt="Short-Form 07" onerror="this.style.display='none'">
+        <div class="gdrive-badge"><span class="gdrive-dot"></span>Drive</div>
+        <div class="vid-overlay"><div class="play-btn"><svg width="18" height="18" viewBox="0 0 24 24" fill="#000"><polygon points="5 3 19 12 5 21 5 3"/></svg></div></div>
+      </div>
+      <div class="vid-body">
+        <div class="vid-num">07 · Short-Form</div>
+        <div class="vid-title">Short Video 07</div>
+        <div class="vid-desc">Short-form edit — fast-paced cuts, motion graphics, and sound design optimised for social platforms.</div>
+        <div class="vid-tags"><span class="vtag">Premiere Pro</span><span class="vtag">After Effects</span></div>
+        <span class="watch-btn"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3" fill="currentColor"/></svg>Watch Video</span>
+      </div>
+    </a>
+
+    <!-- 08 -->
+    <a class="vid-card reveal reveal-delay-3" href="https://drive.google.com/file/d/1ihLd3f_c9elerGmQ2ZPtxg8sOyYtPGGq/view" target="_blank">
+      <div class="vid-thumb">
+        <div class="vid-thumb-fallback">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="rgba(200,245,66,0.3)" stroke-width="1.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        </div>
+        <img src="https://drive.google.com/thumbnail?id=1ihLd3f_c9elerGmQ2ZPtxg8sOyYtPGGq&sz=w480" alt="Short-Form 08" onerror="this.style.display='none'">
+        <div class="gdrive-badge"><span class="gdrive-dot"></span>Drive</div>
+        <div class="vid-overlay"><div class="play-btn"><svg width="18" height="18" viewBox="0 0 24 24" fill="#000"><polygon points="5 3 19 12 5 21 5 3"/></svg></div></div>
+      </div>
+      <div class="vid-body">
+        <div class="vid-num">08 · Short-Form</div>
+        <div class="vid-title">Short Video 08</div>
+        <div class="vid-desc">Short-form edit — fast-paced cuts, motion graphics, and sound design optimised for social platforms.</div>
+        <div class="vid-tags"><span class="vtag">Premiere Pro</span><span class="vtag">After Effects</span></div>
+        <span class="watch-btn"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3" fill="currentColor"/></svg>Watch Video</span>
+      </div>
+    </a>
+
+    <!-- 09 -->
+    <a class="vid-card reveal" href="https://drive.google.com/file/d/1vor_2Mb0EWx1vDwrR8b7yPYwe5iMoJg2/view" target="_blank">
+      <div class="vid-thumb">
+        <div class="vid-thumb-fallback">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="rgba(200,245,66,0.3)" stroke-width="1.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        </div>
+        <img src="https://drive.google.com/thumbnail?id=1vor_2Mb0EWx1vDwrR8b7yPYwe5iMoJg2&sz=w480" alt="Short-Form 09" onerror="this.style.display='none'">
+        <div class="gdrive-badge"><span class="gdrive-dot"></span>Drive</div>
+        <div class="vid-overlay"><div class="play-btn"><svg width="18" height="18" viewBox="0 0 24 24" fill="#000"><polygon points="5 3 19 12 5 21 5 3"/></svg></div></div>
+      </div>
+      <div class="vid-body">
+        <div class="vid-num">09 · Short-Form</div>
+        <div class="vid-title">Short Video 09</div>
+        <div class="vid-desc">Short-form edit — fast-paced cuts, motion graphics, and sound design optimised for social platforms.</div>
+        <div class="vid-tags"><span class="vtag">Premiere Pro</span><span class="vtag">After Effects</span></div>
+        <span class="watch-btn"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3" fill="currentColor"/></svg>Watch Video</span>
+      </div>
+    </a>
+
+    <!-- 10 -->
+    <a class="vid-card reveal reveal-delay-1" href="https://drive.google.com/file/d/1IAU2xopd-Q-I7cpk3EZAcRxq9ctdPElI/view" target="_blank">
+      <div class="vid-thumb">
+        <div class="vid-thumb-fallback">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="rgba(200,245,66,0.3)" stroke-width="1.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        </div>
+        <img src="https://drive.google.com/thumbnail?id=1IAU2xopd-Q-I7cpk3EZAcRxq9ctdPElI&sz=w480" alt="Short-Form 10" onerror="this.style.display='none'">
+        <div class="gdrive-badge"><span class="gdrive-dot"></span>Drive</div>
+        <div class="vid-overlay"><div class="play-btn"><svg width="18" height="18" viewBox="0 0 24 24" fill="#000"><polygon points="5 3 19 12 5 21 5 3"/></svg></div></div>
+      </div>
+      <div class="vid-body">
+        <div class="vid-num">10 · Short-Form</div>
+        <div class="vid-title">Short Video 10</div>
+        <div class="vid-desc">Short-form edit — fast-paced cuts, motion graphics, and sound design optimised for social platforms.</div>
+        <div class="vid-tags"><span class="vtag">Premiere Pro</span><span class="vtag">After Effects</span></div>
+        <span class="watch-btn"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3" fill="currentColor"/></svg>Watch Video</span>
+      </div>
+    </a>
+
+    <!-- 11 -->
+    <a class="vid-card reveal reveal-delay-2" href="https://drive.google.com/file/d/17normLOo-mA1gG56LN8G7ve9weG_RdNK/view" target="_blank">
+      <div class="vid-thumb">
+        <div class="vid-thumb-fallback">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="rgba(200,245,66,0.3)" stroke-width="1.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        </div>
+        <img src="https://drive.google.com/thumbnail?id=17normLOo-mA1gG56LN8G7ve9weG_RdNK&sz=w480" alt="Short-Form 11" onerror="this.style.display='none'">
+        <div class="gdrive-badge"><span class="gdrive-dot"></span>Drive</div>
+        <div class="vid-overlay"><div class="play-btn"><svg width="18" height="18" viewBox="0 0 24 24" fill="#000"><polygon points="5 3 19 12 5 21 5 3"/></svg></div></div>
+      </div>
+      <div class="vid-body">
+        <div class="vid-num">11 · Short-Form</div>
+        <div class="vid-title">Short Video 11</div>
+        <div class="vid-desc">Short-form edit — fast-paced cuts, motion graphics, and sound design optimised for social platforms.</div>
+        <div class="vid-tags"><span class="vtag">Premiere Pro</span><span class="vtag">After Effects</span></div>
+        <span class="watch-btn"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3" fill="currentColor"/></svg>Watch Video</span>
+      </div>
+    </a>
+
+    <!-- 12 -->
+    <a class="vid-card reveal reveal-delay-3" href="https://drive.google.com/file/d/1laub8iNJoa08lLY6JZLBvHSbP8FGucZk/view" target="_blank">
+      <div class="vid-thumb">
+        <div class="vid-thumb-fallback">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="rgba(200,245,66,0.3)" stroke-width="1.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        </div>
+        <img src="https://drive.google.com/thumbnail?id=1laub8iNJoa08lLY6JZLBvHSbP8FGucZk&sz=w480" alt="Short-Form 12" onerror="this.style.display='none'">
+        <div class="gdrive-badge"><span class="gdrive-dot"></span>Drive</div>
+        <div class="vid-overlay"><div class="play-btn"><svg width="18" height="18" viewBox="0 0 24 24" fill="#000"><polygon points="5 3 19 12 5 21 5 3"/></svg></div></div>
+      </div>
+      <div class="vid-body">
+        <div class="vid-num">12 · Short-Form</div>
+        <div class="vid-title">Short Video 12</div>
+        <div class="vid-desc">Short-form edit — fast-paced cuts, motion graphics, and sound design optimised for social platforms.</div>
+        <div class="vid-tags"><span class="vtag">Premiere Pro</span><span class="vtag">After Effects</span></div>
+        <span class="watch-btn"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3" fill="currentColor"/></svg>Watch Video</span>
+      </div>
+    </a>
+
+    <!-- 13 -->
+    <a class="vid-card reveal" href="https://drive.google.com/file/d/1i00jDBM-c-vl2RmsiCNujE1PtTblodEb/view" target="_blank">
+      <div class="vid-thumb">
+        <div class="vid-thumb-fallback">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="rgba(200,245,66,0.3)" stroke-width="1.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        </div>
+        <img src="https://drive.google.com/thumbnail?id=1i00jDBM-c-vl2RmsiCNujE1PtTblodEb&sz=w480" alt="Short-Form 13" onerror="this.style.display='none'">
+        <div class="gdrive-badge"><span class="gdrive-dot"></span>Drive</div>
+        <div class="vid-overlay"><div class="play-btn"><svg width="18" height="18" viewBox="0 0 24 24" fill="#000"><polygon points="5 3 19 12 5 21 5 3"/></svg></div></div>
+      </div>
+      <div class="vid-body">
+        <div class="vid-num">13 · Short-Form</div>
+        <div class="vid-title">Short Video 13</div>
+        <div class="vid-desc">Short-form edit — fast-paced cuts, motion graphics, and sound design optimised for social platforms.</div>
+        <div class="vid-tags"><span class="vtag">Premiere Pro</span><span class="vtag">After Effects</span></div>
+        <span class="watch-btn"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3" fill="currentColor"/></svg>Watch Video</span>
+      </div>
+    </a>
+
+    <!-- 14 -->
+    <a class="vid-card reveal reveal-delay-1" href="https://drive.google.com/file/d/1WC9E4DuCzyIoWYQesxmOro3YF7mqEFdD/view" target="_blank">
+      <div class="vid-thumb">
+        <div class="vid-thumb-fallback">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="rgba(200,245,66,0.3)" stroke-width="1.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        </div>
+        <img src="https://drive.google.com/thumbnail?id=1WC9E4DuCzyIoWYQesxmOro3YF7mqEFdD&sz=w480" alt="Short-Form 14" onerror="this.style.display='none'">
+        <div class="gdrive-badge"><span class="gdrive-dot"></span>Drive</div>
+        <div class="vid-overlay"><div class="play-btn"><svg width="18" height="18" viewBox="0 0 24 24" fill="#000"><polygon points="5 3 19 12 5 21 5 3"/></svg></div></div>
+      </div>
+      <div class="vid-body">
+        <div class="vid-num">14 · Short-Form</div>
+        <div class="vid-title">Short Video 14</div>
+        <div class="vid-desc">Short-form edit — fast-paced cuts, motion graphics, and sound design optimised for social platforms.</div>
+        <div class="vid-tags"><span class="vtag">Premiere Pro</span><span class="vtag">After Effects</span></div>
+        <span class="watch-btn"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3" fill="currentColor"/></svg>Watch Video</span>
+      </div>
+    </a>
+
+    <!-- 15 -->
+    <a class="vid-card reveal reveal-delay-2" href="https://drive.google.com/file/d/1-dLllIcrBYC7yK9zjQumyYloLyNPT86A/view" target="_blank">
+      <div class="vid-thumb">
+        <div class="vid-thumb-fallback">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="rgba(200,245,66,0.3)" stroke-width="1.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        </div>
+        <img src="https://drive.google.com/thumbnail?id=1-dLllIcrBYC7yK9zjQumyYloLyNPT86A&sz=w480" alt="Short-Form 15" onerror="this.style.display='none'">
+        <div class="gdrive-badge"><span class="gdrive-dot"></span>Drive</div>
+        <div class="vid-overlay"><div class="play-btn"><svg width="18" height="18" viewBox="0 0 24 24" fill="#000"><polygon points="5 3 19 12 5 21 5 3"/></svg></div></div>
+      </div>
+      <div class="vid-body">
+        <div class="vid-num">15 · Short-Form</div>
+        <div class="vid-title">Short Video 15</div>
+        <div class="vid-desc">Short-form edit — fast-paced cuts, motion graphics, and sound design optimised for social platforms.</div>
+        <div class="vid-tags"><span class="vtag">Premiere Pro</span><span class="vtag">After Effects</span></div>
+        <span class="watch-btn"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3" fill="currentColor"/></svg>Watch Video</span>
+      </div>
+    </a>
+
+  </div>
+</div>
+
+<footer>
+  <span class="footer-logo">Achintha Jayaweera</span>
+  <p>© 2026 · Short-Form Videos</p>
+  <p>Colombo, Sri Lanka</p>
+</footer>
+
+<script>
+var cur=document.getElementById('cursor'),trail=document.getElementById('cursorTrail');
+var mx=0,my=0,tx=0,ty=0;
+document.addEventListener('mousemove',function(e){mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
+(function a(){tx+=(mx-tx)*0.12;ty+=(my-ty)*0.12;trail.style.left=tx+'px';trail.style.top=ty+'px';requestAnimationFrame(a);})();
+document.querySelectorAll('a,.vid-card').forEach(function(el){
+  el.addEventListener('mouseenter',function(){cur.style.transform='translate(-50%,-50%) scale(2.5)';trail.style.transform='translate(-50%,-50%) scale(1.5)';trail.style.borderColor='rgba(200,245,66,0.6)';});
+  el.addEventListener('mouseleave',function(){cur.style.transform='translate(-50%,-50%) scale(1)';trail.style.transform='translate(-50%,-50%) scale(1)';trail.style.borderColor='rgba(200,245,66,0.4)';});
+});
+var ro=new IntersectionObserver(function(e){e.forEach(function(x){if(x.isIntersecting)x.target.classList.add('visible');});},{threshold:0.1,rootMargin:'0px 0px -60px 0px'});
+document.querySelectorAll('.reveal').forEach(function(el){ro.observe(el);});
+</script>
+</body>
+</html>
