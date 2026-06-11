@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Spylt — Achintha Jayaweera</title>
+<link rel="icon" type="image/png" href="Assets/Achintha top logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#080808;--bg2:#0e0e0e;--bg3:#141414;
+    --text:#f0ede6;--muted:#6b6860;
+    --accent:#c8f542;
+    --border:rgba(240,237,230,0.08);--border-light:rgba(240,237,230,0.15);
+    --pad:3rem;
+    --spylt:#22d3ee;--spylt-dim:rgba(34,211,238,0.08);
+  }
+  *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-weight:300;overflow-x:hidden;cursor:none;}
+  .cursor{position:fixed;width:10px;height:10px;background:var(--accent);border-radius:50%;pointer-events:none;z-index:9999;transition:transform 0.1s ease;transform:translate(-50%,-50%)}
+  .cursor-trail{position:fixed;width:32px;height:32px;border:1px solid rgba(200,245,66,0.4);border-radius:50%;pointer-events:none;z-index:9998;transition:all 0.18s ease;transform:translate(-50%,-50%)}
+  @media(hover:none){.cursor,.cursor-trail{display:none}body{cursor:auto}}
+
+  nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:1.5rem var(--pad);display:flex;align-items:center;justify-content:space-between;gap:1rem;}
+  nav::before{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,rgba(8,8,8,0.95) 0%,transparent 100%);pointer-events:none}
+  .nav-logo{text-decoration:none;position:relative;flex-shrink:0}
+  .nav-logo img{height:32px;width:auto;display:block;filter:brightness(0) invert(1)}
+  .nav-back{display:flex;align-items:center;gap:0.6rem;font-family:'DM Mono',monospace;font-size:0.75rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:color 0.3s;}
+  .nav-back:hover{color:var(--accent)}
+  .nav-back svg{transition:transform 0.3s}
+  .nav-back:hover svg{transform:translateX(-4px)}
+
+  /* ── HERO ── */
+  .proj-hero{
+    min-height:100vh;display:flex;flex-direction:column;justify-content:flex-end;
+    padding:0 var(--pad) 5rem;position:relative;overflow:hidden;
+  }
+  .proj-hero::before{
+    content:'';position:absolute;inset:0;
+    background-image:linear-gradient(rgba(240,237,230,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(240,237,230,0.025) 1px,transparent 1px);
+    background-size:80px 80px;pointer-events:none;
+  }
+  .hero-orb{
+    position:absolute;width:700px;height:700px;border-radius:50%;
+    background:radial-gradient(circle,var(--spylt-dim) 0%,transparent 70%);
+    top:-200px;right:-200px;pointer-events:none;
+    animation:orbFloat 10s ease-in-out infinite;
+  }
+  @keyframes orbFloat{0%,100%{transform:translate(0,0);}50%{transform:translate(-30px,30px);}}
+  .hero-tag{
+    display:flex;align-items:center;gap:0.6rem;margin-bottom:1.5rem;
+    font-family:'DM Mono',monospace;font-size:0.72rem;letter-spacing:0.18em;
+    text-transform:uppercase;color:var(--accent);
+    opacity:0;animation:fadeUp 0.7s forwards 0.3s;
+  }
+  .hero-tag::before{content:'';width:24px;height:1px;background:var(--accent);}
+  .hero-number{
+    font-family:'Bebas Neue',sans-serif;font-size:clamp(1rem,2vw,1.4rem);
+    color:rgba(200,245,66,0.3);letter-spacing:0.08em;
+    margin-bottom:0.4rem;
+    opacity:0;animation:fadeUp 0.7s forwards 0.2s;
+  }
+  .proj-hero-title{
+    font-family:'Bebas Neue',sans-serif;
+    font-size:clamp(5rem,12vw,13rem);
+    line-height:0.85;letter-spacing:-0.02em;
+    overflow:hidden;margin-bottom:2.5rem;
+  }
+  .proj-hero-title .line{display:block;opacity:0;transform:translateY(100%);animation:slideUp 0.9s cubic-bezier(0.16,1,0.3,1) forwards;}
+  .proj-hero-title .line:nth-child(1){animation-delay:0.4s;}
+  .proj-hero-title .line:nth-child(2){animation-delay:0.55s;}
+  @keyframes slideUp{to{opacity:1;transform:translateY(0);}}
+  @keyframes fadeUp{to{opacity:1;transform:translateY(0);}}
+  .hero-meta{
+    display:flex;align-items:flex-end;justify-content:space-between;gap:2rem;flex-wrap:wrap;
+    opacity:0;animation:fadeUp 0.8s forwards 0.9s;
+  }
+  .hero-desc{max-width:500px;font-size:1rem;color:var(--muted);line-height:1.8;}
+  .hero-desc strong{color:var(--text);font-weight:400;}
+  .hero-pills{display:flex;flex-wrap:wrap;gap:0.5rem;align-self:flex-start;}
+  .hero-pill{
+    font-family:'DM Mono',monospace;font-size:0.68rem;letter-spacing:0.1em;
+    text-transform:uppercase;border:1px solid var(--border-light);
+    padding:0.35rem 0.9rem;color:var(--muted);
+  }
+
+  /* ── PREVIEW ── */
+  .preview-section{padding:5rem var(--pad);background:var(--bg2);border-top:1px solid var(--border);}
+  .section-label{
+    font-size:0.72rem;letter-spacing:0.2em;text-transform:uppercase;
+    color:var(--accent);margin-bottom:2.5rem;
+    display:flex;align-items:center;gap:1rem;
+  }
+  .section-label::after{content:'';flex:1;max-width:60px;height:1px;background:var(--accent);opacity:0.4;}
+  .browser-chrome{border:1px solid var(--border-light);border-radius:10px;overflow:hidden;background:var(--bg3);box-shadow:0 40px 80px rgba(0,0,0,0.6);}
+  .browser-bar{background:var(--bg3);border-bottom:1px solid var(--border);padding:0.7rem 1rem;display:flex;align-items:center;gap:0.8rem;}
+  .b-dots{display:flex;gap:5px;}
+  .b-dot{width:10px;height:10px;border-radius:50%;}
+  .b-dot:nth-child(1){background:#ff5f57;}
+  .b-dot:nth-child(2){background:#ffbd2e;}
+  .b-dot:nth-child(3){background:#28ca41;}
+  .b-url{flex:1;background:rgba(240,237,230,0.05);border:1px solid var(--border);border-radius:4px;padding:0.3rem 0.8rem;font-family:'DM Mono',monospace;font-size:0.72rem;color:var(--muted);letter-spacing:0.04em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .b-open{display:flex;align-items:center;gap:0.4rem;background:var(--accent);color:#000;border:none;font-family:'DM Mono',monospace;font-size:0.68rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;padding:0.35rem 0.9rem;cursor:pointer;border-radius:3px;transition:background 0.2s;white-space:nowrap;text-decoration:none;}
+  .b-open:hover{background:#d4ff4a;}
+  .browser-frame{width:100%;aspect-ratio:16/9;position:relative;background:var(--bg3);overflow:hidden;}
+  .browser-frame iframe{position:absolute;inset:0;width:100%;height:100%;border:none;}
+  .preview-placeholder{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.5rem;background:var(--bg3);}
+  .preview-placeholder .ph-icon{width:64px;height:64px;border:1px solid var(--border-light);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--accent);animation:phPulse 2.5s ease-in-out infinite;}
+  @keyframes phPulse{0%,100%{box-shadow:0 0 0 0 rgba(200,245,66,0.2);}50%{box-shadow:0 0 0 12px rgba(200,245,66,0);}}
+  .preview-placeholder p{font-family:'DM Mono',monospace;font-size:0.75rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);text-align:center;max-width:300px;line-height:1.8;}
+  .preview-placeholder a{color:var(--accent);text-decoration:none;}
+  .preview-hint{margin-top:1.2rem;font-size:0.78rem;color:var(--muted);text-align:center;font-family:'DM Mono',monospace;font-size:0.7rem;letter-spacing:0.1em;text-transform:uppercase;opacity:0.7;}
+  .preview-hint a{color:var(--accent);text-decoration:none;}
+  .preview-hint a:hover{text-decoration:underline;}
+
+  /* ── ABOUT ── */
+  .about-section{padding:6rem var(--pad);border-top:1px solid var(--border);}
+  .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:6rem;align-items:start;}
+  .about-heading{font-family:'Bebas Neue',sans-serif;font-size:clamp(3rem,5vw,5.5rem);line-height:0.9;color:var(--text);}
+  .about-heading .accent{color:var(--accent);}
+  .about-body{font-size:0.95rem;line-height:1.9;color:var(--muted);font-weight:300;}
+  .about-body strong{color:var(--text);font-weight:400;}
+  .about-body p+p{margin-top:1.2rem;}
+
+  /* ── TECH STACK ── */
+  .tech-section{padding:6rem var(--pad);background:var(--bg2);border-top:1px solid var(--border);}
+  .tech-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1px;background:var(--border);border:1px solid var(--border);margin-top:2.5rem;}
+  .tech-card{background:var(--bg2);padding:2rem 1.8rem;transition:background 0.3s;position:relative;overflow:hidden;}
+  .tech-card::before{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:var(--accent);transform:scaleX(0);transform-origin:left;transition:transform 0.4s cubic-bezier(0.16,1,0.3,1);}
+  .tech-card:hover::before{transform:scaleX(1);}
+  .tech-card:hover{background:var(--bg3);}
+  .tech-icon{width:36px;height:36px;margin-bottom:1rem;display:flex;align-items:center;justify-content:center;border:1px solid rgba(200,245,66,0.2);border-radius:6px;background:rgba(200,245,66,0.05);flex-shrink:0;}
+  .tech-icon svg{width:18px;height:18px;stroke:var(--accent);fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;}
+  .tech-name{font-size:0.9rem;font-weight:500;color:var(--text);margin-bottom:0.3rem;}
+  .tech-desc{font-size:0.78rem;color:var(--muted);line-height:1.6;}
+
+  /* ── HIGHLIGHTS ── */
+  .highlights-section{padding:6rem var(--pad);border-top:1px solid var(--border);}
+  .highlights-list{margin-top:2.5rem;display:flex;flex-direction:column;gap:0;}
+  .highlight-item{display:flex;align-items:flex-start;gap:2rem;padding:1.8rem 0;border-bottom:1px solid var(--border);}
+  .highlight-item:first-child{border-top:1px solid var(--border);}
+  .hl-num{font-family:'DM Mono',monospace;font-size:0.7rem;color:var(--accent);letter-spacing:0.12em;flex-shrink:0;padding-top:0.25rem;min-width:2rem;}
+  .hl-title{font-size:0.95rem;color:var(--text);margin-bottom:0.3rem;font-weight:400;}
+  .hl-desc{font-size:0.85rem;color:var(--muted);line-height:1.7;}
+
+  /* ── LINKS ── */
+  .links-section{padding:6rem var(--pad);background:var(--bg2);border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:2rem;}
+  .links-heading{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.5rem,5vw,5rem);line-height:0.9;color:var(--text);}
+  .links-heading span{color:var(--accent);}
+  .links-btns{display:flex;gap:1rem;flex-wrap:wrap;}
+  .link-btn{display:inline-flex;align-items:center;gap:0.6rem;padding:1rem 2rem;font-size:0.82rem;letter-spacing:0.1em;text-transform:uppercase;font-family:'DM Mono',monospace;text-decoration:none;transition:all 0.3s;}
+  .link-btn.primary{background:var(--accent);color:#000;font-weight:600;}
+  .link-btn.primary:hover{background:#d4ff4a;transform:translateY(-2px);}
+  .link-btn.secondary{border:1px solid var(--border-light);color:var(--text);}
+  .link-btn.secondary:hover{border-color:var(--text);background:rgba(240,237,230,0.05);transform:translateY(-2px);}
+
+  /* ── PROJECT NAV ── */
+  .proj-nav{padding:3rem var(--pad);border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;gap:2rem;flex-wrap:wrap;}
+  .proj-nav-item{text-decoration:none;transition:color 0.3s;}
+  .proj-nav-item:hover .pn-title{color:var(--accent);}
+  .pn-label{font-family:'DM Mono',monospace;font-size:0.68rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);margin-bottom:0.4rem;}
+  .pn-title{font-family:'Bebas Neue',sans-serif;font-size:1.6rem;color:var(--text);letter-spacing:0.02em;transition:color 0.3s;}
+
+  footer{padding:2rem var(--pad);display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--border);flex-wrap:wrap;gap:1rem;}
+  footer p{font-size:0.75rem;color:var(--muted);letter-spacing:0.06em;}
+  .footer-logo{font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:0.12em;color:var(--muted);}
+
+  .reveal{opacity:0;transform:translateY(40px);transition:opacity 0.9s cubic-bezier(0.16,1,0.3,1),transform 0.9s cubic-bezier(0.16,1,0.3,1);}
+  .reveal.visible{opacity:1;transform:translateY(0);}
+  .reveal-delay-1{transition-delay:0.1s;}.reveal-delay-2{transition-delay:0.2s;}.reveal-delay-3{transition-delay:0.3s;}
+
+  @media(max-width:1024px){.about-grid{grid-template-columns:1fr;gap:3rem;}}
+  @media(max-width:768px){:root{--pad:1.5rem;}.links-section{flex-direction:column;align-items:flex-start;}.proj-nav{flex-direction:column;gap:1.5rem;}.tech-grid{grid-template-columns:1fr 1fr;}}
+  @media(max-width:480px){:root{--pad:1.2rem;}.tech-grid{grid-template-columns:1fr;}.links-btns{flex-direction:column;}.link-btn{justify-content:center;}}
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-trail" id="cursorTrail"></div>
+
+<nav>
+  <a href="Achintha%20portfolio.HTML" class="nav-logo">
+    <img src="Assets/A Final.png" alt="Achintha Jayaweera">
+  </a>
+  <a href="web-designs.html" class="nav-back">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8L10 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    Web Designs
+  </a>
+</nav>
+
+<!-- ══ HERO ══ -->
+<section class="proj-hero">
+  <div class="hero-orb"></div>
+  <div class="hero-number">06 · Web Development</div>
+  <div class="hero-tag">GSAP · Next.js · Awwwards-Inspired</div>
+  <h1 class="proj-hero-title">
+    <span class="line">SPYLT</span>
+  </h1>
+  <div class="hero-meta">
+    <p class="hero-desc">
+      A visually immersive GSAP landing page built with <strong>Next.js, Tailwind CSS, and GSAP</strong>. Inspired by award-winning web experiences, Spylt showcases <strong>scroll-triggered animations, parallax effects, clip-path transitions, and text reveals</strong> to deliver an engaging frontend animation showcase.
+    </p>
+    <div class="hero-pills">
+      <span class="hero-pill">Next.js</span>
+      <span class="hero-pill">TypeScript</span>
+      <span class="hero-pill">Tailwind CSS</span>
+      <span class="hero-pill">GSAP</span>
+      <span class="hero-pill">CSS</span>
+    </div>
+  </div>
+</section>
+
+<!-- ══ PREVIEW ══ -->
+<section class="preview-section reveal">
+  <div class="section-label">Live Preview</div>
+  <div class="browser-chrome">
+    <div class="browser-bar">
+      <div class="b-dots">
+        <div class="b-dot"></div><div class="b-dot"></div><div class="b-dot"></div>
+      </div>
+      <div class="b-url">achinthajayaweera.github.io/spylt/</div>
+      <a href="https://achinthajayaweera.github.io/spylt/" target="_blank" class="b-open">
+        <svg width="12" height="12" viewBox="0 0 14 14" fill="none"><path d="M2 12L12 2M12 2H6M12 2V8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Open
+      </a>
+    </div>
+    <div class="browser-frame">
+      <iframe
+        src="https://achinthajayaweera.github.io/spylt/"
+        loading="lazy"
+        scrolling="no"
+        allow="autoplay; fullscreen"
+        title="Spylt Live Preview"
+      ></iframe>
+    </div>
+  </div>
+  <p class="preview-hint">
+    Click <a href="https://achinthajayaweera.github.io/spylt/" target="_blank">open</a> to experience the full site with all GSAP animations.
+  </p>
+</section>
+
+<!-- ══ ABOUT ══ -->
+<section class="about-section">
+  <div class="about-grid">
+    <div>
+      <h2 class="about-heading reveal">ABOUT<br>THE <span class="accent">PROJECT</span></h2>
+    </div>
+    <div class="about-body reveal reveal-delay-1">
+      <p>
+        <strong>Spylt</strong> is a GSAP-powered landing page that demonstrates advanced frontend animation techniques inspired by Awwwards-winning creative studios. Built with Next.js 14 and TypeScript, the project focuses entirely on delivering a premium, cinematic browsing experience through precise animation choreography.
+      </p>
+      <p>
+        Every section has its own distinct animation system — from scroll-triggered text reveals and parallax image layers to clip-path morphing transitions and staggered entrance animations. The architecture was designed with performance in mind, using GSAP's <strong>ScrollTrigger plugin</strong> to synchronise all animations to the user's scroll position with scrub-based precision.
+      </p>
+      <p>
+        The project demonstrates a deep command of <strong>GSAP timelines, ScrollTrigger scrubbing, CSS clip-path animation, and Next.js App Router</strong> — skills directly applicable to building production-grade creative websites for premium brands.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ══ TECH STACK ══ -->
+<section class="tech-section">
+  <div class="section-label reveal">Tech Stack</div>
+  <div class="tech-grid reveal reveal-delay-1">
+
+    <div class="tech-card">
+      <div class="tech-icon"><svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg></div>
+      <div class="tech-name">Next.js</div>
+      <div class="tech-desc">App Router architecture with TypeScript — server components and optimised build pipeline.</div>
+    </div>
+
+    <div class="tech-card">
+      <div class="tech-icon"><svg viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></div>
+      <div class="tech-name">TypeScript</div>
+      <div class="tech-desc">Full type safety across all components, hooks, and animation configurations.</div>
+    </div>
+
+    <div class="tech-card">
+      <div class="tech-icon"><svg viewBox="0 0 24 24"><path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"/><line x1="16" y1="8" x2="2" y2="22"/><line x1="17.5" y1="15" x2="9" y2="15"/></svg></div>
+      <div class="tech-name">Tailwind CSS</div>
+      <div class="tech-desc">Utility-first styling with custom design tokens — consistent spacing, typography, and colour across every section.</div>
+    </div>
+
+    <div class="tech-card">
+      <div class="tech-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+      <div class="tech-name">GSAP</div>
+      <div class="tech-desc">Core animation engine — timelines, ScrollTrigger scrubbing, stagger animations, and clip-path morphing.</div>
+    </div>
+
+    <div class="tech-card">
+      <div class="tech-icon"><svg viewBox="0 0 24 24"><path d="M14.5 10c-.83 0-1.5-.67-1.5-1.5v-5c0-.83.67-1.5 1.5-1.5s1.5.67 1.5 1.5v5c0 .83-.67 1.5-1.5 1.5z"/><path d="M20.5 10H19V8.5c0-.83.67-1.5 1.5-1.5s1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/><path d="M9.5 14c.83 0 1.5.67 1.5 1.5v5c0 .83-.67 1.5-1.5 1.5S8 21.33 8 20.5v-5c0-.83.67-1.5 1.5-1.5z"/><path d="M3.5 14H5v1.5c0 .83-.67 1.5-1.5 1.5S2 16.33 2 15.5 2.67 14 3.5 14z"/><path d="M14 14.5c0-.83.67-1.5 1.5-1.5h5c.83 0 1.5.67 1.5 1.5s-.67 1.5-1.5 1.5h-5c-.83 0-1.5-.67-1.5-1.5z"/><path d="M15.5 19H14v1.5c0 .83.67 1.5 1.5 1.5s1.5-.67 1.5-1.5-.67-1.5-1.5-1.5z"/><path d="M10 9.5C10 8.67 9.33 8 8.5 8h-5C2.67 8 2 8.67 2 9.5S2.67 11 3.5 11h5c.83 0 1.5-.67 1.5-1.5z"/><path d="M8.5 5H10V3.5C10 2.67 9.33 2 8.5 2S7 2.67 7 3.5 7.67 5 8.5 5z"/></svg></div>
+      <div class="tech-name">ScrollTrigger</div>
+      <div class="tech-desc">GSAP plugin for scroll-synced animations — scrub, pin, and parallax tied precisely to scroll position.</div>
+    </div>
+
+    <div class="tech-card">
+      <div class="tech-icon"><svg viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77A5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg></div>
+      <div class="tech-name">GitHub Pages</div>
+      <div class="tech-desc">Deployed via GitHub Actions — automatic CI/CD pipeline builds and publishes on every push to main.</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══ KEY HIGHLIGHTS ══ -->
+<section class="highlights-section">
+  <div class="section-label reveal">Key Highlights</div>
+  <div class="highlights-list reveal reveal-delay-1">
+
+    <div class="highlight-item">
+      <div class="hl-num">01</div>
+      <div>
+        <div class="hl-title">Scroll-Triggered Animation Architecture</div>
+        <div class="hl-desc">Every section uses GSAP ScrollTrigger with scrub-based precision — animations are tied directly to scroll position rather than firing once on enter, creating a cinematic feel where the user controls the pacing.</div>
+      </div>
+    </div>
+
+    <div class="highlight-item">
+      <div class="hl-num">02</div>
+      <div>
+        <div class="hl-title">Clip-Path Morphing Transitions</div>
+        <div class="hl-desc">Section transitions use CSS clip-path morphing animated through GSAP — polygon shapes expand and contract as the user scrolls, revealing content beneath with an organic, non-linear feel.</div>
+      </div>
+    </div>
+
+    <div class="highlight-item">
+      <div class="hl-num">03</div>
+      <div>
+        <div class="hl-title">Parallax Layering System</div>
+        <div class="hl-desc">Multiple layers move at independent scroll speeds to create depth — foreground, midground and background elements each have their own ScrollTrigger instance with different scrub values.</div>
+      </div>
+    </div>
+
+    <div class="highlight-item">
+      <div class="hl-num">04</div>
+      <div>
+        <div class="hl-title">Text Reveal Animations</div>
+        <div class="hl-desc">Headlines split into individual lines and words, each entering from below with staggered timing — a technique inspired by the typographic animation style of top-tier creative agencies.</div>
+      </div>
+    </div>
+
+    <div class="highlight-item">
+      <div class="hl-num">05</div>
+      <div>
+        <div class="hl-title">Next.js App Router + TypeScript</div>
+        <div class="hl-desc">Built on Next.js 14 with the App Router and full TypeScript coverage — modern project structure with clean component separation and type-safe animation configurations.</div>
+      </div>
+    </div>
+
+    <div class="highlight-item">
+      <div class="hl-num">06</div>
+      <div>
+        <div class="hl-title">16-Commit Staged Development</div>
+        <div class="hl-desc">Built across 16 structured commits — scaffold → design system → scroll engine → section-by-section assembly → deployment — mirroring professional frontend development workflow.</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══ LINKS ══ -->
+<section class="links-section reveal">
+  <div>
+    <div class="links-heading">VIEW THE<br><span>LIVE SITE</span></div>
+  </div>
+  <div class="links-btns">
+    <a href="https://achinthajayaweera.github.io/spylt/" target="_blank" class="link-btn primary">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 12L12 2M12 2H6M12 2V8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Visit Live Site
+    </a>
+    <a href="https://github.com/achinthajayaweera/spylt" target="_blank" class="link-btn secondary">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77A5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+      GitHub Repo
+    </a>
+  </div>
+</section>
+
+<!-- ══ PROJECT NAV ══ -->
+<div class="proj-nav">
+  <a href="project-un-goal-15.html" class="proj-nav-item">
+    <div class="pn-label">← Previous</div>
+    <div class="pn-title">UN Goal 15</div>
+  </a>
+  <a href="web-designs.html" class="proj-nav-item" style="text-align:right;">
+    <div class="pn-label">All Projects</div>
+    <div class="pn-title">Web Designs</div>
+  </a>
+</div>
+
+<footer>
+  <span class="footer-logo">Achintha Jayaweera</span>
+  <p>© 2026 · Spylt — GSAP Landing Page</p>
+  <p>Colombo, Sri Lanka</p>
+</footer>
+
+<script>
+var cur=document.getElementById('cursor'),trail=document.getElementById('cursorTrail');
+var mx=0,my=0,tx=0,ty=0;
+document.addEventListener('mousemove',function(e){mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
+(function a(){tx+=(mx-tx)*0.12;ty+=(my-ty)*0.12;trail.style.left=tx+'px';trail.style.top=ty+'px';requestAnimationFrame(a);})();
+document.querySelectorAll('a,button').forEach(function(el){
+  el.addEventListener('mouseenter',function(){cur.style.transform='translate(-50%,-50%) scale(2.5)';trail.style.transform='translate(-50%,-50%) scale(1.5)';trail.style.borderColor='rgba(200,245,66,0.6)';});
+  el.addEventListener('mouseleave',function(){cur.style.transform='translate(-50%,-50%) scale(1)';trail.style.transform='translate(-50%,-50%) scale(1)';trail.style.borderColor='rgba(200,245,66,0.4)';});
+});
+var ro=new IntersectionObserver(function(e){e.forEach(function(x){if(x.isIntersecting)x.target.classList.add('visible');});},{threshold:0.08});
+document.querySelectorAll('.reveal').forEach(function(el){ro.observe(el);});
+</script>
+</body>
+</html>
