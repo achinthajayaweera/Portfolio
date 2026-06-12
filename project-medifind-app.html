@@ -9,14 +9,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
 <style>
-  :root{
-    --bg:#080808;--bg2:#0e0e0e;--bg3:#141414;
-    --text:#f0ede6;--muted:#6b6860;
-    --accent:#c8f542;
-    --border:rgba(240,237,230,0.08);--border-light:rgba(240,237,230,0.15);
-    --pad:3rem;
-    --medi:#06b6d4;--medi-dim:rgba(6,182,212,0.07);
-  }
+  :root{--bg:#080808;--bg2:#0e0e0e;--bg3:#141414;--text:#f0ede6;--muted:#6b6860;--accent:#c8f542;--border:rgba(240,237,230,0.08);--border-light:rgba(240,237,230,0.15);--pad:3rem;--medi:#06b6d4;--medi-dim:rgba(6,182,212,0.07);}
   *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
   html{scroll-behavior:smooth}
   body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-weight:300;overflow-x:hidden;cursor:none;}
@@ -34,21 +27,9 @@
   .nav-back:hover svg{transform:translateX(-4px)}
 
   /* ── HERO ── */
-  .proj-hero{
-    min-height:100vh;display:flex;flex-direction:column;justify-content:flex-end;
-    padding:0 var(--pad) 5rem;position:relative;overflow:hidden;
-  }
-  .proj-hero::before{
-    content:'';position:absolute;inset:0;
-    background-image:linear-gradient(rgba(240,237,230,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(240,237,230,0.025) 1px,transparent 1px);
-    background-size:80px 80px;pointer-events:none;
-  }
-  .hero-orb{
-    position:absolute;width:700px;height:700px;border-radius:50%;
-    background:radial-gradient(circle,var(--medi-dim) 0%,transparent 70%);
-    top:-200px;right:-200px;pointer-events:none;
-    animation:orbFloat 10s ease-in-out infinite;
-  }
+  .proj-hero{min-height:100vh;display:flex;flex-direction:column;justify-content:flex-end;padding:0 var(--pad) 5rem;position:relative;overflow:hidden;}
+  .proj-hero::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(240,237,230,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(240,237,230,0.025) 1px,transparent 1px);background-size:80px 80px;pointer-events:none;}
+  .hero-orb{position:absolute;width:700px;height:700px;border-radius:50%;background:radial-gradient(circle,var(--medi-dim) 0%,transparent 70%);top:-200px;right:-200px;pointer-events:none;animation:orbFloat 10s ease-in-out infinite;}
   @keyframes orbFloat{0%,100%{transform:translate(0,0);}50%{transform:translate(-30px,30px);}}
   .hero-tag{display:flex;align-items:center;gap:0.6rem;margin-bottom:1.5rem;font-family:'DM Mono',monospace;font-size:0.72rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--accent);opacity:0;animation:fadeUp 0.7s forwards 0.3s;}
   .hero-tag::before{content:'';width:24px;height:1px;background:var(--accent);}
@@ -65,86 +46,71 @@
   .hero-pills{display:flex;flex-wrap:wrap;gap:0.5rem;align-self:flex-start;}
   .hero-pill{font-family:'DM Mono',monospace;font-size:0.68rem;letter-spacing:0.1em;text-transform:uppercase;border:1px solid var(--border-light);padding:0.35rem 0.9rem;color:var(--muted);}
 
-  /* ── PHONE DEMO SECTION ── */
-  .phone-section{
-    padding:6rem var(--pad);background:var(--bg);border-top:1px solid var(--border);
-    position:relative;overflow:hidden;
+  /* ── APP DEMO — raw video right, content left ── */
+  .demo-section{
+    padding:6rem var(--pad);border-top:1px solid var(--border);
+    background:var(--bg);position:relative;overflow:hidden;
   }
-  .phone-section::before{
+  .demo-section::before{
     content:'';position:absolute;inset:0;
-    background:radial-gradient(ellipse 60% 50% at 50% 50%,var(--medi-dim) 0%,transparent 70%);
+    background:radial-gradient(ellipse 50% 60% at 75% 50%,var(--medi-dim) 0%,transparent 70%);
     pointer-events:none;
   }
-  .section-label{font-size:0.72rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--accent);margin-bottom:2.5rem;display:flex;align-items:center;gap:1rem;}
+  .section-label{font-size:0.72rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--accent);margin-bottom:3rem;display:flex;align-items:center;gap:1rem;}
   .section-label::after{content:'';flex:1;max-width:60px;height:1px;background:var(--accent);opacity:0.4;}
-  .phone-demo-wrap{
-    display:flex;align-items:center;justify-content:center;
-    position:relative;min-height:600px;
+  .demo-layout{
+    display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center;
   }
-  /* Phone shell */
-  .phone-shell{
-    position:relative;z-index:2;
-    width:280px;flex-shrink:0;
+
+  /* Left — staggered feature list */
+  .demo-features{display:flex;flex-direction:column;gap:0;}
+  .feat-item{
+    display:flex;align-items:flex-start;gap:1.2rem;
+    padding:1.4rem 0;border-bottom:1px solid var(--border);
+    opacity:0;transform:translateX(-30px);
+    transition:opacity 0.7s cubic-bezier(0.16,1,0.3,1),transform 0.7s cubic-bezier(0.16,1,0.3,1);
   }
-  .phone-outer{
-    background:#111;border:2px solid rgba(255,255,255,0.12);
-    border-radius:42px;padding:10px;
-    box-shadow:
-      0 0 0 1px rgba(0,0,0,0.8),
-      0 40px 80px rgba(0,0,0,0.8),
-      inset 0 1px 0 rgba(255,255,255,0.08);
+  .feat-item:first-child{border-top:1px solid var(--border);}
+  .feat-item.visible{opacity:1;transform:translateX(0);}
+  .feat-item:nth-child(1){transition-delay:0s;}
+  .feat-item:nth-child(2){transition-delay:0.1s;}
+  .feat-item:nth-child(3){transition-delay:0.2s;}
+  .feat-item:nth-child(4){transition-delay:0.3s;}
+  .feat-item:nth-child(5){transition-delay:0.4s;}
+  .feat-item:nth-child(6){transition-delay:0.5s;}
+  .feat-dot{width:8px;height:8px;border-radius:50%;background:var(--accent);flex-shrink:0;margin-top:0.35rem;}
+  .feat-title{font-size:0.92rem;font-weight:500;color:var(--text);margin-bottom:0.25rem;}
+  .feat-desc{font-size:0.8rem;color:var(--muted);line-height:1.6;}
+
+  /* Right — raw video, no frame */
+  .demo-video-wrap{
+    position:relative;display:flex;justify-content:flex-end;align-items:center;
+    opacity:0;transform:translateX(30px);
+    transition:opacity 0.9s cubic-bezier(0.16,1,0.3,1),transform 0.9s cubic-bezier(0.16,1,0.3,1);
+  }
+  .demo-video-wrap.visible{opacity:1;transform:translateX(0);}
+  .demo-video{
+    width:100%;max-width:380px;border-radius:8px;overflow:hidden;
+    box-shadow:0 32px 80px rgba(0,0,0,0.7),0 0 0 1px var(--border);
     position:relative;
   }
-  .phone-notch{
-    position:absolute;top:12px;left:50%;transform:translateX(-50%);
-    width:80px;height:24px;background:#111;border-radius:0 0 16px 16px;
-    z-index:10;
+  .demo-video video{width:100%;display:block;}
+  /* Subtle green-cyan gradient fade at top and bottom edges to merge with bg */
+  .demo-video::before{
+    content:'';position:absolute;top:0;left:0;right:0;height:60px;
+    background:linear-gradient(to bottom,var(--bg),transparent);
+    z-index:2;pointer-events:none;border-radius:8px 8px 0 0;
   }
-  .phone-notch::after{
-    content:'';position:absolute;top:8px;left:50%;transform:translateX(-50%);
-    width:10px;height:10px;background:#222;border-radius:50%;
+  .demo-video::after{
+    content:'';position:absolute;bottom:0;left:0;right:0;height:60px;
+    background:linear-gradient(to top,var(--bg),transparent);
+    z-index:2;pointer-events:none;border-radius:0 0 8px 8px;
   }
-  .phone-screen{
-    border-radius:34px;overflow:hidden;
-    aspect-ratio:9/19.5;background:#000;
-    position:relative;
-  }
-  .phone-screen video{
-    width:100%;height:100%;object-fit:cover;display:block;
-  }
-  /* Glow behind phone */
-  .phone-glow{
-    position:absolute;width:400px;height:400px;border-radius:50%;
-    background:radial-gradient(circle,rgba(6,182,212,0.15) 0%,transparent 70%);
-    top:50%;left:50%;transform:translate(-50%,-50%);
-    pointer-events:none;z-index:1;
-    animation:glowPulse 4s ease-in-out infinite;
-  }
-  @keyframes glowPulse{0%,100%{opacity:0.6;transform:translate(-50%,-50%) scale(1);}50%{opacity:1;transform:translate(-50%,-50%) scale(1.1);}}
-  /* Floating feature tags */
-  .phone-tag{
-    position:absolute;z-index:3;
-    background:var(--bg2);border:1px solid var(--border-light);
-    padding:0.6rem 1rem;
-    font-family:'DM Mono',monospace;font-size:0.65rem;letter-spacing:0.1em;
-    text-transform:uppercase;color:var(--text);
-    display:flex;align-items:center;gap:0.5rem;
-    animation:tagFloat 5s ease-in-out infinite;
-    white-space:nowrap;
-  }
-  .phone-tag .tag-dot{width:6px;height:6px;border-radius:50%;background:var(--accent);flex-shrink:0;}
-  .phone-tag:nth-child(1){top:10%;left:-180px;animation-delay:0s;}
-  .phone-tag:nth-child(2){top:35%;left:-200px;animation-delay:0.8s;}
-  .phone-tag:nth-child(3){top:60%;left:-160px;animation-delay:1.6s;}
-  .phone-tag:nth-child(4){top:10%;right:-170px;animation-delay:0.4s;}
-  .phone-tag:nth-child(5){top:38%;right:-190px;animation-delay:1.2s;}
-  .phone-tag:nth-child(6){top:65%;right:-160px;animation-delay:2s;}
-  @keyframes tagFloat{0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);}}
-  .demo-hint{text-align:center;margin-top:2.5rem;font-family:'DM Mono',monospace;font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);opacity:0.7;}
+  .demo-hint{margin-top:1.5rem;font-family:'DM Mono',monospace;font-size:0.68rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);opacity:0.7;}
   .demo-hint a{color:var(--accent);text-decoration:none;}
   .demo-hint a:hover{text-decoration:underline;}
 
-  /* ── TEAM VIDEO ── */
+  /* ── TEAM VIDEO — scroll autoplay ── */
   .team-section{padding:6rem var(--pad);background:var(--bg2);border-top:1px solid var(--border);}
   .video-embed-wrap{margin-top:2.5rem;border:1px solid var(--border-light);border-radius:8px;overflow:hidden;background:var(--bg3);box-shadow:0 24px 60px rgba(0,0,0,0.5);}
   .video-bar{background:var(--bg3);border-bottom:1px solid var(--border);padding:0.7rem 1rem;display:flex;align-items:center;gap:0.8rem;}
@@ -159,7 +125,7 @@
   .video-frame{aspect-ratio:16/9;position:relative;}
   .video-frame iframe{position:absolute;inset:0;width:100%;height:100%;border:none;}
 
-  /* ── ABOUT / CONTRIBUTION SPLIT ── */
+  /* ── ABOUT / CONTRIBUTION ── */
   .about-section{padding:6rem var(--pad);border-top:1px solid var(--border);}
   .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:start;}
   .about-sticky{position:sticky;top:6rem;}
@@ -169,7 +135,6 @@
   .about-body strong{color:var(--text);font-weight:400;}
   .about-body p+p{margin-top:1.2rem;}
 
-  /* ── CONTRIBUTION CARD ── */
   .contrib-section{padding:6rem var(--pad);background:var(--bg2);border-top:1px solid var(--border);}
   .contrib-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);border:1px solid var(--border);margin-top:2.5rem;}
   .contrib-card{background:var(--bg2);padding:2rem 1.8rem;transition:background 0.3s;position:relative;overflow:hidden;}
@@ -180,7 +145,6 @@
   .contrib-title{font-size:0.95rem;font-weight:500;color:var(--text);margin-bottom:0.4rem;}
   .contrib-desc{font-size:0.82rem;color:var(--muted);line-height:1.7;}
 
-  /* ── TECH STACK ── */
   .tech-section{padding:6rem var(--pad);border-top:1px solid var(--border);}
   .tech-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1px;background:var(--border);border:1px solid var(--border);margin-top:2.5rem;}
   .tech-card{background:var(--bg);padding:1.8rem 1.6rem;transition:background 0.3s;position:relative;overflow:hidden;}
@@ -192,7 +156,6 @@
   .tech-name{font-size:0.88rem;font-weight:500;color:var(--text);margin-bottom:0.25rem;}
   .tech-desc{font-size:0.76rem;color:var(--muted);line-height:1.6;}
 
-  /* ── REPO LINKS ── */
   .links-section{padding:6rem var(--pad);background:var(--bg2);border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:2rem;}
   .links-heading{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.5rem,5vw,5rem);line-height:0.9;}
   .links-heading span{color:var(--accent);}
@@ -203,9 +166,8 @@
   .link-btn.secondary{border:1px solid var(--border-light);color:var(--text);}
   .link-btn.secondary:hover{border-color:var(--text);background:rgba(240,237,230,0.05);transform:translateY(-2px);}
 
-  /* ── PROJECT NAV ── */
   .proj-nav{padding:3rem var(--pad);border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;gap:2rem;flex-wrap:wrap;}
-  .proj-nav-item{text-decoration:none;transition:color 0.3s;}
+  .proj-nav-item{text-decoration:none;}
   .proj-nav-item:hover .pn-title{color:var(--accent);}
   .pn-label{font-family:'DM Mono',monospace;font-size:0.68rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);margin-bottom:0.4rem;}
   .pn-title{font-family:'Bebas Neue',sans-serif;font-size:1.6rem;color:var(--text);letter-spacing:0.02em;transition:color 0.3s;}
@@ -216,16 +178,11 @@
 
   .reveal{opacity:0;transform:translateY(40px);transition:opacity 0.9s cubic-bezier(0.16,1,0.3,1),transform 0.9s cubic-bezier(0.16,1,0.3,1);}
   .reveal.visible{opacity:1;transform:translateY(0);}
-  .reveal-delay-1{transition-delay:0.1s;}.reveal-delay-2{transition-delay:0.2s;}.reveal-delay-3{transition-delay:0.3s;}
+  .reveal-delay-1{transition-delay:0.1s;}.reveal-delay-2{transition-delay:0.2s;}
 
-  @media(max-width:1100px){
-    .phone-tag{display:none;}
-    .about-grid{grid-template-columns:1fr;gap:3rem;}
-    .about-sticky{position:static;}
-    .contrib-grid{grid-template-columns:1fr;}
-  }
+  @media(max-width:1100px){.demo-layout{grid-template-columns:1fr;}.demo-video-wrap{justify-content:center;}.about-grid{grid-template-columns:1fr;gap:3rem;}.about-sticky{position:static;}.contrib-grid{grid-template-columns:1fr;}}
   @media(max-width:768px){:root{--pad:1.5rem;}.links-section{flex-direction:column;align-items:flex-start;}.tech-grid{grid-template-columns:1fr 1fr;}}
-  @media(max-width:480px){:root{--pad:1.2rem;}.tech-grid{grid-template-columns:1fr;}.links-btns{flex-direction:column;}.phone-shell{width:220px;}}
+  @media(max-width:480px){:root{--pad:1.2rem;}.tech-grid{grid-template-columns:1fr;}.links-btns{flex-direction:column;}}
 </style>
 </head>
 <body>
@@ -234,16 +191,14 @@
 <div class="cursor-trail" id="cursorTrail"></div>
 
 <nav>
-  <a href="Achintha%20portfolio.HTML" class="nav-logo">
-    <img src="Assets/A Final.png" alt="Achintha Jayaweera">
-  </a>
+  <a href="Achintha%20portfolio.HTML" class="nav-logo"><img src="Assets/A Final.png" alt="Achintha Jayaweera"></a>
   <a href="mobile-apps.html" class="nav-back">
     <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8L10 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
     Mobile Apps
   </a>
 </nav>
 
-<!-- ══ HERO ══ -->
+<!-- HERO -->
 <section class="proj-hero">
   <div class="hero-orb"></div>
   <div class="hero-number">01 · Mobile Development</div>
@@ -254,7 +209,7 @@
   </h1>
   <div class="hero-meta">
     <p class="hero-desc">
-      An intelligent healthcare platform that simplifies prescription processing and pharmacy discovery. Built as a <strong>Software Development Group Project at IIT</strong> — combining AI prescription extraction, real-time pharmacy matching, and end-to-end medicine delivery into one seamless mobile experience.
+      An intelligent healthcare platform that simplifies prescription processing and pharmacy discovery. Built as a <strong>Software Development Group Project at IIT</strong> — combining AI prescription extraction, real-time pharmacy matching, and end-to-end medicine delivery.
     </p>
     <div class="hero-pills">
       <span class="hero-pill">Flutter</span>
@@ -267,42 +222,74 @@
   </div>
 </section>
 
-<!-- ══ PHONE DEMO ══ -->
-<section class="phone-section reveal">
-  <div class="section-label">App Demo</div>
-  <div class="phone-demo-wrap">
-    <div class="phone-glow"></div>
+<!-- APP DEMO -->
+<section class="demo-section">
+  <div class="section-label reveal">App Demo</div>
+  <div class="demo-layout">
 
-    <!-- Floating feature tags — left -->
-    <div class="phone-tag"><span class="tag-dot"></span>AI Prescription Scan</div>
-    <div class="phone-tag"><span class="tag-dot"></span>Real-Time Pharmacy Match</div>
-    <div class="phone-tag"><span class="tag-dot"></span>Medicine Refill Reminders</div>
-    <!-- Floating feature tags — right -->
-    <div class="phone-tag"><span class="tag-dot"></span>Live Delivery Tracking</div>
-    <div class="phone-tag"><span class="tag-dot"></span>Inventory Management</div>
-    <div class="phone-tag"><span class="tag-dot"></span>Prescription Verification</div>
-
-    <div class="phone-shell">
-      <div class="phone-outer">
-        <div class="phone-notch"></div>
-        <div class="phone-screen">
-          <video
-            src="Assets/Medifind-app-front-end-video.mp4"
-            autoplay
-            muted
-            loop
-            playsinline
-          ></video>
+    <!-- Left — feature list animates in -->
+    <div class="demo-features" id="featList">
+      <div class="feat-item">
+        <div class="feat-dot"></div>
+        <div>
+          <div class="feat-title">AI Prescription Scan</div>
+          <div class="feat-desc">Upload a photo of your prescription — the system automatically extracts medicine names, dosages, and quantities using an AI processing pipeline.</div>
+        </div>
+      </div>
+      <div class="feat-item">
+        <div class="feat-dot"></div>
+        <div>
+          <div class="feat-title">Real-Time Pharmacy Matching</div>
+          <div class="feat-desc">Automatically compares nearby pharmacies based on medicine availability, pricing, distance, and delivery charges — no manual calls needed.</div>
+        </div>
+      </div>
+      <div class="feat-item">
+        <div class="feat-dot"></div>
+        <div>
+          <div class="feat-title">Prescription Verification</div>
+          <div class="feat-desc">Doctor-issued verification codes and medical seal recognition — plus duplicate prescription detection to prevent misuse.</div>
+        </div>
+      </div>
+      <div class="feat-item">
+        <div class="feat-dot"></div>
+        <div>
+          <div class="feat-title">Medicine Refill Reminders</div>
+          <div class="feat-desc">Automated notifications when your medication is running low — critical for patients managing chronic conditions requiring long-term treatment.</div>
+        </div>
+      </div>
+      <div class="feat-item">
+        <div class="feat-dot"></div>
+        <div>
+          <div class="feat-title">Live Delivery Tracking</div>
+          <div class="feat-desc">Integration with third-party logistics providers — real-time tracking from prescription verification all the way to your doorstep.</div>
+        </div>
+      </div>
+      <div class="feat-item">
+        <div class="feat-dot"></div>
+        <div>
+          <div class="feat-title">Pharmacy Inventory Dashboard</div>
+          <div class="feat-desc">Pharmacies manage real-time stock through a dedicated dashboard, ensuring accurate availability checks and no order cancellations.</div>
         </div>
       </div>
     </div>
+
+    <!-- Right — raw screen recording, no frame -->
+    <div class="demo-video-wrap" id="demoVidWrap">
+      <div class="demo-video">
+        <video
+          src="Assets/Medifind-app-front-end-video.mp4"
+          autoplay muted loop playsinline
+        ></video>
+      </div>
+    </div>
+
   </div>
-  <p class="demo-hint">
-    Frontend built with Flutter &amp; Dart · <a href="https://youtu.be/R5xBWjy1fEQ" target="_blank">Watch full demo on YouTube ↗</a>
+  <p class="demo-hint" style="margin-top:3rem;">
+    Frontend built with Flutter &amp; Dart &nbsp;·&nbsp; <a href="https://youtu.be/R5xBWjy1fEQ" target="_blank">Watch full demo on YouTube ↗</a>
   </p>
 </section>
 
-<!-- ══ TEAM DEMO VIDEO ══ -->
+<!-- TEAM DEMO VIDEO — scroll autoplay -->
 <section class="team-section reveal">
   <div class="section-label">Team Presentation</div>
   <div class="video-embed-wrap">
@@ -316,7 +303,8 @@
     </div>
     <div class="video-frame">
       <iframe
-        src="https://www.youtube.com/embed/gJjBKML4fwc"
+        id="teamVideo"
+        src="https://www.youtube.com/embed/gJjBKML4fwc?enablejsapi=1"
         allow="autoplay; fullscreen; picture-in-picture"
         allowfullscreen
         title="MediFind Group Demo"
@@ -325,111 +313,50 @@
   </div>
 </section>
 
-<!-- ══ ABOUT ══ -->
+<!-- ABOUT -->
 <section class="about-section">
   <div class="about-grid">
     <div class="about-sticky reveal">
       <h2 class="about-heading">ABOUT<br>THE <span class="accent">PROJECT</span></h2>
     </div>
     <div class="about-body reveal reveal-delay-1">
-      <p>
-        <strong>MediFind</strong> is a smart healthcare platform developed as a Software Development Group Project (SDGP) at the Informatics Institute of Technology. The platform addresses a real-world problem in Sri Lanka — the difficulty patients face when searching for prescribed medicines across multiple pharmacies, comparing availability, and arranging delivery.
-      </p>
-      <p>
-        The system allows patients to upload a prescription using their mobile device or manually enter medication details. Advanced AI-powered prescription processing extracts medicine information automatically and queries registered pharmacy databases using location-based services to find nearby pharmacies with the required stock.
-      </p>
-      <p>
-        Rather than requiring users to contact multiple pharmacies manually, MediFind's <strong>intelligent pharmacy matching engine</strong> automatically compares nearby options based on medicine availability, pricing, distance, and delivery charges — presenting the best match and allowing direct in-app ordering.
-      </p>
-      <p>
-        The platform includes <strong>prescription authenticity verification</strong> through doctor-issued codes, medical seal recognition, and duplicate prescription detection. Automated refill reminders notify patients when medication is running low — critical for patients managing chronic conditions.
-      </p>
-      <p>
-        Pharmacies interact through a dedicated inventory management dashboard that feeds real-time stock data into the matching engine. The delivery layer integrates with third-party logistics providers, allowing patients to track medication deliveries end-to-end from prescription upload to doorstep arrival.
-      </p>
+      <p><strong>MediFind</strong> is a smart healthcare platform developed as a Software Development Group Project (SDGP) at the Informatics Institute of Technology. The platform addresses a real-world problem in Sri Lanka — the difficulty patients face when searching for prescribed medicines across multiple pharmacies, comparing availability, and arranging delivery.</p>
+      <p>The system allows patients to upload a prescription using their mobile device or manually enter medication details. Advanced AI-powered prescription processing extracts medicine information automatically and queries registered pharmacy databases using location-based services to find nearby pharmacies with the required stock.</p>
+      <p>Rather than requiring users to contact multiple pharmacies manually, MediFind's <strong>intelligent pharmacy matching engine</strong> automatically compares nearby options based on availability, pricing, distance, and delivery charges — presenting the best match and allowing direct in-app ordering.</p>
+      <p>The platform includes <strong>prescription authenticity verification</strong> through doctor-issued codes, medical seal recognition, and duplicate prescription detection. Automated refill reminders notify patients when medication is running low — critical for patients managing chronic conditions.</p>
     </div>
   </div>
 </section>
 
-<!-- ══ MY CONTRIBUTION ══ -->
+<!-- MY CONTRIBUTION -->
 <section class="contrib-section">
   <div class="section-label reveal">My Contribution · Frontend Developer</div>
   <div class="contrib-grid reveal reveal-delay-1">
-    <div class="contrib-card">
-      <div class="contrib-num">01</div>
-      <div class="contrib-title">Flutter UI Architecture</div>
-      <div class="contrib-desc">Designed and built the complete patient-facing mobile interface using Flutter and Dart — screens for onboarding, prescription upload, pharmacy results, order tracking, and profile management.</div>
-    </div>
-    <div class="contrib-card">
-      <div class="contrib-num">02</div>
-      <div class="contrib-title">Prescription Upload Flow</div>
-      <div class="contrib-desc">Implemented the camera-based prescription capture and manual medicine entry interfaces, handling image preprocessing before passing to the backend AI extraction pipeline.</div>
-    </div>
-    <div class="contrib-card">
-      <div class="contrib-num">03</div>
-      <div class="contrib-title">Pharmacy Results UI</div>
-      <div class="contrib-desc">Built the pharmacy listing and comparison screens — displaying matched pharmacies sorted by distance, availability, and price with clean card-based layouts and smooth transitions.</div>
-    </div>
-    <div class="contrib-card">
-      <div class="contrib-num">04</div>
-      <div class="contrib-title">API Integration</div>
-      <div class="contrib-desc">Connected all frontend screens to backend REST APIs — authentication, prescription processing, pharmacy search, order placement, and real-time delivery tracking endpoints.</div>
-    </div>
-    <div class="contrib-card">
-      <div class="contrib-num">05</div>
-      <div class="contrib-title">Frontend Git Maintenance</div>
-      <div class="contrib-desc">Maintained the dedicated frontend branch of the shared SDGP repository — managing pull requests, resolving merge conflicts, and coordinating frontend releases across the team.</div>
-    </div>
-    <div class="contrib-card">
-      <div class="contrib-num">06</div>
-      <div class="contrib-title">State Management</div>
-      <div class="contrib-desc">Implemented application state management in Flutter — handling user sessions, prescription data flow, real-time order status updates, and refill notification states across the app lifecycle.</div>
-    </div>
+    <div class="contrib-card"><div class="contrib-num">01</div><div class="contrib-title">Flutter UI Architecture</div><div class="contrib-desc">Designed and built the complete patient-facing mobile interface using Flutter and Dart — onboarding, prescription upload, pharmacy results, order tracking, and profile screens.</div></div>
+    <div class="contrib-card"><div class="contrib-num">02</div><div class="contrib-title">Prescription Upload Flow</div><div class="contrib-desc">Implemented camera-based prescription capture and manual medicine entry, handling image preprocessing before passing to the backend AI extraction pipeline.</div></div>
+    <div class="contrib-card"><div class="contrib-num">03</div><div class="contrib-title">Pharmacy Results UI</div><div class="contrib-desc">Built the pharmacy listing and comparison screens — displaying matched pharmacies sorted by distance, availability, and price with smooth card-based layouts.</div></div>
+    <div class="contrib-card"><div class="contrib-num">04</div><div class="contrib-title">API Integration</div><div class="contrib-desc">Connected all frontend screens to backend REST APIs — auth, prescription processing, pharmacy search, order placement, and real-time delivery tracking.</div></div>
+    <div class="contrib-card"><div class="contrib-num">05</div><div class="contrib-title">Frontend Git Maintenance</div><div class="contrib-desc">Maintained the dedicated frontend branch of the shared SDGP repository — managing pull requests, merge conflicts, and coordinating frontend releases across the team.</div></div>
+    <div class="contrib-card"><div class="contrib-num">06</div><div class="contrib-title">State Management</div><div class="contrib-desc">Implemented application state management in Flutter — user sessions, prescription data flow, real-time order status updates, and refill notification states.</div></div>
   </div>
 </section>
 
-<!-- ══ TECH STACK ══ -->
+<!-- TECH STACK -->
 <section class="tech-section">
   <div class="section-label reveal">Tech Stack</div>
   <div class="tech-grid reveal reveal-delay-1">
-    <div class="tech-card">
-      <div class="tech-icon"><svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg></div>
-      <div class="tech-name">Flutter</div>
-      <div class="tech-desc">Cross-platform UI framework — single codebase for iOS and Android with native performance.</div>
-    </div>
-    <div class="tech-card">
-      <div class="tech-icon"><svg viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></div>
-      <div class="tech-name">Dart</div>
-      <div class="tech-desc">Primary language — used for all frontend logic, state management, and API integration.</div>
-    </div>
-    <div class="tech-card">
-      <div class="tech-icon"><svg viewBox="0 0 24 24"><path d="M20 7H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg></div>
-      <div class="tech-name">Firebase</div>
-      <div class="tech-desc">Authentication, real-time database sync, and cloud messaging for refill notifications.</div>
-    </div>
-    <div class="tech-card">
-      <div class="tech-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div>
-      <div class="tech-name">REST API</div>
-      <div class="tech-desc">Backend communication layer — prescription processing, pharmacy search, and order management endpoints.</div>
-    </div>
-    <div class="tech-card">
-      <div class="tech-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg></div>
-      <div class="tech-name">Python Backend</div>
-      <div class="tech-desc">AI prescription extraction, pharmacy matching algorithm, and inventory management API.</div>
-    </div>
-    <div class="tech-card">
-      <div class="tech-icon"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
-      <div class="tech-name">Geolocation</div>
-      <div class="tech-desc">Location-based pharmacy search and distance calculation for medicine availability matching.</div>
-    </div>
+    <div class="tech-card"><div class="tech-icon"><svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg></div><div class="tech-name">Flutter</div><div class="tech-desc">Cross-platform UI framework — single codebase for iOS and Android with native performance.</div></div>
+    <div class="tech-card"><div class="tech-icon"><svg viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></div><div class="tech-name">Dart</div><div class="tech-desc">Primary language — all frontend logic, state management, and API integration.</div></div>
+    <div class="tech-card"><div class="tech-icon"><svg viewBox="0 0 24 24"><path d="M20 7H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg></div><div class="tech-name">Firebase</div><div class="tech-desc">Authentication, real-time database sync, and cloud messaging for refill notifications.</div></div>
+    <div class="tech-card"><div class="tech-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div><div class="tech-name">REST API</div><div class="tech-desc">Backend communication — prescription processing, pharmacy search, and order management.</div></div>
+    <div class="tech-card"><div class="tech-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg></div><div class="tech-name">Python Backend</div><div class="tech-desc">AI prescription extraction, pharmacy matching algorithm, and inventory management API.</div></div>
+    <div class="tech-card"><div class="tech-icon"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div><div class="tech-name">Geolocation</div><div class="tech-desc">Location-based pharmacy search and distance calculation for medicine availability matching.</div></div>
   </div>
 </section>
 
-<!-- ══ REPO LINKS ══ -->
+<!-- LINKS -->
 <section class="links-section reveal">
-  <div>
-    <div class="links-heading">EXPLORE THE<br><span>CODEBASE</span></div>
-  </div>
+  <div><div class="links-heading">EXPLORE THE<br><span>CODEBASE</span></div></div>
   <div class="links-btns">
     <a href="https://github.com/buddhimasanthush/SDGP-Mobile_application/tree/Front-End" target="_blank" class="link-btn primary">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
@@ -446,7 +373,6 @@
   </div>
 </section>
 
-<!-- ══ PROJECT NAV ══ -->
 <div class="proj-nav">
   <a href="mobile-apps.html" class="proj-nav-item">
     <div class="pn-label">← All Projects</div>
@@ -461,6 +387,7 @@
 </footer>
 
 <script>
+// Cursor
 var cur=document.getElementById('cursor'),trail=document.getElementById('cursorTrail');
 var mx=0,my=0,tx=0,ty=0;
 document.addEventListener('mousemove',function(e){mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
@@ -469,8 +396,38 @@ document.querySelectorAll('a,button').forEach(function(el){
   el.addEventListener('mouseenter',function(){cur.style.transform='translate(-50%,-50%) scale(2.5)';trail.style.transform='translate(-50%,-50%) scale(1.5)';trail.style.borderColor='rgba(200,245,66,0.6)';});
   el.addEventListener('mouseleave',function(){cur.style.transform='translate(-50%,-50%) scale(1)';trail.style.transform='translate(-50%,-50%) scale(1)';trail.style.borderColor='rgba(200,245,66,0.4)';});
 });
+
+// Reveal observer (standard sections)
 var ro=new IntersectionObserver(function(e){e.forEach(function(x){if(x.isIntersecting)x.target.classList.add('visible');});},{threshold:0.08});
 document.querySelectorAll('.reveal').forEach(function(el){ro.observe(el);});
+
+// Feature list — stagger in from left when section scrolls into view
+var featObs=new IntersectionObserver(function(entries){
+  entries.forEach(function(e){
+    if(e.isIntersecting){
+      document.querySelectorAll('.feat-item').forEach(function(item){item.classList.add('visible');});
+      document.getElementById('demoVidWrap').classList.add('visible');
+    }
+  });
+},{threshold:0.15});
+featObs.observe(document.getElementById('featList'));
+
+// Team video — autoplay when scrolled into view via YouTube iframe API
+var teamVidPlayed=false;
+var teamObs=new IntersectionObserver(function(entries){
+  entries.forEach(function(e){
+    if(e.isIntersecting && !teamVidPlayed){
+      teamVidPlayed=true;
+      var iframe=document.getElementById('teamVideo');
+      // Add autoplay to src
+      var src=iframe.src;
+      if(src.indexOf('autoplay')===-1){
+        iframe.src=src+(src.indexOf('?')>-1?'&':'?')+'autoplay=1&mute=0';
+      }
+    }
+  });
+},{threshold:0.4});
+teamObs.observe(document.querySelector('.team-section'));
 </script>
 </body>
 </html>
