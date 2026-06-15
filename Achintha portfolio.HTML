@@ -322,9 +322,6 @@
     position: relative;
     padding: 3rem 0;
     overflow: hidden;
-    /* cancel BOTH section padding layers (outer <section> + inner .certs-section) */
-    margin-left: calc(-2 * var(--pad));
-    margin-right: calc(-2 * var(--pad));
   }
 
   .certs-track {
@@ -704,7 +701,7 @@
   </div>
 </section>
 
-<section id="edu-section" style="background:var(--bg2);border-top:1px solid var(--border);position:relative;overflow:hidden;">
+<section id="edu-section" style="background:var(--bg2);border-top:1px solid var(--border);">
   <div class="section-label reveal">Education</div>
   <div class="edu-list">
     <div class="edu-item reveal"><div><div class="edu-degree">BEng (Hons) Software Engineering</div><div class="edu-school">University of Westminster · IIT Colombo · Presently Enrolled</div></div><div class="edu-year">2023 →</div></div>
@@ -721,8 +718,8 @@
       <p class="certs-subtitle reveal reveal-delay-2">Google & Coursera certified — from AI fundamentals to cloud engineering and Python. Click any certificate to verify.</p>
     </div>
     <div class="certs-track-wrap reveal">
-      <div style="position:absolute;top:0;bottom:0;left:0;width:180px;background:linear-gradient(to right,#0e0e0e 45%,transparent 100%);z-index:10;pointer-events:none;"></div>
-      <div style="position:absolute;top:0;bottom:0;right:0;width:180px;background:linear-gradient(to left,#0e0e0e 45%,transparent 100%);z-index:10;pointer-events:none;"></div>
+      <div style="position:absolute;top:0;bottom:0;left:calc(-2 * 3rem);width:calc(180px + 2 * 3rem);background:linear-gradient(to right,#0e0e0e 0%,#0e0e0e 35%,transparent 100%);z-index:10;pointer-events:none;"></div>
+      <div style="position:absolute;top:0;bottom:0;right:calc(-2 * 3rem);width:calc(180px + 2 * 3rem);background:linear-gradient(to left,#0e0e0e 0%,#0e0e0e 35%,transparent 100%);z-index:10;pointer-events:none;"></div>
       <div class="certs-track">
 
         <div class="cert-card" onclick="window.open('https://coursera.org/verify/4T57MW7UH5OC','_blank')" title="Introduction to AI">
