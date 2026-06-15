@@ -292,7 +292,6 @@
   .certs-section {
     padding: 5rem var(--pad) 4rem;
     position: relative;
-    overflow: hidden;
   }
   .certs-header {
     display: flex;
@@ -302,17 +301,9 @@
     flex-wrap: wrap;
     gap: 1rem;
   }
-  .certs-count {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.7rem;
-    color: var(--muted);
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    margin-bottom: 0.3rem;
-  }
   .certs-title {
     font-family: 'Bebas Neue', sans-serif;
-    font-size: clamp(1.8rem, 4vw, 3rem);
+    font-size: clamp(2.2rem, 5vw, 4rem);
     color: var(--text);
     letter-spacing: 0.03em;
     line-height: 1;
@@ -329,10 +320,13 @@
 
   .certs-track-wrap {
     position: relative;
+    padding: 3rem 0;
     overflow: hidden;
-    mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
-    -webkit-mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
+    /* cancel BOTH section padding layers (outer <section> + inner .certs-section) */
+    margin-left: calc(-2 * var(--pad));
+    margin-right: calc(-2 * var(--pad));
   }
+
   .certs-track {
     display: flex;
     gap: 1.8rem;
@@ -710,7 +704,7 @@
   </div>
 </section>
 
-<section style="background:var(--bg2);border-top:1px solid var(--border);">
+<section id="edu-section" style="background:var(--bg2);border-top:1px solid var(--border);position:relative;overflow:hidden;">
   <div class="section-label reveal">Education</div>
   <div class="edu-list">
     <div class="edu-item reveal"><div><div class="edu-degree">BEng (Hons) Software Engineering</div><div class="edu-school">University of Westminster · IIT Colombo · Presently Enrolled</div></div><div class="edu-year">2023 →</div></div>
@@ -722,12 +716,13 @@
   <div class="certs-section">
     <div class="certs-header">
       <div>
-        <div class="certs-count reveal">10 Professional Certificates</div>
-        <div class="certs-title reveal reveal-delay-1">CERTIFIED<br><span>BY GOOGLE</span></div>
+        <div class="certs-title reveal">PROFESSIONAL<br><span>CERTIFICATES</span></div>
       </div>
       <p class="certs-subtitle reveal reveal-delay-2">Google & Coursera certified — from AI fundamentals to cloud engineering and Python. Click any certificate to verify.</p>
     </div>
     <div class="certs-track-wrap reveal">
+      <div style="position:absolute;top:0;bottom:0;left:0;width:180px;background:linear-gradient(to right,#0e0e0e 45%,transparent 100%);z-index:10;pointer-events:none;"></div>
+      <div style="position:absolute;top:0;bottom:0;right:0;width:180px;background:linear-gradient(to left,#0e0e0e 45%,transparent 100%);z-index:10;pointer-events:none;"></div>
       <div class="certs-track">
 
         <div class="cert-card" onclick="window.open('https://coursera.org/verify/4T57MW7UH5OC','_blank')" title="Introduction to AI">
@@ -1116,6 +1111,21 @@ var co=new IntersectionObserver(function(e){e.forEach(function(x){if(x.isInterse
 document.querySelectorAll('.counter').forEach(function(c){co.observe(c);});
 document.addEventListener('mousemove',function(e){var o=document.querySelector('.hero-orb');if(!o)return;o.style.transform='translate('+(e.clientX/window.innerWidth-0.5)*40+'px,'+(e.clientY/window.innerHeight-0.5)*40+'px)';});
 (function(){var w=document.getElementById('scratchWrapper');if(!w)return;new IntersectionObserver(function(e){e.forEach(function(x){if(x.isIntersecting){w.style.opacity='1';w.style.transform='scale(1)';}});},{threshold:0.15}).observe(w);})();
+</script>
+
+<script>
+(function(){
+  var fl = document.getElementById('cert-fade-l');
+  var fr = document.getElementById('cert-fade-r');
+  var wrap = document.querySelector('.certs-track-wrap');
+  if(!fl||!fr||!wrap) return;
+  var obs = new IntersectionObserver(function(entries){
+    var visible = entries[0].isIntersecting;
+    fl.style.display = visible ? 'block' : 'none';
+    fr.style.display = visible ? 'block' : 'none';
+  }, {threshold: 0.1});
+  obs.observe(wrap);
+})();
 </script>
 </body>
 </html>
