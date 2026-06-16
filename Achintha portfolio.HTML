@@ -145,12 +145,17 @@
   .contact-label{font-size:0.75rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--accent);margin-bottom:2rem;position:relative}
   .contact-heading{font-family:'Bebas Neue',sans-serif;font-size:clamp(3.5rem,10vw,10rem);line-height:0.9;letter-spacing:0.01em;margin-bottom:2rem;position:relative}
   .contact-sub{font-size:1rem;color:var(--muted);max-width:420px;margin:0 auto 3rem;line-height:1.7;position:relative}
-  .contact-links{display:flex;justify-content:center;gap:1.5rem;flex-wrap:wrap;position:relative}
+  .contact-links{display:flex;flex-direction:column;align-items:center;gap:2rem;position:relative}
+  .contact-main-row{display:flex;align-items:center;justify-content:center;gap:1rem;flex-wrap:wrap}
   .contact-btn{display:inline-flex;align-items:center;gap:0.6rem;padding:1rem 2rem;font-size:0.82rem;letter-spacing:0.1em;text-transform:uppercase;font-family:'DM Sans',sans-serif;text-decoration:none;transition:all 0.3s;cursor:none}
-  .contact-btn.primary{background:var(--accent);color:#000;font-weight:500}
-  .contact-btn.primary:hover{background:#d4ff4a}
+  .contact-btn.primary{background:var(--accent);color:#000;font-weight:600}
+  .contact-btn.primary:hover{background:#d4ff4a;transform:translateY(-2px)}
   .contact-btn.secondary{border:1px solid var(--border-light);color:var(--text)}
-  .contact-btn.secondary:hover{border-color:var(--text);background:rgba(240,237,230,0.05)}
+  .contact-btn.secondary:hover{border-color:var(--accent);color:var(--accent);transform:translateY(-2px)}
+  .contact-icons{display:flex;align-items:center;gap:1.2rem}
+  .contact-icon{display:flex;align-items:center;justify-content:center;width:48px;height:48px;border:1px solid var(--border-light);border-radius:50%;color:var(--muted);text-decoration:none;transition:all 0.3s;cursor:none}
+  .contact-icon:hover{border-color:var(--accent);color:var(--accent);background:rgba(200,245,66,0.06);transform:translateY(-3px)}
+  .contact-icon svg{width:18px;height:18px;fill:currentColor}
   footer{padding:2rem var(--pad);display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--border);flex-wrap:wrap;gap:1rem}
   footer p{font-size:0.75rem;color:var(--muted);letter-spacing:0.06em}
   .footer-logo{font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:0.12em;color:var(--muted)}
@@ -171,7 +176,7 @@
   .ld-bar-fill{position:absolute;top:0;left:0;height:100%;width:0;background:#080808;transition:width 0.12s linear;}
   .ld-pct{font-family:'DM Mono',monospace;font-size:0.62rem;letter-spacing:0.18em;color:rgba(8,8,8,0.5);margin-top:0.4rem;opacity:0;position:relative;z-index:2;}
   @media(max-width:1024px){:root{--pad:2rem}.about-grid{grid-template-columns:1fr;gap:3rem}.exp-item{grid-template-columns:130px 1fr;gap:2rem}.nav-links{gap:1.5rem}}
-  @media(max-width:768px){:root{--pad:1.5rem}.nav-links,.nav-cta{display:none}.nav-hamburger{display:flex}.hero{padding:0 var(--pad) 3rem}.hero-orb{width:300px;height:300px}.hero-bottom{flex-direction:column;align-items:flex-start;gap:1.5rem}.hero-scroll{display:none}.about-grid{grid-template-columns:1fr;gap:2.5rem}.exp-item{grid-template-columns:1fr;gap:0.5rem}.exp-item::before{display:none}.exp-left{padding-top:0}.contact-links{flex-direction:column;align-items:center}.contact-btn{width:100%;max-width:360px;justify-content:center;font-size:0.72rem;padding:0.9rem 1rem;word-break:break-all}footer{flex-direction:column;text-align:center;gap:0.5rem}.scratch-section iframe{height:380px !important}}
+  @media(max-width:768px){:root{--pad:1.5rem}.nav-links,.nav-cta{display:none}.nav-hamburger{display:flex}.hero{padding:0 var(--pad) 3rem}.hero-orb{width:300px;height:300px}.hero-bottom{flex-direction:column;align-items:flex-start;gap:1.5rem}.hero-scroll{display:none}.about-grid{grid-template-columns:1fr;gap:2.5rem}.exp-item{grid-template-columns:1fr;gap:0.5rem}.exp-item::before{display:none}.exp-left{padding-top:0}.contact-main-row{flex-direction:column;align-items:center;width:100%}.contact-btn{width:100%;max-width:340px;justify-content:center;font-size:0.72rem;padding:0.9rem 1rem;word-break:break-all}footer{flex-direction:column;text-align:center;gap:0.5rem}.scratch-section iframe{height:380px !important}}
   @media(max-width:480px){:root{--pad:1.2rem}.hero-name{font-size:clamp(2.8rem,14vw,5rem)}.about-stats{grid-template-columns:1fr 1fr}.stat-num{font-size:2.2rem}.edu-item{flex-direction:column;gap:0.5rem}.edu-year{align-self:flex-start}section{padding:5rem var(--pad)}.contact-section{padding:6rem var(--pad)}.scratch-section iframe{height:300px !important}.nav-mobile a{font-size:2.2rem}}
 
   /* ══ ANIMATED CATEGORY CARDS ══ */
@@ -1004,9 +1009,31 @@
   <h2 class="contact-heading reveal">LET'S<br>BUILD.</h2>
   <p class="contact-sub reveal reveal-delay-1">Open to internships, freelance projects, and collaboration. If you have an idea — let's make it real.</p>
   <div class="contact-links reveal reveal-delay-2">
-    <a href="mailto:achinthajayaweera26@gmail.com" class="contact-btn primary">achinthajayaweera26@gmail.com</a>
-    <a href="tel:+94761490417" class="contact-btn secondary">+94 761 490 417</a>
-    <a href="https://achinthajayaweera.com" class="contact-btn secondary" target="_blank">achinthajayaweera.com</a>
+    <div class="contact-main-row">
+      <a href="mailto:achinthajayaweera26@gmail.com?subject=Let's Work Together" class="contact-btn primary">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        achinthajayaweera26@gmail.com
+      </a>
+      <a href="tel:+94761490417" class="contact-btn secondary">+94 761 490 417</a>
+    </div>
+    <div class="contact-icons">
+      <!-- GitHub -->
+      <a href="https://github.com/achinthajayaweera" target="_blank" class="contact-icon" title="GitHub">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+      </a>
+      <!-- LinkedIn -->
+      <a href="https://www.linkedin.com/in/achintha-jayaweera-288a5b213" target="_blank" class="contact-icon" title="LinkedIn">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+      </a>
+      <!-- WhatsApp -->
+      <a href="https://wa.me/94761490417" target="_blank" class="contact-icon" title="WhatsApp">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>
+      </a>
+      <!-- Instagram -->
+      <a href="https://www.instagram.com/_achintha._?igsh=MTBseXJkdHN3ZGd0NA%3D%3D&utm_source=qr" target="_blank" class="contact-icon" title="Instagram">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>
+      </a>
+    </div>
   </div>
 </section>
 
