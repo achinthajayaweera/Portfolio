@@ -141,7 +141,17 @@
   .orbital-label{position:absolute;top:2.5rem;left:var(--pad);font-family:'DM Mono',monospace;font-size:0.65rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--accent);z-index:10;display:flex;align-items:center;gap:0.8rem}
   .orbital-label::after{content:'';width:40px;height:1px;background:var(--accent);opacity:0.4}
   .contact-section{background:var(--bg2);border-top:1px solid var(--border);text-align:center;padding:10rem var(--pad);position:relative;overflow:hidden}
-  .contact-bg-text{position:absolute;font-family:'Bebas Neue',sans-serif;font-size:clamp(8rem,20vw,22rem);color:rgba(240,237,230,0.02);top:50%;left:50%;transform:translate(-50%,-50%);white-space:nowrap;pointer-events:none;letter-spacing:0.05em}
+  /* LET'S TALK infinite marquee */
+  .contact-bg-marquee{position:absolute;inset:0;display:flex;align-items:center;overflow:hidden;pointer-events:none;z-index:0}
+  .contact-bg-track{display:flex;white-space:nowrap;animation:contactMarquee 18s linear infinite;will-change:transform}
+  .contact-bg-track span{font-family:'Bebas Neue',sans-serif;font-size:clamp(8rem,20vw,22rem);color:rgba(240,237,230,0.03);letter-spacing:0.05em;padding-right:2rem;flex-shrink:0}
+  @keyframes contactMarquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+  /* Signature overlay */
+  .contact-sig{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;z-index:1;opacity:0.22}
+  .contact-sig svg{width:min(90vw,900px);height:auto}
+  .contact-sig path{fill:none;stroke:#ffffff;stroke-width:4;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:50000;stroke-dashoffset:50000}
+  .contact-sig.animate path{animation:sigDraw 4s cubic-bezier(0.4,0,0.2,1) forwards}
+  @keyframes sigDraw{to{stroke-dashoffset:0}}
   .contact-label{font-size:0.75rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--accent);margin-bottom:2rem;position:relative}
   .contact-heading{font-family:'Bebas Neue',sans-serif;font-size:clamp(3.5rem,10vw,10rem);line-height:0.9;letter-spacing:0.01em;margin-bottom:2rem;position:relative}
   .contact-sub{font-size:1rem;color:var(--muted);max-width:420px;margin:0 auto 3rem;line-height:1.7;position:relative}
@@ -1004,11 +1014,33 @@
 </section>
 
 <section class="contact-section" id="contact">
-  <div class="contact-bg-text">LET'S TALK</div>
-  <div class="contact-label reveal">Get in Touch</div>
-  <h2 class="contact-heading reveal">LET'S<br>BUILD.</h2>
-  <p class="contact-sub reveal reveal-delay-1">Open to internships, freelance projects, and collaboration. If you have an idea — let's make it real.</p>
-  <div class="contact-links reveal reveal-delay-2">
+  <!-- Infinite LET'S TALK marquee — z-index 0, behind everything -->
+  <div class="contact-bg-marquee">
+    <div class="contact-bg-track">
+      <span>LET'S TALK&nbsp;&nbsp;·&nbsp;&nbsp;</span>
+      <span>LET'S TALK&nbsp;&nbsp;·&nbsp;&nbsp;</span>
+      <span>LET'S TALK&nbsp;&nbsp;·&nbsp;&nbsp;</span>
+      <span>LET'S TALK&nbsp;&nbsp;·&nbsp;&nbsp;</span>
+      <span>LET'S TALK&nbsp;&nbsp;·&nbsp;&nbsp;</span>
+      <span>LET'S TALK&nbsp;&nbsp;·&nbsp;&nbsp;</span>
+      <span>LET'S TALK&nbsp;&nbsp;·&nbsp;&nbsp;</span>
+      <span>LET'S TALK&nbsp;&nbsp;·&nbsp;&nbsp;</span>
+      <span>LET'S TALK&nbsp;&nbsp;·&nbsp;&nbsp;</span>
+      <span>LET'S TALK&nbsp;&nbsp;·&nbsp;&nbsp;</span>
+      <span>LET'S TALK&nbsp;&nbsp;·&nbsp;&nbsp;</span>
+      <span>LET'S TALK&nbsp;&nbsp;·&nbsp;&nbsp;</span>
+    </div>
+  </div>
+  <!-- Signature animation — z-index 1, above marquee but below text/buttons -->
+  <div class="contact-sig" id="contactSig">
+    <svg viewBox="200 100 1600 1100" xmlns="http://www.w3.org/2000/svg">
+      <path id="sigPath" d="svg1"/>
+    </svg>
+  </div>
+  <div class="contact-label reveal" style="position:relative;z-index:2">Get in Touch</div>
+  <h2 class="contact-heading reveal" style="position:relative;z-index:2">LET'S<br>BUILD.</h2>
+  <p class="contact-sub reveal reveal-delay-1" style="position:relative;z-index:2">Open to internships, freelance projects, and collaboration. If you have an idea — let's make it real.</p>
+  <div class="contact-links reveal reveal-delay-2" style="position:relative;z-index:2">
     <div class="contact-main-row">
       <a href="mailto:achinthajayaweera26@gmail.com?subject=Let's Work Together" class="contact-btn primary">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
@@ -1135,6 +1167,19 @@ var co=new IntersectionObserver(function(e){e.forEach(function(x){if(x.isInterse
 document.querySelectorAll('.counter').forEach(function(c){co.observe(c);});
 document.addEventListener('mousemove',function(e){var o=document.querySelector('.hero-orb');if(!o)return;o.style.transform='translate('+(e.clientX/window.innerWidth-0.5)*40+'px,'+(e.clientY/window.innerHeight-0.5)*40+'px)';});
 (function(){var w=document.getElementById('scratchWrapper');if(!w)return;new IntersectionObserver(function(e){e.forEach(function(x){if(x.isIntersecting){w.style.opacity='1';w.style.transform='scale(1)';}});},{threshold:0.15}).observe(w);})();
+
+// Signature draw animation on scroll into view
+(function(){
+  var sig = document.getElementById('contactSig');
+  if(!sig) return;
+  var sigObs = new IntersectionObserver(function(entries){
+    if(entries[0].isIntersecting){
+      sig.classList.add('animate');
+      sigObs.disconnect();
+    }
+  },{threshold:0.3});
+  sigObs.observe(sig);
+})();
 </script>
 
 <script>
