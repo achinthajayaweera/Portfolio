@@ -719,15 +719,15 @@
 
   <div class="github-stats">
     <div class="gh-stat">
-      <div class="gh-stat-num">1,818</div>
+      <div class="gh-stat-num" id="ghStatContrib">—</div>
       <div class="gh-stat-label">Contributions in Last Year</div>
     </div>
     <div class="gh-stat">
-      <div class="gh-stat-num">15</div>
+      <div class="gh-stat-num" id="ghStatRepos">—</div>
       <div class="gh-stat-label">Public Repositories</div>
     </div>
     <div class="gh-stat">
-      <div class="gh-stat-num">3+</div>
+      <div class="gh-stat-num" id="ghStatYears">—</div>
       <div class="gh-stat-label">Years Active</div>
     </div>
   </div>
@@ -1399,6 +1399,80 @@ document.addEventListener('mousemove',function(e){var o=document.querySelector('
     fr.style.display = visible ? 'block' : 'none';
   }, {threshold: 0.1});
   obs.observe(wrap);
+})();
+</script>
+
+<!-- ══ LIVE GITHUB STATS — fetches real data, no hardcoded numbers ══ -->
+<script>
+(function(){
+  var GH_USER = 'achinthajayaweera';
+  var elContrib = document.getElementById('ghStatContrib');
+  var elRepos   = document.getElementById('ghStatRepos');
+  var elYears   = document.getElementById('ghStatYears');
+  if(!elContrib || !elRepos || !elYears) return;
+
+  var CACHE_KEY = 'gh-live-stats-v1';
+  var CACHE_TTL = 20 * 60 * 1000; // re-check GitHub every 20 min max
+
+  function animateNumber(el, target, suffix){
+    suffix = suffix || '';
+    if(typeof target !== 'number' || isNaN(target)){ return; }
+    var duration = 900, startTime = null;
+    function step(ts){
+      if(!startTime) startTime = ts;
+      var p = Math.min((ts - startTime) / duration, 1);
+      var eased = 1 - Math.pow(1 - p, 3);
+      el.textContent = Math.floor(eased * target).toLocaleString() + suffix;
+      if(p < 1) requestAnimationFrame(step);
+      else el.textContent = target.toLocaleString() + suffix;
+    }
+    requestAnimationFrame(step);
+  }
+
+  function render(data){
+    if(data.contrib != null) animateNumber(elContrib, data.contrib);
+    if(data.repos   != null) animateNumber(elRepos, data.repos);
+    if(data.years   != null) animateNumber(elYears, data.years, '+');
+  }
+
+  var cached = null;
+  try{ cached = JSON.parse(localStorage.getItem(CACHE_KEY)); }catch(e){}
+
+  // Show last-known real data instantly so the section never looks empty
+  if(cached && cached.data) render(cached.data);
+
+  var isFresh = cached && cached.ts && (Date.now() - cached.ts < CACHE_TTL);
+  if(isFresh) return; // recently fetched real data is still good, skip the network round trip
+
+  Promise.all([
+    fetch('https://api.github.com/users/' + GH_USER)
+      .then(function(r){ return r.ok ? r.json() : null; })
+      .catch(function(){ return null; }),
+    fetch('https://github-contributions-api.jogruber.de/v4/' + GH_USER + '?y=last')
+      .then(function(r){ return r.ok ? r.json() : null; })
+      .catch(function(){ return null; })
+  ]).then(function(results){
+    var profile = results[0];
+    var contribData = results[1];
+    var data = {};
+
+    if(profile){
+      data.repos = profile.public_repos;
+      var createdYears = (Date.now() - new Date(profile.created_at).getTime()) / (1000*60*60*24*365.25);
+      data.years = Math.max(1, Math.floor(createdYears));
+    }
+    if(contribData && contribData.total && typeof contribData.total.lastYear === 'number'){
+      data.contrib = contribData.total.lastYear;
+    }
+
+    if(data.repos != null || data.contrib != null){
+      render(data);
+      try{ localStorage.setItem(CACHE_KEY, JSON.stringify({ ts: Date.now(), data: data })); }catch(e){}
+    } else if(!cached){
+      // total network failure on first ever load — fall back to last verified figures
+      render({ contrib: 1818, repos: 15, years: 3 });
+    }
+  });
 })();
 </script>
 </body>
