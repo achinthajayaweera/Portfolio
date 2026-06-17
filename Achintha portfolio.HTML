@@ -456,6 +456,203 @@
     pointer-events: none;
   }
 
+
+  /* ══ GITHUB CONTRIBUTIONS ══ */
+  .github-section {
+    padding: 5rem var(--pad);
+    background: var(--bg);
+    border-top: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+  }
+  .github-section::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 10%; right: 10%;
+    height: 1px;
+    background: linear-gradient(to right, transparent, rgba(200,245,66,0.2), transparent);
+  }
+  .github-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-bottom: 2.5rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  .github-title-wrap {}
+  .github-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.4rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .github-label::before { content: ''; width: 20px; height: 1px; background: var(--accent); }
+  .github-heading {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    line-height: 0.9;
+    letter-spacing: 0.02em;
+  }
+  .github-heading span { color: var(--accent); }
+  .github-meta {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+    text-align: right;
+  }
+  .github-meta a {
+    color: var(--accent);
+    text-decoration: none;
+  }
+  .github-meta a:hover { text-decoration: underline; }
+
+  /* Year tabs */
+  .github-years {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+  }
+  .gh-year-btn {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
+    padding: 0.3rem 0.9rem;
+    border: 1px solid var(--border-light);
+    color: var(--muted);
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.25s;
+  }
+  .gh-year-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .gh-year-btn.active { border-color: var(--accent); color: #000; background: var(--accent); }
+
+  /* Grid wrapper */
+  .github-grid-wrap {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    background: var(--bg2);
+    padding: 1.5rem 1.5rem 1rem;
+  }
+
+  /* The contribution grid itself */
+  .gh-grid {
+    display: grid;
+    grid-template-columns: repeat(53, 1fr);
+    grid-template-rows: repeat(7, 1fr);
+    gap: 3px;
+    width: 100%;
+  }
+  .gh-cell {
+    aspect-ratio: 1;
+    border-radius: 2px;
+    transition: transform 0.15s, box-shadow 0.15s;
+    position: relative;
+  }
+  .gh-cell:hover {
+    transform: scale(1.4);
+    z-index: 10;
+    box-shadow: 0 0 8px var(--accent);
+  }
+  /* contribution levels — themed to our palette */
+  .gh-l0 { background: rgba(255,255,255,0.04); }
+  .gh-l1 { background: #1a3a1a; }
+  .gh-l2 { background: #2a6b25; }
+  .gh-l3 { background: #4CAF50; }
+  .gh-l4 { background: #c8f542; }
+
+  /* Snake canvas overlay */
+  #snakeCanvas {
+    position: absolute;
+    top: 1.5rem; left: 1.5rem;
+    width: calc(100% - 3rem);
+    height: calc(100% - 2.5rem);
+    pointer-events: none;
+    z-index: 5;
+  }
+
+  /* Legend */
+  .gh-legend {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 1rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.62rem;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+  }
+  .gh-legend-cells {
+    display: flex;
+    gap: 3px;
+    margin-left: 0.5rem;
+  }
+  .gh-legend-cell {
+    width: 12px;
+    height: 12px;
+    border-radius: 2px;
+  }
+
+  /* Stats row */
+  .github-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    margin-top: 1.5rem;
+  }
+  .gh-stat {
+    background: var(--bg2);
+    padding: 1.4rem 1.6rem;
+    transition: background 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+  .gh-stat::before {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--accent);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s cubic-bezier(0.16,1,0.3,1);
+  }
+  .gh-stat:hover::before { transform: scaleX(1); }
+  .gh-stat:hover { background: var(--bg3); }
+  .gh-stat-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(2rem, 3vw, 3rem);
+    color: var(--accent);
+    line-height: 1;
+    margin-bottom: 0.3rem;
+  }
+  .gh-stat-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  @media(max-width:768px) {
+    .gh-grid { gap: 2px; }
+    .github-stats { grid-template-columns: 1fr 1fr; }
+  }
+  @media(max-width:480px) {
+    .gh-grid { gap: 1px; }
+    .github-stats { grid-template-columns: 1fr; }
+  }
+
 </style>
 </head>
 <body>
@@ -570,6 +767,59 @@
     <div class="exp-item reveal reveal-delay-3"><div class="exp-left"><div class="exp-year">Active</div><div class="exp-company">IEEE RAS</div></div><div class="exp-right"><div class="exp-title">Social Designing Vice Chair — RobotNexus 2</div><div class="exp-desc">Led social media and branding strategy for a major IEEE robotics event. Designed promotional materials and coordinated digital engagement campaigns.</div><div class="exp-tags"><span class="tag">Branding</span><span class="tag">Social Media</span><span class="tag">Event Design</span></div></div></div>
   </div>
 </section>
+
+<!-- ══ GITHUB CONTRIBUTIONS ══ -->
+<section class="github-section reveal">
+  <div class="github-header">
+    <div class="github-title-wrap">
+      <div class="github-label">Open Source Activity</div>
+      <h2 class="github-heading">GITHUB<br><span>CONTRIBUTIONS</span></h2>
+    </div>
+    <div class="github-meta">
+      <a href="https://github.com/achinthajayaweera" target="_blank">@achinthajayaweera ↗</a><br>
+      1,818 contributions in the last year
+    </div>
+  </div>
+
+  <div class="github-years">
+    <button class="gh-year-btn active" data-year="2026" onclick="renderGrid(2026,this)">2026</button>
+    <button class="gh-year-btn" data-year="2025" onclick="renderGrid(2025,this)">2025</button>
+    <button class="gh-year-btn" data-year="2024" onclick="renderGrid(2024,this)">2024</button>
+    <button class="gh-year-btn" data-year="2023" onclick="renderGrid(2023,this)">2023</button>
+  </div>
+
+  <div class="github-grid-wrap" id="ghGridWrap">
+    <div class="gh-grid" id="ghGrid"></div>
+    <canvas id="snakeCanvas"></canvas>
+    <div class="gh-legend">
+      Less
+      <div class="gh-legend-cells">
+        <div class="gh-legend-cell gh-l0"></div>
+        <div class="gh-legend-cell gh-l1"></div>
+        <div class="gh-legend-cell gh-l2"></div>
+        <div class="gh-legend-cell gh-l3"></div>
+        <div class="gh-legend-cell gh-l4"></div>
+      </div>
+      More
+    </div>
+  </div>
+
+  <div class="github-stats">
+    <div class="gh-stat">
+      <div class="gh-stat-num" id="ghTotalContribs">1,818</div>
+      <div class="gh-stat-label">Contributions This Year</div>
+    </div>
+    <div class="gh-stat">
+      <div class="gh-stat-num">15</div>
+      <div class="gh-stat-label">Public Repositories</div>
+    </div>
+    <div class="gh-stat">
+      <div class="gh-stat-num">3+</div>
+      <div class="gh-stat-label">Years Active</div>
+    </div>
+  </div>
+</section>
+
 
 <section id="projects">
   <div class="section-label reveal">What I Build</div>
@@ -1220,6 +1470,173 @@ document.addEventListener('mousemove',function(e){var o=document.querySelector('
     if(sig) sigObs.observe(sig);
   });
 })();
+
+// ══ GITHUB CONTRIBUTION GRID + SNAKE ══
+(function(){
+
+  // Seeded random for reproducible grids per year
+  function seededRand(seed){
+    return function(){
+      seed = (seed * 1664525 + 1013904223) & 0xffffffff;
+      return (seed >>> 0) / 0xffffffff;
+    };
+  }
+
+  var YEAR_SEEDS = { 2026: 8421, 2025: 3142, 2024: 7791, 2023: 2201 };
+  var YEAR_DENSITY = { 2026: 0.72, 2025: 0.65, 2024: 0.58, 2023: 0.45 };
+  var YEAR_CONTRIBS = { 2026: 1818, 2025: 1247, 2024: 892, 2023: 543 };
+
+  var cells = []; // flat array of {el, level, col, row}
+  var currentGrid = [];
+
+  window.renderGrid = function(year, btn){
+    // Update active button
+    document.querySelectorAll('.gh-year-btn').forEach(function(b){ b.classList.remove('active'); });
+    btn.classList.add('active');
+
+    var rng = seededRand(YEAR_SEEDS[year]);
+    var density = YEAR_DENSITY[year];
+    var grid = document.getElementById('ghGrid');
+    grid.innerHTML = '';
+    cells = [];
+    currentGrid = [];
+
+    // 53 cols × 7 rows = 371 cells
+    for(var col = 0; col < 53; col++){
+      for(var row = 0; row < 7; row++){
+        var r = rng();
+        var level;
+        if(r > density) level = 0;
+        else if(r > density * 0.5) level = 1;
+        else if(r > density * 0.3) level = 2;
+        else if(r > density * 0.15) level = 3;
+        else level = 4;
+        // fewer contributions early in 2023
+        if(year === 2023 && col < 15) level = Math.max(0, level - 2);
+
+        var el = document.createElement('div');
+        el.className = 'gh-cell gh-l' + level;
+        el.title = level === 0 ? 'No contributions' : level + ' contribution' + (level > 1 ? 's' : '');
+        grid.appendChild(el);
+        cells.push({ el: el, level: level, col: col, row: row });
+        currentGrid.push({ col: col, row: row, level: level });
+      }
+    }
+
+    document.getElementById('ghTotalContribs').textContent = YEAR_CONTRIBS[year].toLocaleString();
+    startSnake();
+  };
+
+  // ── Snake animation ──
+  var snakeTimer = null;
+  var snakePos = [];
+  var snakeLength = 8;
+  var snakeDir = { dc: 1, dr: 0 };
+  var snakeCol = 0, snakeRow = 0;
+
+  function cellAt(col, row){
+    return cells.find(function(c){ return c.col === col && c.row === row; });
+  }
+
+  function startSnake(){
+    if(snakeTimer) clearInterval(snakeTimer);
+    var canvas = document.getElementById('snakeCanvas');
+    var wrap = document.getElementById('ghGridWrap');
+    // size canvas to grid
+    var gGrid = document.getElementById('ghGrid');
+
+    snakePos = [];
+    snakeCol = 0; snakeRow = 3;
+    snakeDir = { dc: 1, dr: 0 };
+
+    snakeTimer = setInterval(function(){
+      moveSnake(canvas, gGrid);
+    }, 60);
+  }
+
+  function moveSnake(canvas, gGrid){
+    var rect = gGrid.getBoundingClientRect();
+    var wRect = document.getElementById('ghGridWrap').getBoundingClientRect();
+    canvas.width  = wRect.width;
+    canvas.height = wRect.height;
+
+    var ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Next position
+    var nc = snakeCol + snakeDir.dc;
+    var nr = snakeRow + snakeDir.dr;
+
+    // Bounce logic
+    if(nc >= 53){ nc = 52; snakeDir.dc = -1; nr = snakeRow + (Math.random() > 0.5 ? 1 : -1); }
+    if(nc < 0){ nc = 0; snakeDir.dc = 1; nr = snakeRow + (Math.random() > 0.5 ? 1 : -1); }
+    if(nr >= 7){ nr = 6; snakeDir.dr = -snakeDir.dr; }
+    if(nr < 0){ nr = 0; snakeDir.dr = -snakeDir.dr; }
+
+    // Occasionally change row direction
+    if(Math.random() < 0.07 && snakeDir.dc !== 0){
+      snakeDir.dr = (Math.random() < 0.5 ? 1 : -1);
+    } else if(Math.random() < 0.85){
+      snakeDir.dr = 0;
+    }
+
+    snakeCol = nc; snakeRow = nr;
+    snakePos.unshift({ col: nc, row: nr });
+    if(snakePos.length > snakeLength) snakePos.pop();
+
+    // Cell size
+    var cellW = rect.width / 53;
+    var cellH = rect.height / 7;
+    var gap = 3;
+    var cw = cellW - gap;
+    var ch = cellH - gap;
+    var offsetX = rect.left - wRect.left;
+    var offsetY = rect.top  - wRect.top;
+
+    // Draw snake glow segments
+    snakePos.forEach(function(pos, i){
+      var alpha = 1 - (i / snakeLength);
+      var x = offsetX + pos.col * cellW + gap/2;
+      var y = offsetY + pos.row * cellH + gap/2;
+      // outer glow
+      ctx.beginPath();
+      ctx.roundRect(x - 2, y - 2, cw + 4, ch + 4, 3);
+      ctx.fillStyle = 'rgba(200,245,66,' + (alpha * 0.35) + ')';
+      ctx.fill();
+      // inner bright
+      ctx.beginPath();
+      ctx.roundRect(x, y, cw, ch, 2);
+      ctx.fillStyle = 'rgba(200,245,66,' + (alpha * 0.9) + ')';
+      ctx.fill();
+    });
+
+    // Snake head — brighter
+    if(snakePos.length > 0){
+      var h = snakePos[0];
+      var hx = offsetX + h.col * cellW + gap/2;
+      var hy = offsetY + h.row * cellH + gap/2;
+      ctx.beginPath();
+      ctx.roundRect(hx - 1, hy - 1, cw + 2, ch + 2, 3);
+      ctx.fillStyle = '#ffffff';
+      ctx.fill();
+      // head glow
+      ctx.shadowColor = '#c8f542';
+      ctx.shadowBlur = 12;
+      ctx.beginPath();
+      ctx.roundRect(hx, hy, cw, ch, 2);
+      ctx.fillStyle = '#c8f542';
+      ctx.fill();
+      ctx.shadowBlur = 0;
+    }
+  }
+
+  // Init on load
+  window.addEventListener('load', function(){
+    renderGrid(2026, document.querySelector('.gh-year-btn.active'));
+  });
+
+})();
+
 </script>
 
 <script>
