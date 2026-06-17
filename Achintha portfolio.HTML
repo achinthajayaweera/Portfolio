@@ -535,14 +535,12 @@
     width: 100%;
     border: 1px solid var(--border);
     background: var(--bg2);
-    padding: 1.5rem;
+    padding: 0;
     position: relative;
-    overflow-x: auto;
-    overflow-y: hidden;
+    overflow: hidden;
   }
   .github-graph-wrap img {
     width: 100%;
-    min-width: 700px;
     height: auto;
     display: block;
   }
@@ -758,8 +756,9 @@
   <div class="github-graph-wrap">
     <img 
       id="ghChartImg"
-      src="https://ghchart.rshah.org/c8f542/achinthajayaweera"
+      src="https://github-readme-activity-graph.vercel.app/graph?username=achinthajayaweera&theme=react-dark&bg_color=0e0e0e&color=f0ede6&line=c8f542&point=c8f542&area=true&hide_border=true&area_color=c8f542"
       alt="GitHub contribution chart"
+      loading="lazy"
     >
   </div>
 
