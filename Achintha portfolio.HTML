@@ -513,56 +513,22 @@
   .github-meta a { color: var(--accent); text-decoration: none; }
   .github-meta a:hover { text-decoration: underline; }
 
-  /* Snake SVG embed */
+  /* Snake SVG embed — your real contribution grid with snake animation baked in */
   .github-snake-wrap {
     width: 100%;
     border: 1px solid var(--border);
     background: var(--bg2);
-    padding: 1.5rem;
-    margin-bottom: 1.5rem;
+    padding: 2rem 1.5rem;
     position: relative;
-    overflow: hidden;
+    overflow-x: auto;
+    overflow-y: hidden;
   }
   .github-snake-wrap img {
     width: 100%;
-    height: auto;
-    display: block;
-    filter: hue-rotate(0deg);
-  }
-
-  /* Real contribution graph embed */
-  .github-graph-wrap {
-    width: 100%;
-    border: 1px solid var(--border);
-    background: var(--bg2);
-    padding: 0;
-    position: relative;
-    overflow: hidden;
-  }
-  .github-graph-wrap img {
-    width: 100%;
+    min-width: 700px;
     height: auto;
     display: block;
   }
-  .github-year-tabs {
-    display: flex;
-    gap: 0.5rem;
-    margin-bottom: 1rem;
-    flex-wrap: wrap;
-  }
-  .gh-year-btn {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.68rem;
-    letter-spacing: 0.1em;
-    padding: 0.4rem 1rem;
-    border: 1px solid var(--border-light);
-    color: var(--muted);
-    background: transparent;
-    cursor: pointer;
-    transition: all 0.25s;
-  }
-  .gh-year-btn:hover { border-color: var(--accent); color: var(--accent); }
-  .gh-year-btn.active { border-color: var(--accent); color: #000; background: var(--accent); }
 
   /* Stats row */
   .github-stats {
@@ -608,7 +574,7 @@
   }
   @media(max-width:768px) {
     .github-stats { grid-template-columns: 1fr 1fr; }
-    .github-snake-wrap, .github-graph-wrap { padding: 1rem; }
+    .github-snake-wrap { padding: 1rem; }
   }
   @media(max-width:480px) {
     .github-stats { grid-template-columns: 1fr; }
@@ -742,23 +708,12 @@
     </div>
   </div>
 
-  <!-- Pink snake animation — generated from real commits via GitHub Actions -->
+  <!-- Snake eating your REAL contribution grid — generated from actual commits via GitHub Actions -->
   <div class="github-snake-wrap">
     <img 
       id="snakeImg"
-      src="https://raw.githubusercontent.com/achinthajayaweera/achinthajayaweera/output/github-contribution-grid-snake.svg" 
-      alt="GitHub contribution snake animation"
-      onerror="this.parentElement.style.display='none'"
-    >
-  </div>
-
-  <!-- Real GitHub contribution graph -->
-  <div class="github-graph-wrap">
-    <img 
-      id="ghChartImg"
-      src="https://github-readme-activity-graph.vercel.app/graph?username=achinthajayaweera&theme=react-dark&bg_color=0e0e0e&color=f0ede6&line=c8f542&point=c8f542&area=true&hide_border=true&area_color=c8f542"
-      alt="GitHub contribution chart"
-      loading="lazy"
+      src="https://raw.githubusercontent.com/achinthajayaweera/achinthajayaweera/output/github-contribution-grid-snake.svg?t=1" 
+      alt="GitHub contribution grid with snake animation"
     >
   </div>
 
