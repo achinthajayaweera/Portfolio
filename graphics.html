@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Graphics — Achintha Jayaweera</title>
+<link rel="icon" type="image/png" href="Assets/Achintha top logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#080808;--bg2:#0e0e0e;--bg3:#141414;
+    --text:#f0ede6;--muted:#6b6860;
+    --accent:#c8f542;
+    --border:rgba(240,237,230,0.08);--border-light:rgba(240,237,230,0.15);
+    --pad:3rem;
+  }
+  *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-weight:300;overflow-x:hidden;cursor:none;min-height:100vh;}
+  .cursor{position:fixed;width:10px;height:10px;background:var(--accent);border-radius:50%;pointer-events:none;z-index:9999;transition:transform 0.1s ease;transform:translate(-50%,-50%)}
+  .cursor-trail{position:fixed;width:32px;height:32px;border:1px solid rgba(200,245,66,0.4);border-radius:50%;pointer-events:none;z-index:9998;transition:all 0.18s ease;transform:translate(-50%,-50%)}
+  @media(hover:none){.cursor,.cursor-trail{display:none}body{cursor:auto}}
+
+  /* ── NAV ── */
+  nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:1.5rem var(--pad);display:flex;align-items:center;justify-content:space-between}
+  nav::before{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,rgba(8,8,8,0.95) 0%,transparent 100%);pointer-events:none}
+  .nav-logo{text-decoration:none;position:relative;flex-shrink:0}
+  .nav-logo img{height:32px;width:auto;display:block;filter:brightness(0) invert(1)}
+  .nav-back{display:flex;align-items:center;gap:0.6rem;font-family:'DM Mono',monospace;font-size:0.75rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:color 0.3s;position:relative;}
+  .nav-back:hover{color:var(--accent)}
+  .nav-back svg{transition:transform 0.3s}
+  .nav-back:hover svg{transform:translateX(-4px)}
+
+  /* ── HEADER ── */
+  .page-header{padding:9rem var(--pad) 4rem;position:relative;overflow:hidden;}
+  .page-header::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(240,237,230,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(240,237,230,0.025) 1px,transparent 1px);background-size:80px 80px;pointer-events:none;mask-image:linear-gradient(to bottom,transparent,rgba(0,0,0,0.3) 40%,transparent);}
+  .breadcrumb{display:flex;align-items:center;gap:0.6rem;font-family:'DM Mono',monospace;font-size:0.7rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);margin-bottom:1.5rem;}
+  .breadcrumb a{color:var(--muted);text-decoration:none;transition:color 0.3s}
+  .breadcrumb a:hover{color:var(--accent)}
+  .breadcrumb span{opacity:0.4}
+  .page-label{font-size:0.72rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--accent);margin-bottom:1rem;display:flex;align-items:center;gap:1rem;}
+  .page-label::after{content:'';flex:1;max-width:60px;height:1px;background:var(--accent);opacity:0.4}
+  .page-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(4rem,9vw,9rem);line-height:0.88;letter-spacing:-0.02em;margin-bottom:1.5rem;}
+  .page-sub{font-size:1rem;color:var(--muted);max-width:480px;line-height:1.7;}
+  .project-count{font-family:'DM Mono',monospace;font-size:0.72rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);margin-top:2rem;display:flex;align-items:center;gap:1rem;}
+  .project-count::before{content:'';width:40px;height:1px;background:var(--border-light);}
+
+  /* ── GRID ── */
+  .projects-section{padding:2rem var(--pad) 8rem;}
+  .cat-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:1px;
+    border:1px solid var(--border);
+  }
+
+  /* ── CATEGORY CARD ── */
+  .cat-card{
+    position:relative;overflow:hidden;
+    background:var(--bg2);
+    text-decoration:none;color:var(--text);
+    display:flex;flex-direction:column;
+    min-height:380px;
+    transition:background 0.4s;
+  }
+  /* accent bar slides in from left on hover */
+  .cat-card::after{
+    content:'';position:absolute;bottom:0;left:0;width:100%;height:2px;
+    background:var(--accent);
+    transform:scaleX(0);transform-origin:left;
+    transition:transform 0.5s cubic-bezier(0.16,1,0.3,1);
+    z-index:4;
+  }
+  .cat-card:hover::after{transform:scaleX(1);}
+  .cat-card:hover{background:var(--bg3);}
+
+  /* vertical right border except last in row */
+  .cat-card:not(:nth-child(3n)){border-right:1px solid var(--border);}
+  /* horizontal bottom border for first row */
+  .cat-card:nth-child(-n+3){border-bottom:1px solid var(--border);}
+  /* middle row */
+  .cat-card:nth-child(n+4):nth-child(-n+6){border-bottom:1px solid var(--border);}
+
+  /* ── VISUAL AREA ── */
+  .cat-visual{
+    flex:1;position:relative;overflow:hidden;
+    display:flex;align-items:center;justify-content:center;
+    min-height:220px;
+  }
+
+  /* each category gets a unique ambient pattern */
+  .cat-visual-inner{
+    position:absolute;inset:0;
+    display:flex;align-items:center;justify-content:center;
+    transition:transform 0.6s cubic-bezier(0.16,1,0.3,1);
+  }
+  .cat-card:hover .cat-visual-inner{transform:scale(1.04);}
+
+  /* the big icon glyph */
+  .cat-glyph{
+    font-family:'Bebas Neue',sans-serif;
+    font-size:8rem;
+    line-height:1;
+    opacity:0.06;
+    position:absolute;
+    right:-0.1em;bottom:-0.15em;
+    letter-spacing:-0.05em;
+    color:var(--text);
+    pointer-events:none;
+    transition:opacity 0.4s;
+  }
+  .cat-card:hover .cat-glyph{opacity:0.1;}
+
+  /* SVG icon center */
+  .cat-icon-wrap{
+    width:72px;height:72px;
+    border:1px solid var(--border-light);
+    display:flex;align-items:center;justify-content:center;
+    position:relative;z-index:2;
+    background:var(--bg);
+    transition:border-color 0.3s,background 0.3s;
+  }
+  .cat-card:hover .cat-icon-wrap{border-color:var(--accent);background:rgba(200,245,66,0.06);}
+  .cat-icon-wrap svg{transition:stroke 0.3s;}
+  .cat-card:hover .cat-icon-wrap svg{stroke:var(--accent);}
+
+  /* ambient dots pattern */
+  .cat-dots{
+    position:absolute;inset:0;
+    background-image:radial-gradient(rgba(240,237,230,0.07) 1px,transparent 1px);
+    background-size:24px 24px;
+    pointer-events:none;
+  }
+  /* accent corner slash */
+  .cat-corner{
+    position:absolute;top:1.2rem;right:1.2rem;
+    width:28px;height:28px;z-index:3;
+    opacity:0;transform:translate(4px,-4px);
+    transition:opacity 0.3s,transform 0.3s;
+  }
+  .cat-card:hover .cat-corner{opacity:1;transform:translate(0,0);}
+  .cat-corner svg{display:block;}
+
+  /* gdrive badge */
+  .gdrive-badge{
+    position:absolute;top:1rem;left:1rem;
+    background:rgba(0,0,0,0.7);border:1px solid rgba(255,255,255,0.1);
+    font-family:'DM Mono',monospace;font-size:0.6rem;letter-spacing:0.08em;
+    text-transform:uppercase;color:var(--muted);
+    padding:0.2rem 0.55rem;z-index:3;
+    display:flex;align-items:center;gap:0.4rem;
+  }
+  .gdrive-dot{width:6px;height:6px;border-radius:50%;background:var(--accent);}
+
+  /* ── CARD BODY ── */
+  .cat-body{
+    padding:1.6rem;
+    border-top:1px solid var(--border);
+    position:relative;z-index:2;
+    background:var(--bg2);
+    transition:border-color 0.3s;
+  }
+  .cat-card:hover .cat-body{border-color:var(--border-light);}
+
+  .cat-meta{
+    font-family:'DM Mono',monospace;font-size:0.65rem;
+    letter-spacing:0.15em;text-transform:uppercase;
+    color:var(--accent);margin-bottom:0.6rem;
+  }
+  .cat-name{
+    font-family:'Bebas Neue',sans-serif;
+    font-size:1.9rem;letter-spacing:0.04em;line-height:1;
+    margin-bottom:0.7rem;
+  }
+  .cat-desc{font-size:0.82rem;color:var(--muted);line-height:1.6;margin-bottom:1rem;}
+  .open-btn{
+    display:inline-flex;align-items:center;gap:0.5rem;
+    background:transparent;color:var(--accent);
+    font-family:'DM Mono',monospace;font-size:0.68rem;font-weight:400;
+    letter-spacing:0.1em;text-transform:uppercase;
+    border:1px solid rgba(200,245,66,0.3);
+    padding:0.55rem 1rem;
+    transition:all 0.3s;
+  }
+  .cat-card:hover .open-btn{
+    background:var(--accent);color:#000;border-color:var(--accent);
+  }
+  .open-btn svg{transition:transform 0.3s;}
+  .cat-card:hover .open-btn svg{transform:translate(3px,-3px);}
+
+  /* ── REVEAL ── */
+  .reveal{opacity:0;transform:translateY(40px);transition:opacity 0.9s cubic-bezier(0.16,1,0.3,1),transform 0.9s cubic-bezier(0.16,1,0.3,1);}
+  .reveal.visible{opacity:1;transform:translateY(0);}
+  .reveal-delay-1{transition-delay:0.1s;}
+  .reveal-delay-2{transition-delay:0.2s;}
+  .reveal-delay-3{transition-delay:0.3s;}
+  .reveal-delay-4{transition-delay:0.05s;}
+  .reveal-delay-5{transition-delay:0.15s;}
+  .reveal-delay-6{transition-delay:0.25s;}
+
+  /* ── FOOTER ── */
+  footer{padding:2rem var(--pad);display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--border);flex-wrap:wrap;gap:1rem;}
+  footer p{font-size:0.75rem;color:var(--muted);letter-spacing:0.06em;}
+  .footer-logo{font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:0.12em;color:var(--muted);}
+
+  /* ── RESPONSIVE ── */
+  @media(max-width:1024px){.cat-grid{grid-template-columns:repeat(2,1fr);}.cat-card:not(:nth-child(3n)){border-right:none;}.cat-card:nth-child(odd){border-right:1px solid var(--border);}.cat-card:nth-child(-n+6){border-bottom:1px solid var(--border);}.cat-card:nth-child(7){border-bottom:none;}}
+  @media(max-width:640px){:root{--pad:1.5rem;}.cat-grid{grid-template-columns:1fr;}.cat-card{border-right:none!important;border-bottom:1px solid var(--border)!important;min-height:320px;}.cat-glyph{font-size:6rem;}}
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-trail" id="cursorTrail"></div>
+
+<nav>
+  <a href="Achintha%20portfolio.HTML" class="nav-logo">
+    <img src="Assets/A Final.png" alt="Achintha Jayaweera">
+  </a>
+  <a href="Achintha%20portfolio.HTML#projects" class="nav-back">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8L10 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    Back to Portfolio
+  </a>
+</nav>
+
+<div class="page-header">
+  <div class="breadcrumb">
+    <a href="Achintha%20portfolio.HTML">Portfolio</a>
+    <span>→</span>
+    <span>Graphics</span>
+  </div>
+  <div class="page-label">Visual Design &amp; Branding</div>
+  <h1 class="page-title">GRAPHIC<br>DESIGN</h1>
+  <p class="page-sub">Brand identities, packaging, social media, and print — crafted for global clients as a Top Rated Fiverr seller with 100+ completed projects across 7 design disciplines.</p>
+  <div class="project-count">7 Categories</div>
+</div>
+
+<div class="projects-section">
+  <div class="cat-grid">
+
+    <!-- 01 · Brand Identity -->
+    <a class="cat-card reveal" href="https://drive.google.com/drive/folders/1-pRJildGjlrn5-UbYgcLXPzMqbUyRo3A?usp=sharing" target="_blank">
+      <div class="cat-visual">
+        <div class="cat-dots"></div>
+        <div class="cat-visual-inner">
+          <div class="cat-icon-wrap">
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="3"/>
+              <path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/>
+            </svg>
+          </div>
+        </div>
+        <div class="cat-glyph">BI</div>
+        <div class="gdrive-badge"><span class="gdrive-dot"></span>Drive</div>
+        <div class="cat-corner">
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+            <path d="M8 20L20 8M20 8H10M20 8V18" stroke="var(--accent)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+      </div>
+      <div class="cat-body">
+        <div class="cat-meta">01 · Identity</div>
+        <div class="cat-name">Brand Identity</div>
+        <div class="cat-desc">Complete brand systems — logos, colour palettes, typography, and usage guidelines built for lasting recognition.</div>
+        <span class="open-btn">
+          View in Drive
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 10L10 2M10 2H4M10 2V8"/></svg>
+        </span>
+      </div>
+    </a>
+
+    <!-- 02 · Instagram Posts -->
+    <a class="cat-card reveal reveal-delay-1" href="https://drive.google.com/drive/folders/1pMTzB3-vZwwfoXHVHFqqlqH1Oz0Lo0Un?usp=drive_link" target="_blank">
+      <div class="cat-visual">
+        <div class="cat-dots"></div>
+        <div class="cat-visual-inner">
+          <div class="cat-icon-wrap">
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="2" width="20" height="20" rx="5"/>
+              <circle cx="12" cy="12" r="4"/>
+              <circle cx="17.5" cy="6.5" r="1" fill="var(--muted)" stroke="none"/>
+            </svg>
+          </div>
+        </div>
+        <div class="cat-glyph">IG</div>
+        <div class="gdrive-badge"><span class="gdrive-dot"></span>Drive</div>
+        <div class="cat-corner">
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+            <path d="M8 20L20 8M20 8H10M20 8V18" stroke="var(--accent)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+      </div>
+      <div class="cat-body">
+        <div class="cat-meta">02 · Social</div>
+        <div class="cat-name">Instagram Posts</div>
+        <div class="cat-desc">Scroll-stopping feed and story graphics designed to build engagement and reinforce brand presence.</div>
+        <span class="open-btn">
+          View in Drive
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 10L10 2M10 2H4M10 2V8"/></svg>
+        </span>
+      </div>
+    </a>
+
+    <!-- 03 · Logo Designs -->
+    <a class="cat-card reveal reveal-delay-2" href="https://drive.google.com/drive/folders/1-H25ne-OdzuUDTYSLR6oNg1y3Xebv3-S?usp=drive_link" target="_blank">
+      <div class="cat-visual">
+        <div class="cat-dots"></div>
+        <div class="cat-visual-inner">
+          <div class="cat-icon-wrap">
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+            </svg>
+          </div>
+        </div>
+        <div class="cat-glyph">LG</div>
+        <div class="gdrive-badge"><span class="gdrive-dot"></span>Drive</div>
+        <div class="cat-corner">
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+            <path d="M8 20L20 8M20 8H10M20 8V18" stroke="var(--accent)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+      </div>
+      <div class="cat-body">
+        <div class="cat-meta">03 · Marks</div>
+        <div class="cat-name">Logo Designs</div>
+        <div class="cat-desc">Wordmarks, lettermarks, and symbol logos crafted to distil a brand's essence into a single, scalable mark.</div>
+        <span class="open-btn">
+          View in Drive
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 10L10 2M10 2H4M10 2V8"/></svg>
+        </span>
+      </div>
+    </a>
+
+    <!-- 04 · Marketing Flyers -->
+    <a class="cat-card reveal reveal-delay-4" href="https://drive.google.com/drive/folders/1-FsaKj2_U_8RZT-qLoBoSt8JuoMYAa_w?usp=drive_link" target="_blank">
+      <div class="cat-visual">
+        <div class="cat-dots"></div>
+        <div class="cat-visual-inner">
+          <div class="cat-icon-wrap">
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+              <polyline points="14 2 14 8 20 8"/>
+              <line x1="8" y1="13" x2="16" y2="13"/>
+              <line x1="8" y1="17" x2="12" y2="17"/>
+            </svg>
+          </div>
+        </div>
+        <div class="cat-glyph">MF</div>
+        <div class="gdrive-badge"><span class="gdrive-dot"></span>Drive</div>
+        <div class="cat-corner">
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+            <path d="M8 20L20 8M20 8H10M20 8V18" stroke="var(--accent)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+      </div>
+      <div class="cat-body">
+        <div class="cat-meta">04 · Print</div>
+        <div class="cat-name">Marketing Flyers</div>
+        <div class="cat-desc">Event and promotional flyers that balance bold hierarchy with clean layout — built for both print and digital.</div>
+        <span class="open-btn">
+          View in Drive
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 10L10 2M10 2H4M10 2V8"/></svg>
+        </span>
+      </div>
+    </a>
+
+    <!-- 05 · Package Designs -->
+    <a class="cat-card reveal reveal-delay-5" href="https://drive.google.com/drive/folders/1-0blJXZ88Gyi482xgb04XKSeVL0fMSGG?usp=drive_link" target="_blank">
+      <div class="cat-visual">
+        <div class="cat-dots"></div>
+        <div class="cat-visual-inner">
+          <div class="cat-icon-wrap">
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+              <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
+              <line x1="12" y1="22.08" x2="12" y2="12"/>
+            </svg>
+          </div>
+        </div>
+        <div class="cat-glyph">PK</div>
+        <div class="gdrive-badge"><span class="gdrive-dot"></span>Drive</div>
+        <div class="cat-corner">
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+            <path d="M8 20L20 8M20 8H10M20 8V18" stroke="var(--accent)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+      </div>
+      <div class="cat-body">
+        <div class="cat-meta">05 · Packaging</div>
+        <div class="cat-name">Package Designs</div>
+        <div class="cat-desc">3D-ready packaging artwork that turns unboxing into a brand moment — labels, boxes, pouches, and more.</div>
+        <span class="open-btn">
+          View in Drive
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 10L10 2M10 2H4M10 2V8"/></svg>
+        </span>
+      </div>
+    </a>
+
+    <!-- 06 · Social Media Marketing -->
+    <a class="cat-card reveal reveal-delay-6" href="https://drive.google.com/drive/folders/1-BoO77fBPZXS8nER1lkd2Te-fVlMLQ94?usp=drive_link" target="_blank">
+      <div class="cat-visual">
+        <div class="cat-dots"></div>
+        <div class="cat-visual-inner">
+          <div class="cat-icon-wrap">
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M18 20V10"/>
+              <path d="M12 20V4"/>
+              <path d="M6 20v-6"/>
+            </svg>
+          </div>
+        </div>
+        <div class="cat-glyph">SM</div>
+        <div class="gdrive-badge"><span class="gdrive-dot"></span>Drive</div>
+        <div class="cat-corner">
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+            <path d="M8 20L20 8M20 8H10M20 8V18" stroke="var(--accent)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+      </div>
+      <div class="cat-body">
+        <div class="cat-meta">06 · Campaign</div>
+        <div class="cat-name">Social Media Marketing</div>
+        <div class="cat-desc">Multi-platform campaign graphics — covers, banners, and ad creatives optimised for each channel's format.</div>
+        <span class="open-btn">
+          View in Drive
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 10L10 2M10 2H4M10 2V8"/></svg>
+        </span>
+      </div>
+    </a>
+
+    <!-- 07 · T-Shirt Designs — spans to center in last row -->
+    <a class="cat-card reveal" style="grid-column:2;" href="https://drive.google.com/drive/folders/1-w6DCtAMw64STYil5XBfd_biEa42lkpH?usp=drive_link" target="_blank">
+      <div class="cat-visual">
+        <div class="cat-dots"></div>
+        <div class="cat-visual-inner">
+          <div class="cat-icon-wrap">
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20.38 3.46L16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.57a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.57a2 2 0 0 0-1.34-2.23z"/>
+            </svg>
+          </div>
+        </div>
+        <div class="cat-glyph">TS</div>
+        <div class="gdrive-badge"><span class="gdrive-dot"></span>Drive</div>
+        <div class="cat-corner">
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+            <path d="M8 20L20 8M20 8H10M20 8V18" stroke="var(--accent)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+      </div>
+      <div class="cat-body">
+        <div class="cat-meta">07 · Apparel</div>
+        <div class="cat-name">T-Shirt Designs</div>
+        <div class="cat-desc">Print-ready apparel graphics — from typography-driven slogans to illustrated artwork — delivered in all required formats.</div>
+        <span class="open-btn">
+          View in Drive
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 10L10 2M10 2H4M10 2V8"/></svg>
+        </span>
+      </div>
+    </a>
+
+  </div>
+</div>
+
+<footer>
+  <span class="footer-logo">Achintha Jayaweera</span>
+  <p>© 2026 · Graphic Design</p>
+  <p>Colombo, Sri Lanka</p>
+</footer>
+
+<script>
+var cur=document.getElementById('cursor'),trail=document.getElementById('cursorTrail');
+var mx=0,my=0,tx=0,ty=0;
+document.addEventListener('mousemove',function(e){mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
+(function a(){tx+=(mx-tx)*0.12;ty+=(my-ty)*0.12;trail.style.left=tx+'px';trail.style.top=ty+'px';requestAnimationFrame(a);})();
+document.querySelectorAll('a,.cat-card').forEach(function(el){
+  el.addEventListener('mouseenter',function(){cur.style.transform='translate(-50%,-50%) scale(2.5)';trail.style.transform='translate(-50%,-50%) scale(1.5)';trail.style.borderColor='rgba(200,245,66,0.6)';});
+  el.addEventListener('mouseleave',function(){cur.style.transform='translate(-50%,-50%) scale(1)';trail.style.transform='translate(-50%,-50%) scale(1)';trail.style.borderColor='rgba(200,245,66,0.4)';});
+});
+var ro=new IntersectionObserver(function(e){e.forEach(function(x){if(x.isIntersecting)x.target.classList.add('visible');});},{threshold:0.1,rootMargin:'0px 0px -60px 0px'});
+document.querySelectorAll('.reveal').forEach(function(el){ro.observe(el);});
+</script>
+</body>
+</html>
