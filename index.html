@@ -177,7 +177,7 @@
   .ld-video-wrap{position:relative;width:420px;height:420px;flex-shrink:0;margin-bottom:-55px;}
   #ldFallback{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;mix-blend-mode:multiply;opacity:1;transition:opacity 0.3s ease;}
   #ldFallback.hidden{opacity:0;}
-  #ldVideo{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;opacity:0;transition:opacity 0.3s ease;}
+  #ldVideo{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;opacity:1;transition:opacity 0.3s ease;}
   #ldVideo.ready{opacity:1;}
   .ld-name{font-family:'Bebas Neue',sans-serif;font-size:1.55rem;font-weight:700;letter-spacing:0.22em;color:#080808;opacity:0;transform:translateY(14px);white-space:nowrap;position:relative;z-index:2;}
   .ld-bar-wrap{width:200px;height:1.5px;background:rgba(8,8,8,0.2);margin-top:1rem;position:relative;overflow:hidden;opacity:0;z-index:2;}
@@ -588,8 +588,7 @@
 <div class="loader" id="loader">
   <div class="ld-unit">
     <div class="ld-video-wrap">
-      <img id="ldFallback" src="Assets/black logo.png" alt="Logo">
-      <video id="ldVideo" autoplay muted playsinline preload="auto" webkit-playsinline>
+      <video id="ldVideo" autoplay muted playsinline preload="auto" webkit-playsinline style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;opacity:1;">
         <source src="Assets/Loader.WEBM" type="video/webm">
       </video>
     </div>
