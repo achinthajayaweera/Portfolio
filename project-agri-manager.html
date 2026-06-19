@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agri Manager Pro — Achintha Jayaweera</title>
+<link rel="icon" type="image/png" href="Assets/Achintha top logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#080808;--bg2:#0e0e0e;--bg3:#141414;--text:#f0ede6;--muted:#6b6860;--accent:#c8f542;--border:rgba(240,237,230,0.08);--border-light:rgba(240,237,230,0.15);--pad:3rem;--agri:#22c55e;--agri-dim:rgba(34,197,94,0.07);}
+  *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-weight:300;overflow-x:hidden;cursor:none;}
+  .cursor{position:fixed;width:10px;height:10px;background:var(--accent);border-radius:50%;pointer-events:none;z-index:9999;transition:transform 0.1s ease;transform:translate(-50%,-50%)}
+  .cursor-trail{position:fixed;width:32px;height:32px;border:1px solid rgba(200,245,66,0.4);border-radius:50%;pointer-events:none;z-index:9998;transition:all 0.18s ease;transform:translate(-50%,-50%)}
+  @media(hover:none){.cursor,.cursor-trail{display:none}body{cursor:auto}}
+  nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:1.5rem var(--pad);display:flex;align-items:center;justify-content:space-between;gap:1rem;}
+  nav::before{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,rgba(8,8,8,0.95) 0%,transparent 100%);pointer-events:none}
+  .nav-logo{text-decoration:none;flex-shrink:0}
+  .nav-logo img{height:32px;width:auto;display:block;filter:brightness(0) invert(1)}
+  .nav-back{display:flex;align-items:center;gap:0.6rem;font-family:'DM Mono',monospace;font-size:0.75rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:color 0.3s;}
+  .nav-back:hover{color:var(--accent)}
+  .nav-back svg{transition:transform 0.3s}
+  .nav-back:hover svg{transform:translateX(-4px)}
+
+  /* HERO */
+  .proj-hero{min-height:100vh;display:flex;flex-direction:column;justify-content:flex-end;padding:0 var(--pad) 5rem;position:relative;overflow:hidden;}
+  .proj-hero::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(240,237,230,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(240,237,230,0.025) 1px,transparent 1px);background-size:80px 80px;pointer-events:none;}
+  .hero-orb{position:absolute;width:700px;height:700px;border-radius:50%;background:radial-gradient(circle,var(--agri-dim) 0%,transparent 70%);top:-200px;right:-200px;pointer-events:none;animation:orbFloat 10s ease-in-out infinite;}
+  @keyframes orbFloat{0%,100%{transform:translate(0,0);}50%{transform:translate(-30px,30px);}}
+  .hero-tag{display:flex;align-items:center;gap:0.6rem;margin-bottom:1.5rem;font-family:'DM Mono',monospace;font-size:0.72rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--accent);opacity:0;animation:fadeUp 0.7s forwards 0.3s;}
+  .hero-tag::before{content:'';width:24px;height:1px;background:var(--accent);}
+  .hero-number{font-family:'Bebas Neue',sans-serif;font-size:clamp(1rem,2vw,1.4rem);color:rgba(200,245,66,0.3);letter-spacing:0.08em;margin-bottom:0.4rem;opacity:0;animation:fadeUp 0.7s forwards 0.2s;}
+  .proj-hero-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(4rem,10vw,11rem);line-height:0.85;letter-spacing:-0.02em;overflow:hidden;margin-bottom:2.5rem;}
+  .proj-hero-title .line{display:block;opacity:0;transform:translateY(100%);animation:slideUp 0.9s cubic-bezier(0.16,1,0.3,1) forwards;}
+  .proj-hero-title .line:nth-child(1){animation-delay:0.4s;}
+  .proj-hero-title .line:nth-child(2){animation-delay:0.55s;}
+  @keyframes slideUp{to{opacity:1;transform:translateY(0);}}
+  @keyframes fadeUp{to{opacity:1;}}
+  .hero-meta{display:flex;align-items:flex-end;justify-content:space-between;gap:2rem;flex-wrap:wrap;opacity:0;animation:fadeUp 0.8s forwards 0.9s;}
+  .hero-desc{max-width:520px;font-size:1rem;color:var(--muted);line-height:1.8;}
+  .hero-desc strong{color:var(--text);font-weight:400;}
+  .hero-pills{display:flex;flex-wrap:wrap;gap:0.5rem;align-self:flex-start;}
+  .hero-pill{font-family:'DM Mono',monospace;font-size:0.68rem;letter-spacing:0.1em;text-transform:uppercase;border:1px solid var(--border-light);padding:0.35rem 0.9rem;color:var(--muted);}
+
+  /* FIGMA EMBED */
+  .figma-section{padding:5rem var(--pad);background:var(--bg2);border-top:1px solid var(--border);}
+  .section-label{font-size:0.72rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--accent);margin-bottom:2.5rem;display:flex;align-items:center;gap:1rem;}
+  .section-label::after{content:'';flex:1;max-width:60px;height:1px;background:var(--accent);opacity:0.4;}
+  .figma-chrome{border:1px solid var(--border-light);border-radius:10px;overflow:hidden;background:var(--bg3);box-shadow:0 40px 80px rgba(0,0,0,0.6);}
+  .figma-bar{background:var(--bg3);border-bottom:1px solid var(--border);padding:0.7rem 1rem;display:flex;align-items:center;gap:0.8rem;}
+  .f-dots{display:flex;gap:5px;}
+  .f-dot{width:10px;height:10px;border-radius:50%;}
+  .f-dot:nth-child(1){background:#ff5f57;}
+  .f-dot:nth-child(2){background:#ffbd2e;}
+  .f-dot:nth-child(3){background:#28ca41;}
+  .f-url{flex:1;background:rgba(240,237,230,0.05);border:1px solid var(--border);border-radius:4px;padding:0.3rem 0.8rem;font-family:'DM Mono',monospace;font-size:0.72rem;color:var(--muted);letter-spacing:0.04em;display:flex;align-items:center;gap:0.5rem;}
+  .f-open{display:flex;align-items:center;gap:0.4rem;background:var(--accent);color:#000;font-family:'DM Mono',monospace;font-size:0.68rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;padding:0.35rem 0.9rem;border-radius:3px;text-decoration:none;white-space:nowrap;}
+  .f-open:hover{background:#d4ff4a;}
+  .figma-frame{width:100%;aspect-ratio:16/9;position:relative;background:var(--bg3);overflow:hidden;}
+  .figma-frame iframe{position:absolute;inset:0;width:100%;height:100%;border:none;}
+  .figma-hint{margin-top:1.2rem;text-align:center;font-family:'DM Mono',monospace;font-size:0.7rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);opacity:0.7;}
+  .figma-hint a{color:var(--accent);text-decoration:none;}
+  .figma-hint a:hover{text-decoration:underline;}
+
+  /* ABOUT */
+  .about-section{padding:6rem var(--pad);border-top:1px solid var(--border);}
+  .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:6rem;align-items:start;}
+  .about-sticky{position:sticky;top:6rem;}
+  .about-heading{font-family:'Bebas Neue',sans-serif;font-size:clamp(3rem,5vw,5.5rem);line-height:0.9;}
+  .about-heading .accent{color:var(--accent);}
+  .about-body{font-size:0.92rem;line-height:1.9;color:var(--muted);}
+  .about-body strong{color:var(--text);font-weight:400;}
+  .about-body p+p{margin-top:1.2rem;}
+
+  /* KEY SCREENS */
+  .screens-section{padding:6rem var(--pad);background:var(--bg2);border-top:1px solid var(--border);}
+  .screens-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1px;background:var(--border);border:1px solid var(--border);margin-top:2.5rem;}
+  .screen-card{background:var(--bg2);padding:1.8rem 1.6rem;transition:background 0.3s;position:relative;overflow:hidden;}
+  .screen-card::before{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:var(--accent);transform:scaleX(0);transform-origin:left;transition:transform 0.4s cubic-bezier(0.16,1,0.3,1);}
+  .screen-card:hover::before{transform:scaleX(1);}
+  .screen-card:hover{background:var(--bg3);}
+  .sc-num{font-family:'DM Mono',monospace;font-size:0.65rem;color:var(--accent);letter-spacing:0.12em;margin-bottom:0.6rem;}
+  .sc-title{font-size:0.9rem;font-weight:500;color:var(--text);margin-bottom:0.3rem;}
+  .sc-desc{font-size:0.76rem;color:var(--muted);line-height:1.6;}
+
+  /* DESIGN SYSTEM */
+  .design-section{padding:6rem var(--pad);border-top:1px solid var(--border);}
+  .design-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1.5rem;margin-top:2.5rem;}
+  .design-card{background:var(--bg2);border:1px solid var(--border);padding:2rem;position:relative;overflow:hidden;}
+  .design-card::before{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:var(--accent);transform:scaleX(0);transform-origin:left;transition:transform 0.4s cubic-bezier(0.16,1,0.3,1);}
+  .design-card:hover::before{transform:scaleX(1);}
+  .dc-label{font-family:'DM Mono',monospace;font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--accent);margin-bottom:1rem;}
+  .dc-title{font-size:1.1rem;font-weight:500;color:var(--text);margin-bottom:0.5rem;}
+  .dc-desc{font-size:0.8rem;color:var(--muted);line-height:1.6;}
+  .swatches{display:flex;gap:0.5rem;margin-top:1rem;flex-wrap:wrap;}
+  .swatch{width:28px;height:28px;border-radius:50%;border:1px solid rgba(255,255,255,0.1);}
+
+  /* LINKS */
+  .links-section{padding:6rem var(--pad);background:var(--bg2);border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:2rem;}
+  .links-heading{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.5rem,5vw,5rem);line-height:0.9;}
+  .links-heading span{color:var(--accent);}
+  .links-btns{display:flex;gap:1rem;flex-wrap:wrap;}
+  .link-btn{display:inline-flex;align-items:center;gap:0.6rem;padding:1rem 2rem;font-size:0.82rem;letter-spacing:0.1em;text-transform:uppercase;font-family:'DM Mono',monospace;text-decoration:none;transition:all 0.3s;}
+  .link-btn.primary{background:var(--accent);color:#000;font-weight:600;}
+  .link-btn.primary:hover{background:#d4ff4a;transform:translateY(-2px);}
+  .link-btn.secondary{border:1px solid var(--border-light);color:var(--text);}
+  .link-btn.secondary:hover{border-color:var(--text);background:rgba(240,237,230,0.05);transform:translateY(-2px);}
+
+  .proj-nav{padding:3rem var(--pad);border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;gap:2rem;flex-wrap:wrap;}
+  .proj-nav-item{text-decoration:none;}
+  .proj-nav-item:hover .pn-title{color:var(--accent);}
+  .pn-label{font-family:'DM Mono',monospace;font-size:0.68rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);margin-bottom:0.4rem;}
+  .pn-title{font-family:'Bebas Neue',sans-serif;font-size:1.6rem;color:var(--text);letter-spacing:0.02em;transition:color 0.3s;}
+
+  footer{padding:2rem var(--pad);display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--border);flex-wrap:wrap;gap:1rem;}
+  footer p{font-size:0.75rem;color:var(--muted);letter-spacing:0.06em;}
+  .footer-logo{font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:0.12em;color:var(--muted);}
+
+  .reveal{opacity:0;transform:translateY(40px);transition:opacity 0.9s cubic-bezier(0.16,1,0.3,1),transform 0.9s cubic-bezier(0.16,1,0.3,1);}
+  .reveal.visible{opacity:1;transform:translateY(0);}
+  .reveal-delay-1{transition-delay:0.1s;}.reveal-delay-2{transition-delay:0.2s;}
+
+  @media(max-width:1024px){.about-grid{grid-template-columns:1fr;gap:3rem;}.about-sticky{position:static;}.design-grid{grid-template-columns:1fr 1fr;}}
+  @media(max-width:768px){:root{--pad:1.5rem;}.links-section{flex-direction:column;align-items:flex-start;}.design-grid{grid-template-columns:1fr;}.screens-grid{grid-template-columns:1fr 1fr;}}
+  @media(max-width:480px){:root{--pad:1.2rem;}.screens-grid{grid-template-columns:1fr;}.links-btns{flex-direction:column;}}
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-trail" id="cursorTrail"></div>
+
+<nav>
+  <a href="Achintha%20portfolio.HTML" class="nav-logo"><img src="Assets/A Final.png" alt="Achintha Jayaweera"></a>
+  <a href="uiux-designs.html" class="nav-back">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8L10 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    UI/UX Designs
+  </a>
+</nav>
+
+<!-- HERO -->
+<section class="proj-hero">
+  <div class="hero-orb"></div>
+  <div class="hero-number">02 · UI/UX Design</div>
+  <div class="hero-tag">Figma · Mobile UI · Agriculture · Fintech</div>
+  <h1 class="proj-hero-title">
+    <span class="line">AGRI</span>
+    <span class="line">MANAGER PRO</span>
+  </h1>
+  <div class="hero-meta">
+    <p class="hero-desc">
+      A complete mobile UI/UX design for an <strong>agricultural management platform</strong> built for Sri Lankan farmers — covering microloan applications, fertilizer services, machinery hire, crop tracking, location services, and expense management, all designed in Figma.
+    </p>
+    <div class="hero-pills">
+      <span class="hero-pill">Figma</span>
+      <span class="hero-pill">Mobile UI</span>
+      <span class="hero-pill">Prototyping</span>
+      <span class="hero-pill">Agriculture</span>
+      <span class="hero-pill">Fintech</span>
+    </div>
+  </div>
+</section>
+
+<!-- FIGMA EMBED -->
+<section class="figma-section reveal">
+  <div class="section-label">Figma Design File</div>
+  <div class="figma-chrome">
+    <div class="figma-bar">
+      <div class="f-dots"><div class="f-dot"></div><div class="f-dot"></div><div class="f-dot"></div></div>
+      <div class="f-url">
+        <svg width="13" height="13" viewBox="0 0 38 57" fill="none" style="flex-shrink:0"><path d="M19 28.5a9.5 9.5 0 1 1 19 0 9.5 9.5 0 0 1-19 0z" fill="#1ABCFE"/><path d="M0 47.5A9.5 9.5 0 0 1 9.5 38H19v9.5a9.5 9.5 0 0 1-19 0z" fill="#0ACF83"/><path d="M19 0v19h9.5a9.5 9.5 0 0 0 0-19H19z" fill="#FF7262"/><path d="M0 9.5A9.5 9.5 0 0 0 9.5 19H19V0H9.5A9.5 9.5 0 0 0 0 9.5z" fill="#F24E1E"/><path d="M0 28.5A9.5 9.5 0 0 0 9.5 38H19V19H9.5A9.5 9.5 0 0 0 0 28.5z" fill="#A259FF"/></svg>
+        figma.com · agriculture-2 · Agri Manager Pro
+      </div>
+      <a href="https://www.figma.com/design/XkmWdx7DrYSLe07Jfk8fB0/agriculture-2?node-id=0-1&t=JEo7EYIq33rEFQjB-1" target="_blank" class="f-open">
+        <svg width="12" height="12" viewBox="0 0 14 14" fill="none"><path d="M2 12L12 2M12 2H6M12 2V8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Open in Figma
+      </a>
+    </div>
+    <div class="figma-frame">
+      <iframe
+        src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Fdesign%2FXkmWdx7DrYSLe07Jfk8fB0%2Fagriculture-2%3Fnode-id%3D0-1%26t%3DJEo7EYIq33rEFQjB-1"
+        allowfullscreen loading="lazy" title="Agri Manager Pro Figma Design"
+      ></iframe>
+    </div>
+  </div>
+  <p class="figma-hint">Click <a href="https://www.figma.com/design/XkmWdx7DrYSLe07Jfk8fB0/agriculture-2?node-id=0-1&t=JEo7EYIq33rEFQjB-1" target="_blank">open in Figma</a> to explore the full interactive prototype and all screens.</p>
+</section>
+
+<!-- ABOUT -->
+<section class="about-section">
+  <div class="about-grid">
+    <div class="about-sticky reveal">
+      <h2 class="about-heading">ABOUT<br>THE <span class="accent">DESIGN</span></h2>
+    </div>
+    <div class="about-body reveal reveal-delay-1">
+      <p>
+        <strong>Agri Manager Pro</strong> is a full mobile UI/UX design for a digital agricultural management platform aimed at Sri Lankan farmers. The app brings together several critical services that farmers typically need to access separately — microloans, agricultural inputs, machinery, and financial tracking — into a single, easy-to-navigate mobile experience.
+      </p>
+      <p>
+        The platform's core financial feature is its <strong>microloan system</strong>, which allows farmers to apply for short-term agricultural loans directly through the app. Farmers can view available loan schemes, submit applications, track approval status, and manage repayments — removing the need for physical bank visits that are often inaccessible in rural areas.
+      </p>
+      <p>
+        Beyond finance, the app covers <strong>fertilizer and input services</strong> — allowing farmers to browse available agricultural products, place orders, and track deliveries. A dedicated <strong>machinery hire</strong> module lets farmers locate and book farm equipment by category, with machine and labor profiles showing availability and pricing.
+      </p>
+      <p>
+        The design also includes <strong>crop tracking</strong>, <strong>location services</strong>, <strong>expense management</strong>, and <strong>agri insurance</strong> screens — giving farmers a complete digital toolkit for managing their operations. The visual language uses a strong green-dominant palette that communicates growth, nature, and trust, with clean card-based layouts optimised for low-literacy and rural users.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- KEY SCREENS -->
+<section class="screens-section">
+  <div class="section-label reveal">Key Screens</div>
+  <div class="screens-grid reveal reveal-delay-1">
+    <div class="screen-card"><div class="sc-num">01</div><div class="sc-title">Splash + Onboarding</div><div class="sc-desc">Branded splash screen with green agricultural identity, followed by a welcoming onboarding flow tailored for rural users.</div></div>
+    <div class="screen-card"><div class="sc-num">02</div><div class="sc-title">Sign In / Login</div><div class="sc-desc">Simple authentication screens with email/phone login — minimal friction designed for users with limited digital experience.</div></div>
+    <div class="screen-card"><div class="sc-num">03</div><div class="sc-title">Home Dashboard</div><div class="sc-desc">Central hub showing quick-access tiles for all services — loans, fertilizer, machinery, crops, location, and finance.</div></div>
+    <div class="screen-card"><div class="sc-num">04</div><div class="sc-title">Microloan Application</div><div class="sc-desc">Step-by-step loan application flow with scheme selection, document upload, and real-time status tracking.</div></div>
+    <div class="screen-card"><div class="sc-num">05</div><div class="sc-title">Fertilizer Services</div><div class="sc-desc">Product catalogue for agricultural inputs with order placement and delivery tracking.</div></div>
+    <div class="screen-card"><div class="sc-num">06</div><div class="sc-title">Machinery Hire</div><div class="sc-desc">Machine and labor profile listings with category filters, availability status, and hire booking flow.</div></div>
+    <div class="screen-card"><div class="sc-num">07</div><div class="sc-title">Crop Tracking</div><div class="sc-desc">Crop management screens for logging planting dates, growth stages, and harvest estimates per plot.</div></div>
+    <div class="screen-card"><div class="sc-num">08</div><div class="sc-title">Expense + Finance</div><div class="sc-desc">Expense tracking with categorised spending charts, income logs, and agri insurance management screens.</div></div>
+    <div class="screen-card"><div class="sc-num">09</div><div class="sc-title">Location Tracking</div><div class="sc-desc">Map-based location screen for tracking farm plots, nearby service providers, and delivery routes.</div></div>
+    <div class="screen-card"><div class="sc-num">10</div><div class="sc-title">User + Labor Profiles</div><div class="sc-desc">Profile management for farmers, machine operators, and labor — with contact details and service history.</div></div>
+  </div>
+</section>
+
+<!-- DESIGN SYSTEM -->
+<section class="design-section">
+  <div class="section-label reveal">Design System</div>
+  <div class="design-grid reveal reveal-delay-1">
+    <div class="design-card">
+      <div class="dc-label">Colour Palette</div>
+      <div class="dc-title">Agricultural Green</div>
+      <div class="dc-desc">A green-dominant palette communicating growth, nature, and trust — with light backgrounds for readability and dark accents for hierarchy.</div>
+      <div class="swatches">
+        <div class="swatch" style="background:#166534;" title="Deep Green"></div>
+        <div class="swatch" style="background:#22c55e;" title="Primary Green"></div>
+        <div class="swatch" style="background:#86efac;" title="Light Green"></div>
+        <div class="swatch" style="background:#F5F5F5;" title="Surface"></div>
+        <div class="swatch" style="background:#1a1a1a;" title="Dark"></div>
+      </div>
+    </div>
+    <div class="design-card">
+      <div class="dc-label">Typography</div>
+      <div class="dc-title">Clear + Accessible</div>
+      <div class="dc-desc">Bold, legible headings with generous sizing — designed for outdoor use and users with varying levels of digital literacy across all screen conditions.</div>
+    </div>
+    <div class="design-card">
+      <div class="dc-label">Components</div>
+      <div class="dc-title">Card-Based System</div>
+      <div class="dc-desc">Icon-led service tiles, profile cards, list items, and form components — all consistent across 20+ screens for a unified app experience.</div>
+    </div>
+  </div>
+</section>
+
+<!-- LINKS -->
+<section class="links-section reveal">
+  <div><div class="links-heading">VIEW THE<br><span>FULL DESIGN</span></div></div>
+  <div class="links-btns">
+    <a href="https://www.figma.com/design/XkmWdx7DrYSLe07Jfk8fB0/agriculture-2?node-id=0-1&t=JEo7EYIq33rEFQjB-1" target="_blank" class="link-btn primary">
+      <svg width="14" height="14" viewBox="0 0 38 57" fill="none"><path d="M19 28.5a9.5 9.5 0 1 1 19 0 9.5 9.5 0 0 1-19 0z" fill="#000"/><path d="M0 47.5A9.5 9.5 0 0 1 9.5 38H19v9.5a9.5 9.5 0 0 1-19 0z" fill="#000"/><path d="M19 0v19h9.5a9.5 9.5 0 0 0 0-19H19z" fill="#000"/><path d="M0 9.5A9.5 9.5 0 0 0 9.5 19H19V0H9.5A9.5 9.5 0 0 0 0 9.5z" fill="#000"/><path d="M0 28.5A9.5 9.5 0 0 0 9.5 38H19V19H9.5A9.5 9.5 0 0 0 0 28.5z" fill="#000"/></svg>
+      Open in Figma
+    </a>
+    <a href="uiux-designs.html" class="link-btn secondary">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      All UI/UX Projects
+    </a>
+  </div>
+</section>
+
+<div class="proj-nav">
+  <a href="project-medifind-ui.html" class="proj-nav-item">
+    <div class="pn-label">← Previous</div>
+    <div class="pn-title">MediFind App UI</div>
+  </a>
+  <a href="uiux-designs.html" class="proj-nav-item" style="text-align:right;">
+    <div class="pn-label">All Projects</div>
+    <div class="pn-title">UI/UX Designs</div>
+  </a>
+</div>
+
+<footer>
+  <span class="footer-logo">Achintha Jayaweera</span>
+  <p>© 2026 · Agri Manager Pro — Figma Design</p>
+  <p>Colombo, Sri Lanka</p>
+</footer>
+
+<script>
+var cur=document.getElementById('cursor'),trail=document.getElementById('cursorTrail');
+var mx=0,my=0,tx=0,ty=0;
+document.addEventListener('mousemove',function(e){mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
+(function a(){tx+=(mx-tx)*0.12;ty+=(my-ty)*0.12;trail.style.left=tx+'px';trail.style.top=ty+'px';requestAnimationFrame(a);})();
+document.querySelectorAll('a,button').forEach(function(el){
+  el.addEventListener('mouseenter',function(){cur.style.transform='translate(-50%,-50%) scale(2.5)';trail.style.transform='translate(-50%,-50%) scale(1.5)';trail.style.borderColor='rgba(200,245,66,0.6)';});
+  el.addEventListener('mouseleave',function(){cur.style.transform='translate(-50%,-50%) scale(1)';trail.style.transform='translate(-50%,-50%) scale(1)';trail.style.borderColor='rgba(200,245,66,0.4)';});
+});
+var ro=new IntersectionObserver(function(e){e.forEach(function(x){if(x.isIntersecting)x.target.classList.add('visible');});},{threshold:0.08});
+document.querySelectorAll('.reveal').forEach(function(el){ro.observe(el);});
+</script>
+</body>
+</html>
